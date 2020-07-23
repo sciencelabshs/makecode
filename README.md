@@ -56,7 +56,9 @@ pxt update
 
 
 ## deploying
+
 ```
-pgk staticpkg --gh --bump
+pxt staticpkg --gh --bump
 ``
+
 More instructions at https://github.com/Microsoft/pxt#running-a-target-from-localhost 
