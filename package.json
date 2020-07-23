@@ -24,6 +24,10 @@
     "sim/public",
     "docs/**"
   ],
+  "scripts": {
+    "start": "pxt serve",
+    "deployGithub": "pxt staticpkg --route makecode --bump --githubpages"
+  },
   "devDependencies": {
     "@types/bluebird": "2.0.33",
     "@types/jquery": "3.2.16",
