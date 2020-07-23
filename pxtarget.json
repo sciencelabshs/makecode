@@ -76,7 +76,7 @@
         "highContrast": true,
         "greenScreen": true,
         "monacoColors": {
-            "editor.background": "#4ebed7"
+            "editor.background": "#fcfcfc"
         }
     }
 }
