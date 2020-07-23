@@ -1,0 +1,10 @@
+CACHE MANIFEST
+
+CACHE:
+/makecode/bluebird.min.js
+/makecode/pxtsim.js
+/makecode/sim.js
+/makecode/sim.css
+
+NETWORK:
+*
