@@ -25,3 +25,4 @@ built/web/semantic.css
 libs/core/built/debug/binary.js
 libs/core/built/pxt-core.d.ts
 libs/core/built/pxt-helpers.ts
+.DS_Store
