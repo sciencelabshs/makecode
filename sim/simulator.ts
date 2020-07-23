@@ -11,8 +11,62 @@ namespace pxsim {
     /**
      * Gets the current 'board', eg. program state.
      */
-    export function board() : Board {
+    export function board(): Board {
         return runtime.board as Board;
+    }
+
+    class Statement {
+        protected children: Array<Statement>;
+        public parentStatement: Statement;
+        protected code: string;
+
+        constructor(code: string) {
+            this.children = new Array<Statement>();
+            this.code = code;
+        }
+        addChild(child: Statement) {
+            this.children.push(child)
+            child.parentStatement = this;
+        }
+        getCode() {
+            let allCode = this.code;
+
+            // for blocks, replace the children
+            if (allCode.indexOf("<CHILDREN>") > 0) {
+                let childCode = "";
+                this.children.forEach((child) => {
+                    if (childCode.length > 0) {
+                        childCode += ",\n "
+                    }
+                    childCode += child.getCode()
+                })
+                allCode = allCode.replace("<CHILDREN>", childCode);
+
+
+            }
+            return allCode;
+        }
+    }
+    class MainStatement extends Statement {
+        constructor() {
+            super("")
+        }
+        getCode() {
+            let allCode = "";
+            if (this.children.length === 0) {
+                return ""
+            }
+    
+            this.children.forEach((child, index) => {
+                allCode += child.getCode();
+                if (index < this.children.length -1) {
+                    allCode += ","
+                } 
+            })
+            return `function main () {
+                return [${allCode}];
+            }`
+        }
     }
 
     /**
@@ -21,35 +75,50 @@ namespace pxsim {
      */
     export class Board extends pxsim.BaseBoard {
         public bus: EventBus;
-        public element : SVGSVGElement;
-        public spriteElement: SVGCircleElement;
-        public hareElement: SVGCircleElement;
-        public sprite : Sprite;
-        public hare: Sprite;
-        
+
+        private mainStatement: Statement;
+        private currentStatement: Statement;
         constructor() {
             super();
             this.bus = new EventBus(runtime);
-            this.element = <SVGSVGElement><any>document.getElementById('svgcanvas');
-            this.spriteElement = <SVGCircleElement>this.element.getElementById('svgsprite');
-            this.hareElement = <SVGCircleElement>this.element.getElementById('svgsprite2');
-            this.sprite = new Sprite()
-            this.hare = new Sprite();
+
+            this.mainStatement = new MainStatement();
+            this.currentStatement = this.mainStatement;
         }
-        
+
+
+        addBlock(str: string) {
+            const newBlock = new Statement(str)
+            this.currentStatement.addChild(newBlock)
+            this.currentStatement = newBlock;
+            // this.updateJSCad()
+        }
+
+        addStatement(str: string) {
+            const newBlock = new Statement(str)
+            this.currentStatement.addChild(newBlock)
+            this.updateJSCad()
+        }
+
+        updateJSCad() {
+
+            const jsCadInterpreter = ((window as any).jscad);
+            const codeStr = this.mainStatement.getCode()
+            if (codeStr.length > 0) {
+                jsCadInterpreter.setJsCad(
+                    codeStr
+                );
+            }
+            console.log("JSCAD AM HERE", codeStr)
+        }
         initAsync(msg: pxsim.SimulatorRunMessage): Promise<void> {
-            document.body.innerHTML = ''; // clear children
-            document.body.appendChild(this.element);
+            //  document.body.innerHTML = ''; // clear children
+
+            this.updateJSCad()
 
             return Promise.resolve();
-        }       
-        
-        updateView() {
-            this.spriteElement.cx.baseVal.value = this.sprite.x;
-            this.spriteElement.cy.baseVal.value = this.sprite.y;
-
-            this.hareElement.cx.baseVal.value = this.hare.x;
-            this.hareElement.cy.baseVal.value = this.hare.y;
         }
+
+
     }
 }

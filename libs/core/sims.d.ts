@@ -1,112 +1,73 @@
 // Auto-generated from simulator. Do not edit.
-declare namespace hare {
-    /**
-     * This is hop
-     */
-    //% blockId="sampleHop" block="hop %hop on color %color=colorNumberPicker"
-    //% hop.fieldEditor="gridpicker"
-    //% shim=hare::hop
-    function hop(hop: Hop, color: number): void;
+declare namespace shapes {
+    //% block="cube width $width|depth $depth|height $height"
+    //% inlineInputMode=inline
+    //% width.defl=10
+    //% depth.defl=10
+    //% height.defl=10
+    //% shim=shapes::cube
+    function cube(width: number, depth: number, height: number): void;
 
-    //% blockId=sampleOnLand block="on land"
-    //% optionalVariableArgs
-    //% shim=hare::onLand
-    function onLand(handler: (height: number, more: number, most: number) => void): void;
+    //% block="sphere width $width|depth $depth|height $height"
+    //% inlineInputMode=inline
+    //% width.defl=10
+    //% depth.defl=10
+    //% height.defl=10
+    //% shim=shapes::sphere
+    function sphere(width: number, depth: number, height: number): void;
 
-}
-declare namespace turtle {
-    /**
-     * Moves the sprite forward
-     * @param steps number of steps to move, eg: 1
-     */
-    //% weight=90
-    //% blockId=sampleForward block="forward %steps"
-    //% shim=turtle::forwardAsync promise
-    function forward(steps: number): void;
+    //% block="cylinder radius $radius|height $height"
+    //% inlineInputMode=inline
+    //% radius.defl=10
+    //% height.defl=10
+    //% shim=shapes::cylinder
+    function cylinder(radius: number, height: number): void;
 
-    /**
-     * Moves the sprite forward
-     * @param direction the direction to turn, eg: Direction.Left
-     * @param angle degrees to turn, eg:90
-     */
-    //% weight=85
-    //% blockId=sampleTurn block="turn %direction|by %angle degrees"
-    //% angle.min=-180 angle.max=180
-    //% shim=turtle::turnAsync promise
-    function turn(direction: Direction, angle: number): void;
+    //% block="donut thickness $thickness|radius $radius"
+    //% inlineInputMode=inline
+    //% thickess.defl=20
+    //% radius.defl=100
+    //% shim=shapes::donut
+    function donut(thickness: number, radius: number): void;
 
-    /**
-     * Triggers when the turtle bumps a wall
-     * @param handler 
-     */
-    //% blockId=onBump block="on bump"
-    //% shim=turtle::onBump
-    function onBump(handler: () => void): void;
+    //% block="cone radius $radius|height $height"
+    //% inlineInputMode=inline
+    //% radius.defl=10
+    //% height.defl=10
+    //% shim=shapes::cone
+    function cone(radius: number, height: number): void;
 
 }
-declare namespace loops {
-    /**
-     * Repeats the code forever in the background. On each iteration, allows other code to run.
-     * @param body the code to repeat
-     */
-    //% help=functions/forever weight=55 blockGap=8
-    //% blockId=device_forever block="forever"
-    //% shim=loops::forever
-    function forever(body: () => void): void;
+declare namespace operators {
+    //% blockId=add_shapes block="add shapes" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% shim=operators::addShapes
+    function addShapes(body: () => void): void;
 
-    /**
-     * Pause for the specified time in milliseconds
-     * @param ms how long to pause for, eg: 100, 200, 500, 1000, 2000
-     */
-    //% help=functions/pause weight=54
-    //% block="pause (ms) %pause" blockId=device_pause
-    //% shim=loops::pauseAsync promise
-    function pause(ms: number): void;
+    //% blockId=subtract_shapes block="subtract shapes" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% shim=operators::subtractShapesAsync promise
+    function subtractShapes(body: () => void): void;
 
-}
-declare namespace console {
-    /**
-     * Print out message
-     */
-    //%
-    //% shim=console::log
-    function log(msg: string): void;
+    //% blockId=intersect_shapes block="intersect shapes" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% shim=operators::intersectShapesAsync promise
+    function intersectShapes(body: () => void): void;
 
-}
-    /**
-     * A ghost on the screen.
-     */
-    //%
-    declare class Sprite {
-        /**
-         * The X-coordiante
-         */
-        //%
-        //% shim=.x
-        public x: number;
+    //% blockId=move_shapes block="move shapes across x: $x| over y: $y | up z: $z" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% shim=operators::moveShapesAsync promise
+    function moveShapes(x: number, y: number, z: number, body: () => void): void;
 
-        /**
-         * The Y-coordiante
-         */
-        //%
-        //% shim=.y
-        public y: number;
-
-        /**
-         * Move the thing forward
-         */
-        //%
-        //% shim=.forwardAsync promise
-        public forward(steps: number): void;
-
-    }
-declare namespace sprites {
-    /**
-     * Creates a new sprite
-     */
-    //% blockId="sampleCreate" block="createSprite"
-    //% shim=sprites::createSprite
-    function createSprite(): Sprite;
+    //% blockId=rotate_shapes block="rotate shapes x: $x|  y: $y | z: $z" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% shim=operators::rotateShapesAsync promise
+    function rotateShapes(x: number, y: number, z: number, body: () => void): void;
 
 }
 

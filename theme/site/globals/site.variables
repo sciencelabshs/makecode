@@ -2,11 +2,12 @@
      User Global Variables
 *******************************/
 
+@darkgrey         : #293547;
 /*--------------
       Page
 ---------------*/
 
-@pageBackground      : #F9F9F9;
+@pageBackground      : @darkgrey;
 
 /*-------------------
      Fonts
@@ -33,14 +34,15 @@
 @pink             : #fd79a8;
 @purple           : #a29bfe;
 @red              : #ff7675;
-@teal             : #81ecec;
+@teal             : #4ebed7;
 @yellow           : #ffeaa7;
+
 
 /*-------------------
     Brand Colors
 --------------------*/
 
-@primaryColor        : @blue;
+@primaryColor        : #4ebed7;
 @secondaryColor      : @grey;
 
 @lightPrimaryColor   : @lightBlue;
@@ -54,7 +56,7 @@
    Menu
 --------------------*/
 
-@mainMenuBackground: @purple;
+@mainMenuBackground: @darkgrey;
 @mainMenuInvertedBackground: @mainMenuBackground;
 @mainMenuTutorialBackground: @orange;
 
@@ -66,15 +68,16 @@
    Layout
 --------------------*/
 
-@sideBarWidth: 22rem;
-@simulatorWidth: 27rem;
-@simulatorWidthSmall: 20rem;
+@sideBarWidth: 320px;
+@simulatorWidth: 320px;
+/*@simulatorHeight: 400px; this is set in the style.less*/ 
+@simulatorWidthSmall: 320px;
 
 /*-------------------
    Background
 --------------------*/
 
-@simulatorBackground: #E8EDF1;
+@simulatorBackground: @darkgrey;
 @editorToolsBackground: #E8EDF1;
 @blocklySvgColor: #F9F9F9;
 

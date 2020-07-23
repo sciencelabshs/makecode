@@ -4,7 +4,8 @@
 [
     {
         "name": "Examples",
-        "url": "/examples"
+        "url": "/examples",
+        "imageUrl": "/static/examples/subtractshapes.png"
     }
 ]
 ```

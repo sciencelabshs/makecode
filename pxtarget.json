@@ -1,7 +1,7 @@
 {
-    "id": "sample",
-    "name": "sample",
-    "title": "MakeCode Editor Sample",
+    "id": "buildbeemakecode",
+    "name": "buildbeemakecode",
+    "title": "BuildBee | MakeCode",
     "corepkg": "core",
     "cloud": {
         "workspace": false,
@@ -17,10 +17,22 @@
       "variablesBlocks": true,
       "textBlocks": false,
       "functionBlocks": false,
-      "listsBlocks": false
+      "listsBlocks": false ,
+      "onStartUnDeletable": true
+    },
+    "blockColors": {
+        "loops": "#20BF6B",
+        "logic": "#45AAF2",
+        "math": "#A55EEA",
+        "variables": "#EC3B59",
+        "text": "#F5D547",
+        "arrays": "#FF8F08",
+        "functions": "#1446A0"
     },
     "simulator": {
-        "autoRun": true
+        "autoRun": true,
+        "aspectRatio": 4
+
     },
     "appTheme": {
         "logoUrl": "https://github.com/Microsoft/pxt-sample",
@@ -38,29 +50,33 @@
                 "path": "/docs"
             }
         ],
-        "coloredToolbox": false,
+        "coloredToolbox": true,
         "monacoToolbox": true,
         "invertedMenu": true,
         "showHomeScreen": true,
-        "homeScreenHero": "./static/hero.png",
-        "blocklyOptions": {
+        "homeScreenHero": "./static/hero.svg",        
+        "blocklyOptions": { 
             "grid": {
-                "spacing": 45,
-                "length": 7,
-                "colour": "rgba(189, 195, 199, 0.30)",
+                "spacing": 20,
+                "length": 100,
+                "colour": "rgba(107, 79, 118, 0.10)",
                 "snap": true
             }
         },
+        "unsupportedBrowsers": [
+            {
+                "id": "ie"
+            }
+        ],
         "simAnimationEnter": "fly right in",
         "simAnimationExit": "fly right out",
         "scriptManager": true,
-        "debugger": true,
+        "debugger": false,
         "print": true,
         "highContrast": true,
-        "python": true,
         "greenScreen": true,
         "monacoColors": {
-            "editor.background": "#ecf0f1"
+            "editor.background": "#4ebed7"
         }
     }
 }

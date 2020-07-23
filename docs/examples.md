@@ -1,19 +1,21 @@
 # Examples
 
-Here are some fun programs for your board!
+Here are some fun programs for your @boardname@!
 
 ## Fun stuff
 
 ```codecard
 [{
-  "name": "Square",
-  "description": "Move in a square",
-  "url":"/examples/square",
-  "cardType": "example"
+  "name": "Subtract Shapes",
+  "description": "Learn how to subract shapes",
+  "url":"/examples/subtractshapes",
+  "cardType": "example",
+  "imageUrl": "/static/examples/subtractshapes.png"
 }, {
-  "name": "Square 2",
-  "description": "TBD",
-  "url": "/examples/square2",
-  "cardType": "example"
+  "name": "Donut Rings",
+  "description": "Learn how to use loops to control size and shapes",
+  "url": "/examples/donutrings",
+  "cardType": "example",
+  "imageUrl": "/static/examples/donutrings.png"
 }]
 ```

@@ -1,147 +1,114 @@
 /// <reference path="../libs/core/enums.d.ts"/>
 
-namespace pxsim.hare {
-    /**
-     * This is hop
-     */
-    //% blockId="sampleHop" block="hop %hop on color %color=colorNumberPicker"
-    //% hop.fieldEditor="gridpicker"
-    export function hop(hop: Hop, color: number) {
+
+/**
+ * @external https://makecode.com/playground#basic-default-values
+ * use the playground to configure the pickers
+ */
+
+namespace pxsim.shapes {
+    //% block="cube width $width|depth $depth|height $height"
+    //% inlineInputMode=inline
+    //% width.defl=10
+    //% depth.defl=10
+    //% height.defl=10
+    export function cube(width: number = 1, depth: number = 1, height: number = 1) {
+        board().addStatement(`cube({size: [${width}, ${depth}, ${height}]})`);
 
     }
 
-    //% blockId=sampleOnLand block="on land"
-    //% optionalVariableArgs
-    export function onLand(handler: (height: number, more: number, most: number) => void) {
+
+    //% block="sphere width $width|depth $depth|height $height"
+    //% inlineInputMode=inline
+    //% width.defl=10
+    //% depth.defl=10
+    //% height.defl=10
+
+    export function sphere(width: number, depth: number, height: number) {
+        board().addStatement(`sphere({size: [${width}, ${depth}, ${height}]})`);
 
     }
+
+
+    //% block="cylinder radius $radius|height $height"
+    //% inlineInputMode=inline
+    //% radius.defl=10
+    //% height.defl=10
+    export function cylinder(radius: number, height: number) {
+        board().addStatement(`cylinder({r1: ${radius}, r2: ${radius}, h: ${height}})`);
+    }
+    //% block="donut thickness $thickness|radius $radius"
+    //% inlineInputMode=inline
+    //% thickess.defl=20
+    //% radius.defl=100
+    export function donut(thickness: number, radius: number) {
+        board().addStatement(`torus({ri: ${thickness / 2}, ro: ${radius} })`)
+    }
+
+    //% block="cone radius $radius|height $height"
+    //% inlineInputMode=inline
+    //% radius.defl=10
+    //% height.defl=10
+    export function cone(radius: number, height: number) {
+        board().addStatement(`cylinder({r2: 0, r1: ${radius}, h: ${height}})`);
+    }
+
+
+
 }
 
-namespace pxsim.turtle {
-    /**
-     * Moves the sprite forward
-     * @param steps number of steps to move, eg: 1
-     */
-    //% weight=90
-    //% blockId=sampleForward block="forward %steps"
-    export function forwardAsync(steps: number) {
-        return board().sprite.forwardAsync(steps)
+namespace pxsim.operators {
+
+    //% blockId=add_shapes block="add shapes" 
+    //% topblock=false
+    //% handlerStatement=true
+    export function addShapes(body: RefAction): void {
+        board().addBlock("union( <CHILDREN> )");
+
+       return  thread.runInBackground(body)
     }
 
-    /**
-     * Moves the sprite forward
-     * @param direction the direction to turn, eg: Direction.Left
-     * @param angle degrees to turn, eg:90
-     */
-    //% weight=85
-    //% blockId=sampleTurn block="turn %direction|by %angle degrees"
-    //% angle.min=-180 angle.max=180
-    export function turnAsync(direction: Direction, angle: number) {
-        let b = board();
-
-        if (direction == Direction.Left)
-            b.sprite.angle -= angle;
-        else
-            b.sprite.angle += angle;
-        return Promise.delay(400)
+    //% blockId=subtract_shapes block="subtract shapes" 
+    //% topblock=false
+    //% handlerStatement=true
+    export function subtractShapesAsync(body: RefAction): Promise<void> {
+        board().addBlock("difference( <CHILDREN> )"); // add a JSCad statement to the interpreter.
+    
+        return pxsim.runtime.runFiberAsync(body)
+    
     }
 
-    /**
-     * Triggers when the turtle bumps a wall
-     * @param handler 
-     */
-    //% blockId=onBump block="on bump"
-    export function onBump(handler: RefAction) {
-        let b = board();
-
-        b.bus.listen("Turtle", "Bump", handler);
+    //% blockId=intersect_shapes block="intersect shapes" 
+    //% topblock=false
+    //% handlerStatement=true
+    export function intersectShapesAsync(body: RefAction): Promise<void> {
+        board().addBlock("intersect( <CHILDREN> )");
+      
+    
+        return pxsim.runtime.runFiberAsync(body)
+    
     }
+ 
+    //% blockId=move_shapes block="move shapes across x: $x| over y: $y | up z: $z" 
+    //% topblock=false
+    //% handlerStatement=true
+    export function moveShapesAsync(x: number, y: number, z: number, body: RefAction): Promise<void> {
+
+        board().addBlock(`translate([${x}, ${y}, ${z}], <CHILDREN> )`);
+       
+        return pxsim.runtime.runFiberAsync(body)
+    }
+
+     //% blockId=rotate_shapes block="rotate shapes x: $x|  y: $y | z: $z" 
+    //% topblock=false
+    //% handlerStatement=true
+    export function rotateShapesAsync(x: number, y: number, z: number, body: RefAction): Promise<void> {
+
+        board().addBlock(`rotate([${x}, ${y}, ${z}], <CHILDREN> )`);
+        return pxsim.runtime.runFiberAsync(body)
+
+    }
+
+
 }
 
-namespace pxsim.loops {
-
-    /**
-     * Repeats the code forever in the background. On each iteration, allows other code to run.
-     * @param body the code to repeat
-     */
-    //% help=functions/forever weight=55 blockGap=8
-    //% blockId=device_forever block="forever" 
-    export function forever(body: RefAction): void {
-        thread.forever(body)
-    }
-
-    /**
-     * Pause for the specified time in milliseconds
-     * @param ms how long to pause for, eg: 100, 200, 500, 1000, 2000
-     */
-    //% help=functions/pause weight=54
-    //% block="pause (ms) %pause" blockId=device_pause
-    export function pauseAsync(ms: number) {
-        return Promise.delay(ms)
-    }
-}
-
-function logMsg(m:string) { console.log(m) }
-
-namespace pxsim.console {
-    /**
-     * Print out message
-     */
-    //% 
-    export function log(msg:string) {
-        logMsg("CONSOLE: " + msg)
-        // why doesn't that work?
-        board().writeSerial(msg + "\n")
-    }
-}
-
-namespace pxsim {
-    /**
-     * A ghost on the screen.
-     */
-    //%
-    export class Sprite {
-        /**
-         * The X-coordiante
-         */
-        //%
-        public x = 100;
-         /**
-         * The Y-coordiante
-         */
-        //%
-        public y = 100;
-        public angle = 90;
-        
-        constructor() {
-        }
-        
-        private foobar() {}
-
-        /**
-         * Move the thing forward
-         */
-        //%
-        public forwardAsync(steps: number) {
-            let deg = this.angle / 180 * Math.PI;
-            this.x += Math.cos(deg) * steps * 10;
-            this.y += Math.sin(deg) * steps * 10;
-            board().updateView();
-
-            if (this.x < 0 || this.y < 0)
-                board().bus.queue("TURTLE", "BUMP");
-
-            return Promise.delay(400)
-        }
-    }
-}
-
-namespace pxsim.sprites {
-    /**
-     * Creates a new sprite
-     */
-    //% blockId="sampleCreate" block="createSprite"
-    export function createSprite(): Sprite {
-        return new Sprite();
-    }
-}
