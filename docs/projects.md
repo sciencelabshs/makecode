@@ -5,7 +5,7 @@
     {
         "name": "Examples",
         "url": "/examples",
-        "imageUrl": "/static/examples/subtractshapes.png"
+        "imageUrl": "/static/examples/subtractshapes.svg"
     }
 ]
 ```
