@@ -1,21 +1,23 @@
-# Sample target for a Microsoft MakeCode Editor
+# BuildBee MakeCode Editor
 
-This repo contains a sample editor built with [Microsoft MakeCode (PXT)](https://github.com/Microsoft/pxt). The editor is hosted on the GitHub pages at [http://microsoft.github.io/pxt-sample/](http://microsoft.github.io/pxt-sample/)
+Status: Super experimental!
+
+The team at BuildBee is trialing out Microsoft MakeCode to let you use block coding and javascript to make your own 3d designs.  
+
+Based on an OpenJSCad implementation, the editor allows you to create shapes that can be sent to your 3D printer. 
+
+For more information, check out 
+https://buildbee.com/
+
+
+# About PXTs
+
+This repo contains an editor built with [Microsoft MakeCode (PXT)](https://github.com/Microsoft/pxt). The editor is hosted on the GitHub pages at [http://microsoft.github.io/pxt-sample/](http://microsoft.github.io/pxt-sample/)
 
 [![Build Status](https://travis-ci.org/Microsoft/pxt-sample.svg?branch=master)](https://travis-ci.org/Microsoft/pxt-sample)
 [![Community Discord](https://img.shields.io/discord/448979533891371018.svg)](https://aka.ms/makecodecommunity)
 
-If you'd like to start your own editor, fork this repo and fix all the TODOs.
 
-## TODOs
-
-- [ ] Fork repo and setup local server (see below)
-- [ ] Update metadata in ``pxtarget.json``. Change the id, title, name, etc... to your taste.
-- [ ] Update the JavaScript runtime in ``sim/simulator.ts``. If needed add additional JS library under ``sim/public/**``
-and edit ``sim/public/simulator.html`` with additional ``script`` tags.
-- [ ] Update the APIs in ``sim/api.ts`` to use your runtime.
-- [ ] Test your editor in the local server
-- [ ] run ``pgk staticpkg --gh --bump`` to upload a static version to GitHub pages.
 
 ## Running locally
 
@@ -52,4 +54,9 @@ If you would like to pick up the latest PXT build, simply run
 pxt update
 ```
 
+
+## deploying
+```
+pgk staticpkg --gh --bump
+``
 More instructions at https://github.com/Microsoft/pxt#running-a-target-from-localhost 
