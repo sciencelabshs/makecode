@@ -9,11 +9,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/pxt-sample.git"
+    "url": "git+https://github.com/Buildbee/makecode.git"
   },
   "author": "",
   "license": "MIT",
-  "homepage": "https://github.com/Microsoft/pxt-sample#readme",
+  "homepage": "https://buildbee.com",
   "files": [
     "README.md",
     "pxtarget.json",
@@ -26,7 +26,10 @@
   ],
   "scripts": {
     "start": "pxt serve",
-    "deployGithub": "pxt staticpkg --route makecode --bump --githubpages"
+    "clone:gh-pages": "echo 'This will create you a folder with the github website in it.' && mkdir ../makecode-gh-pages && cd ../makecode-gh-pages && git clone git+https://github.com/Buildbee/makecode.git && git checkout gh-pages",
+    "clone:docs": "echo 'This will create you a folder with doc images in it.' && mkdir ../makecode-gh-pages && cd ../makecode-gh-pages && git clone git+https://github.com/Buildbee/docs.git && git checkout gh-pages",
+    "build:gh-pages": "pxt staticpkg --route makecode --output ./built/gh-pages --bump && npm run copy:gh-pages",
+    "copy:gh-pages": "cp -R built/gh-pages ../makecode-gh-pages &&  cp -R docs/ ../makecode-gh-pages/"
   },
   "devDependencies": {
     "@types/bluebird": "2.0.33",
