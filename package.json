@@ -1,5 +1,5 @@
 {
-  "name": "pxt-sample",
+  "name": "pxt-buildbee",
   "version": "2.0.15",
   "description": "Create 3D printing projects using MakeCode",
   "keywords": [
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/Buildbee/makecode.git"
   },
-  "author": "",
+  "author": "BuildBee",
   "license": "MIT",
   "homepage": "https://buildbee.com",
   "files": [
@@ -29,7 +29,7 @@
     "clone:gh-pages": "echo 'This will create you a folder with the github website in it.' && mkdir ../makecode-gh-pages && cd ../makecode-gh-pages && git clone git+https://github.com/Buildbee/makecode.git && git checkout gh-pages",
     "clone:docs": "echo 'This will create you a folder with doc images in it.' && mkdir ../makecode-gh-pages && cd ../makecode-gh-pages && git clone git+https://github.com/Buildbee/docs.git && git checkout gh-pages",
     "build:gh-pages": "pxt staticpkg --route makecode --output ./built/gh-pages --bump && npm run copy:gh-pages",
-    "copy:gh-pages": "cp -R built/gh-pages ../makecode-gh-pages &&  cp -R docs/ ../makecode-gh-pages/"
+    "copy:gh-pages": "cp -R built/gh-pages ../makecode-gh-pages &&  cp -R docs/ ../makecode-gh-pages/ && echo 'dont forget to check in the changes in ../makecode-gh-pages'"
   },
   "devDependencies": {
     "@types/bluebird": "2.0.33",
