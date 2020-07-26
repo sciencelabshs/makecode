@@ -18,7 +18,7 @@
       "textBlocks": false,
       "functionBlocks": false,
       "listsBlocks": false ,
-      "onStartUnDeletable": true
+      "onStartUnDeletable": false
     },
     "blockColors": {
         "loops": "#20BF6B",
@@ -46,8 +46,10 @@
         "appLogo": "./static/icons/apple-touch-icon.png",
         "homeUrl": "https://buildbee.github.io/makecode",
         "privacyUrl": "https://buildbee.com/landing/privacy",
-        "termsOfUseUrl": "hhttps://buildbee.com/landing/terms",
+        "termsOfUseUrl": "https://buildbee.com/landing/terms",
+        "githubUrl": "https://github.com/buildbee/makecode",
         "betaUrl": "https://makecode.com/",
+        "boardName": "BuildBee",
         "docMenu": [
             {
                 "name": "About",
@@ -63,13 +65,25 @@
         "invertedMenu": true,
         "showHomeScreen": true,
         "homeScreenHero": "./static/hero.svg",        
-        "blocklyOptions": { 
+        "blocklyOptions": {
             "grid": {
                 "spacing": 20,
                 "length": 100,
                 "colour": "rgba(107, 79, 118, 0.10)",
                 "snap": true
             }
+        },
+        "blockColors": {
+            "shapes": "#313B72",
+            "position": "#42AA0E",
+            "loops": "#4ebed7",
+            "logic": "#FFC847",
+            "math": "#42AA0E",
+            "variables": "#D11149",
+            "text": "#6F73D2",
+            "arrays": "#E08E45",
+            "functions": "#AA0E3A"
+            
         },
         "unsupportedBrowsers": [
             {
@@ -79,7 +93,7 @@
         "simAnimationEnter": "fly right in",
         "simAnimationExit": "fly right out",
         "scriptManager": true,
-        "debugger": false,
+        "debugger": true,
         "print": true,
         "highContrast": true,
         "greenScreen": true,

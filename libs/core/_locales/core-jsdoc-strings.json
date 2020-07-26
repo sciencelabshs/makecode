@@ -147,7 +147,18 @@
   "parseInt": "Convert a string to an integer.\n\n\nIf this argument is not supplied, strings with a prefix of '0x' are considered hexadecimal.\nAll other strings are considered decimal.",
   "parseInt|param|radix": "optional A value between 2 and 36 that specifies the base of the number in text.",
   "parseInt|param|text": "A string to convert into an integral number. eg: \"123\"",
+  "position.moveShapesAcross": "move shapes across the x axis",
+  "position.moveShapesAcross|param|body": "the shapes to move across",
+  "position.moveShapesAcross|param|x": "how far to move across the x axis",
   "randint": "Returns a pseudorandom number between min and max included.\nIf both numbers are integral, the result is integral.",
   "randint|param|max": "the upper inclusive bound, eg: 10",
-  "randint|param|min": "the lower inclusive bound, eg: 0"
+  "randint|param|min": "the lower inclusive bound, eg: 0",
+  "shapes.cube": "Add a cube",
+  "shapes.cube|param|depth": "The depth of the cube",
+  "shapes.cube|param|height": "The height of the cube",
+  "shapes.cube|param|width": "The width of the cube",
+  "shapes.sphere": "Add a sphere",
+  "shapes.sphere|param|depth": "The depth of the sphere",
+  "shapes.sphere|param|height": "The height of the sphere",
+  "shapes.sphere|param|width": "The width of the sphere"
 }
