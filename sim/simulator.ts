@@ -30,7 +30,6 @@ namespace pxsim {
         }
         getCode() {
             let allCode = this.code;
-
             // for blocks, replace the children
             if (allCode.indexOf("<CHILDREN>") > 0) {
                 let childCode = "";
@@ -41,7 +40,6 @@ namespace pxsim {
                     childCode += child.getCode()
                 })
                 allCode = allCode.replace("<CHILDREN>", childCode);
-
 
             }
             return allCode;
@@ -86,6 +84,11 @@ namespace pxsim {
             this.currentStatement = this.mainStatement;
         }
 
+        popBlock() {
+            if (this.currentStatement && this.currentStatement.parentStatement) {
+                this.currentStatement = this.currentStatement.parentStatement
+            }
+        }
 
         addBlock(str: string) {
             const newBlock = new Statement(str)
@@ -109,7 +112,7 @@ namespace pxsim {
                     codeStr
                 );
             }
-            console.log("JSCAD AM HERE", codeStr)
+            console.log("// JSCAD ====\n", codeStr, "\n// =====")
         }
         initAsync(msg: pxsim.SimulatorRunMessage): Promise<void> {
             //  document.body.innerHTML = ''; // clear children

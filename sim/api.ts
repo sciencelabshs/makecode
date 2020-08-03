@@ -170,6 +170,23 @@ namespace pxsim.shapes {
 //% color=#4c96f7 weight=21 icon="\uf13e"
 namespace pxsim.operators {
 
+
+    function _makeBlock(JSCadBlockStr: string, body:RefAction) {
+        return new Promise<void>((resolve, reject)=>{
+            // push a new statement as the parent
+            board().addBlock(JSCadBlockStr);
+            
+            // execute the child blocks
+            pxsim.runtime.runFiberAsync(body).then((result)=>{
+                // return back to previous parent statement, or main
+                board().popBlock();
+                resolve(result)
+            }).catch((error)=>{
+                reject(error)
+            })
+        })
+    }
+
     /**
      * move shapes across the x axis
      * @param x how far to move across the x axis
@@ -182,9 +199,8 @@ namespace pxsim.operators {
     //% group="Position"
     export function moveShapesAcrossAsync(x: number, body: RefAction): Promise<void> {
 
-        board().addBlock(`translate([${x}, 0, 0], <CHILDREN> )`);
-
-        return pxsim.runtime.runFiberAsync(body)
+       return _makeBlock(`translate([${x}, 0, 0], <CHILDREN> )`, body)
+     
     }
 
     //% blockId=move_shapes_over block="move shapes over $y" 
@@ -193,22 +209,21 @@ namespace pxsim.operators {
     //% handlerStatement=true
     //% group="Position"
     export function moveShapesOverAsync(y: number, body: RefAction): Promise<void> {
-
-        board().addBlock(`translate([0, ${y}, 0], <CHILDREN> )`);
-
-        return pxsim.runtime.runFiberAsync(body)
+ 
+        return _makeBlock(`translate([0, ${y}, 0], <CHILDREN> )`, body)
     }
 
+  
     //% blockId=move_shapes_up block="move shapes up $z" 
     //% topblock=false
     //% z.defl=10
     //% handlerStatement=true
     //% group="Position"
-    export function moveShapesUpAsync(z: number, body: RefAction): Promise<void> {
+    export function  moveShapesUpAsync(z: number, body: RefAction): Promise<void> {
 
-        board().addBlock(`translate([0, 0, ${z}], <CHILDREN> )`);
-
-        return pxsim.runtime.runFiberAsync(body)
+     
+        return _makeBlock(`translate([0, 0, ${z}], <CHILDREN> )`, body)
+        
     }
 
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
@@ -218,9 +233,9 @@ namespace pxsim.operators {
     //% advanced=true
     export function translateShapesAsync(x: number, y: number, z: number, body: RefAction): Promise<void> {
 
-        board().addBlock(`translate([${x}, ${y}, ${z}], <CHILDREN> )`);
-
-        return pxsim.runtime.runFiberAsync(body)
+        return _makeBlock(`translate([${x}, ${y}, ${z}], <CHILDREN> )`, body);
+       
+     
     }
 
     //% blockId=flip_shapes block="flip shapes $x °" 
@@ -229,11 +244,9 @@ namespace pxsim.operators {
     //% x.shadow="protractorPicker"
     //% group="Rotation"
     export function flipShapesAsync(x: number, body: RefAction): Promise<void> {
-
-        board().addBlock(`rotate([${x}, 0, 0], <CHILDREN> )`);
-        return pxsim.runtime.runFiberAsync(body)
-
-    }
+        return _makeBlock(`rotate([${x}, 0, 0], <CHILDREN> )`, body);
+     
+    } 
     //% blockId=roll_shapes block="roll shapes $y °" 
     //% topblock=false
     //% handlerStatement=true
@@ -242,9 +255,8 @@ namespace pxsim.operators {
 
     export function rollShapesAsync(y: number, body: RefAction): Promise<void> {
 
-        board().addBlock(`rotate([0, ${y}, 0], <CHILDREN> )`);
-        return pxsim.runtime.runFiberAsync(body)
-
+        return _makeBlock(`rotate([0, ${y}, 0], <CHILDREN> )`, body);
+     
     }
 
     //% blockId=spin_shapes block="spin shapes $z °" 
@@ -254,8 +266,7 @@ namespace pxsim.operators {
     //% group="Rotation"
     export function spinShapesAsync(z: number, body: RefAction): Promise<void> {
 
-        board().addBlock(`rotate([0, 0, ${z}], <CHILDREN> )`);
-        return pxsim.runtime.runFiberAsync(body)
+        return _makeBlock(`rotate([0, 0, ${z}], <CHILDREN> )`, body);
 
     }
 
@@ -266,8 +277,8 @@ namespace pxsim.operators {
     //% advanced=true
     export function rotateShapesAsync(x: number, y: number, z: number, body: RefAction): Promise<void> {
 
-        board().addBlock(`rotate([${x}, ${y}, ${z}], <CHILDREN> )`);
-        return pxsim.runtime.runFiberAsync(body)
+        return _makeBlock(`rotate([${x}, ${y}, ${z}], <CHILDREN> )`, body);
+ 
 
     }
 
@@ -277,9 +288,8 @@ namespace pxsim.operators {
     //% handlerStatement=true
     //% group="Operations"
     export function addShapes(body: RefAction): void {
-        board().addBlock("union( <CHILDREN> )");
+        return _makeBlock("union( <CHILDREN> )", body);
 
-        return thread.runInBackground(body)
     }
 
     //% blockId=subtract_shapes block="subtract shapes" 
@@ -287,10 +297,9 @@ namespace pxsim.operators {
     //% handlerStatement=true
     //% group="Operations"
     export function subtractShapesAsync(body: RefAction): Promise<void> {
-        board().addBlock("difference( <CHILDREN> )"); // add a JSCad statement to the interpreter.
-
-        return pxsim.runtime.runFiberAsync(body)
-
+        return _makeBlock("difference( <CHILDREN> )", body); // add a JSCad statement to the interpreter.
+    
+    
     }
 
     //% blockId=intersect_shapes block="intersect shapes" 
@@ -298,25 +307,9 @@ namespace pxsim.operators {
     //% handlerStatement=true
     //% group="Operations"
     export function intersectShapesAsync(body: RefAction): Promise<void> {
-        board().addBlock("intersect( <CHILDREN> )");
-
-
-        return pxsim.runtime.runFiberAsync(body)
-
-    }
-
-    /** Rotational extrusion is similar to the process of turning or "throwing" a bowl on the Potter's wheel. */
-    //% blockId=rotateExtrudeShapes block="rotate extrude 2d shape (turn in z axis)" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% group="2D to 3D Shape Converters"
-    //% advanced=true
-    export function rotateExtrudeShapeAsync(body: RefAction): Promise<void> {
-        board().addBlock("rotate_extrude( <CHILDREN> )");
-
-
-        return pxsim.runtime.runFiberAsync(body)
-
+        return _makeBlock("intersect( <CHILDREN> )", body);
+      
+    
     }
 
     //% blockId=wrap2dshapes block="wrap 2d shapes (hull)" 
@@ -325,11 +318,8 @@ namespace pxsim.operators {
     //% group="2D to 3D Shape Converters"
     //% advanced=true
     export function wrap2DShapesAsync(body: RefAction): Promise<void> {
-        board().addBlock("hull( <CHILDREN> )");
-
-
-        return pxsim.runtime.runFiberAsync(body)
-
+        return _makeBlock("hull( <CHILDREN> )", body);
+      
     }
 
     //% blockId=sequentialWrap2dshapes block="wrap 2d shapes sequentially (chain hull)" 
@@ -338,11 +328,8 @@ namespace pxsim.operators {
     //% group="2D to 3D Shape Converters"
     //% advanced=true
     export function sequentialWrap2DShapesAsync(body: RefAction): Promise<void> {
-        board().addBlock("chain_hull( <CHILDREN> )");
-
-
-        return pxsim.runtime.runFiberAsync(body)
-
+        return _makeBlock("chain_hull( <CHILDREN> )", body);
+    
     }
 
 
