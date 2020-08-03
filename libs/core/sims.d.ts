@@ -214,15 +214,6 @@ declare namespace operators {
     //% shim=operators::intersectShapesAsync promise
     function intersectShapes(body: () => void): void;
 
-    /** Rotational extrusion is similar to the process of turning or "throwing" a bowl on the Potter's wheel. */
-    //% blockId=rotateExtrudeShapes block="rotate extrude 2d shape (turn in z axis)" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% group="2D to 3D Shape Converters"
-    //% advanced=true
-    //% shim=operators::rotateExtrudeShapeAsync promise
-    function rotateExtrudeShape(body: () => void): void;
-
     //% blockId=wrap2dshapes block="wrap 2d shapes (hull)" 
     //% topblock=false
     //% handlerStatement=true

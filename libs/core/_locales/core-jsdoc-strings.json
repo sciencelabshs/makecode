@@ -146,7 +146,6 @@
   "operators.moveShapesAcross": "move shapes across the x axis",
   "operators.moveShapesAcross|param|body": "the shapes to move across",
   "operators.moveShapesAcross|param|x": "how far to move across the x axis",
-  "operators.rotateExtrudeShape": "Rotational extrusion is similar to the process of turning or \"throwing\" a bowl on the Potter's wheel.",
   "parseFloat": "Convert a string to a number.",
   "parseInt": "Convert a string to an integer.\n\n\nIf this argument is not supplied, strings with a prefix of '0x' are considered hexadecimal.\nAll other strings are considered decimal.",
   "parseInt|param|radix": "optional A value between 2 and 36 that specifies the base of the number in text.",
