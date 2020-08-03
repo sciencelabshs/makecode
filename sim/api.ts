@@ -287,7 +287,7 @@ namespace pxsim.operators {
     //% topblock=false
     //% handlerStatement=true
     //% group="Operations"
-    export function addShapes(body: RefAction): void {
+    export function addShapesAsync(body: RefAction): Promise<void> {
         return _makeBlock("union( <CHILDREN> )", body);
 
     }
