@@ -197,7 +197,7 @@ declare namespace operators {
     //% topblock=false
     //% handlerStatement=true
     //% group="Operations"
-    //% shim=operators::addShapes
+    //% shim=operators::addShapesAsync promise
     function addShapes(body: () => void): void;
 
     //% blockId=subtract_shapes block="subtract shapes" 
