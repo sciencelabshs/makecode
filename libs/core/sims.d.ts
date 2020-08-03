@@ -19,19 +19,19 @@ declare namespace shapes {
 
     /**
      * Add a sphere
-     * @param width The width of the sphere
-     * @param depth The depth of the sphere
-     * @param height The height of the sphere
+     * @param radius The radius of the sphere
      */
-    //% block="sphere width $width|depth $depth|height $height"
+    //% block="sphere radius $radius || faces $faces"
     //% inlineInputMode=inline
-    //% width.defl=50
-    //% depth.defl=50
-    //% height.defl=50
+    //% radius.defl=50
+    //% faces.defl=150
+    //% faces.min=4
+    //% faces.max=1000
     //% weight=20
+    //% expandableArgumentMode="toggle"
     //% group="3D Shapes"
     //% shim=shapes::sphere
-    function sphere(width: number, depth: number, height: number): void;
+    function sphere(radius: number, faces?: number): void;
 
     //% block="cylinder radius $radius|height $height"
     //% inlineInputMode=inline
@@ -44,7 +44,7 @@ declare namespace shapes {
 
     //% block="donut thickness $thickness|radius $radius"
     //% inlineInputMode=inline
-    //% thickness.defl=20
+    //% thickness.defl=20 thickness.min=1
     //% radius.defl=100
     //% weight=40
     //% group="3D Shapes"
@@ -60,6 +60,32 @@ declare namespace shapes {
     //% shim=shapes::cone
     function cone(radius: number, height: number): void;
 
+    /* todo: investigate bug; points.map  is not a function
+    //% block="polyhedron from 3d points $points|triangles $triangles"
+    //% points.defl="inner_shadow_block"
+    //% triangles.defl="inner_shadow_block"
+    //% polyhedron.shadow="lists_create_with"
+    //% advanced=true
+    //% group="Advanced 3D Shapes"
+    export function polyhedron(points: string[], triangles: string[]): void {
+    const pointsArrayStr = points["data"].toString()
+    const triangleArrayStr = triangles["data"].toString()
+    board().addStatement(`rectangular_extrude({points: [${pointsArrayStr}], triangles: [${triangleArrayStr}]})`);
+    }*/
+    /*
+    //% block="draw 3d lines with width $width|height $height|closed $closed|from 2d points $points"
+    //% width.defl=10
+    //% height.defl=10
+    //% closed.defl=true
+    //% points.defl="inner_shadow_block"
+    //% linePath.shadow="lists_create_with"
+    //% advanced=true
+    //% group="Advanced 3D Shapes"
+    export function drawLinePath(width: number, height: number, closed: boolean, points: string[]): void {
+    console.log(points)
+    const pointsArrayStr = points["data"].toString()
+    board().addStatement(`rectangular_extrude([${pointsArrayStr}], {w: ${width}, h: ${height}, closed: ${closed}})`);
+    }*/
     //% block="circle radius $radius"
     //% inlineInputMode=inline
     //% radius.defl=10
@@ -77,8 +103,27 @@ declare namespace shapes {
     //% shim=shapes::rect
     function rect(width: number, height: number): void;
 
+    //% blockId=point3d block="3D point x: $x|y:  $y|z:  $z"
+    //% inlineInputMode=inline
+    //% x.defl=50
+    //% y.defl=50
+    //% z.defl=50
+    //% group="Points"
+    //% advanced=true
+    //% shim=shapes::point3d
+    function point3d(x: number, y: number, z: number): string;
+
+    //% blockId=point2d block="2D point x: $x|y:  $y"
+    //% inlineInputMode=inline
+    //% x.defl=50
+    //% y.defl=50
+    //% group="Points"
+    //% advanced=true
+    //% shim=shapes::point2d
+    function point2d(x: number, y: number): string;
+
 }
-declare namespace position {
+declare namespace operators {
     /**
      * move shapes across the x axis
      * @param x how far to move across the x axis
@@ -89,7 +134,7 @@ declare namespace position {
     //% x.defl=10
     //% handlerStatement=true
     //% group="Position"
-    //% shim=position::moveShapesAcrossAsync promise
+    //% shim=operators::moveShapesAcrossAsync promise
     function moveShapesAcross(x: number, body: () => void): void;
 
     //% blockId=move_shapes_over block="move shapes over $y" 
@@ -97,7 +142,7 @@ declare namespace position {
     //% y.defl=10
     //% handlerStatement=true
     //% group="Position"
-    //% shim=position::moveShapesOverAsync promise
+    //% shim=operators::moveShapesOverAsync promise
     function moveShapesOver(y: number, body: () => void): void;
 
     //% blockId=move_shapes_up block="move shapes up $z" 
@@ -105,7 +150,7 @@ declare namespace position {
     //% z.defl=10
     //% handlerStatement=true
     //% group="Position"
-    //% shim=position::moveShapesUpAsync promise
+    //% shim=operators::moveShapesUpAsync promise
     function moveShapesUp(z: number, body: () => void): void;
 
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
@@ -113,7 +158,7 @@ declare namespace position {
     //% handlerStatement=true
     //% group="Position"
     //% advanced=true
-    //% shim=position::translateShapesAsync promise
+    //% shim=operators::translateShapesAsync promise
     function translateShapes(x: number, y: number, z: number, body: () => void): void;
 
     //% blockId=flip_shapes block="flip shapes $x °" 
@@ -121,7 +166,7 @@ declare namespace position {
     //% handlerStatement=true
     //% x.shadow="protractorPicker"
     //% group="Rotation"
-    //% shim=position::flipShapesAsync promise
+    //% shim=operators::flipShapesAsync promise
     function flipShapes(x: number, body: () => void): void;
 
     //% blockId=roll_shapes block="roll shapes $y °" 
@@ -129,15 +174,15 @@ declare namespace position {
     //% handlerStatement=true
     //% y.shadow="protractorPicker"
     //% group="Rotation"
-    //% shim=position::rollShapesAsync promise
+    //% shim=operators::rollShapesAsync promise
     function rollShapes(y: number, body: () => void): void;
 
-    //% blockId=spin_shapes block="roll shapes $z °" 
+    //% blockId=spin_shapes block="spin shapes $z °" 
     //% topblock=false
     //% handlerStatement=true
     //% z.shadow="protractorPicker"
     //% group="Rotation"
-    //% shim=position::spinShapesAsync promise
+    //% shim=operators::spinShapesAsync promise
     function spinShapes(z: number, body: () => void): void;
 
     //% blockId=rotate_shapes block="rotate shapes x°: $x|  y°: $y | z°: $z" 
@@ -145,44 +190,53 @@ declare namespace position {
     //% handlerStatement=true
     //% group="Rotation"
     //% advanced=true
-    //% shim=position::rotateShapesAsync promise
+    //% shim=operators::rotateShapesAsync promise
     function rotateShapes(x: number, y: number, z: number, body: () => void): void;
 
     //% blockId=add_shapes block="add shapes" 
     //% topblock=false
     //% handlerStatement=true
     //% group="Operations"
-    //% shim=position::addShapes
+    //% shim=operators::addShapes
     function addShapes(body: () => void): void;
 
     //% blockId=subtract_shapes block="subtract shapes" 
     //% topblock=false
     //% handlerStatement=true
     //% group="Operations"
-    //% shim=position::subtractShapesAsync promise
+    //% shim=operators::subtractShapesAsync promise
     function subtractShapes(body: () => void): void;
 
     //% blockId=intersect_shapes block="intersect shapes" 
     //% topblock=false
     //% handlerStatement=true
     //% group="Operations"
-    //% shim=position::intersectShapesAsync promise
+    //% shim=operators::intersectShapesAsync promise
     function intersectShapes(body: () => void): void;
+
+    /** Rotational extrusion is similar to the process of turning or "throwing" a bowl on the Potter's wheel. */
+    //% blockId=rotateExtrudeShapes block="rotate extrude 2d shape (turn in z axis)" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="2D to 3D Shape Converters"
+    //% advanced=true
+    //% shim=operators::rotateExtrudeShapeAsync promise
+    function rotateExtrudeShape(body: () => void): void;
 
     //% blockId=wrap2dshapes block="wrap 2d shapes (hull)" 
     //% topblock=false
     //% handlerStatement=true
-    //% group="Operations"
+    //% group="2D to 3D Shape Converters"
     //% advanced=true
-    //% shim=position::wrap2DShapesAsync promise
+    //% shim=operators::wrap2DShapesAsync promise
     function wrap2DShapes(body: () => void): void;
 
     //% blockId=sequentialWrap2dshapes block="wrap 2d shapes sequentially (chain hull)" 
     //% topblock=false
     //% handlerStatement=true
-    //% group="Operations"
+    //% group="2D to 3D Shape Converters"
     //% advanced=true
-    //% shim=position::sequentialWrap2DShapesAsync promise
+    //% shim=operators::sequentialWrap2DShapesAsync promise
     function sequentialWrap2DShapes(body: () => void): void;
 
 }

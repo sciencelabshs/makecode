@@ -7,11 +7,11 @@
  * use the playground to configure the pickers
  */
 
- /**
-  * 3D Shapes to create on the surface
-  */
+/**
+ * 3D Shapes to create on the surface
+ */
+//% blockNamespace=Shapes color=#d2b48c icon="\uf0a4" weight=1
 //% groups='["3D Shapes", "2D Shapes"]'
-//% weight=100 color=#d2b48c icon="\uf1b0"
 namespace pxsim.shapes {
 
     /**
@@ -35,19 +35,20 @@ namespace pxsim.shapes {
 
     /**
      * Add a sphere
-     * @param width The width of the sphere
-     * @param depth The depth of the sphere
-     * @param height The height of the sphere
+     * @param radius The radius of the sphere
      */
-    //% block="sphere width $width|depth $depth|height $height"
+    //% block="sphere radius $radius || faces $faces"
     //% inlineInputMode=inline
-    //% width.defl=50
-    //% depth.defl=50
-    //% height.defl=50
+    //% radius.defl=50
+    //% faces.defl=150
+    //% faces.min=4
+    //% faces.max=1000
     //% weight=20
+    //% expandableArgumentMode="toggle"
     //% group="3D Shapes"
-    export function sphere(width: number, depth: number, height: number) {
-        board().addStatement(`sphere({size: [${width}, ${depth}, ${height}]})`);
+    export function sphere(radius: number, faces?: number) {
+        const fn = (faces) ? Math.max(faces, 4) : 150
+        board().addStatement(`sphere({r: ${radius}, fn: ${fn}})`);
 
     }
 
@@ -57,13 +58,13 @@ namespace pxsim.shapes {
     //% radius.defl=10
     //% height.defl=10
     //% weight=30
-     //% group="3D Shapes"
+    //% group="3D Shapes"
     export function cylinder(radius: number, height: number) {
         board().addStatement(`cylinder({r1: ${radius}, r2: ${radius}, h: ${height}})`);
     }
     //% block="donut thickness $thickness|radius $radius"
     //% inlineInputMode=inline
-    //% thickness.defl=20
+    //% thickness.defl=20 thickness.min=1
     //% radius.defl=100
     //% weight=40
     //% group="3D Shapes"
@@ -71,7 +72,7 @@ namespace pxsim.shapes {
         board().addStatement(`torus({ri: ${thickness / 2}, ro: ${radius} })`)
     }
 
-    
+
     //% block="cone radius $radius|height $height"
     //% inlineInputMode=inline
     //% radius.defl=10
@@ -81,6 +82,38 @@ namespace pxsim.shapes {
     export function cone(radius: number, height: number) {
         board().addStatement(`cylinder({r2: 0, r1: ${radius}, h: ${height}})`);
     }
+
+
+/* todo: investigate bug; points.map  is not a function
+    //% block="polyhedron from 3d points $points|triangles $triangles"
+    //% points.defl="inner_shadow_block"
+    //% triangles.defl="inner_shadow_block"
+    //% polyhedron.shadow="lists_create_with"
+    //% advanced=true
+    //% group="Advanced 3D Shapes"
+    export function polyhedron(points: string[], triangles: string[]): void {
+        const pointsArrayStr = points["data"].toString()
+        const triangleArrayStr = triangles["data"].toString()
+        board().addStatement(`rectangular_extrude({points: [${pointsArrayStr}], triangles: [${triangleArrayStr}]})`);
+   
+    }*/
+
+    /*
+    //% block="draw 3d lines with width $width|height $height|closed $closed|from 2d points $points"
+    //% width.defl=10
+    //% height.defl=10
+    //% closed.defl=true
+    //% points.defl="inner_shadow_block"
+    //% linePath.shadow="lists_create_with"
+    //% advanced=true
+    //% group="Advanced 3D Shapes"
+     export function drawLinePath(width: number, height: number, closed: boolean, points: string[]): void {
+        console.log(points)
+        const pointsArrayStr = points["data"].toString()
+        board().addStatement(`rectangular_extrude([${pointsArrayStr}], {w: ${width}, h: ${height}, closed: ${closed}})`);
+   
+    }*/
+
 
 
     //% block="circle radius $radius"
@@ -102,7 +135,30 @@ namespace pxsim.shapes {
         board().addStatement(`square({size: [${width}, ${height}]})`);
     }
 
-    
+
+
+    //% blockId=point3d block="3D point x: $x|y:  $y|z:  $z"
+    //% inlineInputMode=inline
+    //% x.defl=50
+    //% y.defl=50
+    //% z.defl=50
+    //% group="Points"
+    //% advanced=true
+    export function point3d(x: number, y: number, z: number): string {
+        return `[${x}, ${y},  ${z}]`;
+    }
+
+    //% blockId=point2d block="2D point x: $x|y:  $y"
+    //% inlineInputMode=inline
+    //% x.defl=50
+    //% y.defl=50
+    //% group="Points"
+    //% advanced=true
+    export function point2d(x: number, y: number): string {
+        return `[${x}, ${y}]`;
+    }
+
+
 
 
 }
@@ -112,7 +168,7 @@ namespace pxsim.shapes {
  */
 //% groups=["Position", "Rotation", "Operations"]
 //% color=#4c96f7 weight=21 icon="\uf13e"
-namespace pxsim.position {
+namespace pxsim.operators {
 
     /**
      * move shapes across the x axis
@@ -127,10 +183,10 @@ namespace pxsim.position {
     export function moveShapesAcrossAsync(x: number, body: RefAction): Promise<void> {
 
         board().addBlock(`translate([${x}, 0, 0], <CHILDREN> )`);
-       
+
         return pxsim.runtime.runFiberAsync(body)
     }
-    
+
     //% blockId=move_shapes_over block="move shapes over $y" 
     //% topblock=false
     //% y.defl=10
@@ -139,7 +195,7 @@ namespace pxsim.position {
     export function moveShapesOverAsync(y: number, body: RefAction): Promise<void> {
 
         board().addBlock(`translate([0, ${y}, 0], <CHILDREN> )`);
-       
+
         return pxsim.runtime.runFiberAsync(body)
     }
 
@@ -151,10 +207,10 @@ namespace pxsim.position {
     export function moveShapesUpAsync(z: number, body: RefAction): Promise<void> {
 
         board().addBlock(`translate([0, 0, ${z}], <CHILDREN> )`);
-       
+
         return pxsim.runtime.runFiberAsync(body)
     }
- 
+
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
     //% handlerStatement=true
@@ -163,7 +219,7 @@ namespace pxsim.position {
     export function translateShapesAsync(x: number, y: number, z: number, body: RefAction): Promise<void> {
 
         board().addBlock(`translate([${x}, ${y}, ${z}], <CHILDREN> )`);
-       
+
         return pxsim.runtime.runFiberAsync(body)
     }
 
@@ -177,13 +233,13 @@ namespace pxsim.position {
         board().addBlock(`rotate([${x}, 0, 0], <CHILDREN> )`);
         return pxsim.runtime.runFiberAsync(body)
 
-    } 
+    }
     //% blockId=roll_shapes block="roll shapes $y °" 
     //% topblock=false
     //% handlerStatement=true
     //% y.shadow="protractorPicker"
-   //% group="Rotation"
-   
+    //% group="Rotation"
+
     export function rollShapesAsync(y: number, body: RefAction): Promise<void> {
 
         board().addBlock(`rotate([0, ${y}, 0], <CHILDREN> )`);
@@ -191,12 +247,11 @@ namespace pxsim.position {
 
     }
 
-    //% blockId=spin_shapes block="roll shapes $z °" 
+    //% blockId=spin_shapes block="spin shapes $z °" 
     //% topblock=false
     //% handlerStatement=true
     //% z.shadow="protractorPicker"
     //% group="Rotation"
-  
     export function spinShapesAsync(z: number, body: RefAction): Promise<void> {
 
         board().addBlock(`rotate([0, 0, ${z}], <CHILDREN> )`);
@@ -217,14 +272,14 @@ namespace pxsim.position {
     }
 
 
-     //% blockId=add_shapes block="add shapes" 
+    //% blockId=add_shapes block="add shapes" 
     //% topblock=false
     //% handlerStatement=true
     //% group="Operations"
     export function addShapes(body: RefAction): void {
         board().addBlock("union( <CHILDREN> )");
 
-       return  thread.runInBackground(body)
+        return thread.runInBackground(body)
     }
 
     //% blockId=subtract_shapes block="subtract shapes" 
@@ -233,9 +288,9 @@ namespace pxsim.position {
     //% group="Operations"
     export function subtractShapesAsync(body: RefAction): Promise<void> {
         board().addBlock("difference( <CHILDREN> )"); // add a JSCad statement to the interpreter.
-    
+
         return pxsim.runtime.runFiberAsync(body)
-    
+
     }
 
     //% blockId=intersect_shapes block="intersect shapes" 
@@ -244,36 +299,52 @@ namespace pxsim.position {
     //% group="Operations"
     export function intersectShapesAsync(body: RefAction): Promise<void> {
         board().addBlock("intersect( <CHILDREN> )");
-      
-    
+
+
         return pxsim.runtime.runFiberAsync(body)
-    
+
+    }
+
+    /** Rotational extrusion is similar to the process of turning or "throwing" a bowl on the Potter's wheel. */
+    //% blockId=rotateExtrudeShapes block="rotate extrude 2d shape (turn in z axis)" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="2D to 3D Shape Converters"
+    //% advanced=true
+    export function rotateExtrudeShapeAsync(body: RefAction): Promise<void> {
+        board().addBlock("rotate_extrude( <CHILDREN> )");
+
+
+        return pxsim.runtime.runFiberAsync(body)
+
     }
 
     //% blockId=wrap2dshapes block="wrap 2d shapes (hull)" 
     //% topblock=false
     //% handlerStatement=true
-    //% group="Operations"
+    //% group="2D to 3D Shape Converters"
     //% advanced=true
     export function wrap2DShapesAsync(body: RefAction): Promise<void> {
         board().addBlock("hull( <CHILDREN> )");
-      
-    
+
+
         return pxsim.runtime.runFiberAsync(body)
-    
+
     }
 
     //% blockId=sequentialWrap2dshapes block="wrap 2d shapes sequentially (chain hull)" 
     //% topblock=false
     //% handlerStatement=true
-    //% group="Operations"
+    //% group="2D to 3D Shape Converters"
     //% advanced=true
     export function sequentialWrap2DShapesAsync(body: RefAction): Promise<void> {
         board().addBlock("chain_hull( <CHILDREN> )");
-      
-    
+
+
         return pxsim.runtime.runFiberAsync(body)
-    
+
     }
+
+
 }
 

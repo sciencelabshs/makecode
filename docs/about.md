@@ -1,4 +1,4 @@
-# About Sample Target
+# About BuildBee 
 
 Example of editor target for [Microsoft MakeCode](https://makecode.com/).
 
