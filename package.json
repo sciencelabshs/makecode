@@ -26,6 +26,7 @@
   ],
   "scripts": {
     "start": "pxt serve",
+    "checkdocs": "pxt checkdocs",
     "clone:gh-pages": "echo 'This will create you a folder with the github website in it.' && mkdir -p ../makecode-gh-pages && cd ../makecode-gh-pages && git clone https://github.com/Buildbee/makecode.git && cd makecode && git checkout gh-pages",
     "clone:docs": "echo 'This will create you a folder with doc images in it.' && mkdir -p ../makecode-gh-pages && cd ../makecode-gh-pages && git clone https://github.com/Buildbee/docs.git && cd docs && git checkout gh-pages",
     "build:gh-pages": "pxt staticpkg --route makecode --output ./built/gh-pages --bump && npm run copy:gh-pages",

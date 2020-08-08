@@ -24,6 +24,7 @@ namespace pxsim {
             this.children = new Array<Statement>();
             this.code = code;
         }
+      
         addChild(child: Statement) {
             this.children.push(child)
             child.parentStatement = this;
@@ -76,10 +77,12 @@ namespace pxsim {
 
         private mainStatement: Statement;
         private currentStatement: Statement;
+        private imports: any;
+
         constructor() {
             super();
             this.bus = new EventBus(runtime);
-
+            this.imports = {} 
             this.mainStatement = new MainStatement();
             this.currentStatement = this.mainStatement;
         }
@@ -97,20 +100,41 @@ namespace pxsim {
             // this.updateJSCad()
         }
 
-        addStatement(str: string) {
-            const newBlock = new Statement(str)
+        addStatement(str: string, color?: number) {
+            let statementCode = str;
+            if (color !== undefined) {
+                const red =  (color & 0xFF0000) >> 16;
+                const green = (color & 0x00FF00) >> 8;
+                const blue =  (color & 0x0000FF);
+                statementCode = `color([${red/255}, ${green/255}, ${blue/255}], ${statementCode})`
+            }
+            const newBlock = new Statement(statementCode)
             this.currentStatement.addChild(newBlock)
             this.updateJSCad()
+        }
+
+        requireImport(importName:string, code:string) {
+             if (!this.imports[importName]) {
+                 this.imports[importName] = code
+             }
         }
 
         updateJSCad() {
 
             const jsCadInterpreter = ((window as any).jscad);
-            const codeStr = this.mainStatement.getCode()
+            let codeStr = this.mainStatement.getCode()
+            
+            Object.keys(this.imports).forEach((codeImport)=>{
+              codeStr = this.imports[codeImport] + "\n" + codeStr
+            })
+
             if (codeStr.length > 0) {
                 jsCadInterpreter.setJsCad(
                     codeStr
                 );
+            }
+            else {
+                jsCadInterpreter.clearViewer()
             }
             console.log("// JSCAD ====\n", codeStr, "\n// =====")
         }

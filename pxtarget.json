@@ -5,7 +5,12 @@
     "corepkg": "core",
     "cloud": {
         "workspace": false,
-        "packages": true
+        "sharing": true,
+        "packages": true,
+        "githubPackages": true,
+        "cloudProviders": {
+            "github": {}
+        }
     },
     "bundleddirs": [
         "libs/core"

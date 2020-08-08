@@ -27,13 +27,13 @@
 
 /*---  Colors  ---*/
 @black            : #2d3436;
-@blue             : #74b9ff;
-@green            : #55efc4;
+@blue             : #4ebed7;
+@green            : #4ed778;
 @grey             : #636e72;
-@orange           : #fab1a0;
+@orange           : #ff9b07;
 @pink             : #d74ebe;
-@purple           : #a29bfe;
-@red              : #ff7675;
+@purple           : #4253af;
+@red              : #d7674e;
 @teal             : #4ebed7;
 @yellow           : #ffeaa7;
 
@@ -58,7 +58,7 @@
 
 @mainMenuBackground: @darkgrey;
 @mainMenuInvertedBackground: @mainMenuBackground;
-@mainMenuTutorialBackground: @orange;
+@mainMenuTutorialBackground: @purple; // what color should we show during tutorial mode
 
 @mainMenuBlocksJsToggleColor: @primaryColor;
 

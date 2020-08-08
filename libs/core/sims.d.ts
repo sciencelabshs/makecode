@@ -6,47 +6,62 @@ declare namespace shapes {
      * @param depth The depth of the cube
      * @param height The height of the cube
      */
-    //% block="cube width $width|depth $depth|height $height"
+    //% block="cube %type=main_iconPicker width $width|depth $depth|height $height||color $color"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
     //% height.defl=10
-    //% weight=10
+    //% weight=95
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
     //% shim=shapes::cube
-    function cube(width: number, depth: number, height: number): void;
+    function cube(width: number, depth: number, height: number, color?: number): void;
 
     /**
      * Add a sphere
      * @param radius The radius of the sphere
      */
-    //% block="sphere radius $radius || faces $faces"
+    //% block="sphere radius $radius || color $color|type $type|center $centerZ|faces $faces"
     //% inlineInputMode=inline
-    //% radius.defl=50
-    //% faces.defl=150
+    //% radius.defl=20
+    //% faces.defl=120
     //% faces.min=4
     //% faces.max=1000
-    //% weight=20
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% centerZ.defl=false
+    //% type.defl=SphereType.icosahedron
+    //% weight=94
     //% expandableArgumentMode="toggle"
     //% group="3D Shapes"
     //% shim=shapes::sphere
-    function sphere(radius: number, faces?: number): void;
+    function sphere(radius: number, color?: number, type?: SphereType, centerZ?: boolean, faces?: number): void;
 
-    //% block="cylinder radius $radius|height $height"
+    //% block="cylinder radius $radius|height $height||color $color|radius2 $radius2|center $centerZ|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
-    //% weight=30
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% faces.defl=100
+    //% weight=90
     //% group="3D Shapes"
     //% shim=shapes::cylinder
-    function cylinder(radius: number, height: number): void;
+    function cylinder(radius: number, height: number, color?: number, radius2?: number, centerZ?: boolean, faces?: number): void;
 
     //% block="donut thickness $thickness|radius $radius"
     //% inlineInputMode=inline
     //% thickness.defl=20 thickness.min=1
     //% radius.defl=100
-    //% weight=40
+    //% weight=80
     //% group="3D Shapes"
     //% shim=shapes::donut
     function donut(thickness: number, radius: number): void;
@@ -55,11 +70,34 @@ declare namespace shapes {
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
-    //% weight=50
+    //% weight=75
     //% group="3D Shapes"
     //% shim=shapes::cone
     function cone(radius: number, height: number): void;
 
+    //% block="write text $text||line width $lineWidth|height $height"
+    //% inlineInputMode=inline
+    //% lineWidth.defl=1
+    //% height.defl=70
+    //% group="3D Shapes"
+    //% shim=shapes::text
+    function text(text: string, lineWidth: number, height: number): void;
+
+    /*
+    enum Animal {
+    'Penguin', 
+    'Giraffe'
+    }
+    //% block="stamp animal||line width $lineWidth|height $height"
+    //% inlineInputMode=inline
+    //% lineWidth.defl=.5
+    //% height.defl=10
+    //% group="3D Shapes"
+    export function animal(lineWidth?: number, height?: number) {
+    board().requireImport('animals.makePenguin', animals.penguin)
+    board().addStatement(`makePenguin(${lineWidth}, ${height})`);
+    }
+     */
     /* todo: investigate bug; points.map  is not a function
     //% block="polyhedron from 3d points $points|triangles $triangles"
     //% points.defl="inner_shadow_block"
@@ -90,6 +128,7 @@ declare namespace shapes {
     //% inlineInputMode=inline
     //% radius.defl=10
     //% weight=50
+    //% advanced=true
     //% group="2D Shapes"
     //% shim=shapes::circle
     function circle(radius: number): void;
@@ -99,6 +138,7 @@ declare namespace shapes {
     //% width.defl=50
     //% height.defl=50
     //% weight=50
+    //% advanced=true
     //% group="2D Shapes"
     //% shim=shapes::rect
     function rect(width: number, height: number): void;
