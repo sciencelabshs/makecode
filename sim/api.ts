@@ -5,22 +5,22 @@
  * @external https://makecode.com/playground#basic-default-values
  * @external https://makecode.com/extensions/getting-started/simple-extension
  * use the playground to configure the pickers
+ * 
+ * With the block command, try and keep the order of arguments consistent
+ * the first one after (+) being color.   Use || to deliniate extra expandable
+ * arguments
  */
 
 /**
  * 3D Shapes to create on the surface
+ * 
  */
 namespace pxsim.shapes {
 
 
 
 
-    /**
-     * Add a cube
-     * @param width The width of the cube
-     * @param depth The depth of the cube
-     * @param height The height of the cube
-     */
+   
     //% block="cube %type=main_iconPicker width $width|depth $depth|height $height||color $color"
     //% inlineInputMode=inline
     //% width.defl=10
@@ -33,6 +33,13 @@ namespace pxsim.shapes {
     //% color.shadow="colorNumberPicker"
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
+ /**
+     * Add a cube
+     * @param width The width of the cube
+     * @param depth The depth of the cube
+     * @param height The height of the cube
+     * @param color If specified, what color to make the cube.  In hex (0xab1234)
+     */
     export function cube(width: number = 1, depth: number = 1, height: number = 1, color?: number) {
    
         const statement = `cube({size: [${width}, ${depth}, ${height}]})`
@@ -41,10 +48,7 @@ namespace pxsim.shapes {
 
     }
 
-    /**
-     * Add a sphere
-     * @param radius The radius of the sphere
-     */
+   
     //% block="sphere radius $radius || color $color|type $type|center $centerZ|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
@@ -60,6 +64,14 @@ namespace pxsim.shapes {
     //% weight=94
     //% expandableArgumentMode="toggle"
     //% group="3D Shapes"
+     /**
+      * Add a sphere 
+      * @param radius The distance from the center to the edge of the sphere 
+      * @param color The color to make the sphere
+      * @param type Whether to use geodesic or icosahedron.  Geodesic is more triangular and has a golf-ball like appearance.
+      * @param centerZ Whether to center around the z axis.  By default this is false.
+      * @param faces How many faces to use to make the sphere.  The more you use the longer it takes to render, so choose wisely!
+      */
     export function sphere(radius: number, color?: number, type?: SphereType,  centerZ?: boolean, faces?: number) {
         const fn = (faces) ? Math.max(faces, 4) : 150
         const sphereType = type === SphereType.geodesic ? "geodesic" :  "icosahedron";
@@ -81,6 +93,15 @@ namespace pxsim.shapes {
     //% faces.defl=100
     //% weight=90
     //% group="3D Shapes"
+    /**
+     * Add a cylinder
+     * @param radius The radius (distance from center to edge) of the cylinder
+     * @param height How tall to make the cylinder
+     * @param color The color of the cylinder in hex (0xab1234)
+     * @param radius2 If specified, make the bottom of the cylinder have a different size
+     * @param centerZ Use this if you dont want to center above the z axis, otherwise use move or transform
+     * @param faces The number of faces the cylinder has.  The more it has, the smoother it is, but longer it takes to render.  So choose wisely!
+     */
     export function cylinder(radius: number, height: number, color?: number, radius2?: number, centerZ?: boolean, faces?: number) {
     
         const fn = (faces) ? Math.max(faces, 4) : 150
@@ -95,25 +116,75 @@ namespace pxsim.shapes {
 
     
     }
-    //% block="donut thickness $thickness|radius $radius"
+    //% block="donut thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
     //% thickness.defl=20 thickness.min=1
     //% radius.defl=100
+    //% innerFaces.defl=16
+    //% outerFaces.defl=32
+    //% innerRotation.defl=0
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
     //% weight=80
     //% group="3D Shapes"
-    export function donut(thickness: number, radius: number) {
-        board().addStatement(`torus({ri: ${thickness / 2}, ro: ${radius} })`)
+    /**
+     * 
+     * @param thickness How thick to make the donut
+     * @param radius The radius of the donut
+     * @param color Color (in hex 0xab12345)
+     * @param innerFaces How many faces on the inside of the object
+     * @param outerFaces How many faces on the outside of the object
+     * @param innerRotation How far to turn the inside (useful if the number of inner faces is small)
+     */
+    export function donut(thickness: number, radius: number, color?:number, innerFaces?:number,  outerFaces?:number, innerRotation?:number ) {
+
+        /*
+        ri = inner radius (default: 1),
+        ro = outer radius (default: 4),
+        fni = inner resolution (default: 16),
+        fno = outer resolution (default: 32),
+        roti = inner rotation (default: 0)
+        */
+
+        board().addStatement(`torus({
+                                    ri: ${thickness / 2}, 
+                                    ro: ${radius}, 
+                                    fni: ${innerFaces === undefined ? 16 : innerFaces},
+                                    fno: ${outerFaces === undefined ? 32 : outerFaces},
+                                    roti: ${innerRotation === undefined ? 32 : innerRotation}, 
+                                })`, color)
     }
 
 
-    //% block="cone radius $radius|height $height"
+    //% block="cone radius $radius|height $height|| color $color | faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% faces.defl=100
     //% weight=75
     //% group="3D Shapes"
-    export function cone(radius: number, height: number) {
-        board().addStatement(`cylinder({r2: 0, r1: ${radius}, h: ${height}})`);
+    /**
+     * 
+     * @param radius The radius of the cone
+     * @param height How high to make the cone
+     * @param color The color to use for the cone
+     * @param centerZ Whether or not the cone centers around the Z axis.  Most likely you want to use move/translate instead.
+     * @param faces The number of faces the cone has.  The more it has, the smoother it is, but longer it takes to render.  So choose wisely!
+     */
+    export function cone(radius: number, height: number, color?: number,  centerZ?: boolean, faces?: number) {
+        board().addStatement(`cylinder({
+                r2: 0, 
+                r1: ${radius}, 
+                h: ${height},
+                fn: ${faces === undefined ? 100 : faces},
+                center: [true, true, ${centerZ}]}
+            )`, color);
     }
 
     const WRITE_TEXT = `
@@ -129,15 +200,29 @@ namespace pxsim.shapes {
 
 
 
-    //% block="write text $text||line width $lineWidth|height $height"
+    //% block="write text $text||line width $lineWidth|height $height|color $color"
     //% inlineInputMode=inline
-    //% lineWidth.defl=1
-    //% height.defl=70
+    //% lineWidth.defl=4
+    //% text.defl="text"
+    //% height.defl=10
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
     //% group="3D Shapes"
-    export function text(text: string, lineWidth: number, height: number) {
+    /**
+     * Add text
+     * @param text The text to add
+     * @param lineWidth How thick to make the text
+     * @param height How tall to extrude the text
+     * @param color The color of the text
+     */
+    export function text(text: string, lineWidth?: number, height?: number, color?: number) {
         board().requireImport('WRITE_TEXT', WRITE_TEXT)
-        // text returns a list of shapes we need to expand
-        board().addStatement(`... writeText("${text}", ${lineWidth}, ${height})`);
+        // text returns a list of shapes we need to expand [... list of extruded polylines]
+        board().addStatement(`... writeText("${text}", 
+                                ${lineWidth === undefined ? 4 : lineWidth}, 
+                                ${height === undefined ? 10 : height})`, color);
 
     }
 
@@ -283,6 +368,11 @@ namespace pxsim.operators {
     //% y.defl=10
     //% handlerStatement=true
     //% group="Position"
+    /**
+     * move shapes over on the y axis
+     * @param y the amount to move over
+     * @param body the shapes to move across
+     */
     export function moveShapesOverAsync(y: number, body: RefAction): Promise<void> {
 
         return _makeBlock(`translate([0, ${y}, 0], <CHILDREN> )`, body)
@@ -294,6 +384,11 @@ namespace pxsim.operators {
     //% z.defl=10
     //% handlerStatement=true
     //% group="Position"
+    /**
+     * move shapes up the z axis
+     * @param z the amount to move up (in the air)
+     * @param body the shapes to move up
+     */
     export function moveShapesUpAsync(z: number, body: RefAction): Promise<void> {
 
 
@@ -306,6 +401,13 @@ namespace pxsim.operators {
     //% handlerStatement=true
     //% group="Position"
     //% advanced=true
+    /**
+     * Move shapes in three dimensions
+     * @param x How far to move across in x
+     * @param y How far to move over in y
+     * @param z How far to move up in z
+     * @param body The list of shapes to move
+     */
     export function translateShapesAsync(x: number, y: number, z: number, body: RefAction): Promise<void> {
 
         return _makeBlock(`translate([${x}, ${y}, ${z}], <CHILDREN> )`, body);
@@ -313,32 +415,46 @@ namespace pxsim.operators {
 
     }
 
-    //% blockId=flip_shapes block="flip shapes $x °" 
+    //% blockId=flip_shapes block="flip shapes $x x°" 
     //% topblock=false
     //% handlerStatement=true
     //% x.shadow="protractorPicker"
     //% group="Rotation"
+    /**
+     * Flip along the X axis
+     * @param x the amount, in degrees to rotate
+     * @param body the shapes to rotate
+     */
     export function flipShapesAsync(x: number, body: RefAction): Promise<void> {
         return _makeBlock(`rotate([${x}, 0, 0], <CHILDREN> )`, body);
 
     }
-    //% blockId=roll_shapes block="roll shapes $y °" 
+    //% blockId=roll_shapes block="roll shapes $y y°" 
     //% topblock=false
     //% handlerStatement=true
     //% y.shadow="protractorPicker"
     //% group="Rotation"
-
+    /**
+     * Roll shapes along Y axis
+     * @param y the amount, in degrees to rotate in Y axis
+     * @param body the shapes to rotate
+     */
     export function rollShapesAsync(y: number, body: RefAction): Promise<void> {
 
         return _makeBlock(`rotate([0, ${y}, 0], <CHILDREN> )`, body);
 
     }
 
-    //% blockId=spin_shapes block="spin shapes $z °" 
+    //% blockId=spin_shapes block="spin shapes $z z°" 
     //% topblock=false
     //% handlerStatement=true
     //% z.shadow="protractorPicker"
     //% group="Rotation"
+    /**
+     * Spin shapes in Z axis
+     * @param z the amount, in degrees to rotate in Z axis
+     * @param body the shapes to rotate
+     */
     export function spinShapesAsync(z: number, body: RefAction): Promise<void> {
 
         return _makeBlock(`rotate([0, 0, ${z}], <CHILDREN> )`, body);
@@ -350,6 +466,13 @@ namespace pxsim.operators {
     //% handlerStatement=true
     //% group="Rotation"
     //% advanced=true
+    /**
+     * Perform a rotation in X, Y and Z axis
+     * @param x Rotation in X, degrees
+     * @param y Rotation in X, degrees
+     * @param z Rotation in X, degrees
+     * @param body The shapes to rotate
+     */
     export function rotateShapesAsync(x: number, y: number, z: number, body: RefAction): Promise<void> {
 
         return _makeBlock(`rotate([${x}, ${y}, ${z}], <CHILDREN> )`, body);
@@ -362,6 +485,10 @@ namespace pxsim.operators {
     //% topblock=false
     //% handlerStatement=true
     //% group="Operations"
+    /**
+     * Add shapes together. Sometimes called "union".
+     * @param body List of shapes to add
+     */
     export function addShapesAsync(body: RefAction): Promise<void> {
         return _makeBlock("union( <CHILDREN> )", body);
 
@@ -371,6 +498,10 @@ namespace pxsim.operators {
     //% topblock=false
     //% handlerStatement=true
     //% group="Operations"
+    /**
+     * From the first shape, cut away all other shapes.  Sometimes called "difference"
+     * @param body List of shapes to subtract
+     */
     export function subtractShapesAsync(body: RefAction): Promise<void> {
         return _makeBlock("difference( <CHILDREN> )", body); // add a JSCad statement to the interpreter.
 
@@ -381,6 +512,10 @@ namespace pxsim.operators {
     //% topblock=false
     //% handlerStatement=true
     //% group="Operations"
+    /**
+     * Intersect shapes - only leave the parts from all shapes that overlap.
+     * @param body List of shapes to intersect
+     */
     export function intersectShapesAsync(body: RefAction): Promise<void> {
         return _makeBlock("intersect( <CHILDREN> )", body);
 
@@ -392,6 +527,10 @@ namespace pxsim.operators {
     //% handlerStatement=true
     //% group="2D to 3D Shape Converters"
     //% advanced=true
+    /**
+     * For 2D shapes, apply a shrinkwrapping technique to join them together.  Also known as hull.
+     * @param body List of 2D shapes to shrink wrap
+     */
     export function wrap2DShapesAsync(body: RefAction): Promise<void> {
         return _makeBlock("hull( <CHILDREN> )", body);
 
@@ -402,6 +541,10 @@ namespace pxsim.operators {
     //% handlerStatement=true
     //% group="2D to 3D Shape Converters"
     //% advanced=true
+    /**
+     * For 2D shapes, apply a shrink wrapping function one at a time to get a progressive effect.  Also known as "chain hull"
+     * @param body The list of 2d shapes to sequentially shrink wrap
+     */
     export function sequentialWrap2DShapesAsync(body: RefAction): Promise<void> {
         return _makeBlock("chain_hull( <CHILDREN> )", body);
 
