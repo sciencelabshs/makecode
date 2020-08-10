@@ -5,7 +5,7 @@
     {
         "name": "Tutorials",
         "url": "/tutorials",
-        "imageUrl": "/static/projects/heart-shape/project-image.png"
+        "imageUrl": "/static/tutorials/heart-shape/project-image.png"
     },
     {
         "name": "Examples",
