@@ -143,6 +143,7 @@
   "String.trim": "Return a substring of the current string with whitespace removed from both ends",
   "String@type": "Combine, split, and search text strings.",
   "StringMap": "A dictionary from string key to string values",
+  "hardware.bolt": "Add text",
   "operators": "Move and rotate shapes",
   "operators.addShapes": "Add shapes together. Sometimes called \"union\".",
   "operators.addShapes|param|body": "List of shapes to add",

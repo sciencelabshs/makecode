@@ -218,6 +218,28 @@ declare namespace shapes {
     function point2d(x: number, y: number): string;
 
 }
+declare namespace hardware {
+    //% block="bolt"
+    //% inlineInputMode=inline
+    //% lineWidth.defl=4
+    //% text.defl="text"
+    //% height.defl=10
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% group="3D Shapes"
+    /**
+     * Add text
+     * @param text The text to add
+     * @param lineWidth How thick to make the text
+     * @param height How tall to extrude the text
+     * @param color The color of the text
+     */
+    //% shim=hardware::bolt
+    function bolt(): void;
+
+}
 declare namespace operators {
     /**
      * move shapes across the x axis

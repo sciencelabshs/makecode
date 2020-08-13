@@ -29,7 +29,7 @@ namespace pxsim {
             this.children.push(child)
             child.parentStatement = this;
         }
-        getCode() {
+        getCode(initScripts: string) {
             let allCode = this.code;
             // for blocks, replace the children
             if (allCode.indexOf("<CHILDREN>") > 0) {
@@ -38,7 +38,7 @@ namespace pxsim {
                     if (childCode.length > 0) {
                         childCode += ",\n "
                     }
-                    childCode += child.getCode()
+                    childCode += child.getCode("")
                 })
                 allCode = allCode.replace("<CHILDREN>", childCode);
 
@@ -50,19 +50,21 @@ namespace pxsim {
         constructor() {
             super("")
         }
-        getCode() {
+        getCode(initScripts: string) {
             let allCode = "";
             if (this.children.length === 0) {
                 return ""
             }
     
             this.children.forEach((child, index) => {
-                allCode += child.getCode();
+                allCode += child.getCode("");
                 if (index < this.children.length -1) {
                     allCode += ","
                 } 
             })
             return `function main () {
+                ${initScripts || ""}
+
                 return [${allCode}];
             }`
         }
@@ -78,11 +80,12 @@ namespace pxsim {
         private mainStatement: Statement;
         private currentStatement: Statement;
         private imports: any;
-
+        private initScripts: any;
         constructor() {
             super();
             this.bus = new EventBus(runtime);
             this.imports = {} 
+            this.initScripts = {}
             this.mainStatement = new MainStatement();
             this.currentStatement = this.mainStatement;
         }
@@ -118,11 +121,24 @@ namespace pxsim {
                  this.imports[importName] = code
              }
         }
+        requireInitScript(initScript:string, code:string) {
+            if (!this.initScripts[initScript]) {
+                this.initScripts[initScript] = code
+            } 
+        }
 
         updateJSCad() {
 
             const jsCadInterpreter = ((window as any).jscad);
-            let codeStr = this.mainStatement.getCode()
+            
+            // code that should go in main before running
+            let allInitScripts = ""
+            Object.keys(this.initScripts).forEach((codeImport)=>{
+                allInitScripts = this.initScripts[codeImport] + "\n"
+              })
+
+
+            let codeStr = this.mainStatement.getCode(allInitScripts)
             
             Object.keys(this.imports).forEach((codeImport)=>{
               codeStr = this.imports[codeImport] + "\n" + codeStr
