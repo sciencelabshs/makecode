@@ -20,9 +20,9 @@
       "loopsBlocks": true,
       "logicBlocks": true,
       "variablesBlocks": true,
-      "textBlocks": false,
-      "functionBlocks": false,
-      "listsBlocks": false ,
+      "textBlocks": true,
+      "functionBlocks": true,
+      "listsBlocks": true ,
       "onStartUnDeletable": false
     },
     "blockColors": {
@@ -32,7 +32,7 @@
         "variables": "#EC3B59",
         "text": "#F5D547",
         "arrays": "#FF8F08",
-        "functions": "#1446A0"
+        "functions": "#EC3B59"
     },
     "simulator": {
         "autoRun": true,
@@ -74,7 +74,7 @@
             "grid": {
                 "spacing": 20,
                 "length": 100,
-                "colour": "rgba(107, 79, 118, 0.10)",
+                "colour": "#f9f9f9",
                 "snap": true
             }
         },
