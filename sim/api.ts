@@ -52,7 +52,7 @@ namespace pxsim.shapes {
     //% block="sphere radius $radius || color $color|type $type|center $centerZ|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
-    //% faces.defl=120
+    //% faces.defl=80
     //% faces.min=4
     //% faces.max=1000
     //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
@@ -393,6 +393,119 @@ namespace pxsim.operators {
 
 
         return _makeBlock(`translate([0, 0, ${z}], <CHILDREN> )`, body)
+
+    }
+
+
+
+    const SNAP_TO_SIDE_SCRIPT = `
+    
+function snapToSide(moveobj, withobj, axis, orientation, delta) {
+    var translation = calcSnap(moveobj, withobj, axis, orientation, delta);
+    return moveobj.translate(translation);
+}
+function centroid(o, objectSize) {
+    try {
+        var bounds = o.getBounds();
+        objectSize = objectSize || size(bounds);
+        return bounds[0].plus(objectSize.dividedBy(2));
+    } catch (err) {
+        error("centroid error o:".concat(jscadToString(o), " objectSize: ").concat(objectSize), undefined, err);
+    }
+}
+var flushSide = {
+    "above-outside": [ 1, 0 ],
+    "above-inside": [ 1, 1 ],
+    "below-outside": [ 0, 1 ],
+    "below-inside": [ 0, 0 ],
+    "outside+": [ 0, 1 ],
+    "outside-": [ 1, 0 ],
+    "inside+": [ 1, 1 ],
+    "inside-": [ 0, 0 ],
+    "center+": [ -1, 1 ],
+    "center-": [ -1, 0 ]
+};
+
+function calcSnap(moveobj, withobj, axes, orientation) {
+    var delta = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+    var side = flushSide[orientation];
+    if (!side) {
+        var fix = {
+            "01": "outside+",
+            10: "outside-",
+            11: "inside+",
+            "00": "inside-",
+            "-11": "center+",
+            "-10": "center-"
+        };
+        error("calcSnap: invalid side: " + orientation + " should be " + fix["" + orientation + delta]);
+    }
+    var m = moveobj.getBounds();
+    var w = withobj.getBounds();
+    if (side[0] === -1) {
+        w[-1] = centroid(withobj);
+    }
+    var t = axisApply(axes, function(i, axis) {
+        return w[side[0]][axis] - m[side[1]][axis];
+    });
+    return delta ? axisApply(axes, function(i) {
+        return t[i] + delta;
+    }) : t;
+}
+
+function axisApply(axes, valfun, a) {
+    var retval = a || [ 0, 0, 0 ];
+    var lookup = {
+        x: 0,
+        y: 1,
+        z: 2
+    };
+    axes.split("").forEach(function(axis) {
+        retval[lookup[axis]] = valfun(lookup[axis], axis);
+    });
+    return retval;
+}
+    `
+    const STACK_SHAPES_SCRIPT = `
+       
+function stackShapes(shapes) {
+
+    if (shapes.length > 1) {
+        var result = shapes[0]
+        for (var i = 1; i < shapes.length; i++) {
+            result = result.union(
+                snapToSide( shapes[i], result, 'z', 'outside-')  
+            );
+        }
+    }
+    else {
+        if (shapes.length > 0) {
+            return shapes[0]
+        }
+        return []
+    }
+        return result
+    
+}
+    `
+    //% blockId=stackshapes block="stack shapes" 
+    //% topblock=false
+    //% z.defl=10
+    //% handlerStatement=true
+    //% group="Position"
+    /**
+     * move shapes up the z axis
+     * @param z the amount to move up (in the air)
+     * @param body the shapes to move up
+     */
+    export function stackShapesAsync(/*direction: number,*/ body: RefAction) : Promise<void> {
+        board().requireImport('SNAP_TO_SIDE_SCRIPT', SNAP_TO_SIDE_SCRIPT)
+        board().requireImport('STACK_SHAPES_SCRIPT', STACK_SHAPES_SCRIPT)
+
+    
+        return _makeBlock(`stackShapes( [<CHILDREN>] )`, body);
+
+
 
     }
 
