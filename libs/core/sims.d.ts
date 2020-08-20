@@ -25,7 +25,7 @@ declare namespace shapes {
     //% block="sphere radius $radius || color $color|type $type|center $centerZ|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
-    //% faces.defl=120
+    //% faces.defl=80
     //% faces.min=4
     //% faces.max=1000
     //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
@@ -257,6 +257,19 @@ declare namespace operators {
      */
     //% shim=operators::moveShapesUpAsync promise
     function moveShapesUp(z: number, body: () => void): void;
+
+    //% blockId=stackshapes block="stack shapes" 
+    //% topblock=false
+    //% z.defl=10
+    //% handlerStatement=true
+    //% group="Position"
+    /**
+     * move shapes up the z axis
+     * @param z the amount to move up (in the air)
+     * @param body the shapes to move up
+     */
+    //% shim=operators::stackShapesAsync promise
+    function stackShapes(body: () => void): void;
 
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false

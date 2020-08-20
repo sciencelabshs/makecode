@@ -37,6 +37,7 @@
   "operators.rotateShapes|block": "rotate shapes x°: $x|  y°: $y | z°: $z",
   "operators.sequentialWrap2DShapes|block": "wrap 2d shapes sequentially (chain hull)",
   "operators.spinShapes|block": "spin shapes $z z°",
+  "operators.stackShapes|block": "stack shapes",
   "operators.subtractShapes|block": "subtract shapes",
   "operators.translateShapes|block": "translate shapes x: $x|  y: $y |  z: $z",
   "operators.wrap2DShapes|block": "wrap 2d shapes (hull)",

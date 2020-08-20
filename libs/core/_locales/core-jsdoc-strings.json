@@ -173,6 +173,8 @@
   "operators.spinShapes": "Spin shapes in Z axis",
   "operators.spinShapes|param|body": "the shapes to rotate",
   "operators.spinShapes|param|z": "the amount, in degrees to rotate in Z axis",
+  "operators.stackShapes": "move shapes up the z axis",
+  "operators.stackShapes|param|body": "the shapes to move up",
   "operators.subtractShapes": "From the first shape, cut away all other shapes.  Sometimes called \"difference\"",
   "operators.subtractShapes|param|body": "List of shapes to subtract",
   "operators.translateShapes": "Move shapes in three dimensions",
