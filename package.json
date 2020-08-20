@@ -1,6 +1,6 @@
 {
   "name": "pxt-buildbee",
-  "version": "2.0.27",
+  "version": "2.0.28",
   "description": "Create 3D printing projects using MakeCode",
   "keywords": [
     "JavaScript",
@@ -27,10 +27,8 @@
   "scripts": {
     "start": "pxt serve",
     "checkdocs": "pxt checkdocs",
-    "clone:gh-pages": "echo 'This will create you a folder with the github website in it.' && mkdir -p ../makecode-gh-pages && cd ../makecode-gh-pages && git clone https://github.com/Buildbee/makecode.git && cd makecode && git checkout gh-pages",
-    "clone:docs": "echo 'This will create you a folder with doc images in it.' && mkdir -p ../makecode-gh-pages && cd ../makecode-gh-pages && git clone https://github.com/Buildbee/docs.git && cd docs && git checkout gh-pages",
     "build:gh-pages": "pxt staticpkg --route makecode --output ./built/gh-pages --bump && npm run copy:gh-pages",
-    "copy:gh-pages": "echo 'copying built files to gh-pages branches for the docs and makecode repos...' && pushd ../makecode-gh-pages/makecode && git checkout gh-pages && popd && cp -R built/gh-pages/makecode ../makecode-gh-pages/ && pushd ../makecode-gh-pages/docs && git checkout gh-pages && popd && cp -R docs/ ../makecode-gh-pages/docs && echo 'dont forget to check in the changes in ../makecode-gh-pages/makecode and ../makecode-gh-pages/docs'"
+    "copy:gh-pages": "echo 'copying built files to gh-pages branches for the docs and makecode repos...' && pushd ../../gh-pages/makecode && git checkout gh-pages && popd && cp -R built/gh-pages/makecode ../../gh-pages/makecode && pushd ../../docs/docs && git checkout gh-pages && popd && cp -R docs/ ../../docs/docs && echo 'dont forget to check in the changes in ../../gh-pages/makecode and ../../docs/docs'"
   },
   "devDependencies": {
     "@types/bluebird": "2.0.33",
