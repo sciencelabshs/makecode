@@ -2,8 +2,9 @@
  * This is a MODIFIED copy of openjscad
  * Fixes
  *  - add camera controls for left/right/top/bottom
- *  - enable mouseout/mousedown
- * 
+ *  - enable mouseout/mousedown to stop panning
+ *  - PERF: fixes FuzzyFactory.lookupOrCreate being slow
+ *  - PERF: fixes Vector.toArray allocating two arrays on every call
  */
 
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
@@ -7098,6 +7099,11 @@
     this.multiplier = 1.0 / tolerance
   }
   
+  // Switch to see how much cache lookup affects the render time
+  // This function has been fixed from OpenJSCad as the forEach
+  // and map functions and for (in) was too slow.
+
+  var PERF_DISABLE_CACHE = false
   FuzzyFactory.prototype = {
       // let obj = f.lookupOrCreate([el1, el2, el3], function(elements) {/* create the new object */});
       // Performs a fuzzy lookup of the object with the specified elements.
@@ -7105,31 +7111,48 @@
       // If not found, calls the supplied callback function which should create a new object with
       // the specified properties. This object is inserted in the lookup database.
     lookupOrCreate: function (els, creatorCallback) {
+
+    
+      if (PERF_DISABLE_CACHE) {
+        // special switch to just skip caching
+        // use this for testing purposes
+        let object = creatorCallback(els)
+        return object
+      }
+      
+      
       let hash = ''
+      
       let multiplier = this.multiplier
-      els.forEach(function (el) {
-        let valueQuantized = Math.round(el * multiplier)
+      for (i = 0; i < els.length; i++) {
+        let valueQuantized = Math.round(els[i] * multiplier)
         hash += valueQuantized + '/'
-      })
-      if (hash in this.lookuptable) {
+      }
+    
+      if (this.lookuptable[hash] !== undefined) {
         return this.lookuptable[hash]
       } else {
         let object = creatorCallback(els)
-        let hashparts = els.map(function (el) {
-          let q0 = Math.floor(el * multiplier)
+
+        let hashparts = []
+        // foreach element in the array... 
+        for (let i = 0; i < els.length; i++) {
+          let q0 = Math.floor(els[i] * multiplier)
           let q1 = q0 + 1
-          return ['' + q0 + '/', '' + q1 + '/']
-        })
+          hashparts.push( ['' + q0 + '/', '' + q1 + '/'])
+        }
+       
         let numelements = els.length
         let numhashes = 1 << numelements
         for (let hashmask = 0; hashmask < numhashes; ++hashmask) {
           let hashmaskShifted = hashmask
           hash = ''
-          hashparts.forEach(function (hashpart) {
-            hash += hashpart[hashmaskShifted & 1]
+          for (let h = 0; h < hashparts.length; h++) {
+            hash += hashparts[h][hashmaskShifted & 1]
             hashmaskShifted >>= 1
-          })
+          }
           this.lookuptable[hash] = object
+         
         }
         return object
       }
@@ -49015,7 +49038,20 @@
         };
       },
       toArray: function toArray(n) {
-        return [this.x, this.y, this.z].slice(0, n || 3);
+        if (n !== undefined) {
+          return [this.x, this.y, this.z]  
+        }
+        switch (n) {
+          case 1:
+            return [this.x]
+          case 2: 
+            return [this.x, this.y]
+          case 3:
+          default:
+            return [this.x, this.y, this.z]
+        }
+        // PERF: this allocates 2 arrays
+        //return [this.x, this.y, this.z].slice(0, n || 3);
       },
       clone: function clone() {
         return new Vector(this.x, this.y, this.z);
