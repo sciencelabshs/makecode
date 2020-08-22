@@ -9223,9 +9223,13 @@
   // create from an untyped object with identical property names:
   Polygon.fromObject = function (obj) {
     const Plane = require('./Plane') // FIXME: circular dependencies
-    let vertices = obj.vertices.map(function (v) {
-      return Vertex.fromObject(v)
-    })
+
+    let vertices = []
+    vertices.length = obj.vertices.length
+    for (let i = 0; i < obj.vertices.length; i++) {
+      vertices.push(Vertex.fromObject(obj.vertices[i]))
+    }
+  
     let shared = Polygon.Shared.fromObject(obj.shared)
     let plane = Plane.fromObject(obj.plane)
     return new Polygon(vertices, shared, plane)
