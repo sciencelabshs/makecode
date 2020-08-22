@@ -48566,8 +48566,9 @@
       // Adds the object `obj` to `unique` if it hasn't already been added. Returns
       // the index of `obj` in `unique`.
       add: function add(obj) {
-        var key = JSON.stringify(obj);
-        if (!(key in this.map)) {
+
+        var key = Array.isArray(obj) ? "[" + obj.toString() + "]" : JSON.stringify(obj);
+        if (this.map[key] !== undefined) {
           this.map[key] = this.unique.length;
           this.unique.push(obj);
         }
