@@ -5,6 +5,11 @@
  *  - enable mouseout/mousedown to stop panning
  *  - PERF: fixes FuzzyFactory.lookupOrCreate being slow
  *  - PERF: fixes Vector.toArray allocating two arrays on every call
+ *  - PERF: CSG.Sphere - address unnecessary array allocations 
+ *  - PERF: CSG.Sphere - avoid use of map over each vertex in a 12,000 vertex spehere, combine iterations of indexer
+ * 
+ * NOTE this is based on lightgl - docs are here
+ * https://evanw.github.io/lightgl.js/docs/mesh.html
  */
 
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
@@ -4927,30 +4932,49 @@
       let cylinderpoint = xvector.times(Math.cos(angle)).plus(yvector.times(Math.sin(angle)))
       if (slice1 > 0) {
               // cylinder vertices:
-        let vertices = []
         let prevcospitch, prevsinpitch
         for (let slice2 = 0; slice2 <= qresolution; slice2++) {
           let pitch = 0.5 * Math.PI * slice2 / qresolution
           let cospitch = Math.cos(pitch)
           let sinpitch = Math.sin(pitch)
           if (slice2 > 0) {
-            vertices = []
-            vertices.push(new Vertex3(center.plus(prevcylinderpoint.times(prevcospitch).minus(zvector.times(prevsinpitch)))))
-            vertices.push(new Vertex3(center.plus(cylinderpoint.times(prevcospitch).minus(zvector.times(prevsinpitch)))))
+            // PERF - the old code used to allocate lots of arrays and reverse them 
+            // it's an array of 3 to 4 items so lets try to be more clever.
             if (slice2 < qresolution) {
-              vertices.push(new Vertex3(center.plus(cylinderpoint.times(cospitch).minus(zvector.times(sinpitch)))))
+             
+              let bottomVertices = [
+                new Vertex3(center.plus(prevcylinderpoint.times(prevcospitch).minus(zvector.times(prevsinpitch)))),
+                new Vertex3(center.plus(cylinderpoint.times(prevcospitch).minus(zvector.times(prevsinpitch)))),
+                new Vertex3(center.plus(cylinderpoint.times(cospitch).minus(zvector.times(sinpitch)))), // <-- this one is extra
+                new Vertex3(center.plus(prevcylinderpoint.times(cospitch).minus(zvector.times(sinpitch))))
+              ]
+              polygons.push(new Polygon3(bottomVertices))
+
+              let topVerticies = [
+                new Vertex3(center.plus(prevcylinderpoint.times(cospitch).plus(zvector.times(sinpitch)))),
+                new Vertex3(center.plus(cylinderpoint.times(cospitch).plus(zvector.times(sinpitch)))), // <-- this is the extra one
+                new Vertex3(center.plus(cylinderpoint.times(prevcospitch).plus(zvector.times(prevsinpitch)))),
+                new Vertex3(center.plus(prevcylinderpoint.times(prevcospitch).plus(zvector.times(prevsinpitch))))
+              ]
+              polygons.push(new Polygon3(topVerticies))
             }
-            vertices.push(new Vertex3(center.plus(prevcylinderpoint.times(cospitch).minus(zvector.times(sinpitch)))))
-            polygons.push(new Polygon3(vertices))
-            vertices = []
-            vertices.push(new Vertex3(center.plus(prevcylinderpoint.times(prevcospitch).plus(zvector.times(prevsinpitch)))))
-            vertices.push(new Vertex3(center.plus(cylinderpoint.times(prevcospitch).plus(zvector.times(prevsinpitch)))))
-            if (slice2 < qresolution) {
-              vertices.push(new Vertex3(center.plus(cylinderpoint.times(cospitch).plus(zvector.times(sinpitch)))))
+            else {
+              let bottomVertices = [
+                new Vertex3(center.plus(prevcylinderpoint.times(prevcospitch).minus(zvector.times(prevsinpitch)))),
+                new Vertex3(center.plus(cylinderpoint.times(prevcospitch).minus(zvector.times(prevsinpitch)))),
+                new Vertex3(center.plus(prevcylinderpoint.times(cospitch).minus(zvector.times(sinpitch))))
+              ]
+              polygons.push(new Polygon3(bottomVertices))
+
+              let topVerticies = [
+                new Vertex3(center.plus(prevcylinderpoint.times(cospitch).plus(zvector.times(sinpitch)))),
+                new Vertex3(center.plus(cylinderpoint.times(prevcospitch).plus(zvector.times(prevsinpitch)))),
+                new Vertex3(center.plus(prevcylinderpoint.times(prevcospitch).plus(zvector.times(prevsinpitch))))
+              ]
+              polygons.push(new Polygon3(topVerticies))
             }
-            vertices.push(new Vertex3(center.plus(prevcylinderpoint.times(cospitch).plus(zvector.times(sinpitch)))))
-            vertices.reverse()
-            polygons.push(new Polygon3(vertices))
+           
+         
           }
           prevcospitch = cospitch
           prevsinpitch = sinpitch
@@ -48006,11 +48030,15 @@
           color.push(1.0);
         } // opaque
   
-        var indices = polygon.vertices.map(function (vertex) {
+        var indices = []
+        for (let v = 0; v <polygon.vertices.length; v++ ) {
+
+          const vertex = polygon.vertices[v];
+
           var vertextag = vertex.getTag();
           var vertexindex = vertexTag2Index[vertextag];
           var prevcolor = colors[vertexindex];
-          if (smoothlighting && vertextag in vertexTag2Index && prevcolor[0] === color[0] && prevcolor[1] === color[1] && prevcolor[2] === color[2]) {
+          if (smoothlighting && vertexTag2Index[vertextag] && prevcolor[0] === color[0] && prevcolor[1] === color[1] && prevcolor[2] === color[2]) {
             vertexindex = vertexTag2Index[vertextag];
           } else {
             vertexindex = vertices.length;
@@ -48018,8 +48046,9 @@
             vertices.push([vertex.pos.x, vertex.pos.y, vertex.pos.z]);
             colors.push(color);
           }
-          return vertexindex;
-        });
+          indices.push(vertexindex);
+        }
+      
         for (var i = 2; i < indices.length; i++) {
           triangles.push([indices[0], indices[i - 1], indices[i]]);
         }
@@ -48053,6 +48082,7 @@
       if (mesh.vertices.length) {
         meshes.push(mesh);
       }
+      
   
       return meshes;
     }
@@ -48939,12 +48969,16 @@
       }
   
       // Reconstruct the geometry from the indexer.
-      mesh.vertices = indexer.unique.map(function (v) {
-        return v.vertex;
-      });
-      if (mesh.coords) mesh.coords = indexer.unique.map(function (v) {
-        return v.coord;
-      });
+
+      mesh.vertices = []
+      if (mesh.coords) mesh.coords = []
+
+      for (let i = 0; i < indexer.unique; i++) {
+        mesh.vertices.push(indexer.unique[i].vertex)
+        if (mesh.coords) {
+          mesh.vertices.push(indexer.unique[i].coord)
+        }
+      }
       if (mesh.normals) mesh.normals = mesh.vertices;
       mesh.compile();
       return mesh;
