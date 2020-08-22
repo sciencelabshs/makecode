@@ -44,7 +44,7 @@ npm install
 
 After you're done, simple run this command to open a local web server:
 ```
-pxt serve
+yarn start
 ```
 
 After making a change in the source, refresh the page in the browser.

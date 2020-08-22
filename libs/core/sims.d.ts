@@ -84,6 +84,7 @@ declare namespace shapes {
     //% color.shadow="colorNumberPicker"
     //% weight=80
     //% group="3D Shapes"
+    //% expandableArgumentMode="enabled"
     /**
      * 
      * @param thickness How thick to make the donut
@@ -107,6 +108,7 @@ declare namespace shapes {
     //% faces.defl=100
     //% weight=75
     //% group="3D Shapes"
+    //% expandableArgumentMode="enabled"
     /**
      * 
      * @param radius The radius of the cone
@@ -128,6 +130,7 @@ declare namespace shapes {
     //% color.defl=0x4ebed7
     //% color.shadow="colorNumberPicker"
     //% group="3D Shapes"
+    //% expandableArgumentMode="enabled"
     /**
      * Add text
      * @param text The text to add
@@ -217,6 +220,13 @@ declare namespace shapes {
     //% shim=shapes::point2d
     function point2d(x: number, y: number): string;
 
+    //% blockId=randomColor block="random color"
+    //% inlineInputMode=inline
+    //% group="Colors"
+    //% advanced=true
+    //% shim=shapes::randomColor
+    function randomColor(): number;
+
 }
 declare namespace operators {
     /**
@@ -258,18 +268,21 @@ declare namespace operators {
     //% shim=operators::moveShapesUpAsync promise
     function moveShapesUp(z: number, body: () => void): void;
 
-    //% blockId=stackshapes block="stack shapes" 
+    //% blockId=stackshapes block="stack shapes||direction: $direction|axis: $axis" 
     //% topblock=false
-    //% z.defl=10
     //% handlerStatement=true
+    //% direction.defl=StackDirection.OutsideAbove
+    //% axis.defl=Axis.Z
+    //% expandableArgumentMode="enabled"
     //% group="Position"
     /**
      * move shapes up the z axis
-     * @param z the amount to move up (in the air)
+     * @param direction the direction to stack
+     * @param axis the axis to stack in
      * @param body the shapes to move up
      */
     //% shim=operators::stackShapesAsync promise
-    function stackShapes(body: () => void): void;
+    function stackShapes(direction: StackDirection, axis: Axis, body: () => void): void;
 
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false

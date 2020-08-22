@@ -23,7 +23,7 @@ namespace pxsim.shapes {
 
 
 
-   
+
     //% block="cube %type=main_iconPicker width $width|depth $depth|height $height||color $color"
     //% inlineInputMode=inline
     //% width.defl=10
@@ -36,22 +36,22 @@ namespace pxsim.shapes {
     //% color.shadow="colorNumberPicker"
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
- /**
-     * Add a cube
-     * @param width The width of the cube
-     * @param depth The depth of the cube
-     * @param height The height of the cube
-     * @param color If specified, what color to make the cube.  In hex (0xab1234)
-     */
+    /**
+        * Add a cube
+        * @param width The width of the cube
+        * @param depth The depth of the cube
+        * @param height The height of the cube
+        * @param color If specified, what color to make the cube.  In hex (0xab1234)
+        */
     export function cube(width: number = 1, depth: number = 1, height: number = 1, color?: number) {
-   
+
         const statement = `cube({size: [${width}, ${depth}, ${height}]})`
         board().addStatement(statement, color)
 
 
     }
 
-   
+
     //% block="sphere radius $radius || color $color|type $type|center $centerZ|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
@@ -67,17 +67,17 @@ namespace pxsim.shapes {
     //% weight=94
     //% expandableArgumentMode="toggle"
     //% group="3D Shapes"
-     /**
-      * Add a sphere 
-      * @param radius The distance from the center to the edge of the sphere 
-      * @param color The color to make the sphere
-      * @param type Whether to use geodesic or icosahedron.  Geodesic is more triangular and has a golf-ball like appearance.
-      * @param centerZ Whether to center around the z axis.  By default this is false.
-      * @param faces How many faces to use to make the sphere.  The more you use the longer it takes to render, so choose wisely!
-      */
-    export function sphere(radius: number, color?: number, type?: SphereType,  centerZ?: boolean, faces?: number) {
+    /**
+     * Add a sphere 
+     * @param radius The distance from the center to the edge of the sphere 
+     * @param color The color to make the sphere
+     * @param type Whether to use geodesic or icosahedron.  Geodesic is more triangular and has a golf-ball like appearance.
+     * @param centerZ Whether to center around the z axis.  By default this is false.
+     * @param faces How many faces to use to make the sphere.  The more you use the longer it takes to render, so choose wisely!
+     */
+    export function sphere(radius: number, color?: number, type?: SphereType, centerZ?: boolean, faces?: number) {
         const fn = (faces) ? Math.max(faces, 4) : 150
-        const sphereType = type === SphereType.geodesic ? "geodesic" :  "icosahedron";
+        const sphereType = type === SphereType.geodesic ? "geodesic" : "icosahedron";
 
         board().addStatement(`sphere({r: ${radius}, center: [true, true, ${centerZ}],  fn: ${fn}, type: "${sphereType}"})`, color);
 
@@ -106,18 +106,18 @@ namespace pxsim.shapes {
      * @param faces The number of faces the cylinder has.  The more it has, the smoother it is, but longer it takes to render.  So choose wisely!
      */
     export function cylinder(radius: number, height: number, color?: number, radius2?: number, centerZ?: boolean, faces?: number) {
-    
+
         const fn = (faces) ? Math.max(faces, 4) : 150
-    
+
         board().addStatement(`cylinder({r1: ${radius}, 
                                         r2: ${radius2 === undefined ? radius : radius2}, 
                                         fn: ${fn},
                                         center: [true, true, ${centerZ}],
                                         h: ${height}})`, color);
-    
-        
 
-    
+
+
+
     }
     //% block="donut thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
@@ -132,6 +132,7 @@ namespace pxsim.shapes {
     //% color.shadow="colorNumberPicker"
     //% weight=80
     //% group="3D Shapes"
+    //% expandableArgumentMode="enabled"
     /**
      * 
      * @param thickness How thick to make the donut
@@ -141,7 +142,7 @@ namespace pxsim.shapes {
      * @param outerFaces How many faces on the outside of the object
      * @param innerRotation How far to turn the inside (useful if the number of inner faces is small)
      */
-    export function donut(thickness: number, radius: number, color?:number, innerFaces?:number,  outerFaces?:number, innerRotation?:number ) {
+    export function donut(thickness: number, radius: number, color?: number, innerFaces?: number, outerFaces?: number, innerRotation?: number) {
 
         /*
         ri = inner radius (default: 1),
@@ -172,6 +173,7 @@ namespace pxsim.shapes {
     //% faces.defl=100
     //% weight=75
     //% group="3D Shapes"
+    //% expandableArgumentMode="enabled"
     /**
      * 
      * @param radius The radius of the cone
@@ -180,7 +182,7 @@ namespace pxsim.shapes {
      * @param centerZ Whether or not the cone centers around the Z axis.  Most likely you want to use move/translate instead.
      * @param faces The number of faces the cone has.  The more it has, the smoother it is, but longer it takes to render.  So choose wisely!
      */
-    export function cone(radius: number, height: number, color?: number,  centerZ?: boolean, faces?: number) {
+    export function cone(radius: number, height: number, color?: number, centerZ?: boolean, faces?: number) {
         board().addStatement(`cylinder({
                 r2: 0, 
                 r1: ${radius}, 
@@ -213,6 +215,7 @@ namespace pxsim.shapes {
     //% color.defl=0x4ebed7
     //% color.shadow="colorNumberPicker"
     //% group="3D Shapes"
+    //% expandableArgumentMode="enabled"
     /**
      * Add text
      * @param text The text to add
@@ -325,8 +328,17 @@ namespace pxsim.shapes {
 
 
 
+    //% blockId=randomColor block="random color"
+    //% inlineInputMode=inline
+    //% group="Colors"
+    //% advanced=true
+    export function randomColor(): number {
+        return Math.round(Math.random() * 255 * 255 *255)
+    }
+
 
 }
+
 
 /**
  * Move and rotate shapes
@@ -471,13 +483,13 @@ function axisApply(axes, valfun, a) {
     `
     const STACK_SHAPES_SCRIPT = `
        
-function stackShapes(shapes) {
+function stackShapes(direction, axis, shapes) {
 
     if (shapes.length > 1) {
         var result = shapes[0]
         for (var i = 1; i < shapes.length; i++) {
             result = result.union(
-                snapToSide( shapes[i], result, 'z', 'outside-')  
+                snapToSide( shapes[i], result, axis, direction)  
             );
         }
     }
@@ -491,27 +503,72 @@ function stackShapes(shapes) {
     
 }
     `
-    //% blockId=stackshapes block="stack shapes" 
+    //% blockId=stackshapes block="stack shapes||direction: $direction|axis: $axis" 
     //% topblock=false
-    //% z.defl=10
     //% handlerStatement=true
+    //% direction.defl=StackDirection.OutsideAbove
+    //% axis.defl=Axis.Z
+    //% expandableArgumentMode="enabled"
     //% group="Position"
     /**
      * move shapes up the z axis
-     * @param z the amount to move up (in the air)
+     * @param direction the direction to stack
+     * @param axis the axis to stack in
      * @param body the shapes to move up
      */
-    export function stackShapesAsync(/*direction: number,*/ body: RefAction) : Promise<void> {
+    export function stackShapesAsync(direction: StackDirection, axis: Axis, body: RefAction): Promise<void> {
+
         board().requireImport('SNAP_TO_SIDE_SCRIPT', SNAP_TO_SIDE_SCRIPT)
         board().requireImport('STACK_SHAPES_SCRIPT', STACK_SHAPES_SCRIPT)
 
-    
-        return _makeBlock(`stackShapes( [<CHILDREN>] )`, body);
+        const directionStr = _stackDirectionToString(direction)
+        const axisStr = _axisToString(axis)
+        return _makeBlock(`stackShapes("${directionStr}", "${axisStr}",  [<CHILDREN>] )`, body);
 
 
 
     }
 
+    function _axisToString(axis: Axis) {
+        switch (axis) {
+            case Axis.X:
+                return "x"
+            case Axis.Y:
+                return "y"
+            case Axis.Z:
+            default:
+                return "z"
+        }
+    }
+    /**
+     * 
+     * @param direction stacking direction
+     */
+    function _stackDirectionToString(direction: StackDirection) {
+        let directionStr = "outside-"
+        switch (direction) {
+            case StackDirection.CenterAbove:
+                directionStr = "center-"
+                break
+            case StackDirection.CenterBelow:
+                directionStr = "center+"
+                break
+            case StackDirection.OutsideBelow:
+                directionStr = "outside+"
+                break
+            case StackDirection.InsideBelow:
+                directionStr = "inside+"
+                break
+            case StackDirection.InsideAbove:
+                directionStr = "inside-"
+                break
+            case StackDirection.OutsideAbove:
+            default:
+                directionStr = "outside-"
+                break
+        }
+        return directionStr
+    }
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
     //% handlerStatement=true

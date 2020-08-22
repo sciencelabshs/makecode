@@ -13,3 +13,17 @@ declare const enum SphereType {
     icosahedron = 1,
     geodesic
 }
+
+declare const enum Axis {
+    X =1,
+    Y,
+    Z
+}
+declare const enum StackDirection {
+    OutsideBelow =1,
+    OutsideAbove,
+    InsideBelow,
+    InsideAbove,
+    CenterBelow,
+    CenterAbove
+}
