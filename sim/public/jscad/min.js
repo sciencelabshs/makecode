@@ -1,3 +1,11 @@
+/** 
+ * This is a MODIFIED copy of openjscad
+ * Fixes
+ *  - add camera controls for left/right/top/bottom
+ *  - enable mouseout/mousedown
+ * 
+ */
+
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
   const WebWorkify = require('webworkify')
   const { CAG, CSG } = require('@jscad/csg')
@@ -37224,8 +37232,9 @@
   
     const mouseDowns$ = fromEvent('mousedown', targetEl)
     const mouseUps$ = fromEvent('mouseup', targetEl)
-    // const mouseLeaves$ = fromEvent('mouseleave', targetEl).merge(fromEvent('mouseout', targetEl))
-    const mouseMoves$ = fromEvent('mousemove', targetEl) // .takeUntil(mouseLeaves$) // altMouseMoves(fromEvent(targetEl, 'mousemove')).takeUntil(mouseLeaves$)
+    const mouseLeaves$ = fromEvent('mouseleave', targetEl).merge(fromEvent('mouseout', targetEl))
+    
+    const mouseMoves$ = fromEvent('mousemove', targetEl).takeUntil(mouseLeaves$) // altMouseMoves(fromEvent(targetEl, 'mousemove')).takeUntil(mouseLeaves$)
     const rightClicks$ = fromEvent('contextmenu', targetEl).tap(preventDefault) // disable the context menu / right click
   
     const touchStarts$ = fromEvent('touchstart', targetEl)
@@ -47734,7 +47743,7 @@
           _this.angleZ -= delta.x * rotateFactor;
           _this.angleX += delta.y * rotateFactor;
         }
-  
+        console.log("Angle", _this.angleX, _this.angleY, _this.angleZ, "viewport", _this.viewpointX, _this.viewpointY, _this.viewpointZ)
         _this.onDraw();
       });
   
@@ -48200,6 +48209,75 @@
       this.angleX = this.options.camera.angle.x;
       this.angleY = this.options.camera.angle.y;
       this.angleZ = this.options.camera.angle.z;
+      this.viewpointX = this.options.camera.position.x;
+      this.viewpointY = this.options.camera.position.y;
+      this.viewpointZ = this.options.camera.position.z;
+      this.onDraw();
+    },
+
+     
+    setCameraBottom: function setCameraBottom() {
+      // reset perpective (camera) to initial settings
+      this.angleX = -180;
+      this.angleY = 0;
+      this.angleZ = -180;
+
+      this.viewpointX = this.options.camera.position.x;
+      this.viewpointY = this.options.camera.position.y;
+      this.viewpointZ = this.options.camera.position.z;
+      this.onDraw();
+    },
+    setCameraTop: function setCameraTop() {
+      // reset perpective (camera) to initial settings
+      this.angleX = 0;
+      this.angleY = 0;
+      this.angleZ = 0;
+      this.viewpointX = this.options.camera.position.x;
+      this.viewpointY = this.options.camera.position.y;
+      this.viewpointZ = this.options.camera.position.z;
+      this.onDraw();
+    },
+    setCameraLeft: function setCameraLeft() {
+      // reset perpective (camera) to initial settings
+      this.angleX = -90;
+      this.angleY = 0;
+      this.angleZ = -270;
+
+
+
+      this.viewpointX = this.options.camera.position.x;
+      this.viewpointY = this.options.camera.position.y;
+      this.viewpointZ = this.options.camera.position.z;
+      this.onDraw();
+    },
+  
+    setCameraRight: function setCameraRight() {
+      // reset perpective (camera) to initial settings
+      this.angleX = -90;
+      this.angleY = 0;
+      this.angleZ = -90;
+      this.viewpointX = this.options.camera.position.x;
+      this.viewpointY = this.options.camera.position.y;
+      this.viewpointZ = this.options.camera.position.z;
+      this.onDraw();
+    },
+      
+    setCameraFront: function setCameraFront() {
+      // reset perpective (camera) to initial settings
+      this.angleX = -90;
+      this.angleY = 0;
+      this.angleZ = 0;
+      this.viewpointX = this.options.camera.position.x;
+      this.viewpointY = this.options.camera.position.y;
+      this.viewpointZ = this.options.camera.position.z;
+      this.onDraw();
+    },
+    setCameraBack: function setCameraBack() {
+      // reset perpective (camera) to initial settings
+      this.angleX = -90;
+      this.angleY = 0;
+      this.angleZ = -180;
+
       this.viewpointX = this.options.camera.position.x;
       this.viewpointY = this.options.camera.position.y;
       this.viewpointZ = this.options.camera.position.z;
