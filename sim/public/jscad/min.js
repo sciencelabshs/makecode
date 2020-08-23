@@ -4819,6 +4819,8 @@
   const Properties = require('../core/Properties')
   const {fromPolygons} = require('../core/CSGFactories')
   
+
+
   /** Construct an axis-aligned solid cuboid.
    * @param {Object} [options] - options for construction
    * @param {Vector3} [options.center=[0,0,0]] - center of cube
@@ -4919,6 +4921,7 @@
     let radius = parseOptionAsFloat(options, 'radius', 1)
     let resolution = parseOptionAsInt(options, 'resolution', defaultResolution3D)
     let xvector, yvector, zvector
+
     if ('axes' in options) {
       xvector = options.axes[0].unit().times(radius)
       yvector = options.axes[1].unit().times(radius)
@@ -5367,6 +5370,8 @@
       // These will create infinite loops at CSG.Tree()
     return fromPolygons(polygons).reTesselated()
   }
+
+ 
   
   module.exports = {
     cube,
@@ -7289,6 +7294,7 @@
       }
       return new Polygon(newverticesDedup, newshared, newplane)
     }
+  }
 
     
   
