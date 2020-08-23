@@ -7,6 +7,11 @@
  *  - PERF: fixes Vector.toArray allocating two arrays on every call
  *  - PERF: CSG.Sphere - address unnecessary array allocations 
  *  - PERF: CSG.Sphere - avoid use of map over each vertex in a 12,000 vertex spehere, combine iterations of indexer
+ *  - PERF: FuzzyFactory memory leak - plane had 100,000 elements for a fn=80 sphere, no cache hits
+ *  - PERF: lookupOrCreate is called several thousand times for a sphere, avoid allocating unnecessary functions
+ *  - PERF: getPolygon is iterating through the verticies twice and allocating two arrays.  Only allocate one array and iterate once
+ *  - PERF: use PERF_DISABLE_CACHE to turn off lookupOrCreate cache - causing Major GC, having more misses than hits 
+ *  - PERF: DO not use map if you aren't going to use the return result from map - otherwise you're allocating an enormous array
  * 
  * NOTE this is based on lightgl - docs are here
  * https://evanw.github.io/lightgl.js/docs/mesh.html
@@ -7121,26 +7126,30 @@
   const FuzzyFactory = function (numdimensions, tolerance) {
     this.lookuptable = {}
     this.multiplier = 1.0 / tolerance
+    this.lookupTableCacheHits = 0
+    this.lookupTableLength = 0
   }
   
   // Switch to see how much cache lookup affects the render time
   // This function has been fixed from OpenJSCad as the forEach
   // and map functions and for (in) was too slow.
 
-  var PERF_DISABLE_CACHE = false
+  var PERF_DISABLE_CACHE = true
+  var hashparts = [] // PERF - prevent reallocation 
+
   FuzzyFactory.prototype = {
       // let obj = f.lookupOrCreate([el1, el2, el3], function(elements) {/* create the new object */});
       // Performs a fuzzy lookup of the object with the specified elements.
       // If found, returns the existing object
       // If not found, calls the supplied callback function which should create a new object with
       // the specified properties. This object is inserted in the lookup database.
-    lookupOrCreate: function (els, creatorCallback) {
+    lookupOrCreate: function (els, defaultObject) {
 
     
       if (PERF_DISABLE_CACHE) {
         // special switch to just skip caching
         // use this for testing purposes
-        let object = creatorCallback(els)
+        let object = defaultObject //creatorCallback(els)
         return object
       }
       
@@ -7154,17 +7163,19 @@
       }
     
       if (this.lookuptable[hash] !== undefined) {
+        this.lookupTableCacheHits++;
         return this.lookuptable[hash]
       } else {
-        let object = creatorCallback(els)
+        let object =  defaultObject//creatorCallback(els)
 
-        let hashparts = []
+        hashparts.length = 0 
         // foreach element in the array... 
         for (let i = 0; i < els.length; i++) {
           let q0 = Math.floor(els[i] * multiplier)
           let q1 = q0 + 1
           hashparts.push( ['' + q0 + '/', '' + q1 + '/'])
         }
+      
        
         let numelements = els.length
         let numhashes = 1 << numelements
@@ -7176,7 +7187,7 @@
             hashmaskShifted >>= 1
           }
           this.lookuptable[hash] = object
-         
+          this.lookupTableLength++
         }
         return object
       }
@@ -7197,9 +7208,7 @@
   FuzzyCAGFactory.prototype = {
     getVertex: function (sourcevertex) {
       let elements = [sourcevertex.pos._x, sourcevertex.pos._y]
-      let result = this.vertexfactory.lookupOrCreate(elements, function (els) {
-        return sourcevertex
-      })
+      let result = this.vertexfactory.lookupOrCreate(elements, sourcevertex)
       return result
     },
   
@@ -7237,48 +7246,51 @@
   
     getVertex: function (sourcevertex) {
       let elements = [sourcevertex.pos._x, sourcevertex.pos._y, sourcevertex.pos._z]
-      let result = this.vertexfactory.lookupOrCreate(elements, function (els) {
-        return sourcevertex
-      })
+      let result = this.vertexfactory.lookupOrCreate(elements, sourcevertex)
       return result
     },
   
     getPlane: function (sourceplane) {
       let elements = [sourceplane.normal._x, sourceplane.normal._y, sourceplane.normal._z, sourceplane.w]
-      let result = this.planefactory.lookupOrCreate(elements, function (els) {
-        return sourceplane
-      })
+      let result = this.planefactory.lookupOrCreate(elements, sourceplane)
       return result
     },
   
+
     getPolygon: function (sourcepolygon) {
       let newplane = this.getPlane(sourcepolygon.plane)
       let newshared = this.getPolygonShared(sourcepolygon.shared)
       let _this = this
-      let newvertices = sourcepolygon.vertices.map(function (vertex) {
-        return _this.getVertex(vertex)
-      })
-          // two vertices that were originally very close may now have become
-          // truly identical (referring to the same Vertex object).
-          // Remove duplicate vertices:
-      let newverticesDedup = []
-      if (newvertices.length > 0) {
-        let prevvertextag = newvertices[newvertices.length - 1].getTag()
-        newvertices.forEach(function (vertex) {
-          let vertextag = vertex.getTag()
-          if (vertextag !== prevvertextag) {
-            newverticesDedup.push(vertex)
-          }
-          prevvertextag = vertextag
-        })
+
+
+      const sourceVertices = sourcepolygon.vertices || []
+   
+      let prevvertextag = null
+      if (sourceVertices.length > 0) {
+        const lastVertex = _this.getVertex(sourceVertices[sourceVertices.length -1])
+        prevvertextag= lastVertex.getTag()
       }
-          // If it's degenerate, remove all vertices:
+
+      // two vertices that were originally very close may now have become
+      // truly identical (referring to the same Vertex object).
+      // Make sure when we add, we are not pushing a duplicate
+      let newverticesDedup = []
+      for (let i = 0; i < sourceVertices.length; i++) {
+        const vertex = _this.getVertex(sourceVertices[i])
+        let vertextag =  vertex.getTag()
+        if (vertextag !== prevvertextag) {
+          newverticesDedup.push(vertex)
+        }
+        prevvertextag = vertextag
+      }
+      // If it's degenerate, remove all vertices:
       if (newverticesDedup.length < 3) {
         newverticesDedup = []
       }
       return new Polygon(newverticesDedup, newshared, newplane)
     }
-  }
+
+    
   
   module.exports = FuzzyCSGFactory
   
@@ -11218,6 +11230,7 @@
     } else {
       const factory = new FuzzyCSGFactory()
       let result = CSGFromCSGFuzzyFactory(factory, csg)
+
       result.isCanonicalized = true
       result.isRetesselated = csg.isRetesselated
       result.properties = csg.properties // keep original properties
@@ -11236,16 +11249,22 @@
     }
   }
   
+  const DEBUG_FUZZY_PERF = false
+  
   const CSGFromCSGFuzzyFactory = function (factory, sourcecsg) {
     let _this = factory
     let newpolygons = []
-    sourcecsg.polygons.forEach(function (polygon) {
+
+    for (let i = 0; i < sourcecsg.polygons.length; i++) {
+      const polygon = sourcecsg.polygons[i]
       let newpolygon = _this.getPolygon(polygon)
-            // see getPolygon above: we may get a polygon with no vertices, discard it:
+      // see getPolygon above: we may get a polygon with no vertices, discard it:
       if (newpolygon.vertices.length >= 3) {
         newpolygons.push(newpolygon)
       }
-    })
+    }
+    if (DEBUG_FUZZY_PERF) console.log("FUZZY FACTORY", factory)
+   
     return fromPolygons(newpolygons)
   }
   
@@ -11668,7 +11687,9 @@
       let polygonsPerPlane = {}
       let isCanonicalized = csg.isCanonicalized
       let fuzzyfactory = new FuzzyCSGFactory()
-      csg.polygons.map(function (polygon) {
+
+      for (let p = 0; p < csg.polygons.length; p++) {
+        const polygon = csg.polygons[p]
         let plane = polygon.plane
         let shared = polygon.shared
         if (!isCanonicalized) {
@@ -11683,7 +11704,8 @@
         } else {
           polygonsPerPlane[tag].push(polygon)
         }
-      })
+      }
+     
       let destpolygons = []
       for (let planetag in polygonsPerPlane) {
         let sourcepolygons = polygonsPerPlane[planetag]

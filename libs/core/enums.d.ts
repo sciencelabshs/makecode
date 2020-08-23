@@ -20,8 +20,8 @@ declare const enum Axis {
     Z
 }
 declare const enum StackDirection {
-    OutsideBelow =1,
-    OutsideAbove,
+    Below =1,
+    Above,
     InsideBelow,
     InsideAbove,
     CenterBelow,

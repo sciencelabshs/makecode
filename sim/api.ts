@@ -503,12 +503,11 @@ function stackShapes(direction, axis, shapes) {
     
 }
     `
-    //% blockId=stackshapes block="stack shapes||direction: $direction|axis: $axis" 
+    //% blockId=stackshapes block="stack shapes|$direction|axis: $axis" 
     //% topblock=false
     //% handlerStatement=true
-    //% direction.defl=StackDirection.OutsideAbove
+    //% direction.defl=StackDirection.Above
     //% axis.defl=Axis.Z
-    //% expandableArgumentMode="enabled"
     //% group="Position"
     /**
      * move shapes up the z axis
@@ -553,7 +552,7 @@ function stackShapes(direction, axis, shapes) {
             case StackDirection.CenterBelow:
                 directionStr = "center+"
                 break
-            case StackDirection.OutsideBelow:
+            case StackDirection.Below:
                 directionStr = "outside+"
                 break
             case StackDirection.InsideBelow:
@@ -562,7 +561,7 @@ function stackShapes(direction, axis, shapes) {
             case StackDirection.InsideAbove:
                 directionStr = "inside-"
                 break
-            case StackDirection.OutsideAbove:
+            case StackDirection.Above:
             default:
                 directionStr = "outside-"
                 break
