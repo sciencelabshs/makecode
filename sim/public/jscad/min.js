@@ -84,7 +84,7 @@
    * @param {Object} callback the callback to call once evaluation is done /failed
    * @param {Object} options the settings to use when rebuilding the solid
    */
-  var worker
+
   function rebuildSolidsInWorker (script, fullurl, parameters, callback, options) {
     if (!parameters) { throw new Error("JSCAD: missing 'parameters'") }
     if (!window.Worker) throw new Error('Worker threads are unsupported.')
@@ -100,27 +100,45 @@
       basePath = basePath.substring(0, basePath.lastIndexOf('/') + 1)
     }
   
-
+    let worker;
     replaceIncludes(script, basePath, '', {includeResolver: options.includeResolver, memFs: options.memFs})
       .then(function ({source}) {
-      if (!worker) {
-          worker = WebWorkify(require('../code-loading/jscad-worker.js'))
-  
-          // we need to create special options as you cannot send functions to webworkers
-          const workerOptions = {implicitGlobals: options.implicitGlobals}
-          worker.onmessage = function (e) {
-            if (e.data instanceof Object) {
-              const data = e.data.objects.map(function (object) {
-                if (object['class'] === 'CSG') { return CSG.fromCompactBinary(object) }
-                if (object['class'] === 'CAG') { return CAG.fromCompactBinary(object) }
-              })
-              callback(undefined, data)
+
+        worker = WebWorkify(require('../code-loading/jscad-worker.js'))
+
+        const onWorkComplete = function(callback) {
+          try {
+            // perform the callback
+            callback()
+          }
+          finally {
+            // make sure we clean up the web worker
+            if (worker) {
+              worker.terminate()
+              worker =null;
             }
           }
-          worker.onerror = function (e) {
-            callback(`Error in line ${e.lineno} : ${e.message}`, undefined)
+        }
+        // we need to create special options as you cannot send functions to webworkers
+        const workerOptions = {implicitGlobals: options.implicitGlobals}
+        worker.onmessage = function (e) {
+          if (e.data instanceof Object) {
+            const data = e.data.objects.map(function (object) {
+              if (object['class'] === 'CSG') { return CSG.fromCompactBinary(object) }
+              if (object['class'] === 'CAG') { return CAG.fromCompactBinary(object) }
+            })
+            onWorkComplete(function(){
+              callback(undefined, data)
+            })
           }
         }
+        worker.onerror = function (e) {
+          onWorkComplete(function(){
+            callback(`Error in line ${e.lineno} : ${e.message}`, undefined)
+          })
+         
+        }
+        
         worker.postMessage({cmd: 'render', fullurl, source, parameters, options: workerOptions})
       }).catch(error => callback(error, undefined))
   
@@ -4910,6 +4928,7 @@
     return result
   }
   
+  
   /** Construct a solid sphere
    * @param {Object} [options] - options for construction
    * @param {Vector3} [options.center=[0,0,0]] - center of sphere
@@ -4927,11 +4946,13 @@
    * });
   */
   const sphere = function (options) {
+  
     options = options || {}
     let center = parseOptionAs3DVector(options, 'center', [0, 0, 0])
     let radius = parseOptionAsFloat(options, 'radius', 1)
     let resolution = parseOptionAsInt(options, 'resolution', defaultResolution3D)
     let xvector, yvector, zvector
+   
 
     if ('axes' in options) {
       xvector = options.axes[0].unit().times(radius)
@@ -47219,6 +47240,7 @@
           that.setStatus('ready');
           that.state = 2; // complete
         }
+
         that.enableItems();
       }
   
@@ -47226,7 +47248,10 @@
         this.builder = rebuildSolidsInWorker(script, fullurl, parameters, function (err, objects) {
           if (err && that.opts.useSync) {
             _this.builder = _rebuildSolids(script, fullurl, parameters, callback, options);
-          } else callback(undefined, objects);
+          } 
+          else {
+             callback(undefined, objects);
+          }
         }, options);
       } else if (this.opts.useSync) {
         this.builder = _rebuildSolids(script, fullurl, parameters, callback, options);
