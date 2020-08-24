@@ -73,6 +73,9 @@ namespace pxsim {
     /**
      * Represents the entire state of the executing program.
      * Do not store state anywhere else!
+     * 
+     * BASE definition
+     * https://github.com/microsoft/pxt/blob/8c97d80298dd6b99a677b402b84463779fc0c888/pxtsim/runtime.ts
      */
     export class Board extends pxsim.BaseBoard {
         public bus: EventBus;
@@ -81,6 +84,9 @@ namespace pxsim {
         private currentStatement: Statement;
         private imports: any;
         private initScripts: any;
+        private builders: any;
+        private lastExecutingCode: string
+
         constructor() {
             super();
             this.bus = new EventBus(runtime);
@@ -145,23 +151,72 @@ namespace pxsim {
             })
 
             if (codeStr.length > 0) {
+
+                if (this.lastExecutingCode === codeStr) {
+                    // dont refresh unless we have new code
+                    return   
+                }
+                
                 jsCadInterpreter.setJsCad(
                     codeStr
                 );
+                
+                if (!this.builders) {
+                    this.builders =[]
+                }
+
+                let runningBuilders = []
+                for (let i = 0; i < this.builders.length; i++) {
+                    
+                    const builder = this.builders[i]
+                    // remove the dead builders
+                    if (!builder.isRunning()) {
+                        runningBuilders.push(builder)
+                    }
+                }
+                this.builders = runningBuilders
+                if (this.builders.length > 3) {
+                    const firstBuilder = this.builders.shift()
+                    if (firstBuilder && firstBuilder.cancel) {
+                        console.log("Cancelling first builder in list...", this.builders)
+                        firstBuilder.cancel()
+                    }
+                }
+                this.builders.push(jsCadInterpreter.builder)
+
             }
             else {
+                this.lastExecutingCode = null
                 jsCadInterpreter.clearViewer()
             }
             console.log("// JSCAD ====\n", codeStr, "\n// =====")
         }
+
+        /** 
+         * Called when running the program
+         */
         initAsync(msg: pxsim.SimulatorRunMessage): Promise<void> {
-            //  document.body.innerHTML = ''; // clear children
-
+            console.log("INIT async", msg)
             this.updateJSCad()
-
             return Promise.resolve();
         }
 
+        screenshotAsync(width?: number): Promise<ImageData> {
+            try {
+                const canvas = document.querySelector(".viewer canvas") as HTMLCanvasElement
+                const context =  canvas.getContext("2d") as CanvasRenderingContext2D;
+
+                // UNDONE: honour the width passed in.
+                const screenshotData =context.getImageData(0,0,canvas.width, canvas.height) as ImageData
+                Promise.resolve(screenshotData)
+            }
+            catch(e) {
+
+            }
+            return Promise.resolve(undefined);
+        }
+
+        
 
     }
 }
