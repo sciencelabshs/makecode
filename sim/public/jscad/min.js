@@ -144,6 +144,9 @@
   
     // have we been asked to stop our work?
     return {
+      isRunning: ()=> {
+        return (worker !== null)
+      },
       cancel: () => {
         if (worker) {
           worker.terminate()
