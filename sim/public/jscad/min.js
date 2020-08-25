@@ -4530,7 +4530,34 @@
    *   fn: 20
    * })
    */
-  function sphere (params) {
+
+
+  var _workerShapeCache = {}
+
+  const shapeCache = function(shapeType, params, createFunction) {
+    const shapeKey = shapeType + JSON.stringify(params);
+    //console.log("key -- " + shapeKey)
+    if (_workerShapeCache[shapeKey]) {
+       console.log("using cache")
+    }
+    else {
+      console.log("not using cache")
+      _workerShapeCache[shapeKey] = createFunction()
+    }
+   // console.log("Returning shape",_workerShapeCache[shapeKey] )
+    return _workerShapeCache[shapeKey]
+   
+  }
+ 
+ const sphere = function (options) {
+     options = options || {}
+ 
+     return shapeCache("sphere", options, function() {
+       return createSphere(options)
+     })
+ }
+ 
+ const createSphere = function(options) {
     const defaults = {
       r: 1,
       fn: 32,
