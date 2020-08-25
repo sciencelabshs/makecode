@@ -16,12 +16,18 @@
  *  - PERF: use PERF_DISABLE_CACHE to turn off lookupOrCreate cache - causing Major GC, having more misses than hits 
  *  - PERF: DO not use map if you aren't going to use the return result from map - otherwise you're allocating an enormous array
  *  - PERF: Leaking webworkers on every re-render
+ *  - PERF: Optimized toCompactBinary - reducing array allocations
  * 
  * NOTE this is based on lightgl - docs are here
  * https://evanw.github.io/lightgl.js/docs/mesh.html
  */
 
+
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+
+  var _workerShapeCache = {}
+  var __sharedShapeCache = {}
+
   const WebWorkify = require('webworkify')
   const { CAG, CSG } = require('@jscad/csg')
   const oscad = require('@jscad/csg/api')
@@ -85,6 +91,8 @@
    * @param {Object} options the settings to use when rebuilding the solid
    */
 
+  var workerInstance = 0
+
   function rebuildSolidsInWorker (script, fullurl, parameters, callback, options) {
     if (!parameters) { throw new Error("JSCAD: missing 'parameters'") }
     if (!window.Worker) throw new Error('Worker threads are unsupported.')
@@ -100,11 +108,13 @@
       basePath = basePath.substring(0, basePath.lastIndexOf('/') + 1)
     }
   
+    const DEBUG_WORKER_PERF = false
     let worker;
     replaceIncludes(script, basePath, '', {includeResolver: options.includeResolver, memFs: options.memFs})
       .then(function ({source}) {
 
         worker = WebWorkify(require('../code-loading/jscad-worker.js'))
+        const workerId = workerInstance++
 
         const onWorkComplete = function(callback) {
           try {
@@ -122,15 +132,24 @@
         // we need to create special options as you cannot send functions to webworkers
         const workerOptions = {implicitGlobals: options.implicitGlobals}
         worker.onmessage = function (e) {
+          
           if (e.data instanceof Object) {
-            const data = e.data.objects.map(function (object) {
-              if (object['class'] === 'CSG') { return CSG.fromCompactBinary(object) }
-              if (object['class'] === 'CAG') { return CAG.fromCompactBinary(object) }
-            })
-            onWorkComplete(function(){
-              callback(undefined, data)
-            })
+
+            // This is the main thread when rendered is true
+            if (e.data.cmd === "rendered") {
+              const data = e.data.objects.map(function (object) {
+                if (object['class'] === 'CSG') { return CSG.fromCompactBinary(object) }
+                if (object['class'] === 'CAG') { return CAG.fromCompactBinary(object) }
+              })
+            
+              if (DEBUG_WORKER_PERF) console.timeEnd("worker" + workerId)
+              __sharedShapeCache = Object.assign({}, __sharedShapeCache, e.data.shapeCache)
+              onWorkComplete(function(){
+                callback(undefined, data)
+              })
+            }
           }
+          
         }
         worker.onerror = function (e) {
           onWorkComplete(function(){
@@ -139,6 +158,8 @@
          
         }
         
+        worker.postMessage({cmd: 'setcache', shapeCache: __sharedShapeCache})
+        if (DEBUG_WORKER_PERF) console.time("worker" + workerId)
         worker.postMessage({cmd: 'render', fullurl, source, parameters, options: workerOptions})
       }).catch(error => callback(error, undefined))
   
@@ -223,8 +244,17 @@
    */
   module.exports = function (self) {
     self.onmessage = function (e) {
-      if (e.data instanceof Object) {
+     
+        // This is the entry point to the webworker
+       
+        if (e.data instanceof Object) {
         var data = e.data
+
+        if (data.cmd === 'setcache') {
+          
+          _workerShapeCache = data.shapeCache || {}
+          //console.log("GOT Setcache - cache now: ", Object.keys( _workerShapeCache).length)
+        }
         if (data.cmd === 'render') {
           const {source, parameters, options} = e.data
           const include = x => x
@@ -232,17 +262,22 @@
           const func = createJscadFunction(source, globals)
   
           let objects = func(parameters, include, globals)
-          objects = toArray(objects)
-            .map(function (object) {
-              if (isCSG(object) || isCAG(object)) {
-                return object.toCompactBinary()
-              }
-            })
-  
-          if (objects.length === 0) {
+
+          const objectList = toArray(objects);
+          const renderObjects = []
+          for (let i = 0; i < objectList.length; i++) {
+            const object = objectList[i]
+            if (isCSG(object) || isCAG(object)) {
+              renderObjects.push( object.toCompactBinary())
+            }
+          }
+         
+          if (renderObjects.length === 0) {
             throw new Error('The JSCAD script must return one or more CSG or CAG solids.')
           }
-          self.postMessage({cmd: 'rendered', objects})
+
+          // we're done with the work - call back to the main function
+          self.postMessage({cmd: 'rendered', objects: renderObjects, shapeCache: _workerShapeCache})
         }
       }
     }
@@ -4531,21 +4566,50 @@
    * })
    */
 
+const DEBUG_PERF = false
 
-  var _workerShapeCache = {}
+const localCache = {}
 
   const shapeCache = function(shapeType, params, createFunction) {
     const shapeKey = shapeType + JSON.stringify(params);
     //console.log("key -- " + shapeKey)
     if (_workerShapeCache[shapeKey]) {
-       console.log("using cache")
+       //console.log("using cache")
+       if (DEBUG_PERF) console.time("useCache")
+   
+       if (localCache[shapeKey]) {
+        // store the non compact binaries from this worker thread
+        if (DEBUG_PERF) console.log("Local cache used")
+        if (DEBUG_PERF)  console.timeEnd("useCache")
+        return localCache[shapeKey]
+
+       }
+
+       const cachedShape = _workerShapeCache[shapeKey];
+       _workerShapeCache[shapeKey].hits = cachedShape.hits +1
+       const result =  CSG.fromCompactBinary(cachedShape.binary)
+
+       if (DEBUG_PERF) console.timeEnd("useCache")
+       return result
     }
     else {
-      console.log("not using cache")
-      _workerShapeCache[shapeKey] = createFunction()
+      if (DEBUG_PERF) console.time("cacheMiss")
+      const object = createFunction()
+      if (DEBUG_PERF) console.timeEnd("cacheMiss")
+   
+      if (DEBUG_PERF) console.time("cacheMiss-toCompactBinary")
+      const compactBinary = object.toCompactBinary(object)
+      localCache[shapeKey] = object;
+
+      _workerShapeCache[shapeKey] = {
+        binary: compactBinary,
+        hits: 0
+      }
+      
+      if (DEBUG_PERF) console.timeEnd("cacheMiss-toCompactBinary")
+
+      return object
     }
-   // console.log("Returning shape",_workerShapeCache[shapeKey] )
-    return _workerShapeCache[shapeKey]
    
   }
  
@@ -4553,11 +4617,12 @@
      options = options || {}
  
      return shapeCache("sphere", options, function() {
-       return createSphere(options)
+       const sphere =  createSphere(options)
+       return sphere
      })
  }
  
- const createSphere = function(options) {
+ const createSphere = function(params) {
     const defaults = {
       r: 1,
       fn: 32,
@@ -6426,6 +6491,7 @@
   }
   
   /** Reconstruct a CAG from the output of toCompactBinary().
+   * 
    * @param {CompactBinary} bin - see toCompactBinary()
    * @returns {CAG} new CAG object
    */
@@ -6932,11 +6998,11 @@
   
       let numvertices = 0
       let vertexmap = {}
-      let vertices = []
+      let vertexArray = []
   
       let numplanes = 0
       let planemap = {}
-      let planes = []
+      let planesArray = []
   
       let shareds = []
       let sharedmap = {}
@@ -6951,48 +7017,63 @@
           //          vertices.push(p[j]);
           //      }
           //  }
-      csg.polygons.map(function (polygon) {
-        // FIXME: why use map if we do not return anything ?
-        // either for... or forEach
-        polygon.vertices.map(function (vertex) {
+
+      for (let p = 0; p < csg.polygons.length; p++) {
+        const polygon = csg.polygons[p];
+        for (let v = 0; v <  polygon.vertices.length; v++) {
+          const vertex = polygon.vertices[v]
+          if (!vertex) continue;
           ++numpolygonvertices
           let vertextag = vertex.getTag()
-          if (!(vertextag in vertexmap)) {
+          if (vertexmap[vertextag] === undefined) {
             vertexmap[vertextag] = numvertices++
-            vertices.push(vertex)
+            vertexArray.push(vertex.pos._x)
+            vertexArray.push(vertex.pos._y)
+            vertexArray.push(vertex.pos._z)
           }
-        })
-  
+        }
         let planetag = polygon.plane.getTag()
-        if (!(planetag in planemap)) {
+        if ((planemap[planetag]) === undefined) {
           planemap[planetag] = numplanes++
-          planes.push(polygon.plane)
+
+          const plane = polygon.plane
+          const normal = plane.normal
+          planesArray.push(normal._x)
+          planesArray.push(normal._y)
+          planesArray.push(normal._z)
+          planesArray.push(plane.w)
+          
+
         }
         let sharedtag = polygon.shared.getTag()
-        if (!(sharedtag in sharedmap)) {
+        if (sharedmap[sharedtag] === undefined) {
           sharedmap[sharedtag] = numshared++
           shareds.push(polygon.shared)
         }
-      })
+      }
+  
   
       let numVerticesPerPolygon = new Uint32Array(numpolygons)
       let polygonSharedIndexes = new Uint32Array(numpolygons)
       let polygonVertices = new Uint32Array(numpolygonvertices)
       let polygonPlaneIndexes = new Uint32Array(numpolygons)
-      let vertexData = new Float64Array(numvertices * 3)
-      let planeData = new Float64Array(numplanes * 4)
+      let vertexData = new Float64Array(vertexArray.length)
+      let planeData = new Float64Array(planesArray.length)
       let polygonVerticesIndex = 0
-  
-      // FIXME: doublecheck : why does it go through the whole polygons again?
-      // can we optimise that ? (perhap due to needing size to init buffers above)
+
+
       for (let polygonindex = 0; polygonindex < numpolygons; ++polygonindex) {
         let polygon = csg.polygons[polygonindex]
         numVerticesPerPolygon[polygonindex] = polygon.vertices.length
-        polygon.vertices.map(function (vertex) {
+
+
+        for (let v = 0; v <  polygon.vertices.length; v++) {
+          const vertex =  polygon.vertices[v]
           let vertextag = vertex.getTag()
           let vertexindex = vertexmap[vertextag]
           polygonVertices[polygonVerticesIndex++] = vertexindex
-        })
+        }
+
         let planetag = polygon.plane.getTag()
         let planeindex = planemap[planetag]
         polygonPlaneIndexes[polygonindex] = planeindex
@@ -7000,21 +7081,18 @@
         let sharedindex = sharedmap[sharedtag]
         polygonSharedIndexes[polygonindex] = sharedindex
       }
-      let verticesArrayIndex = 0
-      vertices.map(function (vertex) {
-        const pos = vertex.pos
-        vertexData[verticesArrayIndex++] = pos._x
-        vertexData[verticesArrayIndex++] = pos._y
-        vertexData[verticesArrayIndex++] = pos._z
-      })
-      let planesArrayIndex = 0
-      planes.map(function (plane) {
-        const normal = plane.normal
-        planeData[planesArrayIndex++] = normal._x
-        planeData[planesArrayIndex++] = normal._y
-        planeData[planesArrayIndex++] = normal._z
-        planeData[planesArrayIndex++] = plane.w
-      })
+     
+      // export the data to a UInt32Array
+      for (let i = 0; i < vertexArray.length; i++) {
+        vertexData[i] = vertexArray[i]
+      }
+     
+      // export the data to a Float64Array
+      for (let i = 0; i < planesArray.length; i++) {
+        planeData[i] = planesArray[i]
+      }
+  
+  
   
       let result = {
         'class': 'CSG',
@@ -48132,7 +48210,7 @@
         for (let v = 0; v <polygon.vertices.length; v++ ) {
 
           const vertex = polygon.vertices[v];
-
+         
           var vertextag = vertex.getTag();
           var vertexindex = vertexTag2Index[vertextag];
           var prevcolor = colors[vertexindex];
