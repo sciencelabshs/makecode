@@ -17,6 +17,8 @@
  *  - PERF: DO not use map if you aren't going to use the return result from map - otherwise you're allocating an enormous array
  *  - PERF: Leaking webworkers on every re-render
  *  - PERF: Optimized toCompactBinary - reducing array allocations
+ *  - PERF: Reduce allocations of Vector3D while calling getBounds
+ *  - PERF: Shave 40ms off translate by not mapping over the vertexes
  * 
  * NOTE this is based on lightgl - docs are here
  * https://evanw.github.io/lightgl.js/docs/mesh.html
@@ -9359,9 +9361,12 @@ const localCache = {}
   
       // Affine transformation of polygon. Returns a new Polygon
     transform: function (matrix4x4) {
-      let newvertices = this.vertices.map(function (v) {
-        return v.transform(matrix4x4)
-      })
+
+      let newvertices = []
+      for (let i = 0; i < this.vertices.length; i++ ) {
+          newvertices.push(this.vertices[i].transform(matrix4x4))
+      }
+  
       let newplane = this.plane.transform(matrix4x4)
       if (matrix4x4.isMirroring()) {
               // need to reverse the vertex order
