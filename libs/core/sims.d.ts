@@ -25,7 +25,7 @@ declare namespace shapes {
     //% block="sphere radius $radius || color $color|type $type|center $centerZ|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
-    //% faces.defl=80
+    //% faces.defl=60
     //% faces.min=4
     //% faces.max=1000
     //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
@@ -273,7 +273,7 @@ declare namespace operators {
     //% handlerStatement=true
     //% direction.defl=StackDirection.Above
     //% axis.defl=Axis.Z
-    //% group="Position"
+    //% group="Layout"
     /**
      * move shapes up the z axis
      * @param direction the direction to stack

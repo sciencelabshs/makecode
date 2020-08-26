@@ -55,7 +55,7 @@ namespace pxsim.shapes {
     //% block="sphere radius $radius || color $color|type $type|center $centerZ|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
-    //% faces.defl=80
+    //% faces.defl=60
     //% faces.min=4
     //% faces.max=1000
     //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
@@ -414,10 +414,11 @@ namespace pxsim.operators {
 
 
     const SNAP_TO_SIDE_SCRIPT = `
-    
+// thanks to jscad-util for snapToSide function
 function snapToSide(moveobj, withobj, axis, orientation, delta) {
     var translation = calcSnap(moveobj, withobj, axis, orientation, delta);
-    return moveobj.translate(translation);
+    const result = moveobj.translate(translation);
+    return result
 }
 function centroid(o, objectSize) {
     try {
@@ -447,8 +448,8 @@ function calcSnap(moveobj, withobj, axes, orientation) {
     if (!side) {
         var fix = {
             "01": "outside+",
-            10: "outside-",
-            11: "inside+",
+            "10": "outside-",
+            "11": "inside+",
             "00": "inside-",
             "-11": "center+",
             "-10": "center-"
@@ -457,9 +458,12 @@ function calcSnap(moveobj, withobj, axes, orientation) {
     }
     var m = moveobj.getBounds();
     var w = withobj.getBounds();
+  
+    console.time("centroid")
     if (side[0] === -1) {
         w[-1] = centroid(withobj);
     }
+  
     var t = axisApply(axes, function(i, axis) {
         return w[side[0]][axis] - m[side[1]][axis];
     });
@@ -481,8 +485,7 @@ function axisApply(axes, valfun, a) {
     return retval;
 }
     `
-    const STACK_SHAPES_SCRIPT = `
-       
+    const STACK_SHAPES_SCRIPT = ` 
 function stackShapes(direction, axis, shapes) {
 
     if (shapes.length > 1) {
@@ -508,7 +511,7 @@ function stackShapes(direction, axis, shapes) {
     //% handlerStatement=true
     //% direction.defl=StackDirection.Above
     //% axis.defl=Axis.Z
-    //% group="Position"
+    //% group="Layout"
     /**
      * move shapes up the z axis
      * @param direction the direction to stack
