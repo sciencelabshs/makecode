@@ -139,19 +139,11 @@
 
             // This is the main thread when rendered is true
             if (e.data.cmd === "rendered") {
-
-              let data = []
-              for (let i = 0; i< e.data.objects.length; i++) {
-                const object = e.data.objects[i]
-
-                if (object['class'] === 'CSG') {
-                  data.push( CSG.fromCompactBinary(object)) 
-                }
-                if (object['class'] === 'CAG') { 
-                  data.push( CAG.fromCompactBinary(object)) 
-                }
-              }
-          
+              const data = e.data.objects.map(function (object) {
+                if (object['class'] === 'CSG') { return CSG.fromCompactBinary(object) }
+                if (object['class'] === 'CAG') { return CAG.fromCompactBinary(object) }
+              })
+            
               if (DEBUG_WORKER_PERF) console.timeEnd("worker" + workerId)
               __sharedShapeCache = Object.assign({}, __sharedShapeCache, e.data.shapeCache)
               onWorkComplete(function(){
@@ -7226,11 +7218,9 @@ const localCache = {}
       vertices.push(vertex)
     }
   
-    let shareds = []
-    for (let i = 0; i < bin.shared.length; i++) {
-      const shared = bin.shared[i]
-      shareds.push(Polygon3D.Shared.fromObject(shared))
-    }
+    let shareds = bin.shared.map(function (shared) {
+      return Polygon3D.Shared.fromObject(shared)
+    })
   
     let polygons = []
     let numpolygons = bin.numPolygons
@@ -7795,10 +7785,7 @@ const localCache = {}
   const back = 6
   // Tag factory: we can request a unique tag through CSG.getTag()
   let staticTag = 1
- // const getTag = () => staticTag++
-  function getTag() {
-    return staticTag++
-  }
+  const getTag = () => staticTag++
   
   module.exports = {
     _CSGDEBUG,
@@ -9315,37 +9302,21 @@ const localCache = {}
       // returns an array of two Vector3Ds (minimum coordinates and maximum coordinates)
     boundingBox: function () {
       if (!this.cachedBoundingBox) {
-        
-        let minpoint; 
-        let maxpoint; 
-        
-
+        let minpoint, maxpoint
         let vertices = this.vertices
         let numvertices = vertices.length
         if (numvertices === 0) {
-          minpoint =  {x: 0, y:0, z:0}
+          minpoint = new Vector3D(0, 0, 0)
         } else {
-          const vertex0Pos = vertices[0].pos
-          minpoint =  {x: vertex0Pos.x, y: vertex0Pos.y, z: vertex0Pos.z }
+          minpoint = vertices[0].pos
         }
         maxpoint = minpoint
         for (let i = 1; i < numvertices; i++) {
           let point = vertices[i].pos
-
-          minpoint.x =  Math.min(point.x, minpoint.x)
-          minpoint.y =  Math.min(point.y, minpoint.y)
-          minpoint.z =  Math.min(point.z, minpoint.z)
-
-
-          maxpoint.x =  Math.max(point.x, maxpoint.x)
-          maxpoint.y =  Math.max(point.y, maxpoint.y)
-          maxpoint.z =  Math.max(point.z, maxpoint.z)
-
+          minpoint = minpoint.min(point)
+          maxpoint = maxpoint.max(point)
         }
-        const minPointVec = new Vector3D(minpoint.x, minpoint.y, minpoint.z)
-        const maxPointVec = new Vector3D(maxpoint.x, maxpoint.y, maxpoint.z)
-       
-        this.cachedBoundingBox = [minPointVec, maxPointVec]
+        this.cachedBoundingBox = [minpoint, maxpoint]
       }
       return this.cachedBoundingBox
     },
@@ -11474,51 +11445,26 @@ const localCache = {}
      */
   const bounds = function (csg) {
     if (!csg.cachedBoundingBox) {
-      let minpoint = {x: 0, y:0, z:0}//new Vector3D(0, 0, 0)
-      let maxpoint = {x: 0, y:0, z:0} //new Vector3D(0, 0, 0)
+      let minpoint = new Vector3D(0, 0, 0)
+      let maxpoint = new Vector3D(0, 0, 0)
       let polygons = csg.polygons
       let numpolygons = polygons.length
-
-      
       for (let i = 0; i < numpolygons; i++) {
         let polygon = polygons[i]
         let bounds = polygon.boundingBox()
-      
-        // avoid using the vector class to not create allocations for every object in the polygon
         if (i === 0) {
-          minpoint.x =  bounds[0].x
-          minpoint.y =  bounds[0].y
-          minpoint.z =  bounds[0].z
-          
-
-          maxpoint.x =  bounds[1].x
-          maxpoint.y =  bounds[1].y
-          maxpoint.z =  bounds[1].z
-          
-
+          minpoint = bounds[0]
+          maxpoint = bounds[1]
         } else {
-
-          minpoint.x =  Math.min(bounds[0].x, minpoint.x)
-          minpoint.y =  Math.min(bounds[0].y, minpoint.y)
-          minpoint.z =  Math.min(bounds[0].z, minpoint.z)
-
-
-          maxpoint.x =  Math.max(bounds[1].x, maxpoint.x)
-          maxpoint.y =  Math.max(bounds[1].y, maxpoint.y)
-          maxpoint.z =  Math.max(bounds[1].z, maxpoint.z)
-
+          minpoint = minpoint.min(bounds[0])
+          maxpoint = maxpoint.max(bounds[1])
         }
       }
         // FIXME: not ideal, we are mutating the input, we need to move some of it out
-      const minPointVec = new Vector3D(minpoint.x, minpoint.y, minpoint.z)
-      const maxPointVec = new Vector3D(maxpoint.x, maxpoint.y, maxpoint.z)
-      
-      csg.cachedBoundingBox = [minPointVec, maxPointVec]
+      csg.cachedBoundingBox = [minpoint, maxpoint]
     }
     return csg.cachedBoundingBox
   }
-  
-  
   
   const volume = function (csg) {
     let result = csg.toTriangles().map(function (triPoly) {
@@ -48962,19 +48908,14 @@ const localCache = {}
       // doesn't need to be called every frame, only needs to be done when the data
       // changes.
       compile: function compile() {
-        const vertexKeys = Object.keys(this.vertexBuffers)
-        
-        for (let i = 0; i < vertexKeys.length; i++) {
-          const attribute = vertexKeys[i]
-          const buffer = this.vertexBuffers[attribute];
+        for (var attribute in this.vertexBuffers) {
+          var buffer = this.vertexBuffers[attribute];
           buffer.data = this[buffer.name];
           buffer.compile();
         }
   
-        const indexKeys = Object.keys(this.indexBuffers)
-        for (let i = 0; i < indexKeys.length; i++) {
-          const name = indexKeys[i]
-          const buffer = this.indexBuffers[name];
+        for (var name in this.indexBuffers) {
+          var buffer = this.indexBuffers[name];
           buffer.data = this[name];
           buffer.compile();
         }
