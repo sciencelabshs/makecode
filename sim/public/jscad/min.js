@@ -10765,10 +10765,9 @@ const localCache = {}
       if (!this.isRootNode()) {
         throw new Error('Assertion failed')
       }
-      let _this = this
-      polygons.map(function (polygon) {
-        _this.addChild(polygon)
-      })
+      for (let i = 0; i < polygons.length; i++) {
+        this.addChild(polygon)
+      }
     },
   
       // remove a node
