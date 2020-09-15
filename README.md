@@ -3,10 +3,10 @@ Try it live: https://makecode.buildbee.com
 
 The team at BuildBee is using Microsoft MakeCode to let you create physical things with block coding and javascript.  Based on an OpenJSCad libraries, the designer allows you to define parts and send them to your 3D printer with Buildbee. 
 
-Project status: It works great so... Pretty close ¯\\_(ツ)_/¯ ?!?
+Project status: It works great so... Pretty close ¯\\\_(ツ)\_/¯ ?!?
 
-![prjects](./docs/screenshots/projects.png)
-![tutoials](./docs/screenshots/tutorial.png)
+![projects](./docs/screenshots/projects.png)
+![tutorials](./docs/screenshots/tutorial.png)
 ![javascript](./docs/screenshots/javascript.png)
 
 # About BuildBee 
