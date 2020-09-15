@@ -5,6 +5,9 @@ The team at BuildBee is using Microsoft MakeCode to let you create physical thin
 
 Project status: It works great so... Pretty close ¯\\_(ツ)_/¯ ?!?
 
+![prjects](/docs/screenshots/projects.png)
+![tutoials](/docs/screenshots/tutorial.png)
+![javascript](/docs/screenshots/javascript.png)
 
 # About BuildBee 
 BuildBee is 3D printing software that makes managing the workflow of 3D printing much simpler.  The BuildBee Desktop app (Mac/Win) connects to most 3D printers and guides you step by step through the printing process, offering taylored presets for different kinds of prints. Currently used widely across the Australian school system, it is used to manage queuing, groups and printing permissions for schools and universities. 
