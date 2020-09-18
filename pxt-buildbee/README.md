@@ -42,10 +42,19 @@ npm install
 
 After you're done, simple run this command to open a local web server:
 ```
-pxt serve
+yarn start 
 ```
 
 After making a change in the source, refresh the page in the browser.
+
+### Patches
+There are patches applied to pxt-core when you yarn start, this will
+replace a file in your node modules folder.  This is just a lightweight 
+way of us doing a fork of the tools without having to fork.
+
+The patched files are in pxt-patches, and are copied via a node.js script
+when you build or start the webserver via yarn start
+
 
 ## Updating the tools
 

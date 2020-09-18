@@ -10,7 +10,13 @@ async function saveSTL(blob) {
     }});
     if (finalUrl) {
         // target='_blank' noopenner noreferrer
-       window.location.href = finalUrl
+       //
+       if (window.parent) {
+            window.parent.postMessage({message: "sendToBuildBee", url:finalUrl}, window.location.href)
+       }
+       else {
+            window.location.href = finalUrl
+       }
     }
  }
 
