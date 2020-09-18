@@ -28,6 +28,7 @@
   "String.substr|block": "substring of %this=text|from %start|of length %length",
   "String|block": "String",
   "operators.addShapes|block": "add shapes",
+  "operators.fillet|block": "fillet shapes|$radius",
   "operators.flipShapes|block": "flip shapes $x x°",
   "operators.intersectShapes|block": "intersect shapes",
   "operators.moveShapesAcross|block": "move shapes across $x",

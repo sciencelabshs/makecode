@@ -146,6 +146,8 @@
   "operators": "Move and rotate shapes",
   "operators.addShapes": "Add shapes together. Sometimes called \"union\".",
   "operators.addShapes|param|body": "List of shapes to add",
+  "operators.fillet": "move shapes up the z axis",
+  "operators.fillet|param|body": "the shapes to move up",
   "operators.flipShapes": "Flip along the X axis",
   "operators.flipShapes|param|body": "the shapes to rotate",
   "operators.flipShapes|param|x": "the amount, in degrees to rotate",

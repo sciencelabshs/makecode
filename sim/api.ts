@@ -1,6 +1,5 @@
 
 
-
 /// <reference path="../libs/core/enums.d.ts"/>
 
 /**
@@ -472,6 +471,9 @@ function calcSnap(moveobj, withobj, axes, orientation) {
     }) : t;
 }
 
+    `
+    const AXIS_APPLY_SCRIPT = `
+    
 function axisApply(axes, valfun, a) {
     var retval = a || [ 0, 0, 0 ];
     var lookup = {
@@ -484,7 +486,7 @@ function axisApply(axes, valfun, a) {
     });
     return retval;
 }
-    `
+`
     const STACK_SHAPES_SCRIPT = ` 
 function stackShapes(direction, axis, shapes) {
 
@@ -521,8 +523,8 @@ function stackShapes(direction, axis, shapes) {
     export function stackShapesAsync(direction: StackDirection, axis: Axis, body: RefAction): Promise<void> {
 
         board().requireImport('SNAP_TO_SIDE_SCRIPT', SNAP_TO_SIDE_SCRIPT)
+        board().requireImport('AXIS_APPLY_SCRIPT', AXIS_APPLY_SCRIPT)
         board().requireImport('STACK_SHAPES_SCRIPT', STACK_SHAPES_SCRIPT)
-
         const directionStr = _stackDirectionToString(direction)
         const axisStr = _axisToString(axis)
         return _makeBlock(`stackShapes("${directionStr}", "${axisStr}",  [<CHILDREN>] )`, body);
@@ -571,6 +573,339 @@ function stackShapes(direction, axis, shapes) {
         }
         return directionStr
     }
+
+
+const FILLET_SCRIPT = `
+// thanks to jscad-utils for this script
+
+
+
+var FilletUtils = {
+
+    scaleSize: function(size, value) {
+        if (value == 0) return 1;
+        return 1 + 100 / (size / value) / 100;
+    },
+
+    enlarge: function(object, x, y, z) {
+        var a;
+        if (Array.isArray(x)) {
+            a = x;
+        } else {
+            a = [ x, y || x, z || x ];
+        }
+        var objectSize = FilletUtils.getObjectSize(object);
+        var objectCentroid = FilletUtils.centroid(object, objectSize);
+        var idx = 0;
+        var t = FilletUtils.mapObjectKeys(objectSize, function(i) {
+            return FilletUtils.scaleSize(i, a[idx++]);
+        });
+        var new_object = scale(t, object)
+        var new_centroid = FilletUtils.centroid(new_object);
+        var delta = new_centroid.minus(objectCentroid).times(-1);
+        return new_object.translate(delta);
+    },
+
+    mapObjectKeys: function(o, f) {
+        return Object.keys(o).map(function (key) {
+            return f(o[key], key, o);
+        });
+    },
+    arrayRange: function(a, b) {
+        var result = [];
+        for (var i = a; i < b; i++) {
+            result.push(i);
+        }
+        return result;
+    },
+
+    getObjectSize: function(o) {
+        var bbox = o.getBounds ? o.getBounds() : o;
+        var boxSize = bbox[1].minus(bbox[0]);
+        return boxSize;
+    },
+    centroid: function(o, objectSize) {
+      
+        try {
+            var bounds = o.getBounds();
+            objectSize = objectSize || FilletUtils.getObjectSize(bounds);
+            return bounds[0].plus(objectSize.dividedBy(2));
+        } catch (err) {
+            error("centroid error o:".concat(jscadToString(o), " objectSize: ").concat(objectSize), undefined, err);
+        }
+    },
+
+    normalVector: function(axis) {
+        var axisInfo = {
+            z: {
+                orthoNormalCartesian: ["X", "Y"],
+                normalVector: CSG.Vector3D.Create(0, 1, 0)
+            },
+            x: {
+                orthoNormalCartesian: ["Y", "Z"],
+                normalVector: CSG.Vector3D.Create(0, 0, 1)
+            },
+            y: {
+                orthoNormalCartesian: ["X", "Z"],
+                normalVector: CSG.Vector3D.Create(0, 0, 1)
+            }
+        };
+        if (!axisInfo[axis]) error("normalVector: invalid axis " + axis);
+        return axisInfo[axis];
+    },
+    axisApply: function(axes, valfun, a) {
+        var retval = a || [0, 0, 0];
+        var lookup = {
+            x: 0,
+            y: 1,
+            z: 2
+        };
+        axes.split("").forEach(function (axis) {
+            retval[lookup[axis]] = valfun(lookup[axis], axis);
+        });
+        return retval;
+    },
+    sliceParams: function(orientation, radius, bounds) {
+        var axis = orientation[0];
+        var direction = orientation[1];
+        var dirInfo = {
+            "dir+": {
+                sizeIdx: 1,
+                sizeDir: -1,
+                moveDir: -1,
+                positive: true
+            },
+            "dir-": {
+                sizeIdx: 0,
+                sizeDir: 1,
+                moveDir: 0,
+                positive: false
+            }
+        };
+        var info = dirInfo["dir" + direction];
+        return Object.assign({
+            axis,
+            cutDelta: FilletUtils.axisApply(axis, function (i, a) {
+                return bounds[info.sizeIdx][a] + Math.abs(radius) * info.sizeDir;
+            }),
+            moveDelta: FilletUtils.axisApply(axis, function (i, a) {
+                return bounds[info.sizeIdx][a] + Math.abs(radius) * info.moveDir;
+            })
+        }, info, FilletUtils.normalVector(axis));
+    },
+    filletObjects(objects, radius, orientation, options) {
+        let results = []
+        for (let i = 0; i < objects.length; i++) {
+            results.push(FilletUtils.fillet(objects[i], radius, orientation, options))
+        }
+        return union(results);
+    },
+    
+    fillet: function(object, rad, orient, opts) {
+
+        var radius = rad || 4
+        var options = opts || {}
+        var orientation = orient || "z+"
+
+        return FilletUtils.reShape(object, radius,  orientation, options, function (first, last, slice) {
+            var v1 = new CSG.Vector3D(first);
+            var v2 = new CSG.Vector3D(last);
+            var res = options.resolution || CSG.defaultResolution3D;
+            var slices = FilletUtils.arrayRange(0, res).map(function (i) {
+                var p = i > 0 ? i / (res - 1) : 0;
+                var v = v1.lerp(v2, p);
+                var size = -radius * 2 - Math.cos(Math.asin(p)) * (-radius * 2);
+                return {
+                    poly: FilletUtils.enlarge(slice, [size, size]),
+                    offset: v
+                };
+            });
+            return slices;
+        });
+    },
+
+    first: function first(a) {
+        return a ? a[0] : undefined;
+    },
+    last: function last(a) {
+        return a && a.length > 0 ? a[a.length - 1] : undefined;
+    },
+    slices2poly: function(slices, options, axis) {
+        var twistangle = options && parseFloat(options.twistangle) || 0;
+        var twiststeps = options && parseInt(options.twiststeps) || CSG.defaultResolution3D;
+        if (twistangle == 0 || twiststeps < 1) {
+            twiststeps = 1;
+        }
+        var normalVector = options.si.normalVector;
+        var polygons = [];
+        var first$1 = FilletUtils.first(slices)
+        var last$1 = FilletUtils.last(slices);
+
+        var up = first$1.offset[axis] > last$1.offset[axis];
+        polygons = polygons.concat(first$1.poly._toPlanePolygons({
+            translation: first$1.offset,
+            normalVector,
+            flipped: !up
+        }));
+        var rotateAxis = "rotate" + axis.toUpperCase();
+        polygons = polygons.concat(last$1.poly._toPlanePolygons({
+            translation: last$1.offset,
+            normalVector: normalVector[rotateAxis](twistangle),
+            flipped: up
+        }));
+        var rotate = twistangle === 0 ? function rotateZero(v) {
+            return v;
+        } : function rotate(v, angle, percent) {
+            return v[rotateAxis](angle * percent);
+        };
+        var connectorAxis = last$1.offset.minus(first$1.offset).abs();
+        slices.forEach(function (slice, idx) {
+            if (idx < slices.length - 1) {
+                var nextidx = idx + 1;
+                var top = !up ? slices[nextidx] : slice;
+                var bottom = up ? slices[nextidx] : slice;
+                var c1 = new CSG.Connector(bottom.offset, connectorAxis, rotate(normalVector, twistangle, idx / slices.length));
+                var c2 = new CSG.Connector(top.offset, connectorAxis, rotate(normalVector, twistangle, nextidx / slices.length));
+                polygons = polygons.concat(bottom.poly._toWallPolygons({
+                    cag: top.poly,
+                    toConnector1: c1,
+                    toConnector2: c2
+                }));
+            }
+        });
+        return CSG.fromPolygons(polygons);
+    },
+
+    reShape: function(object, radius, orientation, options, slicer) {
+       
+        options = options || {};
+        var b = object.getBounds();
+        var ar = Math.abs(radius);
+        var si = FilletUtils.sliceParams(orientation, radius, b);
+        if (si.axis !== "z") throw new Error('reShape error: CAG._toPlanePolytons only uses the "z" axis.  You must use the "z" axis for now.');
+        var cutplane = CSG.OrthoNormalBasis.GetCartesian(si.orthoNormalCartesian[0], si.orthoNormalCartesian[1]).translate(si.cutDelta);
+        var slice = object.sectionCut(cutplane);
+        var first = FilletUtils.axisApply(si.axis, function () {
+            return si.positive ? 0 : ar;
+        });
+        var last = FilletUtils.axisApply(si.axis, function () {
+            return si.positive ? ar : 0;
+        });
+        var plane = si.positive ? cutplane.plane : cutplane.plane.flipped();
+        var slices = slicer(first, last, slice);
+        var delta = FilletUtils.slices2poly(slices, Object.assign(options, {
+            si
+        }), si.axis);
+        var remainder = object.cutByPlane(plane);
+      
+      return union([remainder, delta.translate(si.moveDelta)]);
+    }
+    
+}
+
+
+
+`
+const SLICE_PARAMS_SCRIPT = `
+function normalVector(axis) {
+    var axisInfo = {
+        z: {
+            orthoNormalCartesian: [ "X", "Y" ],
+            normalVector: CSG.Vector3D.Create(0, 1, 0)
+        },
+        x: {
+            orthoNormalCartesian: [ "Y", "Z" ],
+            normalVector: CSG.Vector3D.Create(0, 0, 1)
+        },
+        y: {
+            orthoNormalCartesian: [ "X", "Z" ],
+            normalVector: CSG.Vector3D.Create(0, 0, 1)
+        }
+    };
+    if (!axisInfo[axis]) error("normalVector: invalid axis " + axis);
+    return axisInfo[axis];
+}
+function sliceParams(orientation, radius, bounds) {
+    var axis = orientation[0];
+    var direction = orientation[1];
+    var dirInfo = {
+        "dir+": {
+            sizeIdx: 1,
+            sizeDir: -1,
+            moveDir: -1,
+            positive: true
+        },
+        "dir-": {
+            sizeIdx: 0,
+            sizeDir: 1,
+            moveDir: 0,
+            positive: false
+        }
+    };
+    var info = dirInfo["dir" + direction];
+    return Object.assign({
+        axis,
+        cutDelta: axisApply(axis, function(i, a) {
+            return bounds[info.sizeIdx][a] + Math.abs(radius) * info.sizeDir;
+        }),
+        moveDelta: axisApply(axis, function(i, a) {
+            return bounds[info.sizeIdx][a] + Math.abs(radius) * info.moveDir;
+        })
+    }, info, normalVector(axis));
+}`
+const RESHAPE_SCRIPT =`
+
+function reShape(object, radius, orientation, options, slicer) {
+    options = options || {};
+    var b = object.getBounds();
+    var ar = Math.abs(radius);
+    var si = sliceParams(orientation, radius, b);
+    if (si.axis !== "z") throw new Error('reShape error: CAG._toPlanePolytons only uses the "z" axis.  You must use the "z" axis for now.');
+    var cutplane = CSG.OrthoNormalBasis.GetCartesian(si.orthoNormalCartesian[0], si.orthoNormalCartesian[1]).translate(si.cutDelta);
+    var slice = object.sectionCut(cutplane);
+    var first = axisApply(si.axis, function() {
+        return si.positive ? 0 : ar;
+    });
+    var last = axisApply(si.axis, function() {
+        return si.positive ? ar : 0;
+    });
+    var plane = si.positive ? cutplane.plane : cutplane.plane.flipped();
+    var slices = slicer(first, last, slice);
+    var delta = slices2poly(slices, Object.assign(options, {
+        si
+    }), si.axis).color(options.color);
+    var remainder = object.cutByPlane(plane);
+    return union([ options.unionOriginal ? object : remainder, delta.translate(si.moveDelta) ]);
+}
+`
+
+//% blockId=fillet block="fillet shapes|$radius" 
+//% topblock=false
+//% handlerStatement=true
+//% radius.defl=2
+//% group="Layout"
+/**
+ * move shapes up the z axis
+ * @param direction the direction to stack
+ * @param axis the axis to stack in
+ * @param body the shapes to move up
+ */
+export function filletAsync(radius: number, body: RefAction): Promise<void> {
+
+   /* board().requireImport('AXIS_APPLY_SCRIPT', AXIS_APPLY_SCRIPT)
+    board().requireImport('RESHAPE_SCRIPT', RESHAPE_SCRIPT)
+    board().requireImport('FILLET_SCRIPT', FILLET_SCRIPT)
+    board().requireImport('SLICE_PARAMS_SCRIPT', SLICE_PARAMS_SCRIPT)
+*/
+    board().requireImport('FILLET_SCRIPT', FILLET_SCRIPT)
+ 
+    //const directionStr = _stackDirectionToString(direction)
+    //const axisStr = _axisToString(axis)
+    return _makeBlock(`FilletUtils.filletObjects( [<CHILDREN>], ${radius}, "z-" )`, body);
+
+
+
+}
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
     //% handlerStatement=true
@@ -727,4 +1062,3 @@ function stackShapes(direction, axis, shapes) {
 
 
 }
-

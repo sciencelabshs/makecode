@@ -283,6 +283,20 @@ declare namespace operators {
     //% shim=operators::stackShapesAsync promise
     function stackShapes(direction: StackDirection, axis: Axis, body: () => void): void;
 
+    //% blockId=fillet block="fillet shapes|$radius" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% radius.defl=2
+    //% group="Layout"
+    /**
+     * move shapes up the z axis
+     * @param direction the direction to stack
+     * @param axis the axis to stack in
+     * @param body the shapes to move up
+     */
+    //% shim=operators::filletAsync promise
+    function fillet(radius: number, body: () => void): void;
+
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
     //% handlerStatement=true

@@ -12,3 +12,4 @@ package-lock.json
 .DS_Store
 .DS_Store
 dist/
+sim/public/jscad-util-ref.txt
