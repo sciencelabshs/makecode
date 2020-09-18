@@ -1,10 +1,13 @@
 # BuildBee MakeCode Editor - 3D printing with block coding
-Try it: https://buildbee.github.io/makecode
+Try it live: https://makecode.buildbee.com
 
-The team at BuildBee is trialing out Microsoft MakeCode to let you use block coding and javascript to make your own 3d designs.  Based on an OpenJSCad implementation, the editor allows you to create shapes that can be sent to your 3D printer. 
+The team at BuildBee is using Microsoft MakeCode to let you create physical things with block coding and javascript.  Based on an OpenJSCad libraries, the designer allows you to define parts and send them to your 3D printer with Buildbee. 
 
-Project status: super experimental!
+Project status: It works great so... Pretty close ¯\\\_(ツ)\_/¯ ?!?
 
+![projects](./docs/screenshots/projects.png)
+![tutorials](./docs/screenshots/tutorial.png)
+![javascript](./docs/screenshots/javascript.png)
 
 # About BuildBee 
 BuildBee is 3D printing software that makes managing the workflow of 3D printing much simpler.  The BuildBee Desktop app (Mac/Win) connects to most 3D printers and guides you step by step through the printing process, offering taylored presets for different kinds of prints. Currently used widely across the Australian school system, it is used to manage queuing, groups and printing permissions for schools and universities. 
