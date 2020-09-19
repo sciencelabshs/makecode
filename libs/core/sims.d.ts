@@ -1,5 +1,17 @@
 // Auto-generated from simulator. Do not edit.
 declare namespace shapes {
+    //% blockId="main_axisPicker" block="%input" shim=TD_ID
+    //% blockHidden=true
+    //% input.fieldEditor="imagedropdown" input.fieldOptions.columns=3
+    //% shim=shapes::_axisPicker
+    function _axisPicker(axis: Axis): number;
+
+    //% blockId="main_rotateAxisPicker" block="%input" shim=TD_ID
+    //% blockHidden=true
+    //% input.fieldEditor="imagedropdown" input.fieldOptions.columns=3
+    //% shim=shapes::_rotateAxisPicker
+    function _rotateAxisPicker(axis: RotateAxis): number;
+
     //% block="cube %type=main_iconPicker width $width|depth $depth|height $height||color $color"
     //% inlineInputMode=inline
     //% width.defl=10
@@ -230,43 +242,18 @@ declare namespace shapes {
 }
 declare namespace operators {
     /**
-     * move shapes across the x axis
-     * @param x how far to move across the x axis
+     * move shapes in mm in axis
+     * @param mm how far to move across the axis
+     * @param axis which axis to use
      * @param body the shapes to move across
      */
-    //% blockId=move_shapes_across block="move shapes across $x" 
+    //% blockId=move block="move $mm mm $direction=main_axisPicker" 
     //% topblock=false
-    //% x.defl=10
+    //% mm.defl=10
     //% handlerStatement=true
     //% group="Position"
-    //% shim=operators::moveShapesAcrossAsync promise
-    function moveShapesAcross(x: number, body: () => void): void;
-
-    //% blockId=move_shapes_over block="move shapes over $y" 
-    //% topblock=false
-    //% y.defl=10
-    //% handlerStatement=true
-    //% group="Position"
-    /**
-     * move shapes over on the y axis
-     * @param y the amount to move over
-     * @param body the shapes to move across
-     */
-    //% shim=operators::moveShapesOverAsync promise
-    function moveShapesOver(y: number, body: () => void): void;
-
-    //% blockId=move_shapes_up block="move shapes up $z" 
-    //% topblock=false
-    //% z.defl=10
-    //% handlerStatement=true
-    //% group="Position"
-    /**
-     * move shapes up the z axis
-     * @param z the amount to move up (in the air)
-     * @param body the shapes to move up
-     */
-    //% shim=operators::moveShapesUpAsync promise
-    function moveShapesUp(z: number, body: () => void): void;
+    //% shim=operators::moveAsync promise
+    function move(mm: number, direction: Axis, body: () => void): void;
 
     //% blockId=stackshapes block="stack shapes|$direction|axis: $axis" 
     //% topblock=false
@@ -280,22 +267,23 @@ declare namespace operators {
      * @param axis the axis to stack in
      * @param body the shapes to move up
      */
-    //% shim=operators::stackShapesAsync promise
-    function stackShapes(direction: StackDirection, axis: Axis, body: () => void): void;
+    //% shim=operators::stackAsync promise
+    function stack(direction: StackDirection, axis: Axis, body: () => void): void;
 
-    //% blockId=fillet block="fillet shapes|$radius" 
+    //% blockId=fillet block="fillet shapes| side $direction | radius $radius" 
     //% topblock=false
     //% handlerStatement=true
+    //% axis.defl=3
     //% radius.defl=2
     //% group="Layout"
     /**
-     * move shapes up the z axis
+     * Fillets (rounds) an edge in the Z axis
      * @param direction the direction to stack
-     * @param axis the axis to stack in
+     * @param radius the radius to use
      * @param body the shapes to move up
      */
     //% shim=operators::filletAsync promise
-    function fillet(radius: number, body: () => void): void;
+    function fillet(direction: FilletDirection, radius: number, body: () => void): void;
 
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
@@ -312,44 +300,20 @@ declare namespace operators {
     //% shim=operators::translateShapesAsync promise
     function translateShapes(x: number, y: number, z: number, body: () => void): void;
 
-    //% blockId=flip_shapes block="flip shapes $x x°" 
+    //% blockId=flip_shapes block="turn $angle ° | $axis=main_rotateAxisPicker" 
     //% topblock=false
     //% handlerStatement=true
-    //% x.shadow="protractorPicker"
-    //% group="Rotation"
+    //% angle.defl=45
+    //% angle.shadow="protractorPicker"
+    //% axis.defl=2
+    //% group="Position"
     /**
      * Flip along the X axis
      * @param x the amount, in degrees to rotate
      * @param body the shapes to rotate
      */
-    //% shim=operators::flipShapesAsync promise
-    function flipShapes(x: number, body: () => void): void;
-
-    //% blockId=roll_shapes block="roll shapes $y y°" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% y.shadow="protractorPicker"
-    //% group="Rotation"
-    /**
-     * Roll shapes along Y axis
-     * @param y the amount, in degrees to rotate in Y axis
-     * @param body the shapes to rotate
-     */
-    //% shim=operators::rollShapesAsync promise
-    function rollShapes(y: number, body: () => void): void;
-
-    //% blockId=spin_shapes block="spin shapes $z z°" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% z.shadow="protractorPicker"
-    //% group="Rotation"
-    /**
-     * Spin shapes in Z axis
-     * @param z the amount, in degrees to rotate in Z axis
-     * @param body the shapes to rotate
-     */
-    //% shim=operators::spinShapesAsync promise
-    function spinShapes(z: number, body: () => void): void;
+    //% shim=operators::turnAsync promise
+    function turn(angle: number, axis: RotateAxis, body: () => void): void;
 
     //% blockId=rotate_shapes block="rotate shapes x°: $x|  y°: $y | z°: $z" 
     //% topblock=false

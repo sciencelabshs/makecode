@@ -19,7 +19,7 @@ namespace shapes {
 /**
  * Move and rotate shapes
  */
-//% groups=["Position", "Rotation", "Operations"]
+//% groups=["Position", "Rotation", "Layout", "Operations"]
 //% color=#42AA0E weight=10 icon="\uf0b2" weight=80
 namespace operators {
 

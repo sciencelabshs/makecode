@@ -20,6 +20,21 @@
 namespace pxsim.shapes {
 
 
+    //% blockId="main_axisPicker" block="%input" shim=TD_ID
+    //% blockHidden=true
+    //% input.fieldEditor="imagedropdown" input.fieldOptions.columns=3
+    export function _axisPicker(axis: Axis): number {
+        return axis
+    }
+
+
+    //% blockId="main_rotateAxisPicker" block="%input" shim=TD_ID
+    //% blockHidden=true
+    //% input.fieldEditor="imagedropdown" input.fieldOptions.columns=3
+    export function _rotateAxisPicker(axis: RotateAxis): number {
+        return axis
+    }
+
 
 
 
@@ -362,53 +377,33 @@ namespace pxsim.operators {
     }
 
     /**
-     * move shapes across the x axis
-     * @param x how far to move across the x axis
+     * move shapes in mm in axis
+     * @param mm how far to move across the axis
+     * @param axis which axis to use
      * @param body the shapes to move across
      */
-    //% blockId=move_shapes_across block="move shapes across $x" 
+    //% blockId=move block="move $mm mm $direction=main_axisPicker" 
     //% topblock=false
-    //% x.defl=10
+    //% mm.defl=10
     //% handlerStatement=true
     //% group="Position"
-    export function moveShapesAcrossAsync(x: number, body: RefAction): Promise<void> {
+    export function moveAsync(mm: number, direction: Axis,  body: RefAction): Promise<void> {
 
-        return _makeBlock(`translate([${x}, 0, 0], <CHILDREN> )`, body)
+        switch (direction) {
+            case Axis.X:
+            default:
+                return _makeBlock(`translate([${mm}, 0, 0], <CHILDREN> )`, body)
+            case Axis.Y:
+                return _makeBlock(`translate([0, ${mm}, 0], <CHILDREN> )`, body)
+            case Axis.Z:
+                return _makeBlock(`translate([0, 0, ${mm}], <CHILDREN> )`, body)
+        }
+       
 
     }
 
-    //% blockId=move_shapes_over block="move shapes over $y" 
-    //% topblock=false
-    //% y.defl=10
-    //% handlerStatement=true
-    //% group="Position"
-    /**
-     * move shapes over on the y axis
-     * @param y the amount to move over
-     * @param body the shapes to move across
-     */
-    export function moveShapesOverAsync(y: number, body: RefAction): Promise<void> {
+   
 
-        return _makeBlock(`translate([0, ${y}, 0], <CHILDREN> )`, body)
-    }
-
-
-    //% blockId=move_shapes_up block="move shapes up $z" 
-    //% topblock=false
-    //% z.defl=10
-    //% handlerStatement=true
-    //% group="Position"
-    /**
-     * move shapes up the z axis
-     * @param z the amount to move up (in the air)
-     * @param body the shapes to move up
-     */
-    export function moveShapesUpAsync(z: number, body: RefAction): Promise<void> {
-
-
-        return _makeBlock(`translate([0, 0, ${z}], <CHILDREN> )`, body)
-
-    }
 
 
 
@@ -520,7 +515,7 @@ function stackShapes(direction, axis, shapes) {
      * @param axis the axis to stack in
      * @param body the shapes to move up
      */
-    export function stackShapesAsync(direction: StackDirection, axis: Axis, body: RefAction): Promise<void> {
+    export function stackAsync(direction: StackDirection, axis: Axis, body: RefAction): Promise<void> {
 
         board().requireImport('SNAP_TO_SIDE_SCRIPT', SNAP_TO_SIDE_SCRIPT)
         board().requireImport('AXIS_APPLY_SCRIPT', AXIS_APPLY_SCRIPT)
@@ -572,6 +567,17 @@ function stackShapes(direction, axis, shapes) {
                 break
         }
         return directionStr
+    }
+
+    function _filletDirectionToString(direction: FilletDirection) {
+        switch (direction) {
+            case FilletDirection.Above:
+                return "+"
+            case FilletDirection.Below: 
+                return "-"
+            
+        }
+        return "+"
     }
 
 
@@ -879,30 +885,32 @@ function reShape(object, radius, orientation, options, slicer) {
 }
 `
 
-//% blockId=fillet block="fillet shapes|$radius" 
+//% blockId=fillet block="fillet shapes| side $direction | radius $radius" 
 //% topblock=false
 //% handlerStatement=true
+//% axis.defl=3
 //% radius.defl=2
 //% group="Layout"
 /**
- * move shapes up the z axis
+ * Fillets (rounds) an edge in the Z axis
  * @param direction the direction to stack
- * @param axis the axis to stack in
+ * @param radius the radius to use
  * @param body the shapes to move up
  */
-export function filletAsync(radius: number, body: RefAction): Promise<void> {
+export function filletAsync(direction: FilletDirection, radius: number,  body: RefAction): Promise<void> {
 
-   /* board().requireImport('AXIS_APPLY_SCRIPT', AXIS_APPLY_SCRIPT)
-    board().requireImport('RESHAPE_SCRIPT', RESHAPE_SCRIPT)
-    board().requireImport('FILLET_SCRIPT', FILLET_SCRIPT)
-    board().requireImport('SLICE_PARAMS_SCRIPT', SLICE_PARAMS_SCRIPT)
-*/
+
     board().requireImport('FILLET_SCRIPT', FILLET_SCRIPT)
  
-    //const directionStr = _stackDirectionToString(direction)
-    //const axisStr = _axisToString(axis)
-    return _makeBlock(`FilletUtils.filletObjects( [<CHILDREN>], ${radius}, "z-" )`, body);
+    if (direction === FilletDirection.Both) {
 
+        return _makeBlock(`FilletUtils.filletObjects( [FilletUtils.filletObjects( [<CHILDREN>], ${radius}, "z+" )], ${radius}, "z-" )`, body);
+
+    }
+    else {
+        const directionStr = _filletDirectionToString(direction)
+        return _makeBlock(`FilletUtils.filletObjects( [<CHILDREN>], ${radius}, "z${directionStr}" )`, body);
+    }
 
 
 }
@@ -925,52 +933,30 @@ export function filletAsync(radius: number, body: RefAction): Promise<void> {
 
     }
 
-    //% blockId=flip_shapes block="flip shapes $x x°" 
+    //% blockId=flip_shapes block="turn $angle ° | $axis=main_rotateAxisPicker" 
     //% topblock=false
     //% handlerStatement=true
-    //% x.shadow="protractorPicker"
-    //% group="Rotation"
+    //% angle.defl=45
+    //% angle.shadow="protractorPicker"
+    //% axis.defl=2
+    //% group="Position"
     /**
      * Flip along the X axis
      * @param x the amount, in degrees to rotate
      * @param body the shapes to rotate
      */
-    export function flipShapesAsync(x: number, body: RefAction): Promise<void> {
-        return _makeBlock(`rotate([${x}, 0, 0], <CHILDREN> )`, body);
-
+    export function turnAsync(angle: number, axis: RotateAxis, body: RefAction): Promise<void> {
+      
+        switch (axis) {
+            case RotateAxis.X:
+            default:
+                return _makeBlock(`rotate([${angle}, 0, 0], <CHILDREN> )`, body)
+            case RotateAxis.Y:
+                return _makeBlock(`rotate([0, ${angle}, 0], <CHILDREN> )`, body)
+            case RotateAxis.Z:
+                return _makeBlock(`rotate([0, 0, ${angle}], <CHILDREN> )`, body)
+        }
     }
-    //% blockId=roll_shapes block="roll shapes $y y°" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% y.shadow="protractorPicker"
-    //% group="Rotation"
-    /**
-     * Roll shapes along Y axis
-     * @param y the amount, in degrees to rotate in Y axis
-     * @param body the shapes to rotate
-     */
-    export function rollShapesAsync(y: number, body: RefAction): Promise<void> {
-
-        return _makeBlock(`rotate([0, ${y}, 0], <CHILDREN> )`, body);
-
-    }
-
-    //% blockId=spin_shapes block="spin shapes $z z°" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% z.shadow="protractorPicker"
-    //% group="Rotation"
-    /**
-     * Spin shapes in Z axis
-     * @param z the amount, in degrees to rotate in Z axis
-     * @param body the shapes to rotate
-     */
-    export function spinShapesAsync(z: number, body: RefAction): Promise<void> {
-
-        return _makeBlock(`rotate([0, 0, ${z}], <CHILDREN> )`, body);
-
-    }
-
     //% blockId=rotate_shapes block="rotate shapes x°: $x|  y°: $y | z°: $z" 
     //% topblock=false
     //% handlerStatement=true
@@ -1059,6 +1045,9 @@ export function filletAsync(radius: number, body: RefAction): Promise<void> {
         return _makeBlock("chain_hull( <CHILDREN> )", body);
 
     }
+
+
+
 
 
 }

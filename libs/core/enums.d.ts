@@ -15,10 +15,24 @@ declare const enum SphereType {
 }
 
 declare const enum Axis {
+    //% blockIdentity=main._axisPicker blockImage=1
     X =1,
+    //% blockIdentity=main._axisPicker blockImage=1
     Y,
+    //% blockIdentity=main._axisPicker blockImage=1
     Z
 }
+
+declare const enum RotateAxis {
+    //% blockIdentity=main._rotateAxisPicker blockImage=1
+    X =1,
+    //% blockIdentity=main._rotateAxisPicker blockImage=1
+    Y,
+    //% blockIdentity=main._rotateAxisPicker blockImage=1
+    Z
+}
+
+
 declare const enum StackDirection {
     Below =1,
     Above,
@@ -26,4 +40,10 @@ declare const enum StackDirection {
     InsideAbove,
     CenterBelow,
     CenterAbove
+}
+
+declare const enum FilletDirection {
+    Above,
+    Below,
+    Both
 }
