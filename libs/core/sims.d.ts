@@ -270,7 +270,7 @@ declare namespace operators {
     //% shim=operators::stackAsync promise
     function stack(direction: StackDirection, axis: Axis, body: () => void): void;
 
-    //% blockId=fillet block="round | $direction edges | $radius mm " 
+    //% blockId=fillet block="round $direction edges | with radius: $radius mm " 
     //% topblock=false
     //% handlerStatement=true
     //% axis.defl=3
@@ -285,7 +285,7 @@ declare namespace operators {
     //% shim=operators::roundEdgesAsync promise
     function roundEdges(direction: FilletDirection, radius: number, body: () => void): void;
 
-    //% blockId=chamfer block="slope | $direction edges | $radius mm" 
+    //% blockId=chamfer block="slope $direction edges | with radius: $radius mm" 
     //% topblock=false
     //% handlerStatement=true
     //% axis.defl=3
@@ -299,6 +299,23 @@ declare namespace operators {
      */
     //% shim=operators::slopeEdgesAsync promise
     function slopeEdges(direction: ChamferDirection, radius: number, body: () => void): void;
+
+    //% blockId=makehollow block="make hollow - wall size: $wallThickness mm | - radius: $insideRound mm" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% wallThickness.defl=2
+    //% wallThickness.min=1
+    //% insideRound.defl=1
+    //% insideRound.min=0
+    //% group="Edges"
+    /**
+     * Hollows out a part
+     * @param wallThickness how thick to make the walls
+     * @param insideRound the radius to use on the inside
+     * @param body the shapes to move up
+     */
+    //% shim=operators::makeHollowAsync promise
+    function makeHollow(wallThickness: number, insideRound: number, body: () => void): void;
 
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false

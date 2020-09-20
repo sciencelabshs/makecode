@@ -592,12 +592,12 @@ function stackShapes(direction, axis, shapes) {
     }
 
 
-    const FILLET_SCRIPT = `
+    const LAYOUT_SCRIPT = `
 // thanks to jscad-utils for this script
 
 
 
-var FilletUtils = {
+var LayoutUtils = {
 
     scaleSize: function(size, value) {
         if (value == 0) return 1;
@@ -611,16 +611,28 @@ var FilletUtils = {
         } else {
             a = [ x, y || x, z || x ];
         }
-        var objectSize = FilletUtils.getObjectSize(object);
-        var objectCentroid = FilletUtils.centroid(object, objectSize);
+        var objectSize = LayoutUtils.getObjectSize(object);
+        var objectCentroid = LayoutUtils.centroid(object, objectSize);
         var idx = 0;
-        var t = FilletUtils.mapObjectKeys(objectSize, function(i) {
-            return FilletUtils.scaleSize(i, a[idx++]);
+        var t = LayoutUtils.mapObjectKeys(objectSize, function(i) {
+            return LayoutUtils.scaleSize(i, a[idx++]);
         });
         var new_object = scale(t, object)
-        var new_centroid = FilletUtils.centroid(new_object);
+        var new_centroid = LayoutUtils.centroid(new_object);
         var delta = new_centroid.minus(objectCentroid).times(-1);
         return new_object.translate(delta);
+    },
+    hollow: function (object, thickness, onModifyInternalShape) {
+        var wallThickness = thickness || 2;
+        var size = -wallThickness * 2;
+        
+        var internalShape = LayoutUtils.enlarge(object, [ size, size, size ]);
+        if (onModifyInternalShape) {
+            internalShape = onModifyInternalShape(internalShape)
+        }
+
+        var box = object.subtract(internalShape);
+        return box;
     },
 
     mapObjectKeys: function(o, f) {
@@ -645,7 +657,7 @@ var FilletUtils = {
       
         try {
             var bounds = o.getBounds();
-            objectSize = objectSize || FilletUtils.getObjectSize(bounds);
+            objectSize = objectSize || LayoutUtils.getObjectSize(bounds);
             return bounds[0].plus(objectSize.dividedBy(2));
         } catch (err) {
             error("centroid error o:".concat(jscadToString(o), " objectSize: ").concat(objectSize), undefined, err);
@@ -702,18 +714,18 @@ var FilletUtils = {
         var info = dirInfo["dir" + direction];
         return Object.assign({
             axis,
-            cutDelta: FilletUtils.axisApply(axis, function (i, a) {
+            cutDelta: LayoutUtils.axisApply(axis, function (i, a) {
                 return bounds[info.sizeIdx][a] + Math.abs(radius) * info.sizeDir;
             }),
-            moveDelta: FilletUtils.axisApply(axis, function (i, a) {
+            moveDelta: LayoutUtils.axisApply(axis, function (i, a) {
                 return bounds[info.sizeIdx][a] + Math.abs(radius) * info.moveDir;
             })
-        }, info, FilletUtils.normalVector(axis));
+        }, info, LayoutUtils.normalVector(axis));
     },
     filletObjects(objects, radius, orientation, options) {
         let results = []
         for (let i = 0; i < objects.length; i++) {
-            results.push(FilletUtils.fillet(objects[i], radius, orientation, options))
+            results.push(LayoutUtils.fillet(objects[i], radius, orientation, options))
         }
         return union(results);
     },
@@ -724,16 +736,16 @@ var FilletUtils = {
         var options = opts || {}
         var orientation = orient || "z+"
 
-        return FilletUtils.reShape(object, radius,  orientation, options, function (first, last, slice) {
+        return LayoutUtils.reShape(object, radius,  orientation, options, function (first, last, slice) {
             var v1 = new CSG.Vector3D(first);
             var v2 = new CSG.Vector3D(last);
             var res = options.resolution || CSG.defaultResolution3D;
-            var slices = FilletUtils.arrayRange(0, res).map(function (i) {
+            var slices = LayoutUtils.arrayRange(0, res).map(function (i) {
                 var p = i > 0 ? i / (res - 1) : 0;
                 var v = v1.lerp(v2, p);
                 var size = -radius * 2 - Math.cos(Math.asin(p)) * (-radius * 2);
                 return {
-                    poly: FilletUtils.enlarge(slice, [size, size]),
+                    poly: LayoutUtils.enlarge(slice, [size, size]),
                     offset: v
                 };
             });
@@ -743,7 +755,7 @@ var FilletUtils = {
     chamferObjects(objects, radius, orientation, options) {
         let results = []
         for (let i = 0; i < objects.length; i++) {
-            results.push(FilletUtils.chamfer(objects[i], radius, orientation, options))
+            results.push(LayoutUtils.chamfer(objects[i], radius, orientation, options))
         }
         return union(results);
     },
@@ -752,12 +764,12 @@ var FilletUtils = {
         var options = opts || {}
         var orientation = orient || "z+"
         
-            return FilletUtils.reShape(object, radius, orientation, options, function(first, last, slice) {
+            return LayoutUtils.reShape(object, radius, orientation, options, function(first, last, slice) {
                 return [ {
                     poly: slice,
                     offset: new CSG.Vector3D(first)
                 }, {
-                    poly: FilletUtils.enlarge(slice, [ -radius * 2, -radius * 2 ]),
+                    poly: LayoutUtils.enlarge(slice, [ -radius * 2, -radius * 2 ]),
                     offset: new CSG.Vector3D(last)
                 } ];
             });
@@ -777,8 +789,8 @@ var FilletUtils = {
         }
         var normalVector = options.si.normalVector;
         var polygons = [];
-        var first$1 = FilletUtils.first(slices)
-        var last$1 = FilletUtils.last(slices);
+        var first$1 = LayoutUtils.first(slices)
+        var last$1 = LayoutUtils.last(slices);
 
         var up = first$1.offset[axis] > last$1.offset[axis];
         polygons = polygons.concat(first$1.poly._toPlanePolygons({
@@ -820,19 +832,19 @@ var FilletUtils = {
         options = options || {};
         var b = object.getBounds();
         var ar = Math.abs(radius);
-        var si = FilletUtils.sliceParams(orientation, radius, b);
+        var si = LayoutUtils.sliceParams(orientation, radius, b);
         if (si.axis !== "z") throw new Error('reShape error: CAG._toPlanePolytons only uses the "z" axis.  You must use the "z" axis for now.');
         var cutplane = CSG.OrthoNormalBasis.GetCartesian(si.orthoNormalCartesian[0], si.orthoNormalCartesian[1]).translate(si.cutDelta);
         var slice = object.sectionCut(cutplane);
-        var first = FilletUtils.axisApply(si.axis, function () {
+        var first = LayoutUtils.axisApply(si.axis, function () {
             return si.positive ? 0 : ar;
         });
-        var last = FilletUtils.axisApply(si.axis, function () {
+        var last = LayoutUtils.axisApply(si.axis, function () {
             return si.positive ? ar : 0;
         });
         var plane = si.positive ? cutplane.plane : cutplane.plane.flipped();
         var slices = slicer(first, last, slice);
-        var delta = FilletUtils.slices2poly(slices, Object.assign(options, {
+        var delta = LayoutUtils.slices2poly(slices, Object.assign(options, {
             si
         }), si.axis);
         var remainder = object.cutByPlane(plane);
@@ -918,7 +930,7 @@ function reShape(object, radius, orientation, options, slicer) {
 }
 `
 
-    //% blockId=fillet block="round | $direction edges | $radius mm " 
+    //% blockId=fillet block="round $direction edges | with radius: $radius mm " 
     //% topblock=false
     //% handlerStatement=true
     //% axis.defl=3
@@ -933,22 +945,22 @@ function reShape(object, radius, orientation, options, slicer) {
     export function roundEdgesAsync(direction: FilletDirection, radius: number, body: RefAction): Promise<void> {
 
 
-        board().requireImport('FILLET_SCRIPT', FILLET_SCRIPT)
+        board().requireImport('LAYOUT_SCRIPT', LAYOUT_SCRIPT)
 
         if (direction === FilletDirection.Both) {
 
-            return _makeBlock(`FilletUtils.filletObjects( [FilletUtils.filletObjects( [<CHILDREN>], ${radius}, "z+" )], ${radius}, "z-" )`, body);
+            return _makeBlock(`LayoutUtils.filletObjects( [LayoutUtils.filletObjects( [<CHILDREN>], ${radius}, "z+" )], ${radius}, "z-" )`, body);
 
         }
         else {
             const directionStr = _filletDirectionToString(direction)
-            return _makeBlock(`FilletUtils.filletObjects( [<CHILDREN>], ${radius}, "z${directionStr}" )`, body);
+            return _makeBlock(`LayoutUtils.filletObjects( [<CHILDREN>], ${radius}, "z${directionStr}" )`, body);
         }
 
 
     }
 
-    //% blockId=chamfer block="slope | $direction edges | $radius mm" 
+    //% blockId=chamfer block="slope $direction edges | with radius: $radius mm" 
     //% topblock=false
     //% handlerStatement=true
     //% axis.defl=3
@@ -963,20 +975,57 @@ function reShape(object, radius, orientation, options, slicer) {
     export function slopeEdgesAsync(direction: ChamferDirection, radius: number, body: RefAction): Promise<void> {
 
 
-        board().requireImport('FILLET_SCRIPT', FILLET_SCRIPT)
+        board().requireImport('LAYOUT_SCRIPT', LAYOUT_SCRIPT)
 
         if (direction === ChamferDirection.Both) {
 
-            return _makeBlock(`FilletUtils.chamferObjects( [FilletUtils.chamferObjects( [<CHILDREN>], ${radius}, "z+" )], ${radius}, "z-" )`, body);
+            return _makeBlock(`LayoutUtils.chamferObjects( [LayoutUtils.chamferObjects( [<CHILDREN>], ${radius}, "z+" )], ${radius}, "z-" )`, body);
 
         }
         else {
             const directionStr = _chamferDirectionToString(direction)
-            return _makeBlock(`FilletUtils.chamferObjects( [<CHILDREN>], ${radius}, "z${directionStr}" )`, body);
+            return _makeBlock(`LayoutUtils.chamferObjects( [<CHILDREN>], ${radius}, "z${directionStr}" )`, body);
         }
 
 
     }
+
+    //% blockId=makehollow block="make hollow - wall size: $wallThickness mm | - radius: $insideRound mm" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% wallThickness.defl=2
+    //% wallThickness.min=1
+    //% insideRound.defl=1
+    //% insideRound.min=0
+    //% group="Edges"
+    /**
+     * Hollows out a part
+     * @param wallThickness how thick to make the walls
+     * @param insideRound the radius to use on the inside
+     * @param body the shapes to move up
+     */
+    export function makeHollowAsync(wallThickness: number, insideRound: number, body: RefAction): Promise<void> {
+
+
+        board().requireImport('LAYOUT_SCRIPT', LAYOUT_SCRIPT)
+
+        if (insideRound) {
+            return _makeBlock(`
+            LayoutUtils.hollow(union([<CHILDREN>]), ${wallThickness},  function(interiorBox) {
+                var roundedBottom = LayoutUtils.fillet(interiorBox, ${insideRound}, "z-")
+                return LayoutUtils.fillet(roundedBottom, ${insideRound}, "z+")
+                        
+            } )`, body);
+
+        }
+        else {
+            return _makeBlock(`LayoutUtils.hollow(union([<CHILDREN>]), ${wallThickness})`, body);
+
+        }
+
+
+    }
+
 
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
