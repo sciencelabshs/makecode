@@ -94,6 +94,7 @@
    */
 
   var workerInstance = 0
+  var lastWorkerInstance = -1
 
   function rebuildSolidsInWorker (script, fullurl, parameters, callback, options) {
     if (!parameters) { throw new Error("JSCAD: missing 'parameters'") }
@@ -121,7 +122,19 @@
         const onWorkComplete = function(callback) {
           try {
             // perform the callback
-            callback()
+            
+        // BUG - web workers can come back in random order
+        // making the later results get replaced by the earlier
+        // results
+
+            if (workerId > lastWorkerInstance) {
+              lastWorkerInstance = workerId;
+              callback()
+            }
+            else {
+              console.log("Work from worker ", workerId, "skipped", lastWorkerInstance, "already used")
+            }
+          
           }
           finally {
             // make sure we clean up the web worker
@@ -145,8 +158,12 @@
               })
             
               if (DEBUG_WORKER_PERF) console.timeEnd("worker" + workerId)
+              
               __sharedShapeCache = Object.assign({}, __sharedShapeCache, e.data.shapeCache)
+            
+
               onWorkComplete(function(){
+                console.log("Work complete. setting", data)
                 callback(undefined, data)
               })
             }
@@ -4568,7 +4585,7 @@
    * })
    */
 
-const DEBUG_PERF = false
+const DEBUG_PERF = true
 
 const localCache = {}
 
@@ -47283,6 +47300,7 @@ const localCache = {}
         this.setStatus('error', e.toString());
         scripthaserrors = true;
       }
+     
       if (!scripthaserrors) {
         this.script = script;
         this.filename = filename;
@@ -47296,22 +47314,7 @@ const localCache = {}
     // FIXME: not needed anymore, file cache is handled elsewhere
     getFullScript: function getFullScript() {
       return this.script;
-      /* var script = ''
-      // add the file cache
-       script += 'var gMemFs = ['
-      if (typeof (this.memFs) === 'object') {
-        var comma = ''
-        for (var fn in this.memFs) {
-          script += comma
-          script += JSON.stringify(this.memFs[fn])
-          comma = ','
-        }
-      }
-      script += '];\n'
-      script += '\n'
-      // add the main script
-      script += this.script
-      return script */
+    
     },
   
     rebuildSolids: function rebuildSolids() {
@@ -47939,7 +47942,8 @@ const localCache = {}
       var rotateFactor = 0.4;
       var panFactor = 0.005;
       var zoomFactor = 1.085;
-  
+      const DEBUG_ZOOM = false;
+
       gestures.drags.throttle(20).forEach(function (data) {
         var delta = data.delta,
             originalEvents = data.originalEvents;
@@ -47970,7 +47974,7 @@ const localCache = {}
           _this.angleZ -= delta.x * rotateFactor;
           _this.angleX += delta.y * rotateFactor;
         }
-        console.log("Angle", _this.angleX, _this.angleY, _this.angleZ, "viewport", _this.viewpointX, _this.viewpointY, _this.viewpointZ)
+        if (DEBUG_ZOOM) console.log("Angle", _this.angleX, _this.angleY, _this.angleZ, "viewport", _this.viewpointX, _this.viewpointY, _this.viewpointZ)
         _this.onDraw();
       });
   
@@ -48377,14 +48381,14 @@ const localCache = {}
           } }
       },
   
-      //me3d
+      // BuildBee Default Settings
       solid: {
         draw: true, // draw or not
         lines: false, // draw outlines or not
         faces: true,
         overlay: false, // use overlay when drawing lines or not
         smooth: false, // use smoothing or not
-        faceColor: { r: 78.0/255.0, g: 190.0/255.0, b: 215.0/255.0, a: 1 }, // default face color
+        faceColor: { r: 78.0/255.0, g: 190.0/255.0, b: 215.0/255.0, a: 1 }, // 4ebed7 face color
         outlineColor: { r: 0.0, g: 0.0, b: 0.0, a: 1.0 // default outline color
         } },
       background: {

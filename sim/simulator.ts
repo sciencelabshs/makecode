@@ -111,10 +111,11 @@ namespace pxsim {
 
         addStatement(str: string, color?: number) {
             let statementCode = str;
-            if (color !== undefined) {
+            if (color !== undefined && color !== 0x4ebed7) {
                 const red =  (color & 0xFF0000) >> 16;
                 const green = (color & 0x00FF00) >> 8;
                 const blue =  (color & 0x0000FF);
+
                 statementCode = `color([${red/255}, ${green/255}, ${blue/255}], ${statementCode})`
             }
             const newBlock = new Statement(statementCode)
@@ -154,17 +155,26 @@ namespace pxsim {
 
                 if (this.lastExecutingCode === codeStr) {
                     // dont refresh unless we have new code
+                    console.log("Code has not changed, not re-rendering")
                     return   
                 }
-                
+                this.lastExecutingCode = codeStr;
+               
+             
+                if (jsCadInterpreter.builder && jsCadInterpreter.isRunning) {
+                    jsCadInterpreter.builder.cancel()
+                }
                 jsCadInterpreter.setJsCad(
                     codeStr
                 );
                 
+                /*
                 if (!this.builders) {
                     this.builders =[]
                 }
 
+               
+         
                 let runningBuilders = []
                 for (let i = 0; i < this.builders.length; i++) {
                     
@@ -181,15 +191,21 @@ namespace pxsim {
                         console.log("Cancelling first builder in list...", this.builders)
                         firstBuilder.cancel()
                     }
-                }
-                this.builders.push(jsCadInterpreter.builder)
+                }*/
+               
+               // this.builders.push(jsCadInterpreter.builder)
 
             }
             else {
                 this.lastExecutingCode = null
                 jsCadInterpreter.clearViewer()
             }
-            console.log("// JSCAD ====\n", codeStr, "\n// =====")
+            console.log("// JSCAD: use window.jscad.script for details")
+            if (this.lastExecutingCode) {
+                const main = this.lastExecutingCode.indexOf("main");
+                const mainStr = this.lastExecutingCode.slice(main)
+                console.log(mainStr)
+            }
         }
 
         /** 

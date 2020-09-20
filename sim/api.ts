@@ -347,7 +347,7 @@ namespace pxsim.shapes {
     //% group="Colors"
     //% advanced=true
     export function randomColor(): number {
-        return Math.round(Math.random() * 255 * 255 *255)
+        return Math.round(Math.random() * 255 * 255 * 255)
     }
 
 
@@ -387,7 +387,7 @@ namespace pxsim.operators {
     //% mm.defl=10
     //% handlerStatement=true
     //% group="Position"
-    export function moveAsync(mm: number, direction: Axis,  body: RefAction): Promise<void> {
+    export function moveAsync(mm: number, direction: Axis, body: RefAction): Promise<void> {
 
         switch (direction) {
             case Axis.X:
@@ -398,11 +398,11 @@ namespace pxsim.operators {
             case Axis.Z:
                 return _makeBlock(`translate([0, 0, ${mm}], <CHILDREN> )`, body)
         }
-       
+
 
     }
 
-   
+
 
 
 
@@ -571,17 +571,28 @@ function stackShapes(direction, axis, shapes) {
 
     function _filletDirectionToString(direction: FilletDirection) {
         switch (direction) {
-            case FilletDirection.Above:
+            case FilletDirection.Top:
                 return "+"
-            case FilletDirection.Below: 
+            case FilletDirection.Bottom:
                 return "-"
-            
+
+        }
+        return "+"
+    }
+
+    function _chamferDirectionToString(direction: ChamferDirection) {
+        switch (direction) {
+            case ChamferDirection.Top:
+                return "+"
+            case ChamferDirection.Bottom:
+                return "-"
+
         }
         return "+"
     }
 
 
-const FILLET_SCRIPT = `
+    const FILLET_SCRIPT = `
 // thanks to jscad-utils for this script
 
 
@@ -729,6 +740,28 @@ var FilletUtils = {
             return slices;
         });
     },
+    chamferObjects(objects, radius, orientation, options) {
+        let results = []
+        for (let i = 0; i < objects.length; i++) {
+            results.push(FilletUtils.chamfer(objects[i], radius, orientation, options))
+        }
+        return union(results);
+    },
+    chamfer: function(object, rad, orient, opts) {
+        var radius = rad || 2
+        var options = opts || {}
+        var orientation = orient || "z+"
+        
+            return FilletUtils.reShape(object, radius, orientation, options, function(first, last, slice) {
+                return [ {
+                    poly: slice,
+                    offset: new CSG.Vector3D(first)
+                }, {
+                    poly: FilletUtils.enlarge(slice, [ -radius * 2, -radius * 2 ]),
+                    offset: new CSG.Vector3D(last)
+                } ];
+            });
+     },
 
     first: function first(a) {
         return a ? a[0] : undefined;
@@ -812,7 +845,7 @@ var FilletUtils = {
 
 
 `
-const SLICE_PARAMS_SCRIPT = `
+    const SLICE_PARAMS_SCRIPT = `
 function normalVector(axis) {
     var axisInfo = {
         z: {
@@ -859,7 +892,7 @@ function sliceParams(orientation, radius, bounds) {
         })
     }, info, normalVector(axis));
 }`
-const RESHAPE_SCRIPT =`
+    const RESHAPE_SCRIPT = `
 
 function reShape(object, radius, orientation, options, slicer) {
     options = options || {};
@@ -885,35 +918,66 @@ function reShape(object, radius, orientation, options, slicer) {
 }
 `
 
-//% blockId=fillet block="fillet shapes| side $direction | radius $radius" 
-//% topblock=false
-//% handlerStatement=true
-//% axis.defl=3
-//% radius.defl=2
-//% group="Layout"
-/**
- * Fillets (rounds) an edge in the Z axis
- * @param direction the direction to stack
- * @param radius the radius to use
- * @param body the shapes to move up
- */
-export function filletAsync(direction: FilletDirection, radius: number,  body: RefAction): Promise<void> {
+    //% blockId=fillet block="round | $direction edges | $radius mm " 
+    //% topblock=false
+    //% handlerStatement=true
+    //% axis.defl=3
+    //% radius.defl=2
+    //% group="Edges"
+    /**
+     * Round an edge in the Z axis (sometimes called fillet)
+     * @param direction the direction to stack
+     * @param radius the radius to use
+     * @param body the shapes to move up
+     */
+    export function roundEdgesAsync(direction: FilletDirection, radius: number, body: RefAction): Promise<void> {
 
 
-    board().requireImport('FILLET_SCRIPT', FILLET_SCRIPT)
- 
-    if (direction === FilletDirection.Both) {
+        board().requireImport('FILLET_SCRIPT', FILLET_SCRIPT)
 
-        return _makeBlock(`FilletUtils.filletObjects( [FilletUtils.filletObjects( [<CHILDREN>], ${radius}, "z+" )], ${radius}, "z-" )`, body);
+        if (direction === FilletDirection.Both) {
+
+            return _makeBlock(`FilletUtils.filletObjects( [FilletUtils.filletObjects( [<CHILDREN>], ${radius}, "z+" )], ${radius}, "z-" )`, body);
+
+        }
+        else {
+            const directionStr = _filletDirectionToString(direction)
+            return _makeBlock(`FilletUtils.filletObjects( [<CHILDREN>], ${radius}, "z${directionStr}" )`, body);
+        }
+
 
     }
-    else {
-        const directionStr = _filletDirectionToString(direction)
-        return _makeBlock(`FilletUtils.filletObjects( [<CHILDREN>], ${radius}, "z${directionStr}" )`, body);
+
+    //% blockId=chamfer block="slope | $direction edges | $radius mm" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% axis.defl=3
+    //% radius.defl=2
+    //% group="Edges"
+    /**
+     * Miters an edge in the Z axis (sometimes called chamfer)
+     * @param direction the direction to stack
+     * @param radius the radius to use
+     * @param body the shapes to move up
+     */
+    export function slopeEdgesAsync(direction: ChamferDirection, radius: number, body: RefAction): Promise<void> {
+
+
+        board().requireImport('FILLET_SCRIPT', FILLET_SCRIPT)
+
+        if (direction === ChamferDirection.Both) {
+
+            return _makeBlock(`FilletUtils.chamferObjects( [FilletUtils.chamferObjects( [<CHILDREN>], ${radius}, "z+" )], ${radius}, "z-" )`, body);
+
+        }
+        else {
+            const directionStr = _chamferDirectionToString(direction)
+            return _makeBlock(`FilletUtils.chamferObjects( [<CHILDREN>], ${radius}, "z${directionStr}" )`, body);
+        }
+
+
     }
 
-
-}
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
     //% handlerStatement=true
@@ -946,7 +1010,7 @@ export function filletAsync(direction: FilletDirection, radius: number,  body: R
      * @param body the shapes to rotate
      */
     export function turnAsync(angle: number, axis: RotateAxis, body: RefAction): Promise<void> {
-      
+
         switch (axis) {
             case RotateAxis.X:
             default:

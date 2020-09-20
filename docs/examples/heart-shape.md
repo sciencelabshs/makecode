@@ -33,11 +33,11 @@ shapes.cylinder(10, 10)
 
 ## Step 4
 
-Move the first ``||Shapes:cylinder||`` into the correct position by using the ``||Operators:move shapes across||`` block. 
+Move the first ``||Shapes:cylinder||`` into the correct position by using the ``||Operators:move||`` block.  Move 10mm in the X direction.
 
 ```blocks
 shapes.cube(20, 20, 10)
-operators.moveShapesAcross(10, function () {
+operators.move(10, Axis.X, function () {
     shapes.cylinder(10, 10)
 })
 ```
@@ -48,7 +48,7 @@ Add a second cylinder using the ``||Shapes:cylinder||`` block.
 
 ```blocks
 shapes.cube(20, 20, 10)
-operators.moveShapesAcross(10, function () {
+operators.move(10, Axis.X, function () {
     shapes.cylinder(10, 10)
 })
 shapes.cylinder(10,10)
@@ -57,14 +57,14 @@ shapes.cylinder(10,10)
 
 ## Step 6
 
-Move the second ``||Shapes:cylinder||`` into the correct position by using the ``||Operators:move shapes over||`` block.  
+Move the second ``||Shapes:cylinder||`` into the correct position by using the ``||Operators:move||`` block.  Move 10mm in the Y direction.
 
 ```blocks
 shapes.cube(20, 20, 10)
-operators.moveShapesAcross(10, function () {
+operators.move(10, Axis.Y, function () {
     shapes.cylinder(10, 10)
 })
-operators.moveShapesOver(10, function () {
+operators.move(10, Axis.Y, function () {
     shapes.cylinder(10, 10)
 })
 ```

@@ -270,20 +270,35 @@ declare namespace operators {
     //% shim=operators::stackAsync promise
     function stack(direction: StackDirection, axis: Axis, body: () => void): void;
 
-    //% blockId=fillet block="fillet shapes| side $direction | radius $radius" 
+    //% blockId=fillet block="round | $direction edges | $radius mm " 
     //% topblock=false
     //% handlerStatement=true
     //% axis.defl=3
     //% radius.defl=2
-    //% group="Layout"
+    //% group="Edges"
     /**
-     * Fillets (rounds) an edge in the Z axis
+     * Round an edge in the Z axis (sometimes called fillet)
      * @param direction the direction to stack
      * @param radius the radius to use
      * @param body the shapes to move up
      */
-    //% shim=operators::filletAsync promise
-    function fillet(direction: FilletDirection, radius: number, body: () => void): void;
+    //% shim=operators::roundEdgesAsync promise
+    function roundEdges(direction: FilletDirection, radius: number, body: () => void): void;
+
+    //% blockId=chamfer block="slope | $direction edges | $radius mm" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% axis.defl=3
+    //% radius.defl=2
+    //% group="Edges"
+    /**
+     * Miters an edge in the Z axis (sometimes called chamfer)
+     * @param direction the direction to stack
+     * @param radius the radius to use
+     * @param body the shapes to move up
+     */
+    //% shim=operators::slopeEdgesAsync promise
+    function slopeEdges(direction: ChamferDirection, radius: number, body: () => void): void;
 
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false

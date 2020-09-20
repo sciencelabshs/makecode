@@ -43,7 +43,14 @@ declare const enum StackDirection {
 }
 
 declare const enum FilletDirection {
-    Above,
-    Below,
+    Top,
+    Bottom,
+    Both
+}
+
+
+declare const enum ChamferDirection {
+    Top,
+    Bottom,
     Both
 }
