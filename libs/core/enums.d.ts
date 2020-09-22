@@ -42,15 +42,15 @@ declare const enum StackDirection {
     CenterAbove
 }
 
-declare const enum FilletDirection {
+declare const enum StyleEdgeDirection {
     Top,
     Bottom,
     Both
 }
 
-
-declare const enum ChamferDirection {
-    Top,
-    Bottom,
-    Both
+declare const enum EdgeStyle {
+    Chamfer,
+    ConcaveChamfer,
+    Fillet,
+    ConcaveFillet
 }

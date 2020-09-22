@@ -48,7 +48,7 @@ declare namespace shapes {
     //% type.defl=SphereType.icosahedron
     //% weight=94
     //% expandableArgumentMode="toggle"
-    //% group="3D Shapes"
+    //% group="3D Shapes - Round Shapes"
     /**
      * Add a sphere 
      * @param radius The distance from the center to the edge of the sphere 
@@ -70,7 +70,7 @@ declare namespace shapes {
     //% color.shadow="colorNumberPicker"
     //% faces.defl=100
     //% weight=90
-    //% group="3D Shapes"
+    //% group="3D Shapes - Round Shapes"
     /**
      * Add a cylinder
      * @param radius The radius (distance from center to edge) of the cylinder
@@ -85,8 +85,8 @@ declare namespace shapes {
 
     //% block="donut thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
-    //% thickness.defl=20 thickness.min=1
-    //% radius.defl=100
+    //% thickness.defl=4 thickness.min=1
+    //% radius.defl=10
     //% innerFaces.defl=16
     //% outerFaces.defl=32
     //% innerRotation.defl=0
@@ -95,7 +95,7 @@ declare namespace shapes {
     //% color.defl=0x4ebed7
     //% color.shadow="colorNumberPicker"
     //% weight=80
-    //% group="3D Shapes"
+    //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
     /**
      * 
@@ -119,7 +119,7 @@ declare namespace shapes {
     //% color.shadow="colorNumberPicker"
     //% faces.defl=100
     //% weight=75
-    //% group="3D Shapes"
+    //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
     /**
      * 
@@ -152,6 +152,74 @@ declare namespace shapes {
      */
     //% shim=shapes::text
     function text(text: string, lineWidth?: number, height?: number, color?: number): void;
+
+    //% block="roof triangle width $width|depth $depth|height $height||color $color"
+    //% inlineInputMode=inline
+    //% width.defl=10
+    //% depth.defl=10
+    //% height.defl=10
+    //% weight=93
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% group="3D Shapes - Triangles/Polygons"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Add a triangular prism (roof)
+     * @param width The width of the cube
+     * @param depth The depth of the cube
+     * @param height The height of the cube
+     * @param color If specified, what color to make the cube.  In hex (0xab1234)
+     */
+    //% shim=shapes::triangleRoof
+    function triangleRoof(width: number, height: number, depth: number, color?: number): void;
+
+    //% block="ramp triangle width $width|depth $depth|height $height||color $color"
+    //% inlineInputMode=inline
+    //% width.defl=10
+    //% depth.defl=10
+    //% height.defl=10
+    //% weight=92
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% group="3D Shapes - Triangles/Polygons"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Add a triangular prism (rampe)
+     * @param width The width of the cube
+     * @param depth The depth of the cube
+     * @param height The height of the cube
+     * @param color If specified, what color to make the cube.  In hex (0xab1234)
+     */
+    //% shim=shapes::triangleRamp
+    function triangleRamp(width: number, height: number, depth: number, color?: number): void;
+
+    //% block="3D polygon sides $sides|radius $radius|depth $depth||color $color"
+    //% inlineInputMode=inline
+    //% radius.defl=10
+    //% depth.defl=10
+    //% height.defl=10
+    //% sides.defl=6
+    //% sides.min=3
+    //% weight=80
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% group="3D Shapes - Triangles/Polygons"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Add a triangular prism (roof)
+     * @param sides The width of the cube
+     * @param depth The depth of the cube
+     * @param height The height of the cube
+     * @param color If specified, what color to make the cube.  In hex (0xab1234)
+     */
+    //% shim=shapes::polygon3D
+    function polygon3D(sides: number, radius: number, depth: number, color?: number): void;
 
     /*
     enum Animal {
@@ -252,6 +320,7 @@ declare namespace operators {
     //% mm.defl=10
     //% handlerStatement=true
     //% group="Position"
+    //% weight=82
     //% shim=operators::moveAsync promise
     function move(mm: number, direction: Axis, body: () => void): void;
 
@@ -270,35 +339,20 @@ declare namespace operators {
     //% shim=operators::stackAsync promise
     function stack(direction: StackDirection, axis: Axis, body: () => void): void;
 
-    //% blockId=fillet block="round $direction edges | with radius: $radius mm " 
+    //% blockId=trim_edges block="style edges: $edgeStyle | sides: $direction | with radius: $radius mm" 
     //% topblock=false
     //% handlerStatement=true
     //% axis.defl=3
     //% radius.defl=2
     //% group="Edges"
     /**
-     * Round an edge in the Z axis (sometimes called fillet)
+     * Either chamfers or fillets the edges in the Z axis
      * @param direction the direction to stack
      * @param radius the radius to use
      * @param body the shapes to move up
      */
-    //% shim=operators::roundEdgesAsync promise
-    function roundEdges(direction: FilletDirection, radius: number, body: () => void): void;
-
-    //% blockId=chamfer block="slope $direction edges | with radius: $radius mm" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% axis.defl=3
-    //% radius.defl=2
-    //% group="Edges"
-    /**
-     * Miters an edge in the Z axis (sometimes called chamfer)
-     * @param direction the direction to stack
-     * @param radius the radius to use
-     * @param body the shapes to move up
-     */
-    //% shim=operators::slopeEdgesAsync promise
-    function slopeEdges(direction: ChamferDirection, radius: number, body: () => void): void;
+    //% shim=operators::styleEdgesAsync promise
+    function styleEdges(edgeStyle: EdgeStyle, direction: TrimEdgeDirection, radius: number, body: () => void): void;
 
     //% blockId=makehollow block="make hollow - wall size: $wallThickness mm | - radius: $insideRound mm" 
     //% topblock=false
@@ -338,6 +392,7 @@ declare namespace operators {
     //% angle.defl=45
     //% angle.shadow="protractorPicker"
     //% axis.defl=2
+    //% weight=80
     //% group="Position"
     /**
      * Flip along the X axis

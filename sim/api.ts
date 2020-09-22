@@ -80,7 +80,7 @@ namespace pxsim.shapes {
     //% type.defl=SphereType.icosahedron
     //% weight=94
     //% expandableArgumentMode="toggle"
-    //% group="3D Shapes"
+    //% group="3D Shapes - Round Shapes"
     /**
      * Add a sphere 
      * @param radius The distance from the center to the edge of the sphere 
@@ -109,7 +109,7 @@ namespace pxsim.shapes {
     //% color.shadow="colorNumberPicker"
     //% faces.defl=100
     //% weight=90
-    //% group="3D Shapes"
+    //% group="3D Shapes - Round Shapes"
     /**
      * Add a cylinder
      * @param radius The radius (distance from center to edge) of the cylinder
@@ -135,8 +135,8 @@ namespace pxsim.shapes {
     }
     //% block="donut thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
-    //% thickness.defl=20 thickness.min=1
-    //% radius.defl=100
+    //% thickness.defl=4 thickness.min=1
+    //% radius.defl=10
     //% innerFaces.defl=16
     //% outerFaces.defl=32
     //% innerRotation.defl=0
@@ -145,7 +145,7 @@ namespace pxsim.shapes {
     //% color.defl=0x4ebed7
     //% color.shadow="colorNumberPicker"
     //% weight=80
-    //% group="3D Shapes"
+    //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
     /**
      * 
@@ -186,7 +186,7 @@ namespace pxsim.shapes {
     //% color.shadow="colorNumberPicker"
     //% faces.defl=100
     //% weight=75
-    //% group="3D Shapes"
+    //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
     /**
      * 
@@ -246,6 +246,140 @@ namespace pxsim.shapes {
 
     }
 
+
+
+    //% block="roof triangle width $width|depth $depth|height $height||color $color"
+    //% inlineInputMode=inline
+    //% width.defl=10
+    //% depth.defl=10
+    //% height.defl=10
+    //% weight=93
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% group="3D Shapes - Triangles/Polygons"
+    //% expandableArgumentMode="enabled"
+    /**
+    * Add a triangular prism (roof)
+    * @param width The width of the cube
+    * @param depth The depth of the cube
+    * @param height The height of the cube
+    * @param color If specified, what color to make the cube.  In hex (0xab1234)
+    */
+    export function triangleRoof(width: number, height: number, depth: number, color?: number) {
+        board().requireImport('TRIANGLE_PRISM', TRIANGLE_PRISM)
+    
+        board().addStatement(`triangularPrism({
+                mode: "equilateral", 
+                width: ${width},
+                height: ${height},
+                depth: ${depth},
+            })`, color);
+    }
+
+
+
+    //% block="ramp triangle width $width|depth $depth|height $height||color $color"
+    //% inlineInputMode=inline
+    //% width.defl=10
+    //% depth.defl=10
+    //% height.defl=10
+    //% weight=92
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% group="3D Shapes - Triangles/Polygons"
+    //% expandableArgumentMode="enabled"
+    /**
+    * Add a triangular prism (rampe)
+    * @param width The width of the cube
+    * @param depth The depth of the cube
+    * @param height The height of the cube
+    * @param color If specified, what color to make the cube.  In hex (0xab1234)
+    */
+   export function triangleRamp(width: number, height: number, depth: number, color?: number) {
+    board().requireImport('TRIANGLE_PRISM', TRIANGLE_PRISM)
+
+    board().addStatement(`triangularPrism({
+            mode: "right", 
+            width: ${width},
+            height: ${height},
+            depth: ${depth},
+        })`, color);
+}
+
+    // this is designed to stack perfectly with cube.
+    const TRIANGLE_PRISM=`
+    function triangularPrism({mode, width, depth, height}) {
+        if (mode === "equilateral") {
+            var cag = polygon({ points: [ [0,0],[-width/2,height],[width/2,height] ] })
+            return linear_extrude({height:depth}, cag).rotateX(-90).translate([width/2,0,height])
+              
+        }
+        else if (mode === "right") {
+            var cag = polygon({ points: [ [0,0],[0,height],[width,height] ] })
+            return linear_extrude({height:depth}, cag).rotateX(-90).translate([width/2,0,height])
+         
+        }
+    }
+    `
+
+
+    //% block="3D polygon sides $sides|radius $radius|depth $depth||color $color"
+    //% inlineInputMode=inline
+    //% radius.defl=10
+    //% depth.defl=10
+    //% height.defl=10
+    //% sides.defl=6
+    //% sides.min=3
+    //% weight=80
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% group="3D Shapes - Triangles/Polygons"
+    //% expandableArgumentMode="enabled"
+    /**
+    * Add a triangular prism (roof)
+    * @param sides The width of the cube
+    * @param depth The depth of the cube
+    * @param height The height of the cube
+    * @param color If specified, what color to make the cube.  In hex (0xab1234)
+    */
+   export function polygon3D(sides: number, radius: number, depth: number, color?: number) {
+    board().requireImport('POLYGON_PRISM', POLYGON_PRISM)
+
+    board().addStatement(`polygonPrism({
+            sides: ${sides}, 
+            radius: ${radius},
+            depth: ${depth},
+        })`, color);
+    }
+
+ const POLYGON_PRISM =`
+
+
+function polygonPrism({sides, radius, depth}) {
+    
+    var centerX = 0, centerY = 0, size = 2*radius;
+    let points = []
+    
+    points.push([centerX + size * Math.cos(0), 
+                 centerY + size * Math.sin(0)])
+    
+    for (var i = 1; i <= sides;i += 1) {
+        points.push([centerX + size * Math.cos(i * 2 * Math.PI / sides), 
+                     centerY + size *Math.sin(i * 2 * Math.PI / sides)])
+    }
+
+    var twoDShape = polygon({ points: points  })
+    return linear_extrude({height: depth}, twoDShape); 
+  
+}
+ 
+ `   
 
     /*
     enum Animal {
@@ -387,6 +521,7 @@ namespace pxsim.operators {
     //% mm.defl=10
     //% handlerStatement=true
     //% group="Position"
+    //% weight=82
     export function moveAsync(mm: number, direction: Axis, body: RefAction): Promise<void> {
 
         switch (direction) {
@@ -569,22 +704,12 @@ function stackShapes(direction, axis, shapes) {
         return directionStr
     }
 
-    function _filletDirectionToString(direction: FilletDirection) {
+ 
+    function _styleEdgeDirectionToString(direction: StyleEdgeDirection) {
         switch (direction) {
-            case FilletDirection.Top:
+            case StyleEdgeDirection.Top:
                 return "+"
-            case FilletDirection.Bottom:
-                return "-"
-
-        }
-        return "+"
-    }
-
-    function _chamferDirectionToString(direction: ChamferDirection) {
-        switch (direction) {
-            case ChamferDirection.Top:
-                return "+"
-            case ChamferDirection.Bottom:
+            case StyleEdgeDirection.Bottom:
                 return "-"
 
         }
@@ -930,61 +1055,65 @@ function reShape(object, radius, orientation, options, slicer) {
 }
 `
 
-    //% blockId=fillet block="round $direction edges | with radius: $radius mm " 
+ 
+    
+
+    //% blockId=trim_edges block="style edges: $edgeStyle | sides: $direction | with radius: $radius mm" 
     //% topblock=false
     //% handlerStatement=true
     //% axis.defl=3
     //% radius.defl=2
     //% group="Edges"
     /**
-     * Round an edge in the Z axis (sometimes called fillet)
+     * Either chamfers or fillets the edges in the Z axis
      * @param direction the direction to stack
      * @param radius the radius to use
      * @param body the shapes to move up
      */
-    export function roundEdgesAsync(direction: FilletDirection, radius: number, body: RefAction): Promise<void> {
+    export function styleEdgesAsync(edgeStyle: EdgeStyle, direction: StyleEdgeDirection, radius: number, body: RefAction): Promise<void> {
 
 
-        board().requireImport('LAYOUT_SCRIPT', LAYOUT_SCRIPT)
 
-        if (direction === FilletDirection.Both) {
-
-            return _makeBlock(`LayoutUtils.filletObjects( [LayoutUtils.filletObjects( [<CHILDREN>], ${radius}, "z+" )], ${radius}, "z-" )`, body);
+        switch(edgeStyle) {
+            case EdgeStyle.Chamfer:
+                return _chamferEdges(direction, radius, body)
+            case EdgeStyle.ConcaveChamfer:
+                return _chamferEdges(direction, -radius, body)
+                   
+            case EdgeStyle.ConcaveFillet:
+                return _filletEdges(direction, -radius, body)
+            case EdgeStyle.Fillet:
+            default:
+                return _filletEdges(direction, radius, body)
+               
 
         }
-        else {
-            const directionStr = _filletDirectionToString(direction)
-            return _makeBlock(`LayoutUtils.filletObjects( [<CHILDREN>], ${radius}, "z${directionStr}" )`, body);
-        }
+
 
 
     }
-
-    //% blockId=chamfer block="slope $direction edges | with radius: $radius mm" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% axis.defl=3
-    //% radius.defl=2
-    //% group="Edges"
-    /**
-     * Miters an edge in the Z axis (sometimes called chamfer)
-     * @param direction the direction to stack
-     * @param radius the radius to use
-     * @param body the shapes to move up
-     */
-    export function slopeEdgesAsync(direction: ChamferDirection, radius: number, body: RefAction): Promise<void> {
-
-
+    function _chamferEdges(direction: StyleEdgeDirection, radius: number, body: RefAction): Promise<void> {
         board().requireImport('LAYOUT_SCRIPT', LAYOUT_SCRIPT)
 
-        if (direction === ChamferDirection.Both) {
+        if (direction === StyleEdgeDirection.Both) {
 
             return _makeBlock(`LayoutUtils.chamferObjects( [LayoutUtils.chamferObjects( [<CHILDREN>], ${radius}, "z+" )], ${radius}, "z-" )`, body);
 
         }
         else {
-            const directionStr = _chamferDirectionToString(direction)
+            const directionStr = _styleEdgeDirectionToString(direction)
             return _makeBlock(`LayoutUtils.chamferObjects( [<CHILDREN>], ${radius}, "z${directionStr}" )`, body);
+        }
+    }
+    function _filletEdges(direction: StyleEdgeDirection, radius: number, body: RefAction): Promise<void> {
+
+        board().requireImport('LAYOUT_SCRIPT', LAYOUT_SCRIPT)
+        if (direction === StyleEdgeDirection.Both) {
+            return _makeBlock(`LayoutUtils.filletObjects( [LayoutUtils.filletObjects( [<CHILDREN>], ${radius}, "z+" )], ${radius}, "z-" )`, body);
+        }
+        else {
+            const directionStr = _styleEdgeDirectionToString(direction)
+            return _makeBlock(`LayoutUtils.filletObjects( [<CHILDREN>], ${radius}, "z${directionStr}" )`, body);
         }
 
 
@@ -1052,6 +1181,7 @@ function reShape(object, radius, orientation, options, slicer) {
     //% angle.defl=45
     //% angle.shadow="protractorPicker"
     //% axis.defl=2
+    //% weight=80
     //% group="Position"
     /**
      * Flip along the X axis
