@@ -163,7 +163,7 @@
             
 
               onWorkComplete(function(){
-                console.log("Work complete. setting", data)
+        //        console.log("Work complete. setting", data)
                 callback(undefined, data)
               })
             }

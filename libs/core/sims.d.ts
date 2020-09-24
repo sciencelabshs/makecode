@@ -12,16 +12,27 @@ declare namespace shapes {
     //% shim=shapes::_rotateAxisPicker
     function _rotateAxisPicker(axis: RotateAxis): number;
 
-    //% block="cube %type=main_iconPicker width $width|depth $depth|height $height||color $color"
+    //% blockId="main_edgeStylePicker" block="%input" shim=TD_ID
+    //% blockHidden=true
+    //% input.fieldEditor="imagedropdown" input.fieldOptions.columns=3
+    //% shim=shapes::_edgeStylePicker
+    function _edgeStylePicker(edgeStyle: EdgeStyle): number;
+
+    //% blockId=colorNumberPicker2 block="%value"
+    //% blockHidden=true
+    //% shim=TD_ID colorSecondary="#FFFFFF"
+    //% value.fieldEditor="colornumber" value.fieldOptions.decompileLiterals=true
+    //% value.fieldOptions.colours='["#4ebed7", "#ffffff","#001F3F","#0074D9", "#7FDBFF", "#39CCCC", "#3D9970", "#2ECC40", "#01FF70", "#FFDC00", "#FF851B", "#FF4136", "#F012BE", "#B10DC9", "#85144B", "#FFFFFF", "#AAAAAA", "#DDDDDD",  "#111111", "#663300", "#cc6600", "#ffcc99", "#fff2e6"]'
+    //% value.defl='#ff0000'
+    //% shim=shapes::__colorNumberPicker2
+    function __colorNumberPicker2(value: number): number;
+
+    //% block="cube - width $width|depth $depth|height $height||color $color=colorNumberPicker2"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
     //% height.defl=10
     //% weight=95
-    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
-    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
-    //% color.defl=0x4ebed7
-    //% color.shadow="colorNumberPicker"
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
     /**
@@ -34,7 +45,7 @@ declare namespace shapes {
     //% shim=shapes::cube
     function cube(width: number, depth: number, height: number, color?: number): void;
 
-    //% block="sphere radius $radius || color $color|type $type|center $centerZ|faces $faces"
+    //% block="sphere - radius $radius || color $color|type $type|center $centerZ|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
     //% faces.defl=60
@@ -48,7 +59,7 @@ declare namespace shapes {
     //% type.defl=SphereType.icosahedron
     //% weight=94
     //% expandableArgumentMode="toggle"
-    //% group="3D Shapes - Round Shapes"
+    //% group="3D Shapes"
     /**
      * Add a sphere 
      * @param radius The distance from the center to the edge of the sphere 
@@ -60,7 +71,7 @@ declare namespace shapes {
     //% shim=shapes::sphere
     function sphere(radius: number, color?: number, type?: SphereType, centerZ?: boolean, faces?: number): void;
 
-    //% block="cylinder radius $radius|height $height||color $color|radius2 $radius2|center $centerZ|faces $faces"
+    //% block="cylinder - radius $radius|height $height||color $color|radius2 $radius2|center $centerZ|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
@@ -70,7 +81,7 @@ declare namespace shapes {
     //% color.shadow="colorNumberPicker"
     //% faces.defl=100
     //% weight=90
-    //% group="3D Shapes - Round Shapes"
+    //% group="3D Shapes"
     /**
      * Add a cylinder
      * @param radius The radius (distance from center to edge) of the cylinder
@@ -83,7 +94,7 @@ declare namespace shapes {
     //% shim=shapes::cylinder
     function cylinder(radius: number, height: number, color?: number, radius2?: number, centerZ?: boolean, faces?: number): void;
 
-    //% block="donut thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
+    //% block="donut - thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
     //% thickness.defl=4 thickness.min=1
     //% radius.defl=10
@@ -109,7 +120,7 @@ declare namespace shapes {
     //% shim=shapes::donut
     function donut(thickness: number, radius: number, color?: number, innerFaces?: number, outerFaces?: number, innerRotation?: number): void;
 
-    //% block="cone radius $radius|height $height|| color $color | faces $faces"
+    //% block="cone - radius $radius|height $height|| color $color | faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
@@ -132,11 +143,14 @@ declare namespace shapes {
     //% shim=shapes::cone
     function cone(radius: number, height: number, color?: number, centerZ?: boolean, faces?: number): void;
 
-    //% block="write text $text||line width $lineWidth|height $height|color $color"
+    //% block="text - text $text | fontSize $fontSize | height $height ||color $color | line width $lineWidth |  letterSpacing $letterSpacing | lineSpacing $lineSpacing"
     //% inlineInputMode=inline
     //% lineWidth.defl=4
+    //% fontSize.defl=21,
+    //% lineSpacing.defl=1.4
+    //% letterSpacing.defl=1
     //% text.defl="text"
-    //% height.defl=10
+    //% height.defl=4
     //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
     //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
     //% color.defl=0x4ebed7
@@ -151,9 +165,9 @@ declare namespace shapes {
      * @param color The color of the text
      */
     //% shim=shapes::text
-    function text(text: string, lineWidth?: number, height?: number, color?: number): void;
+    function text(text: string, fontSize?: number, height?: number, color?: number, lineWidth?: number, letterSpacing?: number, lineSpacing?: number): void;
 
-    //% block="roof triangle width $width|depth $depth|height $height||color $color"
+    //% block="roof - width $width|depth $depth|height $height||color $color"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
@@ -175,7 +189,7 @@ declare namespace shapes {
     //% shim=shapes::triangleRoof
     function triangleRoof(width: number, height: number, depth: number, color?: number): void;
 
-    //% block="ramp triangle width $width|depth $depth|height $height||color $color"
+    //% block="ramp - width $width|depth $depth|height $height||color $color"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
@@ -197,7 +211,7 @@ declare namespace shapes {
     //% shim=shapes::triangleRamp
     function triangleRamp(width: number, height: number, depth: number, color?: number): void;
 
-    //% block="3D polygon sides $sides|radius $radius|depth $depth||color $color"
+    //% block="polygon - sides $sides|radius $radius|depth $depth||color $color"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% depth.defl=10
@@ -236,18 +250,31 @@ declare namespace shapes {
     board().addStatement(`makePenguin(${lineWidth}, ${height})`);
     }
      */
-    /* todo: investigate bug; points.map  is not a function
     //% block="polyhedron from 3d points $points|triangles $triangles"
     //% points.defl="inner_shadow_block"
-    //% triangles.defl="inner_shadow_block"
     //% polyhedron.shadow="lists_create_with"
     //% advanced=true
     //% group="Advanced 3D Shapes"
-    export function polyhedron(points: string[], triangles: string[]): void {
-    const pointsArrayStr = points["data"].toString()
-    const triangleArrayStr = triangles["data"].toString()
-    board().addStatement(`rectangular_extrude({points: [${pointsArrayStr}], triangles: [${triangleArrayStr}]})`);
-    }*/
+    /*   export function polyhedron(points: Array<any>): void {
+    const pointsArrayStr = (points as any).toArray()
+    board().requireImport('POLYHEDRON_SCRIPT', POLYHEDRON_SCRIPT)
+    board().addStatement(`generatePolyhedron([${pointsArrayStr}])`);
+    }
+    const POLYHEDRON_SCRIPT =`
+    function generatePolyhedron(points) {
+    var polygons = [];
+    for (let i = 0; i < points.length; i++) {
+    if (points[i] && points[i].length > 2) {
+    const x = points[i][0]
+    const y = points[i][1]
+    const z = points[i][2]
+    polygons.push(new CSG.Vertex(new CSG.Vector3D(x,y,z)));
+    }
+    }
+    // add more polygons and finally:
+    return CSG.fromPolygons(polygons);
+    }
+    `*/
     /*
     //% block="draw 3d lines with width $width|height $height|closed $closed|from 2d points $points"
     //% width.defl=10
@@ -258,11 +285,10 @@ declare namespace shapes {
     //% advanced=true
     //% group="Advanced 3D Shapes"
     export function drawLinePath(width: number, height: number, closed: boolean, points: string[]): void {
-    console.log(points)
-    const pointsArrayStr = points["data"].toString()
+    const pointsArrayStr = (points as any).toArray()
     board().addStatement(`rectangular_extrude([${pointsArrayStr}], {w: ${width}, h: ${height}, closed: ${closed}})`);
     }*/
-    //% block="circle radius $radius"
+    //% block="circle (2d) - radius $radius"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% weight=50
@@ -271,10 +297,10 @@ declare namespace shapes {
     //% shim=shapes::circle
     function circle(radius: number): void;
 
-    //% blockId=add_rect block="rect width $width|height $height"
+    //% blockId=add_rect block="rect (2d) - width $width|height $height"
     //% inlineInputMode=inline
-    //% width.defl=50
-    //% height.defl=50
+    //% width.defl=10
+    //% height.defl=20
     //% weight=50
     //% advanced=true
     //% group="2D Shapes"
@@ -339,7 +365,7 @@ declare namespace operators {
     //% shim=operators::stackAsync promise
     function stack(direction: StackDirection, axis: Axis, body: () => void): void;
 
-    //% blockId=trim_edges block="style edges: $edgeStyle | sides: $direction | with radius: $radius mm" 
+    //% blockId=trim_edges block="style edges: $edgeStyle=main_edgeStylePicker | sides: $direction | with radius: $radius mm" 
     //% topblock=false
     //% handlerStatement=true
     //% axis.defl=3
@@ -352,9 +378,20 @@ declare namespace operators {
      * @param body the shapes to move up
      */
     //% shim=operators::styleEdgesAsync promise
-    function styleEdges(edgeStyle: EdgeStyle, direction: TrimEdgeDirection, radius: number, body: () => void): void;
+    function styleEdges(edgeStyle: EdgeStyle, direction: StyleEdgeDirection, radius: number, body: () => void): void;
 
-    //% blockId=makehollow block="make hollow - wall size: $wallThickness mm | - radius: $insideRound mm" 
+    //% blockId=color_block block="color $color" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% group="Edges"
+    //% shim=operators::colorAsync promise
+    function color(color: number, body: () => void): void;
+
+    //% blockId=makehollow block="hollow shapes - wall size: $wallThickness mm | - radius: $insideRound mm" 
     //% topblock=false
     //% handlerStatement=true
     //% wallThickness.defl=2
@@ -368,13 +405,13 @@ declare namespace operators {
      * @param insideRound the radius to use on the inside
      * @param body the shapes to move up
      */
-    //% shim=operators::makeHollowAsync promise
-    function makeHollow(wallThickness: number, insideRound: number, body: () => void): void;
+    //% shim=operators::hollowShapesAsync promise
+    function hollowShapes(wallThickness: number, insideRound: number, body: () => void): void;
 
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
     //% handlerStatement=true
-    //% group="Position"
+    //% group="Position and Size"
     //% advanced=true
     /**
      * Move shapes in three dimensions
@@ -385,6 +422,42 @@ declare namespace operators {
      */
     //% shim=operators::translateShapesAsync promise
     function translateShapes(x: number, y: number, z: number, body: () => void): void;
+
+    //% blockId=scale_shapes block="scale shapes x: $x|  y: $y |  z: $z" 
+    //% x.defl=1
+    //% y.defl=1
+    //% z.defl=1
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="Position and Size"
+    //% advanced=true
+    /**
+     * Move shapes in three dimensions
+     * @param x How much to scale in x
+     * @param y How much to scale in y
+     * @param z How much to scale in z
+     * @param body The list of shapes to move
+     */
+    //% shim=operators::scaleShapesAsync promise
+    function scaleShapes(x: number, y: number, z: number, body: () => void): void;
+
+    //% blockId=enlarge_shapes block="enlarge shapes x: $x|  y: $y |  z: $z" 
+    //% x.defl=2
+    //% y.defl=2
+    //% z.defl=2
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="Position and Size"
+    //% advanced=true
+    /**
+     * Move shapes in three dimensions
+     * @param x How much to enlarge in x
+     * @param y How much to enlarge in y
+     * @param z How much to enlarge in z
+     * @param body The list of shapes to enlarge
+     */
+    //% shim=operators::enlargeShapesAsync promise
+    function enlargeShapes(x: number, y: number, z: number, body: () => void): void;
 
     //% blockId=flip_shapes block="turn $angle ° | $axis=main_rotateAxisPicker" 
     //% topblock=false
@@ -449,6 +522,42 @@ declare namespace operators {
      */
     //% shim=operators::intersectShapesAsync promise
     function intersectShapes(body: () => void): void;
+
+    //% blockId=rotateExtrude2dshapes block="rotate extrude 2d shape from angle $startAngle | to $stopAngle | faces $faces" 
+    //% startAngle.defl=0
+    //% stopAngle.defl=360
+    //% startAngle.shadow="protractorPicker"
+    //% stopAngle.shadow="protractorPicker"
+    //% faces.defl=32
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="2D to 3D Shape Converters"
+    //% advanced=true
+    /**
+     * For 2D shapes, apply a shrinkwrapping technique to join them together.  Also known as hull.
+     * @param body List of 2D shapes to shrink wrap
+     */
+    //% shim=operators::rotateExtrudeAsync promise
+    function rotateExtrude(startAngle: number, stopAngle: number, faces: number, body: () => void): void;
+
+    //% blockId=linearExtrude2dshapes block="linear extrude 2d shape to height: $height | twist: $twist | slices: $slices" 
+    //% height.defl=10
+    //% twist.defl=0
+    //% twist.shadow="protractorPicker"
+    //% slices.defl=50
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="2D to 3D Shape Converters"
+    //% advanced=true
+    /**
+     * Give a 2D shape height, optionally twist it
+     * @param height The height of the extrusion
+     * @param twist The angle to twist the extrusion
+     * @param slices Defines resolution of the twist
+     * @param body 
+     */
+    //% shim=operators::linearExtrudeAsync promise
+    function linearExtrude(height: number, twist: number, slices: number, body: () => void): void;
 
     //% blockId=wrap2dshapes block="wrap 2d shapes (hull)" 
     //% topblock=false

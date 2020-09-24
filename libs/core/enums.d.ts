@@ -43,14 +43,18 @@ declare const enum StackDirection {
 }
 
 declare const enum StyleEdgeDirection {
-    Top,
+    Top =1,
     Bottom,
     Both
 }
 
 declare const enum EdgeStyle {
-    Chamfer,
+    //% blockIdentity=main._edgeStylePicker blockImage=1
+    Chamfer =1 ,
+    //% blockIdentity=main._edgeStylePicker blockImage=1
     ConcaveChamfer,
+    //% blockIdentity=main._edgeStylePicker blockImage=1
     Fillet,
+    //% blockIdentity=main._edgeStylePicker blockImage=1
     ConcaveFillet
 }

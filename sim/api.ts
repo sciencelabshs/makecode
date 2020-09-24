@@ -1,5 +1,3 @@
-
-
 /// <reference path="../libs/core/enums.d.ts"/>
 
 /**
@@ -35,20 +33,30 @@ namespace pxsim.shapes {
         return axis
     }
 
+    //% blockId="main_edgeStylePicker" block="%input" shim=TD_ID
+    //% blockHidden=true
+    //% input.fieldEditor="imagedropdown" input.fieldOptions.columns=3
+    export function _edgeStylePicker(edgeStyle: EdgeStyle): number {
+        return edgeStyle
+    }
 
+    //% blockId=colorNumberPicker2 block="%value"
+    //% blockHidden=true
+    //% shim=TD_ID colorSecondary="#FFFFFF"
+    //% value.fieldEditor="colornumber" value.fieldOptions.decompileLiterals=true
+    //% value.fieldOptions.colours='["#4ebed7", "#ffffff","#001F3F","#0074D9", "#7FDBFF", "#39CCCC", "#3D9970", "#2ECC40", "#01FF70", "#FFDC00", "#FF851B", "#FF4136", "#F012BE", "#B10DC9", "#85144B", "#FFFFFF", "#AAAAAA", "#DDDDDD",  "#111111", "#663300", "#cc6600", "#ffcc99", "#fff2e6"]'
+    //% value.defl='#ff0000'
+    export function __colorNumberPicker2(value: number) {
+        return value;
+    }
 
-
-    //% block="cube %type=main_iconPicker width $width|depth $depth|height $height||color $color"
+    //% block="cube - width $width|depth $depth|height $height||color $color=colorNumberPicker2"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
     //% height.defl=10
     //% weight=95
-    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
-    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
-    //% color.defl=0x4ebed7
-    //% color.shadow="colorNumberPicker"
-    //% group="3D Shapes"
+   //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
     /**
         * Add a cube
@@ -66,7 +74,7 @@ namespace pxsim.shapes {
     }
 
 
-    //% block="sphere radius $radius || color $color|type $type|center $centerZ|faces $faces"
+    //% block="sphere - radius $radius || color $color|type $type|center $centerZ|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
     //% faces.defl=60
@@ -80,7 +88,7 @@ namespace pxsim.shapes {
     //% type.defl=SphereType.icosahedron
     //% weight=94
     //% expandableArgumentMode="toggle"
-    //% group="3D Shapes - Round Shapes"
+    //% group="3D Shapes"
     /**
      * Add a sphere 
      * @param radius The distance from the center to the edge of the sphere 
@@ -98,7 +106,7 @@ namespace pxsim.shapes {
     }
 
 
-    //% block="cylinder radius $radius|height $height||color $color|radius2 $radius2|center $centerZ|faces $faces"
+    //% block="cylinder - radius $radius|height $height||color $color|radius2 $radius2|center $centerZ|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
@@ -109,7 +117,7 @@ namespace pxsim.shapes {
     //% color.shadow="colorNumberPicker"
     //% faces.defl=100
     //% weight=90
-    //% group="3D Shapes - Round Shapes"
+    //% group="3D Shapes"
     /**
      * Add a cylinder
      * @param radius The radius (distance from center to edge) of the cylinder
@@ -133,7 +141,7 @@ namespace pxsim.shapes {
 
 
     }
-    //% block="donut thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
+    //% block="donut - thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
     //% thickness.defl=4 thickness.min=1
     //% radius.defl=10
@@ -176,7 +184,7 @@ namespace pxsim.shapes {
     }
 
 
-    //% block="cone radius $radius|height $height|| color $color | faces $faces"
+    //% block="cone - radius $radius|height $height|| color $color | faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
@@ -207,23 +215,39 @@ namespace pxsim.shapes {
     }
 
     const WRITE_TEXT = `
-    function writeText(text, lineWidth, height) {
-        var l = vector_text(0,0,text);   // l contains a list of polylines to be drawn
+    function writeText({text, lineWidth, fontSize, lineSpacing, letterSpacing, extrudeHeight}) {
+
+        var l = vectorText({
+                xOffset:0,
+                yOffset:0,
+                input: text,
+                height: fontSize,
+                lineSpacing: lineSpacing,
+                letterSpacing: letterSpacing,
+                align: 'left',
+                extrudeOffset: 0,
+            
+        }, text);   // l contains a list of polylines to be drawn
+
+
         var o = [];
         l.forEach(function(pl) {                   // pl = polyline (not closed)
-            o.push(rectangular_extrude(pl, {w: lineWidth, h: height}));   // extrude it to 3D
+            o.push(rectangular_extrude(pl, {w: lineWidth, h: extrudeHeight}));   // extrude it to 3D
         });
-        return o;
-    }
+        return union(o);
+      }
         `
 
 
 
-    //% block="write text $text||line width $lineWidth|height $height|color $color"
+    //% block="text - text $text | fontSize $fontSize | height $height ||color $color | line width $lineWidth |  letterSpacing $letterSpacing | lineSpacing $lineSpacing"
     //% inlineInputMode=inline
     //% lineWidth.defl=4
+    //% fontSize.defl=21,
+    //% lineSpacing.defl=1.4
+    //% letterSpacing.defl=1
     //% text.defl="text"
-    //% height.defl=10
+    //% height.defl=4
     //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
     //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
     //% color.defl=0x4ebed7
@@ -237,18 +261,23 @@ namespace pxsim.shapes {
      * @param height How tall to extrude the text
      * @param color The color of the text
      */
-    export function text(text: string, lineWidth?: number, height?: number, color?: number) {
+    export function text(text: string, fontSize?: number,  height?: number, color?: number,   lineWidth?: number,   letterSpacing?: number, lineSpacing?: number) {
         board().requireImport('WRITE_TEXT', WRITE_TEXT)
         // text returns a list of shapes we need to expand [... list of extruded polylines]
-        board().addStatement(`... writeText("${text}", 
-                                ${lineWidth === undefined ? 4 : lineWidth}, 
-                                ${height === undefined ? 10 : height})`, color);
+        board().addStatement(`writeText({
+                                text: "${text}", 
+                                lineWidth:${lineWidth === undefined ? 4 : lineWidth},
+                                fontSize: ${fontSize=== undefined ? 21 : fontSize},
+                                lineSpacing: ${lineSpacing=== undefined ? 1.4 : lineSpacing},
+                                letterSpacing: ${letterSpacing=== undefined ? 1 : letterSpacing},
+                                extrudeHeight: ${height=== undefined ? 1 : height}
+                            })`, color);
 
     }
 
 
 
-    //% block="roof triangle width $width|depth $depth|height $height||color $color"
+    //% block="roof - width $width|depth $depth|height $height||color $color"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
@@ -280,7 +309,7 @@ namespace pxsim.shapes {
 
 
 
-    //% block="ramp triangle width $width|depth $depth|height $height||color $color"
+    //% block="ramp - width $width|depth $depth|height $height||color $color"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
@@ -327,7 +356,7 @@ namespace pxsim.shapes {
     `
 
 
-    //% block="3D polygon sides $sides|radius $radius|depth $depth||color $color"
+    //% block="polygon - sides $sides|radius $radius|depth $depth||color $color"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% depth.defl=10
@@ -398,21 +427,35 @@ function polygonPrism({sides, radius, depth}) {
         board().addStatement(`makePenguin(${lineWidth}, ${height})`);
     }
 */
-    /* todo: investigate bug; points.map  is not a function
         //% block="polyhedron from 3d points $points|triangles $triangles"
         //% points.defl="inner_shadow_block"
-        //% triangles.defl="inner_shadow_block"
         //% polyhedron.shadow="lists_create_with"
         //% advanced=true
         //% group="Advanced 3D Shapes"
-        export function polyhedron(points: string[], triangles: string[]): void {
-            const pointsArrayStr = points["data"].toString()
-            const triangleArrayStr = triangles["data"].toString()
-            board().addStatement(`rectangular_extrude({points: [${pointsArrayStr}], triangles: [${triangleArrayStr}]})`);
-       
-        }*/
-
-    /*
+    /*   export function polyhedron(points: Array<any>): void {
+            const pointsArrayStr = (points as any).toArray()
+            board().requireImport('POLYHEDRON_SCRIPT', POLYHEDRON_SCRIPT)
+            board().addStatement(`generatePolyhedron([${pointsArrayStr}])`);
+    
+        }
+        const POLYHEDRON_SCRIPT =`
+            function generatePolyhedron(points) {
+                var polygons = [];
+                for (let i = 0; i < points.length; i++) {
+                    if (points[i] && points[i].length > 2) {
+                        const x = points[i][0]
+                        const y = points[i][1]
+                        const z = points[i][2]
+                        polygons.push(new CSG.Vertex(new CSG.Vector3D(x,y,z)));
+                    }
+                }
+             
+                // add more polygons and finally:
+                return CSG.fromPolygons(polygons);
+            }
+        `*/
+/*
+    
     //% block="draw 3d lines with width $width|height $height|closed $closed|from 2d points $points"
     //% width.defl=10
     //% height.defl=10
@@ -422,15 +465,16 @@ function polygonPrism({sides, radius, depth}) {
     //% advanced=true
     //% group="Advanced 3D Shapes"
      export function drawLinePath(width: number, height: number, closed: boolean, points: string[]): void {
-        console.log(points)
-        const pointsArrayStr = points["data"].toString()
+            const pointsArrayStr = (points as any).toArray()
+        
         board().addStatement(`rectangular_extrude([${pointsArrayStr}], {w: ${width}, h: ${height}, closed: ${closed}})`);
    
-    }*/
+     }*/
 
 
 
-    //% block="circle radius $radius"
+
+    //% block="circle (2d) - radius $radius"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% weight=50
@@ -440,10 +484,10 @@ function polygonPrism({sides, radius, depth}) {
         board().addStatement(`circle({r: ${radius}})`);
     }
 
-    //% blockId=add_rect block="rect width $width|height $height"
+    //% blockId=add_rect block="rect (2d) - width $width|height $height"
     //% inlineInputMode=inline
-    //% width.defl=50
-    //% height.defl=50
+    //% width.defl=10
+    //% height.defl=20
     //% weight=50
     //% advanced=true
     //% group="2D Shapes"
@@ -536,9 +580,6 @@ namespace pxsim.operators {
 
 
     }
-
-
-
 
 
 
@@ -1029,36 +1070,12 @@ function sliceParams(orientation, radius, bounds) {
         })
     }, info, normalVector(axis));
 }`
-    const RESHAPE_SCRIPT = `
-
-function reShape(object, radius, orientation, options, slicer) {
-    options = options || {};
-    var b = object.getBounds();
-    var ar = Math.abs(radius);
-    var si = sliceParams(orientation, radius, b);
-    if (si.axis !== "z") throw new Error('reShape error: CAG._toPlanePolytons only uses the "z" axis.  You must use the "z" axis for now.');
-    var cutplane = CSG.OrthoNormalBasis.GetCartesian(si.orthoNormalCartesian[0], si.orthoNormalCartesian[1]).translate(si.cutDelta);
-    var slice = object.sectionCut(cutplane);
-    var first = axisApply(si.axis, function() {
-        return si.positive ? 0 : ar;
-    });
-    var last = axisApply(si.axis, function() {
-        return si.positive ? ar : 0;
-    });
-    var plane = si.positive ? cutplane.plane : cutplane.plane.flipped();
-    var slices = slicer(first, last, slice);
-    var delta = slices2poly(slices, Object.assign(options, {
-        si
-    }), si.axis).color(options.color);
-    var remainder = object.cutByPlane(plane);
-    return union([ options.unionOriginal ? object : remainder, delta.translate(si.moveDelta) ]);
-}
-`
+  
 
  
     
 
-    //% blockId=trim_edges block="style edges: $edgeStyle | sides: $direction | with radius: $radius mm" 
+    //% blockId=trim_edges block="style edges: $edgeStyle=main_edgeStylePicker | sides: $direction | with radius: $radius mm" 
     //% topblock=false
     //% handlerStatement=true
     //% axis.defl=3
@@ -1089,9 +1106,9 @@ function reShape(object, radius, orientation, options, slicer) {
 
         }
 
-
-
     }
+
+
     function _chamferEdges(direction: StyleEdgeDirection, radius: number, body: RefAction): Promise<void> {
         board().requireImport('LAYOUT_SCRIPT', LAYOUT_SCRIPT)
 
@@ -1119,7 +1136,32 @@ function reShape(object, radius, orientation, options, slicer) {
 
     }
 
-    //% blockId=makehollow block="make hollow - wall size: $wallThickness mm | - radius: $insideRound mm" 
+    //% blockId=color_block block="color $color" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% group="Edges"
+    export function colorAsync(color: number, body: RefAction): Promise<void> {
+
+        let statementCode = `union([<CHILDREN>])`
+        if (color !== undefined && color !== 0x4ebed7) {
+            const red =  (color & 0xFF0000) >> 16;
+            const green = (color & 0x00FF00) >> 8;
+            const blue =  (color & 0x0000FF);
+
+            statementCode = `color([${red/255}, ${green/255}, ${blue/255}], ${statementCode})`
+        }
+        return _makeBlock(statementCode, body);
+
+
+       
+
+    }
+
+    //% blockId=makehollow block="hollow shapes - wall size: $wallThickness mm | - radius: $insideRound mm" 
     //% topblock=false
     //% handlerStatement=true
     //% wallThickness.defl=2
@@ -1133,7 +1175,7 @@ function reShape(object, radius, orientation, options, slicer) {
      * @param insideRound the radius to use on the inside
      * @param body the shapes to move up
      */
-    export function makeHollowAsync(wallThickness: number, insideRound: number, body: RefAction): Promise<void> {
+    export function hollowShapesAsync(wallThickness: number, insideRound: number, body: RefAction): Promise<void> {
 
 
         board().requireImport('LAYOUT_SCRIPT', LAYOUT_SCRIPT)
@@ -1159,7 +1201,7 @@ function reShape(object, radius, orientation, options, slicer) {
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
     //% handlerStatement=true
-    //% group="Position"
+    //% group="Position and Size"
     //% advanced=true
     /**
      * Move shapes in three dimensions
@@ -1171,6 +1213,49 @@ function reShape(object, radius, orientation, options, slicer) {
     export function translateShapesAsync(x: number, y: number, z: number, body: RefAction): Promise<void> {
 
         return _makeBlock(`translate([${x}, ${y}, ${z}], <CHILDREN> )`, body);
+
+
+    }
+    //% blockId=scale_shapes block="scale shapes x: $x|  y: $y |  z: $z" 
+    //% x.defl=1
+    //% y.defl=1
+    //% z.defl=1
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="Position and Size"
+    //% advanced=true
+    /**
+     * Move shapes in three dimensions
+     * @param x How much to scale in x
+     * @param y How much to scale in y
+     * @param z How much to scale in z
+     * @param body The list of shapes to move
+     */
+    export function scaleShapesAsync(x: number, y: number, z: number, body: RefAction): Promise<void> {
+
+        return _makeBlock(`scale([${x}, ${y}, ${z}], <CHILDREN> )`, body);
+
+
+    }
+    //% blockId=enlarge_shapes block="enlarge shapes x: $x|  y: $y |  z: $z" 
+    //% x.defl=2
+    //% y.defl=2
+    //% z.defl=2
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="Position and Size"
+    //% advanced=true
+    /**
+     * Move shapes in three dimensions
+     * @param x How much to enlarge in x
+     * @param y How much to enlarge in y
+     * @param z How much to enlarge in z
+     * @param body The list of shapes to enlarge
+     */
+    export function enlargeShapesAsync(x: number, y: number, z: number, body: RefAction): Promise<void> {
+        board().requireImport('LAYOUT_SCRIPT', LAYOUT_SCRIPT)
+
+        return _makeBlock(`LayoutUtils.enlarge( union(<CHILDREN>), [${x}, ${y}, ${z}] )`, body);
 
 
     }
@@ -1260,6 +1345,49 @@ function reShape(object, radius, orientation, options, slicer) {
 
 
     }
+
+
+    //% blockId=rotateExtrude2dshapes block="rotate extrude 2d shape from angle $startAngle | to $stopAngle | faces $faces" 
+    //% startAngle.defl=0
+    //% stopAngle.defl=360
+    //% startAngle.shadow="protractorPicker"
+    //% stopAngle.shadow="protractorPicker"
+    //% faces.defl=32
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="2D to 3D Shape Converters"
+    //% advanced=true
+    /**
+     * For 2D shapes, apply a shrinkwrapping technique to join them together.  Also known as hull.
+     * @param body List of 2D shapes to shrink wrap
+     */
+    export function rotateExtrudeAsync(startAngle: number, stopAngle: number, faces: number, body: RefAction): Promise<void> {
+        return _makeBlock(`rotate_extrude({fn: ${faces}, startAngle: ${startAngle}, angle: ${stopAngle}},  union([<CHILDREN>]) )`, body);
+
+    }
+
+    //% blockId=linearExtrude2dshapes block="linear extrude 2d shape to height: $height | twist: $twist | slices: $slices" 
+    //% height.defl=10
+    //% twist.defl=0
+    //% twist.shadow="protractorPicker"
+    //% slices.defl=50
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="2D to 3D Shape Converters"
+    //% advanced=true
+    /**
+     * Give a 2D shape height, optionally twist it
+     * @param height The height of the extrusion
+     * @param twist The angle to twist the extrusion
+     * @param slices Defines resolution of the twist
+     * @param body 
+     */
+    export function linearExtrudeAsync(height: number, twist: number, slices: number,  body: RefAction): Promise<void> {
+        // union in 2D is hull. /
+        return _makeBlock(`linear_extrude({slices: ${slices}, height: ${height}, twist: ${twist}},  union([<CHILDREN>]) )`, body);
+
+    }
+
 
     //% blockId=wrap2dshapes block="wrap 2d shapes (hull)" 
     //% topblock=false
