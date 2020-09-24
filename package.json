@@ -29,7 +29,7 @@
     "start": "pxt clean && yarn patchBuild && pxt staticpkg && pxt serve -pkg",
     "checkdocs": "pxt checkdocs",
     "build:gh-pages": "yarn patchBuild && pxt staticpkg --route makecode --output ./built/gh-pages --bump && npm run copy:gh-pages",
-    "build:static": "yarn patchBuild && pxt staticpkg",
+    "build:static": "yarn patchBuild && pxt staticpkg --bump",
     "start:static": "yarn build:static && pxt serve --static",
     "copy:gh-pages": "echo 'copying built files to gh-pages branches for the docs and makecode repos...' && pushd ../../gh-pages/makecode && git checkout gh-pages && popd && cp -R built/gh-pages/makecode ../../gh-pages/makecode && pushd ../../docs/docs && git checkout gh-pages && popd && cp -R docs/ ../../docs/docs && echo 'dont forget to check in the changes in ../../gh-pages/makecode and ../../docs/docs'"
   },
