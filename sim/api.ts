@@ -234,7 +234,7 @@ namespace pxsim.shapes {
         l.forEach(function(pl) {                   // pl = polyline (not closed)
             o.push(rectangular_extrude(pl, {w: lineWidth, h: extrudeHeight}));   // extrude it to 3D
         });
-        return union(o);
+        return o;
       }
         `
 
@@ -264,7 +264,7 @@ namespace pxsim.shapes {
     export function text(text: string, fontSize?: number,  height?: number, color?: number,   lineWidth?: number,   letterSpacing?: number, lineSpacing?: number) {
         board().requireImport('WRITE_TEXT', WRITE_TEXT)
         // text returns a list of shapes we need to expand [... list of extruded polylines]
-        board().addStatement(`writeText({
+        board().addStatement(`... writeText({
                                 text: "${text}", 
                                 lineWidth:${lineWidth === undefined ? 4 : lineWidth},
                                 fontSize: ${fontSize=== undefined ? 21 : fontSize},
