@@ -264,14 +264,14 @@ namespace pxsim.shapes {
     export function text(text: string, fontSize?: number,  height?: number, color?: number,   lineWidth?: number,   letterSpacing?: number, lineSpacing?: number) {
         board().requireImport('WRITE_TEXT', WRITE_TEXT)
         // text returns a list of shapes we need to expand [... list of extruded polylines]
-        board().addStatement(`... writeText({
+        board().addStatement(`union(writeText({
                                 text: "${text}", 
                                 lineWidth:${lineWidth === undefined ? 4 : lineWidth},
                                 fontSize: ${fontSize=== undefined ? 21 : fontSize},
                                 lineSpacing: ${lineSpacing=== undefined ? 1.4 : lineSpacing},
                                 letterSpacing: ${letterSpacing=== undefined ? 1 : letterSpacing},
                                 extrudeHeight: ${height=== undefined ? 1 : height}
-                            })`, color);
+                            }))`, color);
 
     }
 
