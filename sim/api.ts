@@ -56,7 +56,7 @@ namespace pxsim.shapes {
     //% depth.defl=10
     //% height.defl=10
     //% weight=95
-   //% group="3D Shapes"
+    //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
     /**
         * Add a cube
@@ -261,16 +261,16 @@ namespace pxsim.shapes {
      * @param height How tall to extrude the text
      * @param color The color of the text
      */
-    export function text(text: string, fontSize?: number,  height?: number, color?: number,   lineWidth?: number,   letterSpacing?: number, lineSpacing?: number) {
+    export function text(text: string, fontSize?: number, height?: number, color?: number, lineWidth?: number, letterSpacing?: number, lineSpacing?: number) {
         board().requireImport('WRITE_TEXT', WRITE_TEXT)
         // text returns a list of shapes we need to expand [... list of extruded polylines]
         board().addStatement(`union(writeText({
                                 text: "${text}", 
                                 lineWidth:${lineWidth === undefined ? 4 : lineWidth},
-                                fontSize: ${fontSize=== undefined ? 21 : fontSize},
-                                lineSpacing: ${lineSpacing=== undefined ? 1.4 : lineSpacing},
-                                letterSpacing: ${letterSpacing=== undefined ? 1 : letterSpacing},
-                                extrudeHeight: ${height=== undefined ? 1 : height}
+                                fontSize: ${fontSize === undefined ? 21 : fontSize},
+                                lineSpacing: ${lineSpacing === undefined ? 1.4 : lineSpacing},
+                                letterSpacing: ${letterSpacing === undefined ? 1 : letterSpacing},
+                                extrudeHeight: ${height === undefined ? 1 : height}
                             }))`, color);
 
     }
@@ -298,7 +298,7 @@ namespace pxsim.shapes {
     */
     export function triangleRoof(width: number, height: number, depth: number, color?: number) {
         board().requireImport('TRIANGLE_PRISM', TRIANGLE_PRISM)
-    
+
         board().addStatement(`triangularPrism({
                 mode: "equilateral", 
                 width: ${width},
@@ -328,19 +328,19 @@ namespace pxsim.shapes {
     * @param height The height of the cube
     * @param color If specified, what color to make the cube.  In hex (0xab1234)
     */
-   export function triangleRamp(width: number, height: number, depth: number, color?: number) {
-    board().requireImport('TRIANGLE_PRISM', TRIANGLE_PRISM)
+    export function triangleRamp(width: number, height: number, depth: number, color?: number) {
+        board().requireImport('TRIANGLE_PRISM', TRIANGLE_PRISM)
 
-    board().addStatement(`triangularPrism({
+        board().addStatement(`triangularPrism({
             mode: "right", 
             width: ${width},
             height: ${height},
             depth: ${depth},
         })`, color);
-}
+    }
 
     // this is designed to stack perfectly with cube.
-    const TRIANGLE_PRISM=`
+    const TRIANGLE_PRISM = `
     function triangularPrism({mode, width, depth, height}) {
         if (mode === "equilateral") {
             var cag = polygon({ points: [ [0,0],[-width/2,height],[width/2,height] ] })
@@ -356,7 +356,7 @@ namespace pxsim.shapes {
     `
 
 
-    //% block="polygon - sides $sides|radius $radius|depth $depth||color $color"
+    //% block="polygon - sides $sides|radius $radius|height $height||color $color"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% depth.defl=10
@@ -373,26 +373,26 @@ namespace pxsim.shapes {
     /**
     * Add a triangular prism (roof)
     * @param sides The width of the cube
-    * @param depth The depth of the cube
+    * @param radius The depth of the cube
     * @param height The height of the cube
     * @param color If specified, what color to make the cube.  In hex (0xab1234)
     */
-   export function polygon3D(sides: number, radius: number, depth: number, color?: number) {
-    board().requireImport('POLYGON_PRISM', POLYGON_PRISM)
+    export function polygon3D(sides: number, radius: number, height: number, color?: number) {
+        board().requireImport('POLYGON_PRISM', POLYGON_PRISM)
 
-    board().addStatement(`polygonPrism({
+        board().addStatement(`polygonPrism({
             sides: ${sides}, 
-            radius: ${radius},
-            depth: ${depth},
+            radius: ${Math.max(radius, .001)}, // avoid degenerate olygon
+            height: ${height},
         })`, color);
     }
 
- const POLYGON_PRISM =`
+    const POLYGON_PRISM = `
 
 
-function polygonPrism({sides, radius, depth}) {
+function polygonPrism({sides, radius, height}) {
     
-    var centerX = 0, centerY = 0, size = 2*radius;
+    var centerX = 0, centerY = 0, size = radius;
     let points = []
     
     points.push([centerX + size * Math.cos(0), 
@@ -404,11 +404,11 @@ function polygonPrism({sides, radius, depth}) {
     }
 
     var twoDShape = polygon({ points: points  })
-    return linear_extrude({height: depth}, twoDShape); 
+    return linear_extrude({height: height}, twoDShape); 
   
 }
  
- `   
+ `
 
     /*
     enum Animal {
@@ -427,11 +427,11 @@ function polygonPrism({sides, radius, depth}) {
         board().addStatement(`makePenguin(${lineWidth}, ${height})`);
     }
 */
-        //% block="polyhedron from 3d points $points|triangles $triangles"
-        //% points.defl="inner_shadow_block"
-        //% polyhedron.shadow="lists_create_with"
-        //% advanced=true
-        //% group="Advanced 3D Shapes"
+    //% block="polyhedron from 3d points $points|triangles $triangles"
+    //% points.defl="inner_shadow_block"
+    //% polyhedron.shadow="lists_create_with"
+    //% advanced=true
+    //% group="Advanced 3D Shapes"
     /*   export function polyhedron(points: Array<any>): void {
             const pointsArrayStr = (points as any).toArray()
             board().requireImport('POLYHEDRON_SCRIPT', POLYHEDRON_SCRIPT)
@@ -454,22 +454,22 @@ function polygonPrism({sides, radius, depth}) {
                 return CSG.fromPolygons(polygons);
             }
         `*/
-/*
-    
-    //% block="draw 3d lines with width $width|height $height|closed $closed|from 2d points $points"
-    //% width.defl=10
-    //% height.defl=10
-    //% closed.defl=true
-    //% points.defl="inner_shadow_block"
-    //% linePath.shadow="lists_create_with"
-    //% advanced=true
-    //% group="Advanced 3D Shapes"
-     export function drawLinePath(width: number, height: number, closed: boolean, points: string[]): void {
-            const pointsArrayStr = (points as any).toArray()
+    /*
         
-        board().addStatement(`rectangular_extrude([${pointsArrayStr}], {w: ${width}, h: ${height}, closed: ${closed}})`);
-   
-     }*/
+        //% block="draw 3d lines with width $width|height $height|closed $closed|from 2d points $points"
+        //% width.defl=10
+        //% height.defl=10
+        //% closed.defl=true
+        //% points.defl="inner_shadow_block"
+        //% linePath.shadow="lists_create_with"
+        //% advanced=true
+        //% group="Advanced 3D Shapes"
+         export function drawLinePath(width: number, height: number, closed: boolean, points: string[]): void {
+                const pointsArrayStr = (points as any).toArray()
+            
+            board().addStatement(`rectangular_extrude([${pointsArrayStr}], {w: ${width}, h: ${height}, closed: ${closed}})`);
+       
+         }*/
 
 
 
@@ -494,6 +494,53 @@ function polygonPrism({sides, radius, depth}) {
     export function rect(width: number, height: number) {
         board().addStatement(`square({size: [${width}, ${height}]})`);
     }
+
+    const REGULAR_POLYGON = `
+
+
+    function regularPolygon({sides, radius, height}) {
+        
+        var centerX = 0, centerY = 0, size = radius;
+        let points = []
+        
+        points.push([centerX + size * Math.cos(0), 
+                     centerY + size * Math.sin(0)])
+        
+        for (var i = 1; i <= sides;i += 1) {
+            points.push([centerX + size * Math.cos(i * 2 * Math.PI / sides), 
+                         centerY + size *Math.sin(i * 2 * Math.PI / sides)])
+        }
+    
+        var twoDShape = polygon({ points: points  })
+        return twoDShape
+      
+    }
+     
+     `
+
+
+    //% blockId=regular_polygon block="regular polygon (2d) - sides $sides|radius $radius"
+    //% inlineInputMode=inline
+    //% radius.defl=10
+    //% sides.defl=6
+    //% weight=50
+    //% advanced=true
+    //% group="2D Shapes"
+    /**
+     * regular polygon
+     * @param sides the number of sides to make
+     * @param radius the distance from the center
+     */
+    export function regularPolygon(sides: number, radius: number) {
+        board().requireImport('REGULAR_POLYGON', REGULAR_POLYGON)
+
+        board().addStatement(`regularPolygon({
+                sides: ${sides}, 
+                radius: ${Math.max(radius, .001)}, // avoid degenerate olygon
+            })`);
+    }
+
+
 
 
 
@@ -745,7 +792,7 @@ function stackShapes(direction, axis, shapes) {
         return directionStr
     }
 
- 
+
     function _styleEdgeDirectionToString(direction: StyleEdgeDirection) {
         switch (direction) {
             case StyleEdgeDirection.Top:
@@ -791,11 +838,12 @@ var LayoutUtils = {
     hollow: function (object, thickness, onModifyInternalShape) {
         var wallThickness = thickness || 2;
         var size = -wallThickness * 2;
-        
+
         var internalShape = LayoutUtils.enlarge(object, [ size, size, size ]);
         if (onModifyInternalShape) {
             internalShape = onModifyInternalShape(internalShape)
         }
+       
 
         var box = object.subtract(internalShape);
         return box;
@@ -1070,10 +1118,10 @@ function sliceParams(orientation, radius, bounds) {
         })
     }, info, normalVector(axis));
 }`
-  
 
- 
-    
+
+
+
 
     //% blockId=trim_edges block="style edges: $edgeStyle=main_edgeStylePicker | sides: $direction | with radius: $radius mm" 
     //% topblock=false
@@ -1091,18 +1139,18 @@ function sliceParams(orientation, radius, bounds) {
 
 
 
-        switch(edgeStyle) {
+        switch (edgeStyle) {
             case EdgeStyle.Chamfer:
                 return _chamferEdges(direction, radius, body)
             case EdgeStyle.ConcaveChamfer:
                 return _chamferEdges(direction, -radius, body)
-                   
+
             case EdgeStyle.ConcaveFillet:
                 return _filletEdges(direction, -radius, body)
             case EdgeStyle.Fillet:
             default:
                 return _filletEdges(direction, radius, body)
-               
+
 
         }
 
@@ -1148,22 +1196,23 @@ function sliceParams(orientation, radius, bounds) {
 
         let statementCode = `union([<CHILDREN>])`
         if (color !== undefined && color !== 0x4ebed7) {
-            const red =  (color & 0xFF0000) >> 16;
+            const red = (color & 0xFF0000) >> 16;
             const green = (color & 0x00FF00) >> 8;
-            const blue =  (color & 0x0000FF);
+            const blue = (color & 0x0000FF);
 
-            statementCode = `color([${red/255}, ${green/255}, ${blue/255}], ${statementCode})`
+            statementCode = `color([${red / 255}, ${green / 255}, ${blue / 255}], ${statementCode})`
         }
         return _makeBlock(statementCode, body);
 
 
-       
+
 
     }
 
-    //% blockId=makehollow block="hollow shapes - wall size: $wallThickness mm | - radius: $insideRound mm" 
+    //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius | cut through: $cutThrough" 
     //% topblock=false
     //% handlerStatement=true
+    //% cutThrough.defl=true
     //% wallThickness.defl=2
     //% wallThickness.min=1
     //% insideRound.defl=1
@@ -1175,7 +1224,7 @@ function sliceParams(orientation, radius, bounds) {
      * @param insideRound the radius to use on the inside
      * @param body the shapes to move up
      */
-    export function hollowShapesAsync(wallThickness: number, insideRound: number, body: RefAction): Promise<void> {
+    export function hollowShapesAsync(wallThickness: number, insideRound: number, cutThrough: boolean, body: RefAction): Promise<void> {
 
 
         board().requireImport('LAYOUT_SCRIPT', LAYOUT_SCRIPT)
@@ -1186,7 +1235,7 @@ function sliceParams(orientation, radius, bounds) {
                 var roundedBottom = LayoutUtils.fillet(interiorBox, ${insideRound}, "z-")
                 return LayoutUtils.fillet(roundedBottom, ${insideRound}, "z+")
                         
-            } )`, body);
+            }, ${cutThrough} )`, body);
 
         }
         else {
@@ -1382,7 +1431,7 @@ function sliceParams(orientation, radius, bounds) {
      * @param slices Defines resolution of the twist
      * @param body 
      */
-    export function linearExtrudeAsync(height: number, twist: number, slices: number,  body: RefAction): Promise<void> {
+    export function linearExtrudeAsync(height: number, twist: number, slices: number, body: RefAction): Promise<void> {
         // union in 2D is hull. /
         return _makeBlock(`linear_extrude({slices: ${slices}, height: ${height}, twist: ${twist}},  union([<CHILDREN>]) )`, body);
 

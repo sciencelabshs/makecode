@@ -211,7 +211,7 @@ declare namespace shapes {
     //% shim=shapes::triangleRamp
     function triangleRamp(width: number, height: number, depth: number, color?: number): void;
 
-    //% block="polygon - sides $sides|radius $radius|depth $depth||color $color"
+    //% block="polygon - sides $sides|radius $radius|height $height||color $color"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% depth.defl=10
@@ -228,12 +228,12 @@ declare namespace shapes {
     /**
      * Add a triangular prism (roof)
      * @param sides The width of the cube
-     * @param depth The depth of the cube
+     * @param radius The depth of the cube
      * @param height The height of the cube
      * @param color If specified, what color to make the cube.  In hex (0xab1234)
      */
     //% shim=shapes::polygon3D
-    function polygon3D(sides: number, radius: number, depth: number, color?: number): void;
+    function polygon3D(sides: number, radius: number, height: number, color?: number): void;
 
     /*
     enum Animal {
@@ -306,6 +306,21 @@ declare namespace shapes {
     //% group="2D Shapes"
     //% shim=shapes::rect
     function rect(width: number, height: number): void;
+
+    //% blockId=regular_polygon block="regular polygon (2d) - sides $sides|radius $radius"
+    //% inlineInputMode=inline
+    //% radius.defl=10
+    //% sides.defl=6
+    //% weight=50
+    //% advanced=true
+    //% group="2D Shapes"
+    /**
+     * regular polygon
+     * @param sides the number of sides to make
+     * @param radius the distance from the center
+     */
+    //% shim=shapes::regularPolygon
+    function regularPolygon(sides: number, radius: number): void;
 
     //% blockId=point3d block="3D point x: $x|y:  $y|z:  $z"
     //% inlineInputMode=inline
@@ -391,9 +406,10 @@ declare namespace operators {
     //% shim=operators::colorAsync promise
     function color(color: number, body: () => void): void;
 
-    //% blockId=makehollow block="hollow shapes - wall size: $wallThickness mm | - radius: $insideRound mm" 
+    //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius | cut through: $cutThrough" 
     //% topblock=false
     //% handlerStatement=true
+    //% cutThrough.defl=true
     //% wallThickness.defl=2
     //% wallThickness.min=1
     //% insideRound.defl=1
@@ -406,7 +422,7 @@ declare namespace operators {
      * @param body the shapes to move up
      */
     //% shim=operators::hollowShapesAsync promise
-    function hollowShapes(wallThickness: number, insideRound: number, body: () => void): void;
+    function hollowShapes(wallThickness: number, insideRound: number, cutThrough: boolean, body: () => void): void;
 
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
