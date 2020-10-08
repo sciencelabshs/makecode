@@ -48129,25 +48129,30 @@ const localCache = {}
         var M = this.options.plate.M; // short cut
         var size = this.options.plate.size / 2;
         // -- minor grid
-        gl.color.apply(gl, colorBytes(m.color));
         var mg = m.i;
         var MG = M.i;
-        for (var x = -size; x <= size; x += mg) {
-          if (x % MG) {
-            // draw only minor grid line
+        if (this.options.plate.m.draw) {
+          gl.color.apply(gl, colorBytes(m.color));
+       
+          for (var x = -size; x <= size; x += mg) {
+            if (x % MG) {
+              // draw only minor grid line
+              gl.vertex(-size, x, 0);
+              gl.vertex(size, x, 0);
+              gl.vertex(x, -size, 0);
+              gl.vertex(x, size, 0);
+            }
+          }
+        }
+        // -- major grid
+        if (this.options.plate.M.draw) {
+          gl.color.apply(gl, colorBytes(M.color));
+          for (var x = -size; x <= size; x += MG) {
             gl.vertex(-size, x, 0);
             gl.vertex(size, x, 0);
             gl.vertex(x, -size, 0);
             gl.vertex(x, size, 0);
           }
-        }
-        // -- major grid
-        gl.color.apply(gl, colorBytes(M.color));
-        for (var x = -size; x <= size; x += MG) {
-          gl.vertex(-size, x, 0);
-          gl.vertex(size, x, 0);
-          gl.vertex(x, -size, 0);
-          gl.vertex(x, size, 0);
         }
       }
       if (this.options.axis.draw) {
@@ -48356,13 +48361,15 @@ const localCache = {}
         size: 220, // plate size (X and Y)
         // minor grid settings
         m: {
+          draw: true,
           i: 1, // number of units between minor grid lines
-          color: { r: 0.8, g: 0.8, b: 0.8, a: 0.1 // color
+          color: { r: .8, g: .8, b: .8, a: .05 // color
           } },
         // major grid settings
         M: {
+          draw: true,
           i: 10, // number of units between major grid lines
-          color: { r: 0.8, g: 0.8, b: 0.8, a: 0.5 // color
+          color: { r: .8, g: .8, b: .8, a: .2 // color
           } }
       },
       axis: {
@@ -48387,7 +48394,7 @@ const localCache = {}
         lines: false, // draw outlines or not
         faces: true,
         overlay: false, // use overlay when drawing lines or not
-        smooth: false, // use smoothing or not
+        smooth: true, // use smoothing or not
         faceColor: { r: 78.0/255.0, g: 190.0/255.0, b: 215.0/255.0, a: 1 }, // 4ebed7 face color
         outlineColor: { r: 0.0, g: 0.0, b: 0.0, a: 1.0 // default outline color
         } },
