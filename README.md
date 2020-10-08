@@ -65,6 +65,7 @@ Housekeeping: Please use lowercase for all filenames and dashes for all filename
 * List your project by adding a codecard to tutorials.md or examples.md
 * To test your new example 
 ```yarn checkdocs && yarn start```
+* When the browser loads, hard refresh 
 
 
 ## Example code location

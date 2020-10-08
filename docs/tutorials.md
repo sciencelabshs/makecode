@@ -11,6 +11,14 @@ Here are some cool tutorials to get you started with your @boardname@!
   "url":"/examples/heart-shape",
   "cardType": "tutorial",
   "imageUrl": "/static/examples/heart-shape/project-image.png"
-}]
+},
+{
+  "name": "Boardgame House",
+  "description": "Use the stack shapes block to make a small boardgame house! ",
+  "url":"/examples/boardgame-house",
+  "cardType": "tutorial",
+  "imageUrl": "/static/examples/boardgame-house/project-image.png"
+}
+]
 ```
 
