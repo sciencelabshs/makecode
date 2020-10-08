@@ -52,18 +52,40 @@ yarn start
 
 After making a change in the source, refresh the page in the browser.
 
-## Updating the tools
 
-If you would like to pick up the latest PXT build, simply run
-```
-pxt update
-```
+# Adding new examples
+
+Housekeeping: Please use lowercase for all filenames and dashes for all filenames.
 
 
-## deploying
+* Design your project and then flip over to the javascript mode
+* Take a screenshot and save as project-image.png
+* Copy and paste into a markdown file
+* For step-by-step tutorials, follow the formatting in heart-shape.md
+* List your project by adding a codecard to tutorials.md or examples.md
+* To test your new example 
+```yarn checkdocs && yarn start```
 
-```
-pxt staticpkg --gh --bump
-``
 
-More instructions at https://github.com/Microsoft/pxt#running-a-target-from-localhost 
+## Example code location
+Add your code to the following location
+```docs/examples/example-name.md```
+
+Follow this guide to work out the format
+https://makecode.com/writing-docs/tutorials
+
+Or look at heart-shape.md
+
+## Example image locations
+Add your project images to the following location
+```static/examples/example-name/project-image.png```
+
+## List your project
+List your step-by-step tutorials to the list using codecards
+
+```docs/tutorials.md```
+
+List your finished examples to the list using codecards
+ 
+```docs/examples.md```
+
