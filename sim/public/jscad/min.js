@@ -19,6 +19,7 @@
  *  - PERF: Optimized toCompactBinary - reducing array allocations
  *  - PERF: Reduce allocations of Vector3D while calling getBounds
  *  - PERF: Shave 40ms off translate by not mapping over the vertexes
+ *  - Disable coloring of cuts, by commenting out setColor in the difference operator
  * 
  * NOTE this is based on lightgl - docs are here
  * https://evanw.github.io/lightgl.js/docs/mesh.html
@@ -2714,7 +2715,7 @@
       if ( isCAG(a[i])) {
         object = object.subtract(a[i])
       } else {
-        object = object.subtract(a[i].setColor(1, 1, 0)) // -- color the cuts
+        object = object.subtract(a[i]/*.setColor(1, 1, 0)*/) // -- color the cuts
       }
     }
     return object
