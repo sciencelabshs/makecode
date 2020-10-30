@@ -28,5 +28,14 @@ namespace operators {
 
 }
 
+/**
+ * Some extra helpful maths stuff
+ */
+//% groups=["Angles", "Trigonometry in Degrees", "Logarithms", "Constants"]
+//% color=#42AA0E weight=10 icon="\u2140" weight=0
+namespace extraMath {
 
- 
+
+    
+
+}

@@ -1,4 +1,181 @@
 // Auto-generated from simulator. Do not edit.
+declare namespace extraMath {
+    //% block="convert $angle to radians"
+    //% inlineInputMode=inline
+    //% angle.defl=0
+    //% weight=95
+    //% group="Angles"
+    /**
+     * Convert an angle in degrees to an angle in radians
+     * @param angle The angle in degrees
+     */
+    //% shim=extraMath::radians
+    function radians(angle: number): number;
+
+    //% block="convert $angle to degrees"
+    //% inlineInputMode=inline
+    //% angle.defl=0
+    //% weight=94
+    //% group="Angles"
+    /**
+     * Convert an angle in degrees to an angle in degrees
+     * @param angle The angle in degrees
+     */
+    //% shim=extraMath::degrees
+    function degrees(angle: number): number;
+
+    //% block="sin $theta°"
+    //% inlineInputMode=inline
+    //% theta.defl=0
+    //% weight=93
+    //% group="Trigonometry in Degrees"
+    /**
+     * Sine of angle in degrees
+     * @param theta The angle in degrees
+     */
+    //% shim=extraMath::sin
+    function sin(theta: number): number;
+
+    //% block="cos $theta°"
+    //% inlineInputMode=inline
+    //% theta.defl=0
+    //% weight=92
+    //% group="Trigonometry in Degrees"
+    /**
+     * Cosine of angle in degrees
+     * @param theta The angle in degrees
+     */
+    //% shim=extraMath::cos
+    function cos(theta: number): number;
+
+    //% block="tan $theta°"
+    //% inlineInputMode=inline
+    //% theta.defl=0
+    //% weight=91
+    //% group="Trigonometry in Degrees"
+    /**
+     * Tangent of angle in degrees
+     * @param theta The angle in degrees
+     */
+    //% shim=extraMath::tan
+    function tan(theta: number): number;
+
+    //% block="arcsin $x"
+    //% inlineInputMode=inline
+    //% x.defl=0
+    //% weight=90
+    //% group="Trigonometry in Degrees"
+    /**
+     * Inverse sine of angle in degrees
+     * @param x The operand for inverse sin
+     */
+    //% shim=extraMath::arcsin
+    function arcsin(x: number): number;
+
+    //% block="arccos $x"
+    //% inlineInputMode=inline
+    //% x.defl=0
+    //% weight=89
+    //% group="Trigonometry in Degrees"
+    /**
+     * Inverse sine of angle in degrees
+     * @param x cos
+     */
+    //% shim=extraMath::arccos
+    function arccos(x: number): number;
+
+    //% block="arctan $x"
+    //% inlineInputMode=inline
+    //% x.defl=1
+    //% weight=88
+    /**
+     * Inverse sine of angle in degrees
+     * @param x The operand for inverse tan
+     */
+    //% shim=extraMath::arctan
+    function arctan(x: number): number;
+
+    //% block="arctan2 $y $x"
+    //% inlineInputMode=inline
+    //% x.defl=0
+    //% y.defl=0
+    //% weight=87
+    //% group="Trigonometry in Degrees"
+    /**
+     * Inverse sine of angle in degrees
+     * @param x The "adjacent" operand for inverse tan
+     * @param y The "opposite" operand for inverse tan
+     */
+    //% shim=extraMath::arctan2
+    function arctan2(y: number, x: number): number;
+
+    //% block="ln $x"
+    //% inlineInputMode=inline
+    //% x.defl=1
+    //% weight=86
+    //% group="Logarithms"
+    /**
+     * Inverse sine of angle in degrees
+     * @param x The operand for the natural log
+     */
+    //% shim=extraMath::ln
+    function ln(x: number): number;
+
+    //% block="log $x base $base"
+    //% inlineInputMode=inline
+    //% x.defl=1
+    //% base.defl=10
+    //% weight=85
+    //% group="Logarithms"
+    /**
+     * Inverse sine of angle in degrees
+     * @param x The operand for the log
+     * @param base The base to take the logarithm with respect to
+     */
+    //% shim=extraMath::log
+    function log(x: number, base: number): number;
+
+    //% block="π"
+    //% inlineInputMode=inline
+    //% weight=84
+    //% group="Constants"
+    /**
+     * The mathematical constant Pi, the circle constant.
+     */
+    //% shim=extraMath::Pi
+    function Pi(): number;
+
+    //% block="e"
+    //% inlineInputMode=inline
+    //% weight=83
+    //% group="Constants"
+    /**
+     * The mathematical constant e, the exponential constant.
+     */
+    //% shim=extraMath::e
+    function e(): number;
+
+    //% block="ϕ"
+    //% inlineInputMode=inline
+    //% weight=82
+    //% group="Constants"
+    /**
+     * The mathematical constant Phi, the golden ratio.
+     */
+    //% shim=extraMath::Phi
+    function Phi(): number;
+
+    //% block="√2"
+    //% inlineInputMode=inline
+    //% weight=81
+    //% group="Constants"
+    /**
+     * The mathematical constant the square root of 2.
+     */
+    //% shim=extraMath::Sqrt2
+    function Sqrt2(): number;
+
+}
 declare namespace shapes {
     //% blockId="main_axisPicker" block="%input" shim=TD_ID
     //% blockHidden=true
