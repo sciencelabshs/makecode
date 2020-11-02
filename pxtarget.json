@@ -10,10 +10,7 @@
         "thumbnails": true,
         "publishing": true,
         "importing": true,
-        "githubPackages": true,
-        "cloudProviders": {
-            "github": {}
-        }
+        "githubPackages": false
     },
     "bundleddirs": [
         "libs/core"
