@@ -10,7 +10,7 @@
  * 3D Shapes to create on the surface
  */
 //% color=#313B72 icon="\uf0c8" weight=95
-//% groups='["3D Shapes", "2D Shapes"]'
+//% groups='["3D Shapes", "2D Shapes", "Points", "Colors", "Complex Geometry"]'
 namespace shapes {
 
 

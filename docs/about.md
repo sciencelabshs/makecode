@@ -13,3 +13,5 @@ BuildBee MakeCode would like to acknowledge the open source contributions that m
 * jscad-utils
 
 Thank you to the team at Microsoft who have been extremely helpful in the development of this application.
+
+Thanks to Lonnie Tapscott from the Noun Project. The creator of the Polyhedron (D4, D6, D8, D10, D12 and D20) images.

@@ -58,3 +58,18 @@ declare const enum EdgeStyle {
     //% blockIdentity=main._edgeStylePicker blockImage=1
     ConcaveFillet
 }
+
+declare const enum Polyhedra {
+    //% blockIdentity=main._polyhedraPicker blockImage=1
+    Tetrahedron = 4 ,
+    //% blockIdentity=main._polyhedraPicker blockImage=1
+    Cube = 6,
+    //% blockIdentity=main._polyhedraPicker blockImage=1
+    Octahedron = 8,
+    //% blockIdentity=main._polyhedraPicker blockImage=1
+    PentagonalTrapezohedron = 10,
+    //% blockIdentity=main._polyhedraPicker blockImage=1
+    Dodecahedron = 12,
+    //% blockIdentity=main._polyhedraPicker blockImage=1
+    Icosahedron = 20
+}

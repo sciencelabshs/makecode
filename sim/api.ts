@@ -1,5 +1,5 @@
 /// <reference path="../libs/core/enums.d.ts"/>
-
+/// <reference path="../libs/solids.ts"/>
 /**
  * How to set fields and colours
  * @external https://makecode.com/playground#basic-default-values
@@ -778,7 +778,56 @@ function polygonPrism({sides, radius, height}) {
         return Math.round(Math.random() * 255 * 255 * 255)
     }
 
+    //% blockId="main_polyhedraPicker" block="%input" shim=TD_ID
+    //% blockHidden=true
+    //% input.fieldEditor="imagedropdown" input.fieldOptions.columns=3
+    export function _polyhedraPicker(polyhedra: Polyhedra): number {
+        return polyhedra
+    }
 
+    
+    //% blockId=polyhedra block="polyhedron type: $polyhedron=main_polyhedraPicker with radius: $radius mm ||color $color=colorNumberPicker2" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% radius.defl=5
+    //% group="Complex Geometry"
+    //% advanced=true
+    //% inlineInputMode=inline
+    /**
+     * Creates a polyhedron
+     * @param radius the radius to use
+     * @param color If specified, what color to make the cube.  In hex (0xab1234)
+    */
+    export function polyhedron(polyhedron: Polyhedra = 6, radius: number = 5, color?: number) {
+        let statement = ""
+        board().requireImport('WRITE_TEXT', WRITE_TEXT)
+        switch (polyhedron){
+            case 4:
+                statement = tetrahedronStatement(radius, ["1", "2", "3", "4"]);
+                break;
+            case 6:
+                statement = cubeStatement(radius);
+                break;
+            case 8:
+                statement = octahedronStatement(radius);
+                break;
+            case 10:
+                statement = pentagonalTrapezohedronStatement(radius);
+                break;
+            case 12:
+                statement = dodecahedronStatement(radius);
+                break;
+            case 20:
+                statement = icosahedronStatement(radius);
+                break;
+        }
+        if (statement && statement.length > 0){
+            board().addStatement(
+                statement, 
+                color
+            )
+        }
+    }
 }
 
 

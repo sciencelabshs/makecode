@@ -525,6 +525,27 @@ declare namespace shapes {
     //% shim=shapes::randomColor
     function randomColor(): number;
 
+    //% blockId="main_polyhedraPicker" block="%input" shim=TD_ID
+    //% blockHidden=true
+    //% input.fieldEditor="imagedropdown" input.fieldOptions.columns=3
+    //% shim=shapes::_polyhedraPicker
+    function _polyhedraPicker(polyhedra: Polyhedra): number;
+
+    //% blockId=polyhedra block="polyhedron type: $polyhedron=main_polyhedraPicker with radius: $radius mm ||color $color=colorNumberPicker2" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% radius.defl=5
+    //% group="Complex Geometry"
+    //% advanced=true
+    //% inlineInputMode=inline
+    /**
+     * Creates a polyhedron
+     * @param radius the radius to use
+     * @param color If specified, what color to make the cube.  In hex (0xab1234)
+     */
+    //% shim=shapes::polyhedron
+    function polyhedron(polyhedron: Polyhedra, radius: number, color?: number): void;
+
 }
 declare namespace operators {
     /**
