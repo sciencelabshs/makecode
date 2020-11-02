@@ -49,11 +49,15 @@
         "footerLogo": "./static/logo.portrait.black.svg",
         "cardLogo": "./static/icons/apple-touch-icon.png",
         "appLogo": "./static/icons/apple-touch-icon.png",
-        "homeUrl": "https://buildbee.github.io/makecode",
+        "homeUrl": "https://makecode.buildbee.com/",
         "privacyUrl": "https://buildbee.com/landing/privacy",
         "termsOfUseUrl": "https://buildbee.com/landing/terms",
+        "embedUrl": "https://makecode.buildbee.com/",
+        "shareUrl": "https://makecode.buildbee.com/",
+        "qrCode": true,
+        "leanShare": true,
         "githubUrl": "https://github.com/buildbee/makecode",
-        "betaUrl": "https://makecode.com/",
+        "betaUrl": "https://makecode.buildbee.com/",
         "boardName": "BuildBee",
         "docMenu": [
             {
