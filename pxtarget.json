@@ -36,7 +36,7 @@
         "functions": "#EC3B59"
     },
     "simulator": {
-        "autoRun": true,
+        "autoRun": false,
         "aspectRatio": 4
 
     },
