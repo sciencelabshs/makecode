@@ -25,6 +25,13 @@ Here are some cool tutorials to get you started with your @boardname@!
   "url":"/examples/subtractshapes",
   "cardType": "tutorial",
   "imageUrl": "/static/examples/subtractshapes/project-image.png"
+},
+{
+  "name": "Name Tag",
+  "description": "Use the add and subtract shapes block to make a name tag! ",
+  "url":"/examples/name-tag",
+  "cardType": "tutorial",
+  "imageUrl": "/static/examples/name-tag/project-image.png"
 }
 ]
 ```
