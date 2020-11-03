@@ -310,7 +310,7 @@ namespace pxsim.shapes {
     }
 
 
-    //% block="cylinder - radius $radius|height $height||color $color|radius2 $radius2|center $centerZ|faces $faces"
+    //% block="cylinder - radius $radius|height $height||color $color|center $center|faces $faces|radius2 $radius2"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
@@ -327,18 +327,18 @@ namespace pxsim.shapes {
      * @param radius The radius (distance from center to edge) of the cylinder
      * @param height How tall to make the cylinder
      * @param color The color of the cylinder in hex (0xab1234)
-     * @param radius2 If specified, make the bottom of the cylinder have a different size
-     * @param centerZ Use this if you dont want to center above the z axis, otherwise use move or transform
+     * @param center Use this if you dont want to center above the z axis, otherwise use move or transform
      * @param faces The number of faces the cylinder has.  The more it has, the smoother it is, but longer it takes to render.  So choose wisely!
+     * @param radius2 If specified, make the bottom of the cylinder have a different size
      */
-    export function cylinder(radius: number, height: number, color?: number, radius2?: number, centerZ?: boolean, faces?: number) {
+    export function cylinder(radius: number, height: number, color?: number, center?: boolean, faces?: number, radius2?: number,) {
 
         const fn = (faces) ? Math.max(faces, 4) : 150
 
         board().addStatement(`cylinder({r1: ${radius}, 
                                         r2: ${radius2 === undefined ? radius : radius2}, 
                                         fn: ${fn},
-                                        center: [true, true, ${centerZ}],
+                                        center: [${center}, ${center}, ${center}],
                                         h: ${height}})`, color);
 
 

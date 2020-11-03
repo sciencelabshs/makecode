@@ -250,7 +250,7 @@ declare namespace shapes {
     //% shim=shapes::sphere
     function sphere(radius: number, color?: number, type?: SphereType, center?: boolean, faces?: number): void;
 
-    //% block="cylinder - radius $radius|height $height||color $color|radius2 $radius2|center $centerZ|faces $faces"
+    //% block="cylinder - radius $radius|height $height||color $color|center $center|faces $faces|radius2 $radius2"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
@@ -266,12 +266,12 @@ declare namespace shapes {
      * @param radius The radius (distance from center to edge) of the cylinder
      * @param height How tall to make the cylinder
      * @param color The color of the cylinder in hex (0xab1234)
-     * @param radius2 If specified, make the bottom of the cylinder have a different size
-     * @param centerZ Use this if you dont want to center above the z axis, otherwise use move or transform
+     * @param center Use this if you dont want to center above the z axis, otherwise use move or transform
      * @param faces The number of faces the cylinder has.  The more it has, the smoother it is, but longer it takes to render.  So choose wisely!
+     * @param radius2 If specified, make the bottom of the cylinder have a different size
      */
     //% shim=shapes::cylinder
-    function cylinder(radius: number, height: number, color?: number, radius2?: number, centerZ?: boolean, faces?: number): void;
+    function cylinder(radius: number, height: number, color?: number, center?: boolean, faces?: number, radius2?: number): void;
 
     //% block="donut - thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline

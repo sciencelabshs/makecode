@@ -4,7 +4,7 @@
 
 Learn to use text to create a name tag.
 
-![Make a heart shape](/docs/static/examples/name-tag/project-image.png)
+![Make a name tag](/docs/static/examples/name-tag/project-image.png)
 
 ## Step 1 @fullscreen
 

@@ -32,6 +32,13 @@ Here are some cool tutorials to get you started with your @boardname@!
   "url":"/examples/name-tag",
   "cardType": "tutorial",
   "imageUrl": "/static/examples/name-tag/project-image.png"
+},
+{
+  "name": "Spinning Top",
+  "description": "Learn to use loops and make a spinning top!",
+  "url":"/examples/top",
+  "cardType": "tutorial",
+  "imageUrl": "/static/examples/top/project-image.png"
 }
 ]
 ```

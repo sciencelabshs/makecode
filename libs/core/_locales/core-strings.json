@@ -71,7 +71,7 @@
   "shapes.circle|block": "circle (2d) - radius $radius",
   "shapes.cone|block": "cone - radius $radius|height $height|| color $color | faces $faces",
   "shapes.cube|block": "cube - width $width|depth $depth|height $height||color $color=colorNumberPicker2|center $center",
-  "shapes.cylinder|block": "cylinder - radius $radius|height $height||color $color|radius2 $radius2|center $centerZ|faces $faces",
+  "shapes.cylinder|block": "cylinder - radius $radius|height $height||color $color|center $center|faces $faces|radius2 $radius2",
   "shapes.donut|block": "donut - thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation",
   "shapes.point2d|block": "2D point x: $x|y:  $y",
   "shapes.point3d|block": "3D point x: $x|y:  $y|z:  $z",

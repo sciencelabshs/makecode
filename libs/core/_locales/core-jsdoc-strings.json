@@ -246,7 +246,7 @@
   "shapes.cube|param|height": "The height of the cube",
   "shapes.cube|param|width": "The width of the cube",
   "shapes.cylinder": "Add a cylinder",
-  "shapes.cylinder|param|centerZ": "Use this if you dont want to center above the z axis, otherwise use move or transform",
+  "shapes.cylinder|param|center": "Use this if you dont want to center above the z axis, otherwise use move or transform",
   "shapes.cylinder|param|color": "The color of the cylinder in hex (0xab1234)",
   "shapes.cylinder|param|faces": "The number of faces the cylinder has.  The more it has, the smoother it is, but longer it takes to render.  So choose wisely!",
   "shapes.cylinder|param|height": "How tall to make the cylinder",
