@@ -10,8 +10,8 @@ declare const enum BasicShapes {
 */
 
 declare const enum SphereType {
-    icosahedron = 1,
-    geodesic
+    geodesic = 1,
+    icosahedron = 1
 }
 
 declare const enum Axis {

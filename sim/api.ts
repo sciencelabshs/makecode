@@ -253,11 +253,12 @@ namespace pxsim.shapes {
         return value;
     }
 
-    //% block="cube - width $width|depth $depth|height $height||color $color=colorNumberPicker2"
+    //% block="cube - width $width|depth $depth|height $height||color $color=colorNumberPicker2|center $center"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
     //% height.defl=10
+    //% center.defl=false
     //% weight=95
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
@@ -267,17 +268,17 @@ namespace pxsim.shapes {
         * @param depth The depth of the cube
         * @param height The height of the cube
         * @param color If specified, what color to make the cube.  In hex (0xab1234)
+        * @param center If specified, whether to center the cube when it is places
         */
-    export function cube(width: number = 1, depth: number = 1, height: number = 1, color?: number) {
-
-        const statement = `cube({size: [${width}, ${depth}, ${height}]})`
+    export function cube(width: number = 1, depth: number = 1, height: number = 1, color?: number, center?:boolean) {
+        const statement = `cube({size: [${width}, ${depth}, ${height}], center: [${center}, ${center}, ${center}],})`
         board().addStatement(statement, color)
 
 
     }
 
 
-    //% block="sphere - radius $radius || color $color|type $type|center $centerZ|faces $faces"
+    //% block="sphere - radius $radius || color $color|type $type|center $center|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
     //% faces.defl=60
@@ -287,7 +288,7 @@ namespace pxsim.shapes {
     //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
     //% color.defl=0x4ebed7
     //% color.shadow="colorNumberPicker"
-    //% centerZ.defl=false
+    //% center.defl=false
     //% type.defl=SphereType.icosahedron
     //% weight=94
     //% expandableArgumentMode="toggle"
@@ -297,14 +298,14 @@ namespace pxsim.shapes {
      * @param radius The distance from the center to the edge of the sphere 
      * @param color The color to make the sphere
      * @param type Whether to use geodesic or icosahedron.  Geodesic is more triangular and has a golf-ball like appearance.
-     * @param centerZ Whether to center around the z axis.  By default this is false.
+     * @param center Whether to center around the z axis.  By default this is false.
      * @param faces How many faces to use to make the sphere.  The more you use the longer it takes to render, so choose wisely!
      */
-    export function sphere(radius: number, color?: number, type?: SphereType, centerZ?: boolean, faces?: number) {
+    export function sphere(radius: number, color?: number, type?: SphereType, center?: boolean, faces?: number) {
         const fn = (faces) ? Math.max(faces, 4) : 150
         const sphereType = type === SphereType.geodesic ? "geodesic" : "icosahedron";
 
-        board().addStatement(`sphere({r: ${radius}, center: [true, true, ${centerZ}],  fn: ${fn}, type: "${sphereType}"})`, color);
+        board().addStatement(`sphere({r: ${radius}, center: [${center}, ${center}, ${center}],  fn: ${fn}, type: "${sphereType}"})`, color);
 
     }
 

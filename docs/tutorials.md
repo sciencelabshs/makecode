@@ -18,6 +18,13 @@ Here are some cool tutorials to get you started with your @boardname@!
   "url":"/examples/boardgame-house",
   "cardType": "tutorial",
   "imageUrl": "/static/examples/boardgame-house/project-image.png"
+},
+{
+  "name": "Cookie Cutter",
+  "description": "Use the add and subtract shapes block to make a cookie cutter! ",
+  "url":"/examples/subtractshapes",
+  "cardType": "tutorial",
+  "imageUrl": "/static/examples/subtractshapes/project-image.png"
 }
 ]
 ```

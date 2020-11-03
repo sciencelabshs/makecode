@@ -204,11 +204,12 @@ declare namespace shapes {
     //% shim=shapes::__colorNumberPicker2
     function __colorNumberPicker2(value: number): number;
 
-    //% block="cube - width $width|depth $depth|height $height||color $color=colorNumberPicker2"
+    //% block="cube - width $width|depth $depth|height $height||color $color=colorNumberPicker2|center $center"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
     //% height.defl=10
+    //% center.defl=false
     //% weight=95
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
@@ -218,11 +219,12 @@ declare namespace shapes {
      * @param depth The depth of the cube
      * @param height The height of the cube
      * @param color If specified, what color to make the cube.  In hex (0xab1234)
+     * @param center If specified, whether to center the cube when it is places
      */
     //% shim=shapes::cube
-    function cube(width: number, depth: number, height: number, color?: number): void;
+    function cube(width: number, depth: number, height: number, color?: number, center?: boolean): void;
 
-    //% block="sphere - radius $radius || color $color|type $type|center $centerZ|faces $faces"
+    //% block="sphere - radius $radius || color $color|type $type|center $center|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
     //% faces.defl=60
@@ -232,7 +234,7 @@ declare namespace shapes {
     //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
     //% color.defl=0x4ebed7
     //% color.shadow="colorNumberPicker"
-    //% centerZ.defl=false
+    //% center.defl=false
     //% type.defl=SphereType.icosahedron
     //% weight=94
     //% expandableArgumentMode="toggle"
@@ -242,11 +244,11 @@ declare namespace shapes {
      * @param radius The distance from the center to the edge of the sphere 
      * @param color The color to make the sphere
      * @param type Whether to use geodesic or icosahedron.  Geodesic is more triangular and has a golf-ball like appearance.
-     * @param centerZ Whether to center around the z axis.  By default this is false.
+     * @param center Whether to center around the z axis.  By default this is false.
      * @param faces How many faces to use to make the sphere.  The more you use the longer it takes to render, so choose wisely!
      */
     //% shim=shapes::sphere
-    function sphere(radius: number, color?: number, type?: SphereType, centerZ?: boolean, faces?: number): void;
+    function sphere(radius: number, color?: number, type?: SphereType, center?: boolean, faces?: number): void;
 
     //% block="cylinder - radius $radius|height $height||color $color|radius2 $radius2|center $centerZ|faces $faces"
     //% inlineInputMode=inline
