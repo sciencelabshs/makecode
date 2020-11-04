@@ -25,5 +25,12 @@ Here are some fun programs for your @boardname@!
   "url": "/examples/sundial",
   "cardType": "example",
   "imageUrl": "/static/examples/sundial/project-image.png"
+}, 
+{
+  "name": "Mandelbrot Coaster",
+  "description": "Make an awesome mandelbrot fractal coaster!",
+  "url": "/examples/mandelbrot",
+  "cardType": "example",
+  "imageUrl": "/static/examples/mandelbrot/project-image.png"
 }]
 ```
