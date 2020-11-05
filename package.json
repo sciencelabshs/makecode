@@ -28,7 +28,6 @@
     "patchBuild": "node pxt-patches/applyPatches.js",
     "start": "pxt clean && yarn patchBuild && pxt staticpkg && pxt serve -pkg",
     "checkdocs": "pxt checkdocs",
-    "build:gh-pages": "yarn patchBuild && pxt staticpkg --route makecode --output ./built/gh-pages --bump && npm run copy:gh-pages",
     "build:static": "yarn patchBuild && pxt staticpkg --bump && yarn build:after-build",
     "build:static-dev": "yarn patchBuild && pxt staticpkg && yarn build:after-build",
     "build:after-build": "node pxt-patches/afterBuild.js",

@@ -10,8 +10,18 @@ console.log("afterBuild.js")
 console.log("===============")
 
 console.log('Adding in a new pxtRelId for the serviceWorker files');
+const buildTag = "BB-applyPatches-" +  unixTimestamp();
 replace.replaceInFileSync({
     files: 'built/packaged/*.js',
     from: /;@pxtRelId@/g,
-    to: "BB-applyPatches-" + unixTimestamp(), // in their version this is the github hash
+    to: buildTag , // in their version this is the github hash
 })
+
+
+replace.replaceInFileSync({
+    files: 'built/packaged/*.js',
+    from: /pxtRelId:""/g,
+    to: 'pxtRelId:"'+ buildTag +'"', // in their version this is the github hash
+})
+
+
