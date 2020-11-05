@@ -13,15 +13,16 @@ let maxX = 1
 let maxY = 1
 let x = minX
 let y = minY
-operators.move(30, Axis.X, function () {
-    operators.scaleShapes(50, 50, 20, function () {
-        operators.subtractShapes(function () {
-            operators.move(-0.4, Axis.X, function () {
-                operators.move(stepSize / 2, Axis.Y, function () {
-                    shapes.cylinder(1.4, 0.1, 0x4ebed7, true)
+let epsilon = 0.1 * stepSize
+operators.layOnPrintBed(function () {
+    operators.setPosition(0, 0, 0, function () {
+        operators.scaleShapes(50, 50, 20, function () {
+            operators.subtractShapes(function () {
+                operators.move(-0.4, Axis.X, function () {
+                    operators.move(stepSize / 2, Axis.Y, function () {
+                        shapes.cylinder(1.4, 0.1)
+                    })
                 })
-            })
-            operators.addShapes(function () {
                 while (y <= maxY) {
                     while (x <= maxX) {
                         realComponent = x
@@ -32,12 +33,8 @@ operators.move(30, Axis.X, function () {
                             realComponent = tempReal
                         }
                         if (realComponent ** 2 + imaginaryComponent ** 2 < 4) {
-                            operators.move(x, Axis.X, function () {
-                                operators.move(y, Axis.Y, function () {
-                                    operators.move(-1, Axis.Z, function () {
-                                        shapes.cube(stepSize, stepSize, 2, shapes.__colorNumberPicker2(0xF012BE))
-                                    })
-                                })
+                            operators.setPosition(x, y, 0, function () {
+                                shapes.cube(epsilon + stepSize, epsilon + stepSize, 2)
                             })
                         }
                         x += stepSize
@@ -49,4 +46,5 @@ operators.move(30, Axis.X, function () {
         })
     })
 })
+
 ```
