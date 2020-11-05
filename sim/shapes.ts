@@ -40,12 +40,11 @@ namespace pxsim.shapes {
         return value;
     }
 
-    //% block="cube - width $width|depth $depth|height $height||color $color=colorNumberPicker2|center $center"
+    //% block="cube - width $width|depth $depth|height $height||color $color=colorNumberPicker2"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
     //% height.defl=10
-    //% center.defl=false
     //% weight=95
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
@@ -55,17 +54,16 @@ namespace pxsim.shapes {
         * @param depth The depth of the cube
         * @param height The height of the cube
         * @param color If specified, what color to make the cube.  In hex (0xab1234)
-        * @param center If specified, whether to center the cube when it is places
         */
-    export function cube(width: number = 1, depth: number = 1, height: number = 1, color?: number, center?:boolean) {
-        const statement = `cube({size: [${width}, ${depth}, ${height}], center: [${center}, ${center}, ${center}],})`
+    export function cube(width: number = 1, depth: number = 1, height: number = 1, color?: number) {
+        const statement = `cube({size: [${width}, ${depth}, ${height}], center: [true, true, true]})`
         board().addStatement(statement, color)
 
 
     }
 
 
-    //% block="sphere - radius $radius || color $color|type $type|center $center|faces $faces"
+    //% block="sphere - radius $radius || color $color|type $type|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
     //% faces.defl=60
@@ -75,7 +73,6 @@ namespace pxsim.shapes {
     //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
     //% color.defl=0x4ebed7
     //% color.shadow="colorNumberPicker"
-    //% center.defl=false
     //% type.defl=SphereType.icosahedron
     //% weight=94
     //% expandableArgumentMode="toggle"
@@ -85,19 +82,18 @@ namespace pxsim.shapes {
      * @param radius The distance from the center to the edge of the sphere 
      * @param color The color to make the sphere
      * @param type Whether to use geodesic or icosahedron.  Geodesic is more triangular and has a golf-ball like appearance.
-     * @param center Whether to center around the z axis.  By default this is false.
      * @param faces How many faces to use to make the sphere.  The more you use the longer it takes to render, so choose wisely!
      */
-    export function sphere(radius: number, color?: number, type?: SphereType, center?: boolean, faces?: number) {
+    export function sphere(radius: number, color?: number, type?: SphereType, faces?: number) {
         const fn = (faces) ? Math.max(faces, 4) : 150
         const sphereType = type === SphereType.geodesic ? "geodesic" : "icosahedron";
 
-        board().addStatement(`sphere({r: ${radius}, center: [${center}, ${center}, ${center}],  fn: ${fn}, type: "${sphereType}"})`, color);
+        board().addStatement(`sphere({r: ${radius}, center: [true, true, true],  fn: ${fn}, type: "${sphereType}"})`, color);
 
     }
 
 
-    //% block="cylinder - radius $radius|height $height||color $color|center $center|faces $faces|radius2 $radius2"
+    //% block="cylinder - radius $radius|height $height||color $color|faces $faces|radius2 $radius2"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
@@ -114,24 +110,18 @@ namespace pxsim.shapes {
      * @param radius The radius (distance from center to edge) of the cylinder
      * @param height How tall to make the cylinder
      * @param color The color of the cylinder in hex (0xab1234)
-     * @param center Use this if you dont want to center above the z axis, otherwise use move or transform
      * @param faces The number of faces the cylinder has.  The more it has, the smoother it is, but longer it takes to render.  So choose wisely!
      * @param radius2 If specified, make the bottom of the cylinder have a different size
      */
-    export function cylinder(radius: number, height: number, color?: number, center?: boolean, faces?: number, radius2?: number,) {
-
+    export function cylinder(radius: number, height: number, color?: number, faces?: number, radius2?: number,) {
         const fn = (faces) ? Math.max(faces, 4) : 150
-
         board().addStatement(`cylinder({r1: ${radius}, 
                                         r2: ${radius2 === undefined ? radius : radius2}, 
                                         fn: ${fn},
-                                        center: [${center}, ${center}, ${center}],
+                                        center: [true, true, true],
                                         h: ${height}})`, color);
-
-
-
-
     }
+
     //% block="donut - thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
     //% thickness.defl=4 thickness.min=1
@@ -171,6 +161,7 @@ namespace pxsim.shapes {
                                     fni: ${innerFaces === undefined ? 16 : innerFaces},
                                     fno: ${outerFaces === undefined ? 32 : outerFaces},
                                     roti: ${innerRotation === undefined ? 32 : innerRotation}, 
+                                    center: [true, true, true],
                                 })`, color)
     }
 
@@ -192,18 +183,32 @@ namespace pxsim.shapes {
      * @param radius The radius of the cone
      * @param height How high to make the cone
      * @param color The color to use for the cone
-     * @param centerZ Whether or not the cone centers around the Z axis.  Most likely you want to use move/translate instead.
      * @param faces The number of faces the cone has.  The more it has, the smoother it is, but longer it takes to render.  So choose wisely!
      */
-    export function cone(radius: number, height: number, color?: number, centerZ?: boolean, faces?: number) {
+    export function cone(radius: number, height: number, color?: number, faces?: number) {
         board().addStatement(`cylinder({
                 r2: 0, 
                 r1: ${radius}, 
                 h: ${height},
                 fn: ${faces === undefined ? 100 : faces},
-                center: [true, true, ${centerZ}]}
+                center: [true, true, true]}
             )`, color);
     }
+
+
+    const CENTER_CHILDREN = `
+    function centerChildren(children) {
+        const joined = union(children)
+        const bounds = joined.getBounds()
+        const min = bounds[0]
+        const max = bounds[1]
+        const cx = (min._x + max._x) / 2
+        const cy = (min._y + max._y) / 2
+        const cz = (min._z + max._z) / 2
+
+        return translate([-cx, -cy, -cz], joined)
+    }
+    `
 
     const WRITE_TEXT = `
     function writeText({text, lineWidth, fontSize, lineSpacing, letterSpacing, extrudeHeight}) {
@@ -220,14 +225,14 @@ namespace pxsim.shapes {
             
         }, text);   // l contains a list of polylines to be drawn
 
-
         var o = [];
         l.forEach(function(pl) {                   // pl = polyline (not closed)
             o.push(rectangular_extrude(pl, {w: lineWidth, h: extrudeHeight}));   // extrude it to 3D
         });
-        return o;
-      }
-        `
+
+        return o
+    }
+    `
 
 
 
@@ -253,16 +258,20 @@ namespace pxsim.shapes {
      * @param color The color of the text
      */
     export function text(text: string, fontSize?: number, height?: number, color?: number, lineWidth?: number, letterSpacing?: number, lineSpacing?: number) {
+        board().requireImport('CENTER_CHILDREN', CENTER_CHILDREN)
         board().requireImport('WRITE_TEXT', WRITE_TEXT)
         // text returns a list of shapes we need to expand [... list of extruded polylines]
-        board().addStatement(`union(writeText({
+        board().addStatement(`
+                        centerChildren(
+                            writeText({
                                 text: "${text}", 
                                 lineWidth:${lineWidth === undefined ? 4 : lineWidth},
                                 fontSize: ${fontSize === undefined ? 21 : fontSize},
                                 lineSpacing: ${lineSpacing === undefined ? 1.4 : lineSpacing},
                                 letterSpacing: ${letterSpacing === undefined ? 1 : letterSpacing},
                                 extrudeHeight: ${height === undefined ? 1 : height}
-                            }))`, color);
+                            })
+                        )`, color);
 
     }
 
@@ -289,13 +298,16 @@ namespace pxsim.shapes {
     */
     export function triangleRoof(width: number, height: number, depth: number, color?: number) {
         board().requireImport('TRIANGLE_PRISM', TRIANGLE_PRISM)
-
-        board().addStatement(`triangularPrism({
+        board().requireImport('CENTER_CHILDREN', CENTER_CHILDREN)
+        board().addStatement(`
+        centerChildren(
+            triangularPrism({
                 mode: "equilateral", 
                 width: ${width},
                 height: ${height},
-                depth: ${depth},
-            })`, color);
+                depth: ${depth}
+            })
+        )`, color);
     }
 
 
@@ -321,13 +333,15 @@ namespace pxsim.shapes {
     */
     export function triangleRamp(width: number, height: number, depth: number, color?: number) {
         board().requireImport('TRIANGLE_PRISM', TRIANGLE_PRISM)
-
-        board().addStatement(`triangularPrism({
-            mode: "right", 
-            width: ${width},
-            height: ${height},
-            depth: ${depth},
-        })`, color);
+        board().requireImport('CENTER_CHILDREN', CENTER_CHILDREN)
+        board().addStatement(`centerChildren(
+            triangularPrism({
+                mode: "right", 
+                width: ${width},
+                height: ${height},
+                depth: ${depth},
+            })
+        )`, color);
     }
 
     // this is designed to stack perfectly with cube.
@@ -370,12 +384,14 @@ namespace pxsim.shapes {
     */
     export function polygon3D(sides: number, radius: number, height: number, color?: number) {
         board().requireImport('POLYGON_PRISM', POLYGON_PRISM)
-
-        board().addStatement(`polygonPrism({
-            sides: ${sides}, 
-            radius: ${Math.max(radius, .001)}, // avoid degenerate olygon
-            height: ${height},
-        })`, color);
+        board().requireImport('CENTER_CHILDREN', CENTER_CHILDREN)
+        board().addStatement(`centerChildren(
+            polygonPrism({
+                sides: ${sides}, 
+                radius: ${Math.max(radius, .001)}, // avoid degenerate olygon
+                height: ${height},
+            })
+        )`, color);
     }
 
     const POLYGON_PRISM = `
@@ -472,7 +488,8 @@ function polygonPrism({sides, radius, height}) {
     //% advanced=true
     //% group="2D Shapes"
     export function circle(radius: number) {
-        board().addStatement(`circle({r: ${radius}})`);
+        board().requireImport('CENTER_CHILDREN', CENTER_CHILDREN)
+        board().addStatement(`centerChildren(circle({r: ${radius}}))`);
     }
 
     //% blockId=add_rect block="rect (2d) - width $width|height $height"
@@ -483,7 +500,8 @@ function polygonPrism({sides, radius, height}) {
     //% advanced=true
     //% group="2D Shapes"
     export function rect(width: number, height: number) {
-        board().addStatement(`square({size: [${width}, ${height}]})`);
+        board().requireImport('CENTER_CHILDREN', CENTER_CHILDREN)
+        board().addStatement(`centerChildren(square({size: [${width}, ${height}]}))`);
     }
 
     const REGULAR_POLYGON = `
@@ -524,11 +542,11 @@ function polygonPrism({sides, radius, height}) {
      */
     export function regularPolygon(sides: number, radius: number) {
         board().requireImport('REGULAR_POLYGON', REGULAR_POLYGON)
-
-        board().addStatement(`regularPolygon({
+        board().requireImport('CENTER_CHILDREN', CENTER_CHILDREN)
+        board().addStatement(`centerChildren(regularPolygon({
                 sides: ${sides}, 
                 radius: ${Math.max(radius, .001)}, // avoid degenerate olygon
-            })`);
+            }))`);
     }
 
 

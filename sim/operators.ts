@@ -50,6 +50,43 @@ namespace pxsim.operators {
 
     }
 
+    const CENTER_SHAPE_AT = `
+    function centerShapeAtLocation(shapes, targetLocation) {
+        return shapes.map(shape => {
+            const bounds = shape.getBounds()
+            const min = bounds[0]
+            const max = bounds[1]
+            const cx = (min._x + max._x) / 2
+            const cy = (min._y + max._y) / 2
+            const cz = (min._z + max._z) / 2
+            
+            return shape.translate([
+                targetLocation[0] - cx,
+                targetLocation[1] - cy,
+                targetLocation[2] - cz
+            ], shape)
+        })
+    }
+
+    `
+    //% blockId=setPoition block="set position to x: $x|  y: $y |  z: $z" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="Position"
+    //% x.defl=0
+    //% y.defl=0
+    //% z.defl=0
+    /**
+     * Move all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
+     * @param x the x position to move shapes to
+     * @param y the y position to move shapes to
+     * @param z the z position to move shapes to
+     * @param body the shapes to move up
+     */
+    export function setPositionAsync(x: number, y:number, z:number, body: RefAction): Promise<void> {
+        board().requireImport('CENTER_SHAPE_AT', CENTER_SHAPE_AT)
+        return _makeBlock(`union(centerShapeAtLocation([<CHILDREN>], [${x}, ${y}, ${z}]))`, body);
+    }
 
 
     const SNAP_TO_SIDE_SCRIPT = `
@@ -647,46 +684,6 @@ function sliceParams(orientation, radius, bounds) {
     export function layOnPrintBedAsync(body: RefAction): Promise<void> {
         board().requireImport('LAY_FLAT_ON_BED', LAY_FLAT_ON_BED)
         return _makeBlock(`union(layShapesFlatOnBed([<CHILDREN>]))`, body);
-    }
-
-
-    const CENTER_SHAPE_AT = `
-    function centerShapeAtLocation(shapes, targetLocation) {
-        return shapes.map(shape => {
-            const bounds = shape.getBounds()
-            const min = bounds[0]
-            const max = bounds[1]
-            const cx = (min._x + max._x) / 2
-            const cy = (min._y + max._y) / 2
-            const cz = (min._z + max._z) / 2
-            
-            return shape.translate([
-                targetLocation[0] - cx,
-                targetLocation[1] - cy,
-                targetLocation[2] - cz
-            ], shape)
-        })
-    }
-
-    `
-    //% blockId=centerAt block="center shapes around x: $x|  y: $y |  z: $z" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% group="Position and Size"
-    //% x.defl=0
-    //% y.defl=0
-    //% z.defl=0
-    //% advanced=true
-    /**
-     * Move all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
-     * @param x the x position to center shapes at
-     * @param y the y position to center shapes at
-     * @param z the z position to center shapes at
-     * @param body the shapes to move up
-     */
-    export function centerAtAsync(x: number, y:number, z:number, body: RefAction): Promise<void> {
-        board().requireImport('CENTER_SHAPE_AT', CENTER_SHAPE_AT)
-        return _makeBlock(`union(centerShapeAtLocation([<CHILDREN>], [${x}, ${y}, ${z}]))`, body);
     }
 
 
