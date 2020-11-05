@@ -29,9 +29,10 @@
     "start": "pxt clean && yarn patchBuild && pxt staticpkg && pxt serve -pkg",
     "checkdocs": "pxt checkdocs",
     "build:gh-pages": "yarn patchBuild && pxt staticpkg --route makecode --output ./built/gh-pages --bump && npm run copy:gh-pages",
-    "build:static": "yarn patchBuild && pxt staticpkg --bump --no-appcache",
-    "build:static-dev": "yarn patchBuild && pxt staticpkg --no-appcache",
-    "start:static": "yarn build:static && pxt serve --static --no-appcache",
+    "build:static": "yarn patchBuild && pxt staticpkg --bump && yarn build:after-build",
+    "build:static-dev": "yarn patchBuild && pxt staticpkg && yarn build:after-build",
+    "build:after-build": "node pxt-patches/afterBuild.js",
+    "start:static": "yarn build:static && pxt serve --static",
     "copy:gh-pages": "echo 'copying built files to gh-pages branches for the docs and makecode repos...' && pushd ../../gh-pages/makecode && git checkout gh-pages && popd && cp -R built/gh-pages/makecode ../../gh-pages/makecode && pushd ../../docs/docs && git checkout gh-pages && popd && cp -R docs/ ../../docs/docs && echo 'dont forget to check in the changes in ../../gh-pages/makecode and ../../docs/docs'"
   },
   "devDependencies": {
@@ -43,6 +44,7 @@
     "typescript": "2.6.1"
   },
   "dependencies": {
-    "pxt-core": "5.*"
+    "pxt-core": "5.*",
+    "replace-in-file": "^6.1.0"
   }
 }
