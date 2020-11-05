@@ -617,6 +617,24 @@ declare namespace operators {
     //% shim=operators::layOnPrintBedAsync promise
     function layOnPrintBed(body: () => void): void;
 
+    //% blockId=centerAt block="center shapes around x: $x|  y: $y |  z: $z" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="Position and Size"
+    //% x.defl=0
+    //% y.defl=0
+    //% z.defl=0
+    //% advanced=true
+    /**
+     * Move all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
+     * @param x the x position to center shapes at
+     * @param y the y position to center shapes at
+     * @param z the z position to center shapes at
+     * @param body the shapes to move up
+     */
+    //% shim=operators::centerAtAsync promise
+    function centerAt(x: number, y: number, z: number, body: () => void): void;
+
     //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius | cut through: $cutThrough" 
     //% topblock=false
     //% handlerStatement=true
