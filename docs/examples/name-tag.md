@@ -35,24 +35,24 @@ Add another ``||Shapes:text||`` block in the ``||loops:start||`` block. Put your
 
 ```blocks
     shapes.text("BuildBee", 21, 4, 0x4ebed7, 8)
-    shapes.text("BuildBee", 21, 4, 0x4ebed7, 18)
+    shapes.text("BuildBee", 21, 2, 0x4ebed7, 18)
 ```
 
 ## Step 5
-Add a ``||Operators:move||`` block around both ``||Shapes:text||`` blocks. 
+Add a ``||Operators:move||`` block around both ``||Shapes:text||`` blocks and move the text 25mm in the Y direction. 
 ```blocks
-operators.move(5, Axis.X, function () {
+operators.move(25, Axis.Y, function () {
     shapes.text("BuildBee", 21, 4, 0x4ebed7, 8)
-    shapes.text("BuildBee", 21, 4, 0x4ebed7, 18)
+    shapes.text("BuildBee", 21, 2, 0x4ebed7, 18)
 })
 ```
 
 ## Step 6
 Add a ``||Shapes:cylinder||`` block to the ``||loops:start||`` block. Set the radius to 10 and the height to 2.
 ```blocks
-operators.move(5, Axis.X, function () {
+operators.move(25, Axis.Y, function () {
     shapes.text("BuildBee", 21, 4, 0x4ebed7, 8)
-    shapes.text("BuildBee", 21, 4, 0x4ebed7, 18)
+    shapes.text("BuildBee", 21, 2, 0x4ebed7, 18)
 })
 shapes.cylinder(10, 2)
 ```
@@ -61,25 +61,25 @@ shapes.cylinder(10, 2)
 Add a ``||Operators:add||`` block around the other blocks.
 ```blocks
 operators.addShapes(function () {
-    operators.move(5, Axis.X, function () {
+    operators.move(25, Axis.Y, function () {
         shapes.text("BuildBee", 21, 4, 0x4ebed7, 8)
-        shapes.text("BuildBee", 21, 4, 0x4ebed7, 18)
+        shapes.text("BuildBee", 21, 2, 0x4ebed7, 18)
     })
     shapes.cylinder(10, 2)
 })
 ```
 
 ## Step 8
-Add a ``||Shapes:cylinder||`` block to the ``||loops:start`` block: Set the radius to 5 and the height to 2.
+Add a ``||Shapes:cylinder||`` block to the ``||loops:start||`` block: Set the radius to 5 and the height to 4.
 ```blocks
 operators.addShapes(function () {
-    operators.move(5, Axis.X, function () {
+    operators.move(25, Axis.Y, function () {
         shapes.text("BuildBee", 21, 4, 0x4ebed7, 8)
         shapes.text("BuildBee", 21, 2, 0x4ebed7, 18, 1, 1.4)
     })
     shapes.cylinder(10, 2)
 })
-shapes.cylinder(5, 2)
+shapes.cylinder(5, 4)
 ```
 
 
@@ -88,12 +88,12 @@ Add a ``||Operators:subtract||`` block around all the other blocks.
 ```blocks
 operators.subtractShapes(function () {
     operators.addShapes(function () {
-        operators.move(5, Axis.X, function () {
+        operators.move(25, Axis.Y, function () {
             shapes.text("BuildBee", 21, 4, 0x4ebed7, 8)
             shapes.text("BuildBee", 21, 2, 0x4ebed7, 18, 1, 1.4)
         })
         shapes.cylinder(10, 2)
     })
-    shapes.cylinder(5, 2)
+    shapes.cylinder(5, 4)
 })
 ```
