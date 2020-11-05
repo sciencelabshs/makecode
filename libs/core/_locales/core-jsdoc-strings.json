@@ -186,6 +186,8 @@
   "operators.hollowShapes|param|wallThickness": "how thick to make the walls",
   "operators.intersectShapes": "Intersect shapes - only leave the parts from all shapes that overlap.",
   "operators.intersectShapes|param|body": "List of shapes to intersect",
+  "operators.layOnPrintBed": "Move all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.",
+  "operators.layOnPrintBed|param|body": "the shapes to move up",
   "operators.linearExtrude": "Give a 2D shape height, optionally twist it",
   "operators.linearExtrude|param|height": "The height of the extrusion",
   "operators.linearExtrude|param|slices": "Defines resolution of the twist",

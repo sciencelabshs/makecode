@@ -606,6 +606,17 @@ declare namespace operators {
     //% shim=operators::colorAsync promise
     function color(color: number, body: () => void): void;
 
+    //% blockId=layOnPrintBed block="lay on print bed" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="Layout"
+    /**
+     * Move all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
+     * @param body the shapes to move up
+     */
+    //% shim=operators::layOnPrintBedAsync promise
+    function layOnPrintBed(body: () => void): void;
+
     //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius | cut through: $cutThrough" 
     //% topblock=false
     //% handlerStatement=true

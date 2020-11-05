@@ -1462,6 +1462,26 @@ function sliceParams(orientation, radius, bounds) {
 
     }
 
+    const LAY_FLAT_ON_BED = `
+    function layShapesFlatOnBed(shapes) {
+        return shapes.map(shape => shape.translate([0, 0, -shape.getBounds()[0]._z], shape))
+    }
+    `
+    //% blockId=layOnPrintBed block="lay on print bed" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="Layout"
+    /**
+     * Move all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
+     * @param body the shapes to move up
+     */
+    export function layOnPrintBedAsync(body: RefAction): Promise<void> {
+        board().requireImport('LAY_FLAT_ON_BED', LAY_FLAT_ON_BED)
+        return _makeBlock(`union(layShapesFlatOnBed([<CHILDREN>]))`, body);
+        // return _makeBlock(`cube({size: 3, center: true})`, body);
+    }
+
+
     //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius | cut through: $cutThrough" 
     //% topblock=false
     //% handlerStatement=true
