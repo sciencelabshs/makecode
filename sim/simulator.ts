@@ -4,7 +4,7 @@ namespace pxsim {
     /**
      * This is the global store for parameters that allows us to preserve them across sim runs
      */
-    window simParameters:any = {}
+    const simParameters:any = {}
 
     /**
      * This function gets called each time the program restarts
