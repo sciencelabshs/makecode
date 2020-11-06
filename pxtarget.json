@@ -56,7 +56,7 @@
         "embedUrl": "https://makecode.buildbee.com/",
         "shareUrl": "https://makecode.buildbee.com/",
         "qrCode": true,
-        "leanShare": true,
+        "leanShare": false,
         "githubUrl": "https://github.com/buildbee/makecode",
         "betaUrl": "https://makecode.buildbee.com/",
         "boardName": "BuildBee",
