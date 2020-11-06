@@ -3,6 +3,8 @@
 /// <reference path="./extraMaths.ts"/>
 /// <reference path="./shapes.ts"/>
 /// <reference path="./operators.ts"/>
+/// <reference path="./parameters.ts"/>
+
 
 /**
  * How to set fields and colours
