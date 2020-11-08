@@ -35,6 +35,11 @@ namespace pxsim.parameters {
      * @param characterLimit The character limit to apply to the text input. (0 means no limit)
      */
     export function textPerameter(parameterName: string = "", defaultText: string = "", characterLimit?: number) {
-        board().addParameter(ParameterTypes.Text, parameterName, defaultText, 1, 2, 3)
+        board().addParameter({
+            type: ParameterTypes.Text, 
+            name: parameterName, 
+            defaultValue: defaultText, 
+            characterLimit
+        })
     }
 }

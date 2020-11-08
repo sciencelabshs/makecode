@@ -6,6 +6,74 @@ namespace pxsim {
      */
     const simParameters:any = {}
 
+
+    /**
+     * This is the change handler function for the  global store for parameters
+     */
+    const parameterHTMLInputChangeHandler = function(event:any){
+        const fieldName = event.target.name
+        let fieldValue = event.target.value
+        const paramData = simParameters[fieldName]
+        const paramType = paramData.type
+
+        switch(paramType){
+            case ParameterTypes.Text:
+                if (paramData.characterLimit > 0){
+                    fieldValue = fieldValue.slice(0, paramData.characterLimit)
+                }
+                simParameters[fieldName].currentValue = fieldValue
+                break
+        }
+        console.log('!!!', simParameters)
+    }
+
+
+    /**
+     * This is the UI injection function that adds parameter inputs to the simulator HTML
+     */
+    const updateParameterForm = function(){
+        const parameterDivs = document.getElementsByClassName("parameterDiv")
+        const formElements = []
+
+        // Build out our form components
+        for (let i=0; i<Object.keys(simParameters).length; i++){
+            const parameterName = Object.keys(simParameters)[i]
+            const varSafeName = parameterName.split(" ").join("")
+            const parameterData = simParameters[parameterName]
+            let formElementHTML = ""
+            switch(parameterData.type){
+                case ParameterTypes.Text:
+                    formElementHTML = `
+                    <label class="textParameterLabel" for="${varSafeName}">${parameterName}</label>
+                    <input 
+                        class="textParameterInput" 
+                        type="text" 
+                        name="${varSafeName}" 
+                        value="${parameterData.currentValue}"
+                    />
+                    `
+                    break
+            }
+            formElements.push(formElementHTML)
+        }
+        
+        // Write form to Simulator HTML
+        for (let i=0; i<parameterDivs.length; i++){
+            parameterDivs[i].innerHTML = formElements.join("")
+        }
+
+        // Bind handler for input form elements
+        console.log('!!!!', parameterHTMLInputChangeHandler, updateParameterForm)
+        $(function() {
+            $(".parameterDiv input").off('change');
+            $(".parameterDiv input").change(function(event){
+                parameterHTMLInputChangeHandler(event)
+                updateParameterForm()
+            })
+        });
+    }
+
+
     /**
      * This function gets called each time the program restarts
      */
@@ -128,7 +196,14 @@ namespace pxsim {
             this.updateJSCad()
         }
 
-        addParameter(type:ParameterTypes.Text, name: string, defaultValue: any, ...rest: Array<any>){
+        addParameter(parameter: { 
+            type:ParameterTypes.Text; 
+            name: string; 
+            defaultValue: any; 
+            characterLimit?: number
+        }){
+            const { type, name, defaultValue, characterLimit } = parameter
+
             let currentValue = defaultValue
             if (simParameters[name] && simParameters[name].currentValue){
                 currentValue = simParameters[name].currentValue
@@ -138,13 +213,13 @@ namespace pxsim {
                 type,
                 defaultValue,
                 currentValue,
-                ...rest
+                characterLimit
             }
             // It's not ideal to put this here, obviously we would only want to call it once per run
             // However initAsync doesnt seem to work as the parameters get checked before they are set.
             // I guess because it's async. Anyway, people shouldn't have too many params, so hopefully 
             // It wont hurt performance too badly.
-            this.updateParameterForm()
+            updateParameterForm()
         };
 
         requireImport(importName:string, code:string) {
@@ -229,38 +304,6 @@ namespace pxsim {
                 const main = this.lastExecutingCode.indexOf("main");
                 const mainStr = this.lastExecutingCode.slice(main)
                 console.log(mainStr)
-            }
-        }
-
-        updateParameterForm(){
-            const parameterDivs = document.getElementsByClassName("parameterDiv")
-            const formElements = []
-
-            // Build out our form components
-            for (let i=0; i<Object.keys(simParameters).length; i++){
-                const parameterName = Object.keys(simParameters)[i]
-                const varSafeName = parameterName.split(" ").join("")
-                const parameterData = simParameters[parameterName]
-                let formElementHTML = ""
-                switch(parameterData.type){
-                    case ParameterTypes.Text:
-                        formElementHTML = `
-                        <label class="textParameterLabel" for="${varSafeName}">${parameterName}</label>
-                        <input 
-                            class="textParameterInput" 
-                            type="text" 
-                            name="${varSafeName}" 
-                            value="${parameterData.currentValue}"
-                        />
-                        `
-                        break
-                }
-                formElements.push(formElementHTML)
-            }
-            
-            // Write form to Simulator HTML
-            for (let i=0; i<parameterDivs.length; i++){
-                parameterDivs[i].innerHTML = formElements.join()
             }
         }
 
