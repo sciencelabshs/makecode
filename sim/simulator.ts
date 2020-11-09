@@ -5,15 +5,23 @@ namespace pxsim {
      * This is the global store for parameters that allows us to preserve them across sim runs
      */
     const simParameters:any = {}
+    /**
+     * We set this uniquely every time the render runs. 
+     * When a block is evaluated it sets the `renderSeed` prop on it's simParameters entry to match the `currentRenderSeed`.
+     * When the UI injection gets run, only entries where `renderSeed === currentRenderSeed` are rendered.
+     * This has the effect that when a param block is removed it stops appearing in the form.
+     */
+    let currentRenderSeed:number = Math.random()    
 
 
     /**
      * This is the change handler function for the  global store for parameters
      */
     const parameterHTMLInputChangeHandler = function(event:any){
-        const fieldName = event.target.name
+        console.log("!!!!e", event)
+        const varSafeName = event.target.name
         let fieldValue = event.target.value
-        const paramData = simParameters[fieldName]
+        const paramData = simParameters[varSafeName]
         const paramType = paramData.type
 
         switch(paramType){
@@ -21,10 +29,12 @@ namespace pxsim {
                 if (paramData.characterLimit > 0){
                     fieldValue = fieldValue.slice(0, paramData.characterLimit)
                 }
-                simParameters[fieldName].currentValue = fieldValue
+                simParameters[varSafeName].currentValue = fieldValue
+                break
+            default:
+                simParameters[varSafeName].currentValue = fieldValue
                 break
         }
-        console.log('!!!', simParameters)
     }
 
 
@@ -37,9 +47,13 @@ namespace pxsim {
 
         // Build out our form components
         for (let i=0; i<Object.keys(simParameters).length; i++){
-            const parameterName = Object.keys(simParameters)[i]
-            const varSafeName = parameterName.split(" ").join("")
-            const parameterData = simParameters[parameterName]
+            const varSafeName = Object.keys(simParameters)[i]
+            const parameterData = simParameters[varSafeName]
+
+            // If element is not in current render cycle then ignore it
+            if (parameterData.renderSeed !== currentRenderSeed) continue
+
+            const parameterName = parameterData.name
             let formElementHTML = ""
             switch(parameterData.type){
                 case ParameterTypes.Text:
@@ -53,6 +67,32 @@ namespace pxsim {
                     />
                     `
                     break
+                case ParameterTypes.Number:
+                    formElementHTML = `
+                    <label class="textParameterLabel" for="${varSafeName}">${parameterName}</label>
+                    <input 
+                        class="textParameterInput" 
+                        type="number" 
+                        name="${varSafeName}" 
+                        value="${parameterData.currentValue}"
+                    />
+                    `
+                    break
+                case ParameterTypes.NumberRange:
+                    formElementHTML = `
+                    <label class="textParameterLabel" for="${varSafeName}">${parameterName}</label>
+                    <input 
+                        class="textParameterInput" 
+                        type="range" 
+                        name="${varSafeName}" 
+                        value="${parameterData.currentValue}"
+                        min=${parameterData.minValue}
+                        max=${parameterData.maxValue}
+                        step=${parameterData.stepValue}
+                    />
+                    `
+                    break
+
             }
             formElements.push(formElementHTML)
         }
@@ -63,7 +103,6 @@ namespace pxsim {
         }
 
         // Bind handler for input form elements
-        console.log('!!!!', parameterHTMLInputChangeHandler, updateParameterForm)
         $(function() {
             $(".parameterDiv input").off('change');
             $(".parameterDiv input").change(function(event){
@@ -197,29 +236,43 @@ namespace pxsim {
         }
 
         addParameter(parameter: { 
-            type:ParameterTypes.Text; 
+            type:ParameterTypes; 
             name: string; 
+            varSafeName: string;
             defaultValue: any; 
             characterLimit?: number
+            minValue?: number;
+            maxValue?: number;
+            stepValue?: number;
         }){
-            const { type, name, defaultValue, characterLimit } = parameter
-
+            // Unpack parameter data
+            const { 
+                type, name, varSafeName, defaultValue, // All use these
+                characterLimit, // For text input
+                minValue, maxValue, stepValue // For numberRange input
+            } = parameter
+            // If the parameter hasn't been defined yet, set the current value to the default
             let currentValue = defaultValue
-            if (simParameters[name] && simParameters[name].currentValue){
-                currentValue = simParameters[name].currentValue
+            if (simParameters[varSafeName] && simParameters[varSafeName].currentValue){
+                currentValue = simParameters[varSafeName].currentValue
             }
 
-            simParameters[name] = {
+            // Add parameter to the global store
+            simParameters[varSafeName] = {
                 type,
+                name,
                 defaultValue,
                 currentValue,
-                characterLimit
+                characterLimit,
+                renderSeed: currentRenderSeed
             }
+            
             // It's not ideal to put this here, obviously we would only want to call it once per run
             // However initAsync doesnt seem to work as the parameters get checked before they are set.
             // I guess because it's async. Anyway, people shouldn't have too many params, so hopefully 
             // It wont hurt performance too badly.
             updateParameterForm()
+            console.table(simParameters)
         };
 
         requireImport(importName:string, code:string) {
@@ -312,6 +365,9 @@ namespace pxsim {
          */
         initAsync(msg: pxsim.SimulatorRunMessage): Promise<void> {
             console.log("INIT async", msg)
+            // Set render seed for this pass. See comment on definition for more info.
+            currentRenderSeed = Math.random() 
+
             this.updateJSCad()
             return Promise.resolve();
         }
