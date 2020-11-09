@@ -18,7 +18,6 @@ namespace pxsim {
      * This is the change handler function for the  global store for parameters
      */
     const parameterHTMLInputChangeHandler = function(event:any){
-        console.log("!!!!e", event)
         const varSafeName = event.target.name
         let fieldValue = event.target.value
         const paramData = simParameters[varSafeName]
