@@ -263,6 +263,9 @@ namespace pxsim {
                 defaultValue,
                 currentValue,
                 characterLimit,
+                minValue,
+                maxValue,
+                stepValue,
                 renderSeed: currentRenderSeed
             }
             
@@ -271,7 +274,7 @@ namespace pxsim {
             // I guess because it's async. Anyway, people shouldn't have too many params, so hopefully 
             // It wont hurt performance too badly.
             updateParameterForm()
-            console.table(simParameters)
+            console.log(simParameters)
         };
 
         requireImport(importName:string, code:string) {

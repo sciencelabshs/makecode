@@ -823,12 +823,13 @@ declare namespace operators {
 
 }
 declare namespace parameters {
-    //% block="Text parameter - name $parameterName | default value $defaultText ||characterLimit $characterLimit"
+    //% block="text - label: $parameterName || default: $defaultText | characterLimit: $characterLimit"
     //% inlineInputMode=inline
-    //% defaultText.defl="default"
+    //% parameterName.defl="textInput"
+    //% defaultText.defl="text"
     //% characterLimit.defl=0
     //% characterLimit.min=0
-    //% group="Basic"
+    //% group="Text"
     //% expandableArgumentMode="enabled"
     /**
      * Add text input parameter
@@ -837,12 +838,13 @@ declare namespace parameters {
      * @param characterLimit The character limit to apply to the text input. (0 means no limit)
      */
     //% shim=parameters::textParameter
-    function textParameter(parameterName: string, defaultText: string, characterLimit?: number): string;
+    function textParameter(parameterName: string, defaultText?: string, characterLimit?: number): string;
 
-    //% block="Number parameter - name $parameterName | default value $defaultValue"
+    //% block="number - label: $parameterName || default: $defaultValue"
     //% inlineInputMode=inline
+    //% parameterName.defl="numberInput"
     //% defaultValue.defl="0"
-    //% group="Basic"
+    //% group="Numbers"
     //% expandableArgumentMode="enabled"
     /**
      * Add text input parameter
@@ -850,15 +852,16 @@ declare namespace parameters {
      * @param defaultValue The default value for the number input field
      */
     //% shim=parameters::numberParameter
-    function numberParameter(parameterName: string, defaultValue: number): number;
+    function numberParameter(parameterName: string, defaultValue?: number): number;
 
-    //% block="Number slider - name $parameterName | default value $defaultValue | min value $minValue | max value $maxValue || step value $stepValue"
+    //% block="range - label: $parameterName || default: $defaultValue | min: $minValue | max: $maxValue | step: $stepValue"
     //% inlineInputMode=inline
+    //% parameterName.defl="rangeInput"
     //% defaultValue.defl="0"
     //% minValue.defl="0"
     //% maxValue.defl="10"
     //% stepValue.defl="1"
-    //% group="Basic"
+    //% group="Numbers"
     //% expandableArgumentMode="enabled"
     /**
      * Add text input parameter
@@ -869,7 +872,7 @@ declare namespace parameters {
      * @param stepValue The default value of the slider
      */
     //% shim=parameters::numberRangeParameter
-    function numberRangeParameter(parameterName: string, defaultValue: number, minValue: number, maxValue: number, stepValue?: number): number;
+    function numberRangeParameter(parameterName: string, defaultValue?: number, minValue?: number, maxValue?: number, stepValue?: number): number;
 
 }
 
