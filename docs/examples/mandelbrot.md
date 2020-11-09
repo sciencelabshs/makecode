@@ -5,8 +5,8 @@ Make an awesome mandelbrot fractal coaster!
 let tempReal = 0
 let imaginaryComponent = 0
 let realComponent = 0
-let stepSize = 0.1
-let iterations = 25
+let stepSize = parameters.numberRangeParameter("Sample Size", 0.1, 0.07, 0.3, 0.01)
+let iterations = parameters.numberRangeParameter("Samples", 25, 1, 100, 1)
 let minX = -1.5
 let minY = -1
 let maxX = 1
@@ -46,5 +46,4 @@ operators.layOnPrintBed(function () {
         })
     })
 })
-
 ```
