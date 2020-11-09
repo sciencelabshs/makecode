@@ -46,7 +46,7 @@ operators.stack(StackDirection.Above, Axis.Z, function () {
 Let's make a chimney!
 
 Add another the ``||Shapes:cube||``.
-Set the size to width: 2 depth: 2 height: 18.
+Set the size to width: 2 depth: 2 height: 10.
 
 ```blocks
 operators.stack(StackDirection.Above, Axis.Z, function () {
@@ -54,11 +54,11 @@ operators.stack(StackDirection.Above, Axis.Z, function () {
     shapes.triangleRoof(10, 5, 10)
 })
 
-shapes.cube(2, 2, 18)
+shapes.cube(2, 2, 10)
 ```
 
 ## Step 5 @fullscreen
-Use the ``||Shapes:move||`` blocks to position the chimney in a spot you like.  Move by 4mm in the Y axis. 
+Use the ``||Shapes:move||`` blocks to position the chimney in a spot you like.  Move by 9mm in the Z axis. 
 
 
 ```blocks
@@ -66,8 +66,8 @@ operators.stack(StackDirection.Above, Axis.Z, function () {
     shapes.cube(10, 10, 10)
     shapes.triangleRoof(10, 5, 10)
 })
-operators.move(4, Axis.Y, function () {
-    shapes.cube(2, 2, 18)
+operators.move(9, Axis.Z, function () {
+    shapes.cube(2, 2, 10)
 })
 ```
 
@@ -81,9 +81,9 @@ operators.stack(StackDirection.Above, Axis.Z, function () {
     shapes.cube(10, 10, 10)
     shapes.triangleRoof(10, 5, 10)
 })
-operators.move(4, Axis.Y, function () {
+operators.move(9, Axis.Z, function () {
     operators.move(2, Axis.X, function () {
-        shapes.cube(2, 2, 18)
+        shapes.cube(2, 2, 10)
     })
 })
 ```

@@ -16,14 +16,13 @@
   <script src="/cdn/pxtsim.js"></script>
   <script src="/sim/sim.js"></script>
   <script src="/sim/buildbee/buildbee.js"></script>
+  <script src="/jquery.js"></script>
 </head>
 
 <script>
   function saveToBuildBee() {
     const blob = window.jscad.currentObjectsToBlob()
     saveSTL(blob)
-
-
   }
 </script>
 
@@ -114,6 +113,8 @@
         Back
       </button>
 
+    </div>
+    <div class="parameterDiv" style="display: grid; grid-template-columns: auto auto; justify-items: end start;">
     </div>
     <div class="about" style="width:1px; height: 0px; overflow: hidden">
       <iframe src="https://buildbee.com/landing/makecode"/>

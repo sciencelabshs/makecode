@@ -204,12 +204,11 @@ declare namespace shapes {
     //% shim=shapes::__colorNumberPicker2
     function __colorNumberPicker2(value: number): number;
 
-    //% block="cube - width $width|depth $depth|height $height||color $color=colorNumberPicker2|center $center"
+    //% block="cube - width $width|depth $depth|height $height||color $color=colorNumberPicker2"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
     //% height.defl=10
-    //% center.defl=false
     //% weight=95
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
@@ -219,12 +218,11 @@ declare namespace shapes {
      * @param depth The depth of the cube
      * @param height The height of the cube
      * @param color If specified, what color to make the cube.  In hex (0xab1234)
-     * @param center If specified, whether to center the cube when it is places
      */
     //% shim=shapes::cube
-    function cube(width: number, depth: number, height: number, color?: number, center?: boolean): void;
+    function cube(width: number, depth: number, height: number, color?: number): void;
 
-    //% block="sphere - radius $radius || color $color|type $type|center $center|faces $faces"
+    //% block="sphere - radius $radius || color $color|type $type|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
     //% faces.defl=60
@@ -234,7 +232,6 @@ declare namespace shapes {
     //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
     //% color.defl=0x4ebed7
     //% color.shadow="colorNumberPicker"
-    //% center.defl=false
     //% type.defl=SphereType.icosahedron
     //% weight=94
     //% expandableArgumentMode="toggle"
@@ -244,13 +241,12 @@ declare namespace shapes {
      * @param radius The distance from the center to the edge of the sphere 
      * @param color The color to make the sphere
      * @param type Whether to use geodesic or icosahedron.  Geodesic is more triangular and has a golf-ball like appearance.
-     * @param center Whether to center around the z axis.  By default this is false.
      * @param faces How many faces to use to make the sphere.  The more you use the longer it takes to render, so choose wisely!
      */
     //% shim=shapes::sphere
-    function sphere(radius: number, color?: number, type?: SphereType, center?: boolean, faces?: number): void;
+    function sphere(radius: number, color?: number, type?: SphereType, faces?: number): void;
 
-    //% block="cylinder - radius $radius|height $height||color $color|center $center|faces $faces|radius2 $radius2"
+    //% block="cylinder - radius $radius|height $height||color $color|faces $faces|radius2 $radius2"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
@@ -266,12 +262,11 @@ declare namespace shapes {
      * @param radius The radius (distance from center to edge) of the cylinder
      * @param height How tall to make the cylinder
      * @param color The color of the cylinder in hex (0xab1234)
-     * @param center Use this if you dont want to center above the z axis, otherwise use move or transform
      * @param faces The number of faces the cylinder has.  The more it has, the smoother it is, but longer it takes to render.  So choose wisely!
      * @param radius2 If specified, make the bottom of the cylinder have a different size
      */
     //% shim=shapes::cylinder
-    function cylinder(radius: number, height: number, color?: number, center?: boolean, faces?: number, radius2?: number): void;
+    function cylinder(radius: number, height: number, color?: number, faces?: number, radius2?: number): void;
 
     //% block="donut - thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
@@ -316,11 +311,10 @@ declare namespace shapes {
      * @param radius The radius of the cone
      * @param height How high to make the cone
      * @param color The color to use for the cone
-     * @param centerZ Whether or not the cone centers around the Z axis.  Most likely you want to use move/translate instead.
      * @param faces The number of faces the cone has.  The more it has, the smoother it is, but longer it takes to render.  So choose wisely!
      */
     //% shim=shapes::cone
-    function cone(radius: number, height: number, color?: number, centerZ?: boolean, faces?: number): void;
+    function cone(radius: number, height: number, color?: number, faces?: number): void;
 
     //% block="text - text $text | fontSize $fontSize | height $height ||color $color | line width $lineWidth |  letterSpacing $letterSpacing | lineSpacing $lineSpacing"
     //% inlineInputMode=inline
@@ -565,6 +559,23 @@ declare namespace operators {
     //% shim=operators::moveAsync promise
     function move(mm: number, direction: Axis, body: () => void): void;
 
+    //% blockId=setPoition block="set position to x: $x|  y: $y |  z: $z" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="Position"
+    //% x.defl=0
+    //% y.defl=0
+    //% z.defl=0
+    /**
+     * Move all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
+     * @param x the x position to move shapes to
+     * @param y the y position to move shapes to
+     * @param z the z position to move shapes to
+     * @param body the shapes to move up
+     */
+    //% shim=operators::setPositionAsync promise
+    function setPosition(x: number, y: number, z: number, body: () => void): void;
+
     //% blockId=stackshapes block="stack shapes|$direction|axis: $axis" 
     //% topblock=false
     //% handlerStatement=true
@@ -616,24 +627,6 @@ declare namespace operators {
      */
     //% shim=operators::layOnPrintBedAsync promise
     function layOnPrintBed(body: () => void): void;
-
-    //% blockId=centerAt block="center shapes around x: $x|  y: $y |  z: $z" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% group="Position and Size"
-    //% x.defl=0
-    //% y.defl=0
-    //% z.defl=0
-    //% advanced=true
-    /**
-     * Move all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
-     * @param x the x position to center shapes at
-     * @param y the y position to center shapes at
-     * @param z the z position to center shapes at
-     * @param body the shapes to move up
-     */
-    //% shim=operators::centerAtAsync promise
-    function centerAt(x: number, y: number, z: number, body: () => void): void;
 
     //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius | cut through: $cutThrough" 
     //% topblock=false
@@ -827,6 +820,56 @@ declare namespace operators {
      */
     //% shim=operators::sequentialWrap2DShapesAsync promise
     function sequentialWrap2DShapes(body: () => void): void;
+
+}
+declare namespace parameters {
+    //% block="Text parameter - name $parameterName | default value $defaultText ||characterLimit $characterLimit"
+    //% inlineInputMode=inline
+    //% defaultText.defl="default"
+    //% characterLimit.defl=0
+    //% characterLimit.min=0
+    //% group="Basic"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Add text input parameter
+     * @param parameterName The label for text input field
+     * @param defaultText The default text for the text input field
+     * @param characterLimit The character limit to apply to the text input. (0 means no limit)
+     */
+    //% shim=parameters::textParameter
+    function textParameter(parameterName: string, defaultText: string, characterLimit?: number): string;
+
+    //% block="Number parameter - name $parameterName | default value $defaultValue"
+    //% inlineInputMode=inline
+    //% defaultValue.defl="0"
+    //% group="Basic"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Add text input parameter
+     * @param parameterName The label for number input field
+     * @param defaultValue The default value for the number input field
+     */
+    //% shim=parameters::numberParameter
+    function numberParameter(parameterName: string, defaultValue: number): number;
+
+    //% block="Number slider - name $parameterName | default value $defaultValue | min value $minValue | max value $maxValue || step value $stepValue"
+    //% inlineInputMode=inline
+    //% defaultValue.defl="0"
+    //% minValue.defl="0"
+    //% maxValue.defl="10"
+    //% stepValue.defl="1"
+    //% group="Basic"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Add text input parameter
+     * @param parameterName The label for slider
+     * @param defaultValue The default text for the text input field
+     * @param minValue The minimum value of the slider
+     * @param maxValue The maximum value of the slider
+     * @param stepValue The default value of the slider
+     */
+    //% shim=parameters::numberRangeParameter
+    function numberRangeParameter(parameterName: string, defaultValue: number, minValue: number, maxValue: number, stepValue?: number): number;
 
 }
 
