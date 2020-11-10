@@ -1,3 +1,5 @@
 <xml xmlns="http://www.w3.org/1999/xhtml">
- <block type="pxt-on-start" x="0" y="0"></block>
+    <block type="pxt-on-start" x="0" y="0">
+        <statement name="HANDLER"><block type="alignToPrintBed"/></statement>
+    </block>
 </xml>

@@ -6,6 +6,11 @@
   <title>sample simulator</title>
   <link rel="stylesheet" type="text/css" href="/sim/sim.css">
   <link rel="stylesheet" href="/sim/jscad/min.css" type="text/css">
+
+  <link rel="stylesheet" data-rtl="/blb/rtlsemantic.css" href="/semantic.css" />
+  <link id="blocklycss" data-rtl="/blb/rtlblockly.css" rel="stylesheet" href="/blockly.css" />
+  <link rel="stylesheet" href="/style.css" />
+
   <style>
     body {
       background: transparent;
@@ -30,7 +35,7 @@
 
   <div class="simulator-container">
     <script src="/sim/jscad/min.js"></script>
- 
+
     <div class="printwithbuildbeecontainer">
       <button class="printwithbuildbee" onclick="saveToBuildBee()">
         <svg width="120px" height="40px" viewBox="0 0 120 40" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -88,39 +93,44 @@
       </div>
     </div>
     <div class="centered-column">
-    <div class='jscad-buttons'>
-      <button class="jscad-toolbar-button" id="reset" onClick="window.jscad.viewer.resetCamera()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-      </button>
-      <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraTop()">
-        Top
-      </button>
-      <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraBottom()">
-        Bottom
-      </button>
-      <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraLeft()">
-        Left
-      </button>
-      <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraRight()">
-        Right
-      </button>
+      <div class='jscad-buttons'>
+        <button class="jscad-toolbar-button" id="reset" onClick="window.jscad.viewer.resetCamera()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="feather feather-home">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </button>
+        <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraTop()">
+          Top
+        </button>
+        <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraBottom()">
+          Bottom
+        </button>
+        <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraLeft()">
+          Left
+        </button>
+        <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraRight()">
+          Right
+        </button>
 
-      <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraFront()">
-        Front
-      </button>
+        <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraFront()">
+          Front
+        </button>
 
-      <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraBack()">
-        Back
-      </button>
+        <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraBack()">
+          Back
+        </button>
 
-    </div>
-    <div class="parameterDiv" style="display: grid; grid-template-columns: auto auto; justify-items: end start;">
-    </div>
-    <div class="about" style="width:1px; height: 0px; overflow: hidden">
-      <iframe src="https://buildbee.com/landing/makecode"/>
+      </div>
+      <div class="parameterDiv" style="display: grid; grid-template-columns: auto auto; justify-items: end start;">
+      </div>
+      <div class="about" style="width:1px; height: 0px; overflow: hidden">
+        <iframe src="https://buildbee.com/landing/makecode" />
+      </div>
     </div>
   </div>
-</div>
 </body>
 
 </html>

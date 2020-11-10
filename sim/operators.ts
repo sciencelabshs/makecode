@@ -673,7 +673,7 @@ function sliceParams(orientation, radius, bounds) {
         return shapes.map(shape => shape.translate([0, 0, -shape.getBounds()[0]._z], shape))
     }
     `
-    //% blockId=layOnPrintBed block="lay on print bed" 
+    //% blockId=alignToPrintBed block="align to print bed" 
     //% topblock=false
     //% handlerStatement=true
     //% group="Layout"
@@ -681,7 +681,7 @@ function sliceParams(orientation, radius, bounds) {
      * Move all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
      * @param body the shapes to move up
      */
-    export function layOnPrintBedAsync(body: RefAction): Promise<void> {
+    export function alignToPrintBedAsync(body: RefAction): Promise<void> {
         board().requireImport('LAY_FLAT_ON_BED', LAY_FLAT_ON_BED)
         return _makeBlock(`union(layShapesFlatOnBed([<CHILDREN>]))`, body);
     }
