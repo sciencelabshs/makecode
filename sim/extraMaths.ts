@@ -3,11 +3,24 @@
  * 
  */
 namespace pxsim.extraMath {
+
+    //% block="convert $number to text"
+    //% inlineInputMode=inline
+    //% weight=99
+    //% number.defl=0
+    //% group="Conversion"
+    /**
+        * Convert any number to text
+    */
+   export function convert(number: number = 0) {
+    return number.toString()
+}
+
     //% block="convert $angle to radians"
     //% inlineInputMode=inline
     //% angle.defl=0
     //% weight=95
-    //% group="Angles"
+    //% group="Conversion"
     /**
         * Convert an angle in degrees to an angle in radians
         * @param angle The angle in degrees
@@ -20,7 +33,7 @@ namespace pxsim.extraMath {
     //% inlineInputMode=inline
     //% angle.defl=0
     //% weight=94
-    //% group="Angles"
+    //% group="Conversion"
     /**
         * Convert an angle in degrees to an angle in degrees
         * @param angle The angle in degrees
