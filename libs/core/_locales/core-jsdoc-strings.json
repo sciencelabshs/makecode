@@ -156,6 +156,7 @@
   "extraMath.arctan2|param|x": "The \"adjacent\" operand for inverse tan",
   "extraMath.arctan2|param|y": "The \"opposite\" operand for inverse tan",
   "extraMath.arctan|param|x": "The operand for inverse tan",
+  "extraMath.convert": "Convert any number to text",
   "extraMath.cos": "Cosine of angle in degrees",
   "extraMath.cos|param|theta": "The angle in degrees",
   "extraMath.degrees": "Convert an angle in degrees to an angle in degrees",

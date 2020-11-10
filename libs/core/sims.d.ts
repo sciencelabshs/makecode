@@ -1,10 +1,21 @@
 // Auto-generated from simulator. Do not edit.
 declare namespace extraMath {
+    //% block="convert $number to text"
+    //% inlineInputMode=inline
+    //% weight=99
+    //% number.defl=0
+    //% group="Conversion"
+    /**
+     * Convert any number to text
+     */
+    //% shim=extraMath::convert
+    function convert(number: number): string;
+
     //% block="convert $angle to radians"
     //% inlineInputMode=inline
     //% angle.defl=0
     //% weight=95
-    //% group="Angles"
+    //% group="Conversion"
     /**
      * Convert an angle in degrees to an angle in radians
      * @param angle The angle in degrees
@@ -16,7 +27,7 @@ declare namespace extraMath {
     //% inlineInputMode=inline
     //% angle.defl=0
     //% weight=94
-    //% group="Angles"
+    //% group="Conversion"
     /**
      * Convert an angle in degrees to an angle in degrees
      * @param angle The angle in degrees
