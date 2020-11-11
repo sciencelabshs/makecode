@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en" data-manifest="" data-framework="typescript">
+<html lang="en" manifest="/release.manifest" data-framework="typescript">
 
 <head>
   <meta charset="utf-8">
-  <title>sample simulator</title>
-  <link rel="stylesheet" type="text/css" href="/sim/sim.css">
-  <link rel="stylesheet" href="/sim/jscad/min.css" type="text/css">
+  <title>BuildBee Simulator</title>
+  <link rel="stylesheet" href="/bootstrap/bootstrap.min.css" />
 
-  <link rel="stylesheet" data-rtl="/blb/rtlsemantic.css" href="/semantic.css" />
-  <link id="blocklycss" data-rtl="/blb/rtlblockly.css" rel="stylesheet" href="/blockly.css" />
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" type="text/css" href="/sim.css">
+  <link rel="stylesheet" href="/jscad/min.css" type="text/css">
+
+
 
   <style>
     body {
@@ -17,17 +17,22 @@
       overflow: hidden;
     }
   </style>
-  <script src="/cdn/bluebird.min.js"></script>
-  <script src="/cdn/pxtsim.js"></script>
-  <script src="/sim/sim.js"></script>
-  <script src="/sim/buildbee/buildbee.js"></script>
+  <script src="/bluebird.min.js"></script>
+  <script src="/pxtsim.js"></script>
+  <script src="/sim.js"></script>
+  <script src="/buildbee/buildbee.js"></script>
   <script src="/jquery.js"></script>
+
+  <script src="/bootstrap/popper.min.js"></script>
+  <script src="/bootstrap/bootstrap.min.js"></script>
+
+
 </head>
 
 <script>
   function onSaveToBuildBee() {
     const blob = window.jscad.currentObjectsToBlob()
-    saveSTL(blob)
+    sendSTLToBuildBee(blob)
   }
   function onSaveToThingiverse() {
     const blob = window.jscad.currentObjectsToBlob()
@@ -64,18 +69,18 @@
 <body>
 
   <div class="simulator-container">
-    <script src="/sim/jscad/min.js"></script>
+    <script src="/jscad/min.js"></script>
 
-    <div class="printwithbuildbeecontainer">
-      <button class="download" onclick="onDownloadSTL()">Download STL</button>
-      <button class="download" onclick="onSaveToThingiverse()">Save to Thingiverse</button>
-      <button class="printwithbuildbee" onclick="onSaveToBuildBee()">
-        <svg width="120px" height="40px" viewBox="0 0 120 40" version="1.1" xmlns="http://www.w3.org/2000/svg"
+    <div class="printwithbuildbeecontainer pt-3 d-flex flex-row">
+
+
+      <button class="btn printwithbuildbee btn-primary" onclick="onSaveToBuildBee()">
+
+        <svg width="100%" height="100%" viewBox="0 0 120 40" version="1.1" xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink">
           <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
           <g id="Upload-to-Buildbee" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
             <g id="BlueButton">
-              <rect id="Rectangle" fill="#4EBED7" x="0" y="0" width="120" height="40" rx="3"></rect>
               <g id="BuildBee---4ebed7" transform="translate(10.000000, 11.000000)" fill="#FFFFFF" fill-rule="nonzero">
                 <path
                   d="M25.0687322,19.4816214 C24.1082477,19.5101473 23.1553199,19.3053075 22.2931857,18.8849946 C21.5648737,18.5106877 20.937392,17.9694517 20.4629967,17.3063602 C19.9997671,16.6394354 19.6682394,15.8916591 19.4859352,15.1025522 C19.2933634,14.2865616 19.1966489,13.4512619 19.1977077,12.6132769 L19.1977077,5.73065903 L21.1835436,5.73065903 L21.1835436,12.6132769 C21.1827798,13.2576641 21.2484499,13.9004445 21.3795323,14.5316175 C21.4917312,15.0980397 21.7086561,15.6390461 22.0193779,16.12738 C22.3167472,16.5788084 22.7202688,16.9520292 23.1953104,17.2150106 C23.766306,17.5069189 24.403502,17.648477 25.0456747,17.6260836 C25.6972355,17.6493844 26.3437475,17.5047914 26.9219787,17.2064466 C27.4029313,16.9395307 27.8098489,16.5590517 28.1065577,16.0988333 C28.4161516,15.608471 28.631154,15.0654487 28.7406389,14.4973614 C28.8649258,13.8768805 28.9276716,13.2458512 28.9279811,12.6132769 L28.9279811,5.73065903 L30.9455587,5.73065903 L30.9455587,12.6132769 C30.9480652,13.4787148 30.845491,14.3413142 30.6400004,15.1824831 C30.4498744,15.970447 30.1083652,16.7147888 29.634117,17.3748723 C29.1559568,18.0232492 28.5272166,18.5480725 27.8010458,18.9049774 C26.9491864,19.3086594 26.0127447,19.5062917 25.0687322,19.4816214 L25.0687322,19.4816214 Z"
@@ -106,6 +111,31 @@
           </g>
         </svg>
       </button>
+
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary button-download dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download" fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+              d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+            <path fill-rule="evenodd"
+              d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+          </svg>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+
+          <a class="dropdown-item" onclick="onDownloadSTL()" href="#">Download STL</a>
+
+          <a class="dropdown-item" onclick="onSaveToThingiverse()" href="#">Send to Thingiverse</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" onclick="onSaveToBuildBee()" href="#">3D Print with BuildBee</a>
+
+        </div>
+      </div>
+
+
     </div>
     <!-- setup display of the errors as required by OpenJSCAD.js -->
     <div class="jscad-container">
@@ -147,7 +177,7 @@
         </div>
       </div>
     </div>
-    
+
   </div>
 </body>
 

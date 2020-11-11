@@ -1,11 +1,45 @@
-body {
-  color: white !important;
+:root {
+    --bodyColor: #ffffff;
+    --primary: #4ebed7;
+    --primary-active: #66d1e9; /*review - match this to plater*/
+    --background: #2b354f;
+    --modal-background: #445173aa;
 }
+
+body {
+  color: var(--bodyColor) !important;
+}
+
 button {
     outline: 0px !important;
 }
+.btn-primary {
+    background-color: var(--primary);
+    border: 0px;
+}
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+    background-color: var(--primary-active);
+    border: 0px;
+    box-shadow: 
+}
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle  {
+    background-color:var(--primary-active);
+    border: 0px;
+}
+.button-download, .printwithbuildbee {
+    height: 40px;
+}
+.printwithbuildbee {
+    width: 120px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.button-download {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
 .simulator-container {
-  background-color: #2b354f;
+  background-color: var(--background);
   height: 100vh; /* take up the whole iframe*/
   width: 100vw;
 }
@@ -19,22 +53,15 @@ button {
   display: flex;
   flex-direction: row-reverse;
 }
-.printwithbuildbee {
-  background-color: transparent;
-  border: 0px;
-  float: right;
-  margin-right: 12px;
-  display: block;
-  padding: 0px;
-}
+
 .showParameterForm {
   position: fixed;
   bottom: 3em;
   right: 0.5em;
 }
 .showParameterForm .openParameterFormButton {
-  border: 3px solid white;
-  background-color: #2b354f;
+  border: 3px solid var(--bodyColor);
+  background-color: var(--background);
   border-radius: 6em;
   height: 6em;
   width: 6em;
@@ -53,7 +80,7 @@ button {
     top: 10vh;
     width: 80vw;
     height: 80vw;
-    background: #445173aa;
+    background: --var(--modal-background);
 
 
 }
@@ -61,10 +88,10 @@ button {
     display: block;
 }
 .closeParameterFormButton {
-    border: 3px solid white;
+    border: 3px solid var(--bodyColor);
     border-radius: 2em;
     background-color: transparent;
-    color: white;
+    color: var(--bodyColor);
     width: 2em;
     height: 2em;
     font-size: 1em;
