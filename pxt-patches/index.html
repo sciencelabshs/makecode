@@ -107,37 +107,10 @@
             "qrcode/qrcode.min.js": "/blb/qrcode/qrcode.min.js"
         }
     </script>
-    <script>
+    <!-- buildbee file handling overrides-->
+    <script src="/sim/buildbee/main-index.js"></script>
+    <script src="/sim/buildbee/filesaver.min.js"></script>
     
-    function addBuildBeeScripts()  {
-
-        // plate the files
-        function receiveMessage(event) {
-            if (event.origin === "https://makecode.buildbee.com"  ||event.origin === "http://localhost:3232") {
-                if (event.data) {
-                    if (event.data.message === "sendToPlater") {
-                        window.location.href = "https://plater.buildbee.com?data=" + event.data.dataUri || ""
-                    }
-                    if (event.data.message === "sendToBuildBee") {
-
-                        if (event.data.url) {
-                            const hostname = new URL(event.data.url).hostname;
-                            if (hostname === "app.buildbee.com") {
-                                window.location.href= event.data.url + "&utm_source=makecode&utm_medium=upload-to-buildbee&utm_campaign=codeeditor"
-                            }
-                        }
-                    }
-                }
-            }
-
-            // ...
-        }
-        window.addEventListener("message", receiveMessage, false) 
-
-
-    }
-    addBuildBeeScripts()
-    </script>
 </body>
 
 </html>

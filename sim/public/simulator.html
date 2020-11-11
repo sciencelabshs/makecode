@@ -25,9 +25,17 @@
 </head>
 
 <script>
-  function saveToBuildBee() {
+  function onSaveToBuildBee() {
     const blob = window.jscad.currentObjectsToBlob()
     saveSTL(blob)
+  }
+  function onSaveToThingiverse() {
+    const blob = window.jscad.currentObjectsToBlob()
+    sendToThingiverse(blob)
+  }
+  function onDownloadSTL() {
+    const blob = window.jscad.currentObjectsToBlob()
+    downloadSTL(blob)
   }
   function resizeToFrame() {
     // dynamically resize viewer context based on its parent.  
@@ -59,7 +67,9 @@
     <script src="/sim/jscad/min.js"></script>
 
     <div class="printwithbuildbeecontainer">
-      <button class="printwithbuildbee" onclick="saveToBuildBee()">
+      <button class="download" onclick="onDownloadSTL()">Download STL</button>
+      <button class="download" onclick="onSaveToThingiverse()">Save to Thingiverse</button>
+      <button class="printwithbuildbee" onclick="onSaveToBuildBee()">
         <svg width="120px" height="40px" viewBox="0 0 120 40" version="1.1" xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink">
           <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
@@ -137,43 +147,7 @@
         </div>
       </div>
     </div>
-    <div class="centered-column">
-
-      <div class='jscad-buttons'>
-        <button class="jscad-toolbar-button" id="reset" onClick="window.jscad.viewer.resetCamera()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
-        </button>
-        <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraTop()">
-          Top
-        </button>
-        <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraBottom()">
-          Bottom
-        </button>
-        <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraLeft()">
-          Left
-        </button>
-        <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraRight()">
-          Right
-        </button>
-
-        <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraFront()">
-          Front
-        </button>
-
-        <button class="jscad-toolbar-button" id="top" onClick="window.jscad.viewer.setCameraBack()">
-          Back
-        </button>
-
-      </div>
-
-      <div class="about" style="width:1px; height: 0px; overflow: hidden">
-        <iframe src="https://buildbee.com/landing/makecode" />
-      </div>
-    </div>
+    
   </div>
 </body>
 
