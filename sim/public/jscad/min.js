@@ -48362,15 +48362,15 @@ const localCache = {}
         size: 220, // plate size (X and Y)
         // minor grid settings
         m: {
-          draw: true,
+          draw: false,
           i: 1, // number of units between minor grid lines
-          color: { r: .8, g: .8, b: .8, a: .05 // color
+          color: { r: 0xD7/255.0, g: 0x4E/255.0, b: 0xBE/255.0, a: .1 // color
           } },
         // major grid settings
         M: {
           draw: true,
           i: 10, // number of units between major grid lines
-          color: { r: .8, g: .8, b: .8, a: .2 // color
+          color: {r: 0xD7/255.0, g: 0x4E/255.0, b: 0xBE/255.0, a: .7 // color
           } }
       },
       axis: {
@@ -48400,7 +48400,10 @@ const localCache = {}
         outlineColor: { r: 0.0, g: 0.0, b: 0.0, a: 1.0 // default outline color
         } },
       background: {
-        color: { r: 0.16, g: 0.2, b: 0.27, a: 0.1 }
+        //color: { r: 0.16, g: 0.2, b: 0.27, a: 0.1 }
+
+
+        color: { r: 0x2b/255.0, g: 0x35/255.0, b: 0x4f/255.0, a: 1 }
       }
     };
   };

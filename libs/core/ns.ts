@@ -44,7 +44,7 @@ namespace extraMath {
  * Parameters for making customizable objects
  */
 //% groups=["Text", "Numbers"]
-//% color=#d11149 weight=10 icon="\u03c7" weight=10
+//% color=#d74ebe weight=10 icon="\uf1de" weight=10
 namespace parameters {
 
 }
