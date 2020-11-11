@@ -383,39 +383,8 @@ namespace pxsim.shapes {
     * @param color If specified, what color to make the cube.  In hex (0xab1234)
     */
     export function polygon3D(sides: number, radius: number, height: number, color?: number) {
-        board().requireImport('POLYGON_PRISM', POLYGON_PRISM)
-        board().requireImport('CENTER_CHILDREN', CENTER_CHILDREN)
-        board().addStatement(`centerChildren(
-            polygonPrism({
-                sides: ${sides}, 
-                radius: ${Math.max(radius, .001)}, // avoid degenerate olygon
-                height: ${height},
-            })
-        )`, color);
+        cylinder(radius, height, color, sides, radius);
     }
-
-    const POLYGON_PRISM = `
-
-
-function polygonPrism({sides, radius, height}) {
-    
-    var centerX = 0, centerY = 0, size = radius;
-    let points = []
-    
-    points.push([centerX + size * Math.cos(0), 
-                 centerY + size * Math.sin(0)])
-    
-    for (var i = 1; i <= sides;i += 1) {
-        points.push([centerX + size * Math.cos(i * 2 * Math.PI / sides), 
-                     centerY + size *Math.sin(i * 2 * Math.PI / sides)])
-    }
-
-    var twoDShape = polygon({ points: points  })
-    return linear_extrude({height: height}, twoDShape); 
-  
-}
- 
- `
 
     /*
     enum Animal {
