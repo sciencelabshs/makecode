@@ -4,6 +4,9 @@
     --primary-active: #66d1e9; /*review - match this to plater*/
     --background: #2b354f;
     --modal-background: #445173aa;
+    --xlButtonSize: 4em;
+    --borderRadius: 5px;
+    --inputFocus: #d74ebe;
 }
 
 body {
@@ -13,6 +16,11 @@ body {
 button {
     outline: 0px !important;
 }
+input:focus {
+    outline: 0px !important;
+    box-shadow: 0 0 0px 1px var(--inputFocus);
+    border: 1px solid var(--inputFocus);    
+}
 .btn-primary {
     background-color: var(--primary);
     border: 0px;
@@ -20,7 +28,7 @@ button {
 .btn-primary:hover, .btn-primary:active, .btn-primary:focus {
     background-color: var(--primary-active);
     border: 0px;
-    box-shadow: 
+    box-shadow: 0px;
 }
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle  {
     background-color:var(--primary-active);
@@ -56,15 +64,15 @@ button {
 
 .showParameterForm {
   position: fixed;
-  bottom: 3em;
-  right: 0.5em;
+  bottom: 1em;
+  left: 0.5em;
 }
 .showParameterForm .openParameterFormButton {
   border: 3px solid var(--bodyColor);
   background-color: var(--background);
-  border-radius: 6em;
-  height: 6em;
-  width: 6em;
+  border-radius: var(--xlButtonSize);
+  height: var(--xlButtonSize);
+  width: var(--xlButtonSize);
   outline: 0px !important;
 }
 .showParameterForm .openParameterFormButton svg {
@@ -74,27 +82,38 @@ button {
 
 .parameterDivContainer {
     border-radius: 2em;
+    pointer-events: none;
     position: fixed;
     display: block;
-    left: 10vw;
-    top: 10vh;
+    left: .5em;
+    bottom: 2em;
+    max-width: 300px;
+    max-height: 300px;
     width: 80vw;
     height: 80vw;
-    background: --var(--modal-background);
+    background-color: var(--modal-background);
+
+    display: none;
+    padding: 1em;
 
 
+}
+.parameterDivContainer button, .parameterDivContainer input{
+    pointer-events: all;
 }
 .parameterDivContainerMessage {
     display: block;
 }
 .closeParameterFormButton {
-    border: 3px solid var(--bodyColor);
-    border-radius: 2em;
+    border: 0px;
+    position: absolute;
+    bottom: .5em;
     background-color: transparent;
     color: var(--bodyColor);
-    width: 2em;
-    height: 2em;
+    width: 3.5em;
+    height: 3.5em;
     font-size: 1em;
+    left: .5em;
 }
 
 .paramaterDivContainerTitle {
@@ -107,18 +126,34 @@ button {
     flex-grow: 1;
 }
 
-.parameterDivContainer {
-    display: none;
-    padding: 1em;
-
+.textParameterLabel {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
+.textParameterInput {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: transparent;
+    border-radius:var(--borderRadius);
+    border: 1px solid white;
+    color: white;
+    outline: 1px solidvar(--inputFocus);
+    margin: 2px;
+}
+
 
 /* styling the form itself */
 .parameterDiv {
+
+  overflow-y: scroll;
   display: grid;
   grid-template-columns: auto auto;
   justify-items: end start;
   padding: 0 .5em;
+  margin-bottom: 2em;
 
 }
 .parameterDiv label, .parameterDiv input {
