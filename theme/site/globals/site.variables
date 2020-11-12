@@ -59,7 +59,6 @@
 @mainMenuBackground: @darkgrey;
 @mainMenuInvertedBackground: @mainMenuBackground;
 @mainMenuTutorialBackground: @purple; // what color should we show during tutorial mode
-
 @mainMenuBlocksJsToggleColor: @primaryColor;
 
 @tutorialSelectedMenuColor: @primaryColor;
@@ -68,10 +67,10 @@
    Layout
 --------------------*/
 
-@sideBarWidth: 320px;
-@simulatorWidth: 320px;
+@sideBarWidth: 360px;
+@simulatorWidth: 360px;
 /*@simulatorHeight: 400px; this is set in the style.less*/ 
-@simulatorWidthSmall: 320px;
+@simulatorWidthSmall: 360px;
 
 /*-------------------
    Background
