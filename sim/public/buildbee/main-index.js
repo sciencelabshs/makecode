@@ -18,7 +18,8 @@ function addBuildBeeScripts()  {
     function receiveMessage(event) {
         if (/https:\/\/[\w-]*makecode.buildbee.com/.test(event.origin)   ||event.origin === "http://localhost:3232") {
             if (event.data) {
-                
+                const fileName = (event.data.name || "Untitled") + ".stl";
+                    
                 if (event.data.message === "sendToBuildBee") {
 
                     if (event.data.url) {
@@ -33,7 +34,7 @@ function addBuildBeeScripts()  {
 
                     if (event.data.arrayBuffer) {
                         const arrayBuffer = stringToArrayBuffer(event.data.arrayBuffer);
-                        var file = new File([arrayBuffer], "BuildBeeMakeCode.stl", { type: "application/octet-stream" });
+                        var file = new File([arrayBuffer], fileName, { type: "application/octet-stream" });
                         saveAs(file);
                     }
                 }

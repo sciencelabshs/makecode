@@ -1,4 +1,4 @@
-async function sendSTLToBuildBee(blob) {
+async function sendSTLToBuildBee(blob, name) {
     console.log(blob)
     const arrayBuffer = await blob.arrayBuffer()
     BuildBeeConfigure({
@@ -12,7 +12,7 @@ async function sendSTLToBuildBee(blob) {
         // target='_blank' noopenner noreferrer
        //
        if (window.parent) {
-            window.parent.postMessage({message: "sendToBuildBee", url:finalUrl}, window.location.href)
+            window.parent.postMessage({message: "sendToBuildBee", url:finalUrl, name: name }, window.location.href)
        }
        else {
             window.location.href = finalUrl
@@ -34,22 +34,22 @@ async function sendSTLToBuildBee(blob) {
     }
     return binary; //window.btoa(binary);
 }
-async function downloadSTL(blob) {
-    
+async function downloadSTL(blob, name) {
+
     const arrayBuffer = await blob.arrayBuffer()
     const arrayBufferStr = arrayBuffer2string(arrayBuffer)
 
     if (window.parent) {
-        window.parent.postMessage({message: "downloadSTL", arrayBuffer:arrayBufferStr}, window.location.href)
+        window.parent.postMessage({message: "downloadSTL", arrayBuffer:arrayBufferStr, name: name}, window.location.href)
     }
 }
 
-async function sendToThingiverse(blob) {
+async function sendToThingiverse(blob, name) {
     const arrayBuffer = await blob.arrayBuffer()
     const arrayBufferStr = arrayBuffer2string(arrayBuffer)
 
     if (window.parent) {
-        window.parent.postMessage({message: "sendToThingiverse", arrayBuffer:arrayBufferStr}, window.location.href)
+        window.parent.postMessage({message: "sendToThingiverse", arrayBuffer:arrayBufferStr, name: name}, window.location.href)
     }
 }
 

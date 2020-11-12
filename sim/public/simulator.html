@@ -32,15 +32,15 @@
 <script>
   function onSaveToBuildBee() {
     const blob = window.jscad.currentObjectsToBlob()
-    sendSTLToBuildBee(blob)
+    sendSTLToBuildBee(blob, pxsim.title)
   }
   function onSaveToThingiverse() {
     const blob = window.jscad.currentObjectsToBlob()
-    sendToThingiverse(blob)
+    sendToThingiverse(blob, pxsim.title)
   }
   function onDownloadSTL() {
     const blob = window.jscad.currentObjectsToBlob()
-    downloadSTL(blob)
+    downloadSTL(blob, pxsim.title)
   }
   function resizeToFrame() {
     // dynamically resize viewer context based on its parent.  
