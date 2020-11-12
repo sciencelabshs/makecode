@@ -643,30 +643,7 @@ function sliceParams(orientation, radius, bounds) {
 
     }
 
-    //% blockId=color_block block="color $color" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
-    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
-    //% color.defl=0x4ebed7
-    //% color.shadow="colorNumberPicker"
-    //% group="Edges"
-    export function colorAsync(color: number, body: RefAction): Promise<void> {
-
-        let statementCode = `union([<CHILDREN>])`
-        if (color !== undefined && color !== 0x4ebed7) {
-            const red = (color & 0xFF0000) >> 16;
-            const green = (color & 0x00FF00) >> 8;
-            const blue = (color & 0x0000FF);
-
-            statementCode = `color([${red / 255}, ${green / 255}, ${blue / 255}], ${statementCode})`
-        }
-        return _makeBlock(statementCode, body);
-
-
-
-
-    }
+    
 
     const LAY_FLAT_ON_BED = `
     function layShapesFlatOnBed(shapes) {
