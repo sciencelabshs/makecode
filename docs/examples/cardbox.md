@@ -29,7 +29,7 @@ let wall_thickness = 0
 set_variables()
 let total_distance = total_box_length() * -1 / 2 + wall_thickness
 let notch_radius = Math.min(10, card_width / 2)
-operators.layOnPrintBed(function () {
+operators.alignToPrintBed(function () {
     operators.subtractShapes(function () {
         shapes.cube(card_width + 2 * wall_thickness, total_box_length(), box_height + wall_thickness)
         for (let section_width of sections) {
@@ -47,7 +47,7 @@ operators.layOnPrintBed(function () {
             })
         })
     })
-    operators.layOnPrintBed(function () {
+    operators.alignToPrintBed(function () {
         operators.move(card_width + (2 * wall_thickness + 5), Axis.X, function () {
             operators.subtractShapes(function () {
                 shapes.cube(card_width + 4 * wall_thickness, total_box_length() + 2 * wall_thickness, notch_radius + 2 + 3 * wall_thickness)
