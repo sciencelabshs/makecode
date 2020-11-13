@@ -233,16 +233,12 @@ declare namespace shapes {
     //% shim=shapes::cube
     function cube(width: number, depth: number, height: number, color?: number): void;
 
-    //% block="sphere - radius $radius || color $color|type $type|faces $faces"
+    //% block="sphere - radius $radius || color $color=colorNumberPicker2|type $type|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
     //% faces.defl=60
     //% faces.min=4
     //% faces.max=1000
-    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
-    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
-    //% color.defl=0x4ebed7
-    //% color.shadow="colorNumberPicker"
     //% type.defl=SphereType.icosahedron
     //% weight=94
     //% expandableArgumentMode="toggle"
@@ -257,14 +253,10 @@ declare namespace shapes {
     //% shim=shapes::sphere
     function sphere(radius: number, color?: number, type?: SphereType, faces?: number): void;
 
-    //% block="cylinder - radius $radius|height $height||color $color|faces $faces|radius2 $radius2"
+    //% block="cylinder - radius $radius|height $height||$color=colorNumberPicker2|faces $faces|radius2 $radius2"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
-    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
-    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
-    //% color.defl=0x4ebed7
-    //% color.shadow="colorNumberPicker"
     //% faces.defl=100
     //% weight=90
     //% group="3D Shapes"
@@ -279,17 +271,13 @@ declare namespace shapes {
     //% shim=shapes::cylinder
     function cylinder(radius: number, height: number, color?: number, faces?: number, radius2?: number): void;
 
-    //% block="donut - thickness $thickness|radius $radius||color $color|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
+    //% block="donut - thickness $thickness|radius $radius||$color=colorNumberPicker2|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
     //% thickness.defl=4 thickness.min=1
     //% radius.defl=10
     //% innerFaces.defl=16
     //% outerFaces.defl=32
     //% innerRotation.defl=0
-    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
-    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
-    //% color.defl=0x4ebed7
-    //% color.shadow="colorNumberPicker"
     //% weight=80
     //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
@@ -305,14 +293,10 @@ declare namespace shapes {
     //% shim=shapes::donut
     function donut(thickness: number, radius: number, color?: number, innerFaces?: number, outerFaces?: number, innerRotation?: number): void;
 
-    //% block="cone - radius $radius|height $height|| color $color | faces $faces"
+    //% block="cone - radius $radius|height $height|| color $color=colorNumberPicker2| faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
-    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
-    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
-    //% color.defl=0x4ebed7
-    //% color.shadow="colorNumberPicker"
     //% faces.defl=100
     //% weight=75
     //% group="3D Shapes - Round Shapes"
@@ -327,7 +311,7 @@ declare namespace shapes {
     //% shim=shapes::cone
     function cone(radius: number, height: number, color?: number, faces?: number): void;
 
-    //% block="text - text $text | fontSize $fontSize | height $height ||color $color | line width $lineWidth |  letterSpacing $letterSpacing | lineSpacing $lineSpacing"
+    //% block="text - text $text | fontSize $fontSize | height $height ||color $color=colorNumberPicker2 | line width $lineWidth |  letterSpacing $letterSpacing | lineSpacing $lineSpacing"
     //% inlineInputMode=inline
     //% lineWidth.defl=4
     //% fontSize.defl=21,
@@ -335,10 +319,6 @@ declare namespace shapes {
     //% letterSpacing.defl=1
     //% text.defl="text"
     //% height.defl=4
-    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
-    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
-    //% color.defl=0x4ebed7
-    //% color.shadow="colorNumberPicker"
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
     /**
@@ -351,16 +331,12 @@ declare namespace shapes {
     //% shim=shapes::text
     function text(text: string, fontSize?: number, height?: number, color?: number, lineWidth?: number, letterSpacing?: number, lineSpacing?: number): void;
 
-    //% block="roof - width $width|depth $depth|height $height||color $color"
+    //% block="roof - width $width|depth $depth|height $height||color $color=colorNumberPicker2"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
     //% height.defl=10
     //% weight=93
-    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
-    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
-    //% color.defl=0x4ebed7
-    //% color.shadow="colorNumberPicker"
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
     /**
@@ -373,16 +349,12 @@ declare namespace shapes {
     //% shim=shapes::triangleRoof
     function triangleRoof(width: number, height: number, depth: number, color?: number): void;
 
-    //% block="ramp - width $width|depth $depth|height $height||color $color"
+    //% block="ramp - width $width|depth $depth|height $height||color $color=colorNumberPicker2"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
     //% height.defl=10
     //% weight=92
-    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
-    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
-    //% color.defl=0x4ebed7
-    //% color.shadow="colorNumberPicker"
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
     /**
@@ -395,7 +367,7 @@ declare namespace shapes {
     //% shim=shapes::triangleRamp
     function triangleRamp(width: number, height: number, depth: number, color?: number): void;
 
-    //% block="polygon - sides $sides|radius $radius|height $height||color $color"
+    //% block="polygon - sides $sides|radius $radius|height $height||color $color=colorNumberPicker2"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% depth.defl=10
@@ -403,10 +375,6 @@ declare namespace shapes {
     //% sides.defl=6
     //% sides.min=3
     //% weight=80
-    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
-    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
-    //% color.defl=0x4ebed7
-    //% color.shadow="colorNumberPicker"
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
     /**
