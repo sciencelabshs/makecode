@@ -48352,14 +48352,14 @@ const localCache = {}
   Viewer.defaults = function () {
     return {
       camera: {
-        fov: 60, // field of view
+        fov: 45, // field of view
         angle: { x: -45, y: 0, z: -45 }, // view angle about XYZ axis
         position: { x: 0, y: 0, z: 100 }, // initial position at XYZ
         clip: { min: 0.5, max: 1000 // rendering outside this range is clipped  
         } },
       plate: {
         draw: true, // draw or not
-        size: 220, // plate size (X and Y)
+        size: 2500, // plate size (X and Y)
         // minor grid settings
         m: {
           draw: false,
@@ -48396,7 +48396,7 @@ const localCache = {}
         faces: true,
         overlay: false, // use overlay when drawing lines or not
         smooth: true, // use smoothing or not
-        faceColor: { r: 78.0/255.0, g: 190.0/255.0, b: 215.0/255.0, a: 1 }, // 4ebed7 face color
+        faceColor: { r: 0xff/255.0, g: 0xff/255.0, b: 0xff/255.0, a: 1 }, // 4ebed7 face color
         outlineColor: { r: 0.0, g: 0.0, b: 0.0, a: 1.0 // default outline color
         } },
       background: {
@@ -49837,6 +49837,7 @@ const localCache = {}
     // because it's only meant for quick debugging tasks.
   
     function addImmediateMode() {
+      // THIS IS THE GRID SHADER
       var immediateMode = {
         mesh: new Mesh({
           coords: true,
