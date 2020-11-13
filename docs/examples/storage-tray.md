@@ -27,7 +27,7 @@ let card_width = 0
 let wall_thickness = 0
 set_variables()
 let total_distance = total_box_length() * -1 / 2 + wall_thickness
-operators.layOnPrintBed(function () {
+operators.alignToPrintBed(function () {
     operators.subtractShapes(function () {
         shapes.cube(card_width + 2 * wall_thickness, total_box_length(), box_height + wall_thickness)
         for (let section_width of sections) {

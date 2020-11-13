@@ -48355,7 +48355,7 @@ const localCache = {}
         fov: 45, // field of view
         angle: { x: -45, y: 0, z: -45 }, // view angle about XYZ axis
         position: { x: 0, y: 0, z: 100 }, // initial position at XYZ
-        clip: { min: 0.5, max: 1000 // rendering outside this range is clipped  
+        clip: { min: 0.5, max: 1200 // rendering outside this range is clipped  
         } },
       plate: {
         draw: true, // draw or not

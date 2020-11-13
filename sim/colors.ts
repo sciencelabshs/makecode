@@ -10,7 +10,7 @@
 namespace pxsim.colors {
 
 
-
+    const chroma = (window as any).chroma
     function _makeBlock(JSCadBlockStr: string, body: RefAction) {
         return new Promise<void>((resolve, reject) => {
             // push a new statement as the parent
@@ -35,6 +35,7 @@ namespace pxsim.colors {
     export function randomColor(): number {
         const randomLightness = .3 + Math.random() *.5
         const randomHue = Math.round(Math.random()*360)
+
         return  chroma.hsl(randomHue, 1, randomLightness).num() as number
        
     }
