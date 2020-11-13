@@ -660,7 +660,7 @@ function sliceParams(orientation, radius, bounds) {
      */
     export function alignToPrintBedAsync(body: RefAction): Promise<void> {
         board().requireImport('LAY_FLAT_ON_BED', LAY_FLAT_ON_BED)
-        return _makeBlock(`layShapesFlatOnBed(union([<CHILDREN>]))`, body);
+        return _makeBlock(`union(layShapesFlatOnBed([<CHILDREN>]))`, body);
     }
 
 
