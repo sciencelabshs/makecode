@@ -197,7 +197,7 @@ namespace pxsim {
         private initScripts: any;
         private builders: any;
         private lastExecutingCode: string
-
+       
         constructor() {
             super();
             this.bus = new EventBus(runtime);
@@ -375,20 +375,46 @@ namespace pxsim {
         }
 
         screenshotAsync(width?: number): Promise<ImageData> {
+         
+            return new Promise<ImageData>((resolve, reject) =>{
             try {
-                const canvas = document.querySelector(".viewer canvas") as HTMLCanvasElement
-                const context =  canvas.getContext("2d") as CanvasRenderingContext2D;
+                
+             
+                // determine image dimensions
+                const webGLCanvas = document.querySelector(".viewer canvas") as HTMLCanvasElement
+                const imageWidth = Math.max(400, (width) ? width : webGLCanvas.width)
+                const imageHeight = webGLCanvas.height * (imageWidth / webGLCanvas.width)
+             
+                             
+                
+                // grab the context that jscad is drawing into
+                const webGlCanvasContext = (window as any).jscad.viewer.gl as WebGLRenderingContext
+              
+                // make a 2d canvas
+                const canvas2d = document.createElement("canvas")
+                canvas2d.width = imageWidth;
+                canvas2d.height = imageHeight;
+                const context2d = canvas2d.getContext("2d")
 
-                // UNDONE: honour the width passed in.
-                const screenshotData =context.getImageData(0,0,canvas.width, canvas.height) as ImageData
-                Promise.resolve(screenshotData)
+                // draw the webgl context into the 2d image context
+                context2d.drawImage(webGlCanvasContext.canvas, 0,0,imageWidth, imageHeight)
+                
+                // return the image data from the 2d canvas
+                const imageData = context2d.getImageData(0,0,imageWidth, imageHeight)
+                canvas2d.remove()
+                resolve(imageData)
+
+               
+                
             }
             catch(e) {
-
+                console.error(e)
+                resolve(undefined);
+        
             }
-            return Promise.resolve(undefined);
+                
+        })
         }
-
         
 
     }
