@@ -525,13 +525,6 @@ declare namespace shapes {
     //% shim=shapes::point2d
     function point2d(x: number, y: number): string;
 
-    //% blockId=randomColor block="random color"
-    //% inlineInputMode=inline
-    //% group="Colors"
-    //% advanced=true
-    //% shim=shapes::randomColor
-    function randomColor(): number;
-
     //% blockId="main_polyhedraPicker" block="%input" shim=TD_ID
     //% blockHidden=true
     //% input.fieldEditor="imagedropdown" input.fieldOptions.columns=3
@@ -616,17 +609,6 @@ declare namespace operators {
      */
     //% shim=operators::styleEdgesAsync promise
     function styleEdges(edgeStyle: EdgeStyle, direction: StyleEdgeDirection, radius: number, body: () => void): void;
-
-    //% blockId=color_block block="color $color" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
-    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
-    //% color.defl=0x4ebed7
-    //% color.shadow="colorNumberPicker"
-    //% group="Edges"
-    //% shim=operators::colorAsync promise
-    function color(color: number, body: () => void): void;
 
     //% blockId=alignToPrintBed block="align to print bed" 
     //% topblock=false
@@ -884,6 +866,35 @@ declare namespace parameters {
      */
     //% shim=parameters::numberRangeParameter
     function numberRangeParameter(parameterName: string, defaultValue?: number, minValue?: number, maxValue?: number, stepValue?: number): number;
+
+}
+declare namespace colors {
+    //% blockId=randomColor block="random color"
+    //% inlineInputMode=inline
+    //% group="Colors"
+    //% advanced=false
+    //% shim=colors::randomColor
+    function randomColor(): number;
+
+    //% blockId=rainbowColor block="rainbow color: $rainbowColor || color wheel increment: $colorWheelDegrees °"
+    //% inlineInputMode=inline
+    //% rainbowColor.defl=0
+    //% colorWheelDegrees.defl=20
+    //% group="Colors"
+    //% advanced=false
+    //% shim=colors::rainbowColor
+    function rainbowColor(rainbowColor: number, colorWheelDegrees?: number): number;
+
+    //% blockId=color_block block="color $color" 
+    //% group="Colors"
+    //% topblock=false
+    //% handlerStatement=true
+    //% color.fieldOptions.decompileLiterals=true color.fieldOptions.columns=1 color.fieldOptions.className='rgbColorPicker'    
+    //% color.fieldOptions.colours='["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#4ebed7"]'
+    //% color.defl=0x4ebed7
+    //% color.shadow="colorNumberPicker"
+    //% shim=colors::colorAsync promise
+    function color(color: number, body: () => void): void;
 
 }
 

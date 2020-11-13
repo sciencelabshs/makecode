@@ -545,14 +545,6 @@ namespace pxsim.shapes {
 
 
 
-    //% blockId=randomColor block="random color"
-    //% inlineInputMode=inline
-    //% group="Colors"
-    //% advanced=true
-    export function randomColor(): number {
-        return Math.round(Math.random() * 255 * 255 * 255)
-    }
-
     //% blockId="main_polyhedraPicker" block="%input" shim=TD_ID
     //% blockHidden=true
     //% input.fieldEditor="imagedropdown" input.fieldOptions.columns=3

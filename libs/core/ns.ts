@@ -17,6 +17,16 @@ namespace shapes {
 }
 
 /**
+ * Add color to your project
+ */
+//% color=#d74ebe icon="\uf1fc" weight=90
+//% groups='[]'
+namespace colors {
+
+
+}
+
+/**
  * Move and rotate shapes
  */
 //% groups=["Position", "Rotation", "Layout", "Operations"]
@@ -44,7 +54,7 @@ namespace extraMath {
  * Parameters for making customizable objects
  */
 //% groups=["Text", "Numbers"]
-//% color=#d74ebe weight=10 icon="\uf1de" weight=10
+//% color=#d74ebe weight=80 icon="\uf1de" weight=10
 namespace parameters {
 
 }

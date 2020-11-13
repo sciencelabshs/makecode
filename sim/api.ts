@@ -4,7 +4,7 @@
 /// <reference path="./shapes.ts"/>
 /// <reference path="./operators.ts"/>
 /// <reference path="./parameters.ts"/>
-
+/// <reference path="./colors.ts"/>
 
 /**
  * How to set fields and colours
