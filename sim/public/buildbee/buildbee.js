@@ -44,6 +44,16 @@ async function downloadSTL(blob, name) {
     }
 }
 
+async function authorizeThingiverse(blob, name, code) {
+    const arrayBuffer = await blob.arrayBuffer()
+    const arrayBufferStr = arrayBuffer2string(arrayBuffer)
+
+    if (window.parent) {
+        window.parent.postMessage({message: "authorizeThingiverse", code: code, arrayBuffer:arrayBufferStr, name: name}, window.location.href)
+    }
+}
+
+
 async function sendToThingiverse(blob, name) {
     const arrayBuffer = await blob.arrayBuffer()
     const arrayBufferStr = arrayBuffer2string(arrayBuffer)
