@@ -176,7 +176,7 @@
   "operators": "Move and rotate shapes",
   "operators.addShapes": "Add shapes together. Sometimes called \"union\".",
   "operators.addShapes|param|body": "List of shapes to add",
-  "operators.alignToPrintBed": "Move all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.",
+  "operators.alignToPrintBed": "Recenter all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.",
   "operators.alignToPrintBed|param|body": "the shapes to move up",
   "operators.enlargeShapes": "Move shapes in three dimensions",
   "operators.enlargeShapes|param|body": "The list of shapes to enlarge",

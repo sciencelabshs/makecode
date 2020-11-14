@@ -4,14 +4,16 @@
 
 Learn to add and move shapes around by making a heart.
 
-![Make a heart shape](/docs/static/examples/heart-shape/project-image.png)
+![Make a heart shape](/docs/static/examples/heart-shape/project-image.png?v=DOCVER-1)
 
 ## Step 1 @fullscreen
 
-Place the ``||Shapes:cube||`` block in the ``||loops:start||`` block.
+Place the ``||Shapes:cube||`` block in the ``||operators:alignToPrintBed||`` block.
 
 ```blocks
-shapes.cube(10, 10, 10)
+operators.alignToPrintBed(function () {
+    shapes.cube(10, 10, 10)
+})
 ```
 
 ## Step 2
@@ -19,7 +21,9 @@ shapes.cube(10, 10, 10)
 Set the width to 20 and depth to 20 on the ``||Shapes:cube||`` block.
 
 ```blocks
-shapes.cube(20, 20, 10)
+operators.alignToPrintBed(function () {
+    shapes.cube(20, 20, 10)
+})
 ```
 
 ## Step 3
@@ -27,8 +31,10 @@ shapes.cube(20, 20, 10)
 Add a ``||Shapes:cylinder||`` block below your cube.
 
 ```blocks
-shapes.cube(20, 20, 10)
-shapes.cylinder(10, 10)
+operators.alignToPrintBed(function () {
+    shapes.cube(20, 20, 10)
+    shapes.cylinder(10, 10)
+})
 ```
 
 ## Step 4
@@ -36,9 +42,11 @@ shapes.cylinder(10, 10)
 Move the first ``||Shapes:cylinder||`` into the correct position by using the ``||Operators:move||`` block.  Move 10mm in the X direction.
 
 ```blocks
-shapes.cube(20, 20, 10)
-operators.move(10, Axis.X, function () {
-    shapes.cylinder(10, 10)
+operators.alignToPrintBed(function () {
+    shapes.cube(20, 20, 10)
+    operators.move(10, Axis.X, function () {
+        shapes.cylinder(10, 10)
+    })
 })
 ```
 
@@ -47,11 +55,13 @@ operators.move(10, Axis.X, function () {
 Add a second cylinder using the ``||Shapes:cylinder||`` block.
 
 ```blocks
-shapes.cube(20, 20, 10)
-operators.move(10, Axis.X, function () {
-    shapes.cylinder(10, 10)
+operators.alignToPrintBed(function () {
+    shapes.cube(20, 20, 10)
+    operators.move(10, Axis.X, function () {
+        shapes.cylinder(10, 10)
+    })
+    shapes.cylinder(10,10)
 })
-shapes.cylinder(10,10)
 ```
 
 
@@ -60,12 +70,14 @@ shapes.cylinder(10,10)
 Move the second ``||Shapes:cylinder||`` into the correct position by using the ``||Operators:move||`` block.  Move 10mm in the Y direction.
 
 ```blocks
-shapes.cube(20, 20, 10)
-operators.move(10, Axis.Y, function () {
-    shapes.cylinder(10, 10)
-})
-operators.move(10, Axis.Y, function () {
-    shapes.cylinder(10, 10)
+operators.alignToPrintBed(function () {
+    shapes.cube(20, 20, 10)
+    operators.move(10, Axis.Y, function () {
+        shapes.cylinder(10, 10)
+    })
+    operators.move(10, Axis.Y, function () {
+        shapes.cylinder(10, 10)
+    })
 })
 ```
 

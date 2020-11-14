@@ -583,7 +583,7 @@ declare namespace operators {
     //% handlerStatement=true
     //% group="Layout"
     /**
-     * Move all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
+     * Recenter all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
      * @param body the shapes to move up
      */
     //% shim=operators::alignToPrintBedAsync promise
