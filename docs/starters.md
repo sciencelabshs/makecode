@@ -29,9 +29,9 @@ Learn the basic blocks of BuildBee MakeCode!
 {
   "name": "Cookie Cutter",
   "description": "Use the add and subtract shapes block to make a cookie cutter! ",
-  "url":"/examples/subtractshapes",
+  "url":"/examples/cookiecutter",
   "cardType": "tutorial",
-  "imageUrl": "/static/examples/subtractshapes/project-image.png?v=DOCVER-1"
+  "imageUrl": "/static/examples/cookiecutter/project-image.png?v=DOCVER-1"
 },
 {
   "name": "Name Tag",

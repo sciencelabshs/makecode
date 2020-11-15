@@ -317,7 +317,7 @@ declare namespace shapes {
     //% fontSize.defl=21,
     //% lineSpacing.defl=1.4
     //% letterSpacing.defl=1
-    //% text.defl="text"
+    //% text.defl="BuildBee"
     //% height.defl=4
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
