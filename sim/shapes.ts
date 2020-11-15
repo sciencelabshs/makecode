@@ -105,7 +105,7 @@ namespace pxsim.shapes {
      * @param radius2 If specified, make the bottom of the cylinder have a different size
      */
     export function cylinder(radius: number, height: number, color?: number, faces?: number, radius2?: number,) {
-        const fn = (faces) ? Math.max(faces, 4) : 150
+        const fn = (faces) ? Math.max(faces, 3) : 150
         board().addStatement(`cylinder({r1: ${radius}, 
                                         r2: ${radius2 === undefined ? radius : radius2}, 
                                         fn: ${fn},
@@ -524,8 +524,8 @@ namespace pxsim.shapes {
     //% topblock=false
     //% handlerStatement=true
     //% radius.defl=5
-    //% group="Complex Geometry"
-    //% advanced=true
+    //% group="More Shapes"
+    //% advanced=false
     //% inlineInputMode=inline
     /**
      * Creates a polyhedron
