@@ -80,7 +80,6 @@ function uploadToThingiverse({buffer, name, pngArrayBuffer}) {
         })
     }).then(function (new_thing_response) {
         new_thing_response.json().then(function(new_thing_data) {
-            console.log(new_thing_data)
             const thing_id = new_thing_data.id
             
             fetch(`https://api.thingiverse.com/things/${thing_id}/files`, {
@@ -96,7 +95,6 @@ function uploadToThingiverse({buffer, name, pngArrayBuffer}) {
                 })
             }).then(function(get_url_response) {
                 get_url_response.json().then(function(data) {
-                    console.log(data)
                     const formData  = new FormData()
                     for (const name in data.fields) {
                         formData.append(name, data.fields[name])
