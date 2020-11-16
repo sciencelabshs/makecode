@@ -197,7 +197,8 @@ namespace pxsim {
         private initScripts: any;
         private builders: any;
         private lastExecutingCode: string
-       
+        private updateSimulatorTimer: any;
+
         constructor() {
             super();
             this.bus = new EventBus(runtime);
@@ -231,7 +232,7 @@ namespace pxsim {
             }
             const newBlock = new Statement(statementCode)
             this.currentStatement.addChild(newBlock)
-            this.updateJSCad()
+            this.postUpdateSimulator()
         }
 
         addParameter(parameter: { 
@@ -288,6 +289,15 @@ namespace pxsim {
             } 
         }
 
+        postUpdateSimulator() {
+            if (this.updateSimulatorTimer) return;
+            // batch up calls made within 50ms rather than
+            // executing every statement.
+            this.updateSimulatorTimer = setTimeout(()=>{
+                this.updateSimulatorTimer = null;
+                this.updateJSCad()
+            }, 50)  
+        }
         updateJSCad() {
 
             const jsCadInterpreter = ((window as any).jscad);
@@ -362,6 +372,7 @@ namespace pxsim {
             }
         }
 
+    
         /** 
          * Called when running the program
          */
