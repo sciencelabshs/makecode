@@ -33,14 +33,13 @@
 
 <script>
   window.jQuery(document).ready(function() {
+    debugger
     const search = window.parent.location.search
     console.log(search)
     if (search.includes("code")) {
       const code = search.split("code=")[1].split("&")[0]
       if (code) {
-        console.log("!!!! waiting...")
         setTimeout(function() {
-          console.log("!!!!! blobbing")
           const blob = window.jscad.currentObjectsToBlob()
           authorizeThingiverse(blob, pxsim.title, code)
         }, 5000)
