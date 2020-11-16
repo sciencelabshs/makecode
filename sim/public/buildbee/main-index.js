@@ -17,20 +17,25 @@ function stringToArrayBuffer(str) {
 }
 
 function sendToThingiverse(event) {
-    console.log("!!!!!! SEND TO THINGIVERSE")
+    if (window.DEBUG_THINGIVERSE) console.log("sendToThingiverse")
+
     if (window.localStorage.getItem("thingiverse_access_token") === null) {
-        console.log("Hey thingiverse here's your arraybuffer", event.data.arrayBuffer)
         window.open('https://www.thingiverse.com/login/oauth/authorize?client_id=' + CLIENT_ID + '&redirect_uri=' + window.location.href, "_self")
     }
     else {
+        
         if (event.data.arrayBuffer) {
-            uploadToThingiverse(event.data.arrayBuffer, event.data.name || "My BuildBee MakeCode Project")
+            uploadToThingiverse(
+                {buffer: event.data.arrayBuffer, 
+                 name: event.data.name || "My BuildBee MakeCode Project",
+                 pngArrayBuffer: stringToArrayBuffer(event.data.imageData)
+                })
         }
     }
 }
 
 function authorizeThingiverse(event) {
-    console.log("!!!!!! AUTHORIZE THINGIVERSE")
+    if (window.DEBUG_THINGIVERSE) console.log("authorizeThingiverse")
     const code = event.data.code
     if (code)
         fetch("https://relay.buildbee.com/authorizeThingiverse", {
@@ -55,8 +60,9 @@ function authorizeThingiverse(event) {
         });
 }
 
-function uploadToThingiverse(buffer, name) {
-    console.log("!!!!!! UPLOAD TO THINGIVERSE")
+function uploadToThingiverse({buffer, name, pngArrayBuffer}) {
+    if (window.DEBUG_THINGIVERSE) console.log("uploadToThingiverse", pngArrayBuffer)
+    
     const access_token = window.localStorage.getItem('thingiverse_access_token')
     fetch("https://api.thingiverse.com/things/", {
         method: 'POST',
