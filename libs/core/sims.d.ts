@@ -503,8 +503,8 @@ declare namespace shapes {
     //% topblock=false
     //% handlerStatement=true
     //% radius.defl=5
-    //% group="Complex Geometry"
-    //% advanced=true
+    //% group="More Shapes"
+    //% advanced=false
     //% inlineInputMode=inline
     /**
      * Creates a polyhedron
@@ -589,10 +589,9 @@ declare namespace operators {
     //% shim=operators::alignToPrintBedAsync promise
     function alignToPrintBed(body: () => void): void;
 
-    //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius | cut through: $cutThrough" 
+    //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius" 
     //% topblock=false
     //% handlerStatement=true
-    //% cutThrough.defl=true
     //% wallThickness.defl=2
     //% wallThickness.min=1
     //% insideRound.defl=1
@@ -605,7 +604,7 @@ declare namespace operators {
      * @param body the shapes to move up
      */
     //% shim=operators::hollowShapesAsync promise
-    function hollowShapes(wallThickness: number, insideRound: number, cutThrough: boolean, body: () => void): void;
+    function hollowShapes(wallThickness: number, insideRound: number, body: () => void): void;
 
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
