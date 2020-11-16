@@ -130,19 +130,33 @@ namespace pxsim {
         protected children: Array<Statement>;
         public parentStatement: Statement;
         protected code: string;
+        private requiresChildrenToSerialize: boolean
 
-        constructor(code: string) {
+        
+
+        constructor(code: string, requiresChildrenToSerialize: boolean) {
             this.children = new Array<Statement>();
             this.code = code;
+            this.requiresChildrenToSerialize = requiresChildrenToSerialize
         }
       
         addChild(child: Statement) {
             this.children.push(child)
             child.parentStatement = this;
         }
+
         getCode(initScripts: string) {
             let allCode = this.code;
+
+            // dont serialize empty blocks
+            if (this.requiresChildrenToSerialize) {
+                if (this.children.length <=0) {
+                    return ""
+                }
+            }
+
             // for blocks, replace the children
+            let hasChildCode = false
             if (allCode.indexOf("<CHILDREN>") > 0) {
                 let childCode = "";
                 this.children.forEach((child) => {
@@ -152,14 +166,20 @@ namespace pxsim {
                     childCode += child.getCode("")
                 })
                 allCode = allCode.replace("<CHILDREN>", childCode);
-
+                if (!hasChildCode) {
+                    hasChildCode = (childCode.length  >0)
+                }
+                
+            }
+            if (!hasChildCode && this.requiresChildrenToSerialize) {
+                return ""
             }
             return allCode;
         }
     }
     class MainStatement extends Statement {
         constructor() {
-            super("")
+            super("", false)
         }
         getCode(initScripts: string) {
             let allCode = "";
@@ -215,7 +235,7 @@ namespace pxsim {
         }
 
         addBlock(str: string) {
-            const newBlock = new Statement(str)
+            const newBlock = new Statement(str, true)
             this.currentStatement.addChild(newBlock)
             this.currentStatement = newBlock;
             // this.updateJSCad()
@@ -230,7 +250,7 @@ namespace pxsim {
 
                 statementCode = `color([${red/255}, ${green/255}, ${blue/255}], ${statementCode})`
             }
-            const newBlock = new Statement(statementCode)
+            const newBlock = new Statement(statementCode, false)
             this.currentStatement.addChild(newBlock)
             this.postUpdateSimulator()
         }
