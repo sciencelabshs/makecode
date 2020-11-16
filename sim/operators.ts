@@ -686,10 +686,9 @@ function sliceParams(orientation, radius, bounds) {
     }
 
 
-    //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius | cut through: $cutThrough" 
+    //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius" 
     //% topblock=false
     //% handlerStatement=true
-    //% cutThrough.defl=true
     //% wallThickness.defl=2
     //% wallThickness.min=1
     //% insideRound.defl=1
@@ -701,7 +700,7 @@ function sliceParams(orientation, radius, bounds) {
      * @param insideRound the radius to use on the inside
      * @param body the shapes to move up
      */
-    export function hollowShapesAsync(wallThickness: number, insideRound: number, cutThrough: boolean, body: RefAction): Promise<void> {
+    export function hollowShapesAsync(wallThickness: number, insideRound: number, body: RefAction): Promise<void> {
 
 
         board().requireImport('LAYOUT_SCRIPT', LAYOUT_SCRIPT)
@@ -712,7 +711,7 @@ function sliceParams(orientation, radius, bounds) {
                 var roundedBottom = LayoutUtils.fillet(interiorBox, ${insideRound}, "z-")
                 return LayoutUtils.fillet(roundedBottom, ${insideRound}, "z+")
                         
-            }, ${cutThrough} )`, body);
+            })`, body);
 
         }
         else {
