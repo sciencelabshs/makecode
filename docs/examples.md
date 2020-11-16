@@ -7,6 +7,13 @@ Here are some fun programs for your @boardname@!
 ```codecard
 [
 {
+  "name": "Card Box",
+  "description": "Create a custom box for your playing cards!",
+  "url": "/examples/cardbox",
+  "cardType": "example",
+  "imageUrl": "/static/examples/cardbox/project-image.png?v=DOCVER-1"
+},
+{
   "name": "Storage Tray",
   "description": "A customizable storage tray!",
   "url": "/examples/storage-tray",
@@ -26,13 +33,7 @@ Here are some fun programs for your @boardname@!
   "url": "/examples/mandelbrot",
   "cardType": "example",
   "imageUrl": "/static/examples/mandelbrot/project-image.png?v=DOCVER-1"
-},
-{
-  "name": "Card Box",
-  "description": "Create a custom box for your playing cards!",
-  "url": "/examples/cardbox",
-  "cardType": "example",
-  "imageUrl": "/static/examples/cardbox/project-image.png?v=DOCVER-1"
 }
+
 ]
 ```

@@ -10,12 +10,12 @@
     {
         "name": "Tutorials",
         "url": "/tutorials",
-        "imageUrl": "/static/examples/top/project-image.png?v=DOCVER-1"
+        "imageUrl": "/static/examples/impossible-box/project-image.png?v=DOCVER-1"
     },
     {
         "name": "Examples",
         "url": "/examples",
-        "imageUrl": "/static/examples/storage-tray/project-image.png?v=DOCVER-1"
+        "imageUrl": "/static/examples/cardbox/project-image.png?v=DOCVER-1"
     }
 ]
 ```

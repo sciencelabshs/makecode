@@ -5,7 +5,7 @@ Make a pawn for a boardgame in code!
 
 
 ## Step 1 @fullscreen
-Add a ``||Shapes:code||`` in the ``||Operators:alignToPrintBed||`` block.  The cone will appear on top of the print bed area.
+Add a ``||Shapes:cone||`` in the ``||Operators:alignToPrintBed||`` block.  The cone will appear on top of the print bed area.
 
 
 ```blocks
