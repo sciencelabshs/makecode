@@ -14,7 +14,7 @@ let maxY = 1
 let x = minX
 let y = minY
 let epsilon = 0.1 * stepSize
-operators.layOnPrintBed(function () {
+operators.alignToPrintBed(function () {
     operators.setPosition(0, 0, 0, function () {
         operators.scaleShapes(50, 50, 20, function () {
             operators.subtractShapes(function () {

@@ -49708,6 +49708,7 @@ const localCache = {}
           canvas.width = options.width || 800;
           canvas.height = options.height || 600;
         }
+        options.preserveDrawingBuffer = true; // BuildBee screenshot support
         if (!('alpha' in options)) options.alpha = false;
         try {
           gl = canvas.getContext('webgl', options);

@@ -6,6 +6,7 @@
         ]
     },
     "galleries": {
+        "Starter Projects": "starters",
         "Tutorials": "tutorials",
         "Examples": "examples"
     

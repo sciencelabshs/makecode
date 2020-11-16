@@ -130,19 +130,33 @@ namespace pxsim {
         protected children: Array<Statement>;
         public parentStatement: Statement;
         protected code: string;
+        private requiresChildrenToSerialize: boolean
 
-        constructor(code: string) {
+        
+
+        constructor(code: string, requiresChildrenToSerialize: boolean) {
             this.children = new Array<Statement>();
             this.code = code;
+            this.requiresChildrenToSerialize = requiresChildrenToSerialize
         }
       
         addChild(child: Statement) {
             this.children.push(child)
             child.parentStatement = this;
         }
+
         getCode(initScripts: string) {
             let allCode = this.code;
+
+            // dont serialize empty blocks
+            if (this.requiresChildrenToSerialize) {
+                if (this.children.length <=0) {
+                    return ""
+                }
+            }
+
             // for blocks, replace the children
+            let hasChildCode = false
             if (allCode.indexOf("<CHILDREN>") > 0) {
                 let childCode = "";
                 this.children.forEach((child) => {
@@ -152,14 +166,20 @@ namespace pxsim {
                     childCode += child.getCode("")
                 })
                 allCode = allCode.replace("<CHILDREN>", childCode);
-
+                if (!hasChildCode) {
+                    hasChildCode = (childCode.length  >0)
+                }
+                
+            }
+            if (!hasChildCode && this.requiresChildrenToSerialize) {
+                return ""
             }
             return allCode;
         }
     }
     class MainStatement extends Statement {
         constructor() {
-            super("")
+            super("", false)
         }
         getCode(initScripts: string) {
             let allCode = "";
@@ -197,6 +217,7 @@ namespace pxsim {
         private initScripts: any;
         private builders: any;
         private lastExecutingCode: string
+        private updateSimulatorTimer: any;
 
         constructor() {
             super();
@@ -214,7 +235,7 @@ namespace pxsim {
         }
 
         addBlock(str: string) {
-            const newBlock = new Statement(str)
+            const newBlock = new Statement(str, true)
             this.currentStatement.addChild(newBlock)
             this.currentStatement = newBlock;
             // this.updateJSCad()
@@ -229,9 +250,9 @@ namespace pxsim {
 
                 statementCode = `color([${red/255}, ${green/255}, ${blue/255}], ${statementCode})`
             }
-            const newBlock = new Statement(statementCode)
+            const newBlock = new Statement(statementCode, false)
             this.currentStatement.addChild(newBlock)
-            this.updateJSCad()
+            this.postUpdateSimulator()
         }
 
         addParameter(parameter: { 
@@ -288,6 +309,15 @@ namespace pxsim {
             } 
         }
 
+        postUpdateSimulator() {
+            if (this.updateSimulatorTimer) return;
+            // batch up calls made within 50ms rather than
+            // executing every statement.
+            this.updateSimulatorTimer = setTimeout(()=>{
+                this.updateSimulatorTimer = null;
+                this.updateJSCad()
+            }, 50)  
+        }
         updateJSCad() {
 
             const jsCadInterpreter = ((window as any).jscad);
@@ -362,6 +392,7 @@ namespace pxsim {
             }
         }
 
+    
         /** 
          * Called when running the program
          */
@@ -375,20 +406,46 @@ namespace pxsim {
         }
 
         screenshotAsync(width?: number): Promise<ImageData> {
+         
+            return new Promise<ImageData>((resolve, reject) =>{
             try {
-                const canvas = document.querySelector(".viewer canvas") as HTMLCanvasElement
-                const context =  canvas.getContext("2d") as CanvasRenderingContext2D;
+                
+             
+                // determine image dimensions
+                const webGLCanvas = document.querySelector(".viewer canvas") as HTMLCanvasElement
+                const imageWidth = Math.max(400, (width) ? width : webGLCanvas.width)
+                const imageHeight = webGLCanvas.height * (imageWidth / webGLCanvas.width)
+             
+                             
+                
+                // grab the context that jscad is drawing into
+                const webGlCanvasContext = (window as any).jscad.viewer.gl as WebGLRenderingContext
+              
+                // make a 2d canvas
+                const canvas2d = document.createElement("canvas")
+                canvas2d.width = imageWidth;
+                canvas2d.height = imageHeight;
+                const context2d = canvas2d.getContext("2d")
 
-                // UNDONE: honour the width passed in.
-                const screenshotData =context.getImageData(0,0,canvas.width, canvas.height) as ImageData
-                Promise.resolve(screenshotData)
+                // draw the webgl context into the 2d image context
+                context2d.drawImage(webGlCanvasContext.canvas, 0,0,imageWidth, imageHeight)
+                
+                // return the image data from the 2d canvas
+                const imageData = context2d.getImageData(0,0,imageWidth, imageHeight)
+                canvas2d.remove()
+                resolve(imageData)
+
+               
+                
             }
             catch(e) {
-
+                console.error(e)
+                resolve(undefined);
+        
             }
-            return Promise.resolve(undefined);
+                
+        })
         }
-
         
 
     }

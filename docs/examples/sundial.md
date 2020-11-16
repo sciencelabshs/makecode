@@ -69,5 +69,4 @@ operators.addShapes(function () {
     create_numbers()
     create_gnomnon()
 })
-
 ```

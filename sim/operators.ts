@@ -645,9 +645,31 @@ function sliceParams(orientation, radius, bounds) {
 
     
 
-    const LAY_FLAT_ON_BED = `
-    function layShapesFlatOnBed(shapes) {
-        return shapes.map(shape => shape.translate([0, 0, -shape.getBounds()[0]._z], shape))
+
+    // recenter the shape so that the bottom aligns 
+    // to the bed.  
+    // The key is we still want alignToPrintBed( move 10 ) to work
+    // so this is only relative shifting by the size of the object, 
+    // assuming everything is aligned to 0,0,0.  Boardgame pawn is 
+    // the one most succeptable to changes to this
+    const ALIGN_TO_PRINT_BED = `
+    
+    function alignToPrintBed(shapes) {
+        
+        if (shapes.length > 0) {  
+            let translatedShapes = []
+            for (var i = 0; i < shapes.length; i++) {
+                var shape = shapes[i]
+                const shapeHeight = Math.abs(shape.getBounds()[0]._z -  shape.getBounds()[1]._z)
+                
+                var translatedShape = shape.translate([0, 0, shapeHeight/2], shape);
+                translatedShapes.push(translatedShape)
+                
+            }
+            return translatedShapes;
+        }
+      
+        return []
     }
     `
     //% blockId=alignToPrintBed block="align to print bed" 
@@ -655,19 +677,18 @@ function sliceParams(orientation, radius, bounds) {
     //% handlerStatement=true
     //% group="Layout"
     /**
-     * Move all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
+     * Recenter all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
      * @param body the shapes to move up
      */
     export function alignToPrintBedAsync(body: RefAction): Promise<void> {
-        board().requireImport('LAY_FLAT_ON_BED', LAY_FLAT_ON_BED)
-        return _makeBlock(`union(layShapesFlatOnBed([<CHILDREN>]))`, body);
+        board().requireImport('ALIGN_TO_PRINT_BED', ALIGN_TO_PRINT_BED)
+        return _makeBlock(`...alignToPrintBed([<CHILDREN>])`, body);
     }
 
 
-    //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius | cut through: $cutThrough" 
+    //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius" 
     //% topblock=false
     //% handlerStatement=true
-    //% cutThrough.defl=true
     //% wallThickness.defl=2
     //% wallThickness.min=1
     //% insideRound.defl=1
@@ -679,7 +700,7 @@ function sliceParams(orientation, radius, bounds) {
      * @param insideRound the radius to use on the inside
      * @param body the shapes to move up
      */
-    export function hollowShapesAsync(wallThickness: number, insideRound: number, cutThrough: boolean, body: RefAction): Promise<void> {
+    export function hollowShapesAsync(wallThickness: number, insideRound: number, body: RefAction): Promise<void> {
 
 
         board().requireImport('LAYOUT_SCRIPT', LAYOUT_SCRIPT)
@@ -690,7 +711,7 @@ function sliceParams(orientation, radius, bounds) {
                 var roundedBottom = LayoutUtils.fillet(interiorBox, ${insideRound}, "z-")
                 return LayoutUtils.fillet(roundedBottom, ${insideRound}, "z+")
                         
-            }, ${cutThrough} )`, body);
+            })`, body);
 
         }
         else {

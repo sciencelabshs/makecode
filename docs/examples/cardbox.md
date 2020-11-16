@@ -3,6 +3,7 @@
 Create a custom box for your cards!
 
 ```blocks
+
 function set_variables () {
     number_of_sections = parameters.numberParameter("Number of sections", 2)
     sections = []
@@ -20,34 +21,29 @@ function total_box_length () {
     }
     return sum + (sections.length + 1) * wall_thickness
 }
-let sum = 0
-let number_of_sections = 0
-let sections: number[] = []
-let box_height = 0
-let card_width = 0
-let wall_thickness = 0
-set_variables()
-let total_distance = total_box_length() * -1 / 2 + wall_thickness
-let notch_radius = Math.min(10, card_width / 2)
-operators.layOnPrintBed(function () {
-    operators.subtractShapes(function () {
-        shapes.cube(card_width + 2 * wall_thickness, total_box_length(), box_height + wall_thickness)
-        for (let section_width of sections) {
-            total_distance += section_width / 2
-            operators.setPosition(0, total_distance, wall_thickness, function () {
-                operators.styleEdges(EdgeStyle.ConcaveChamfer, StyleEdgeDirection.Top, wall_thickness, function () {
-                    shapes.cube(card_width, section_width, box_height)
+function make_box () {
+    operators.alignToPrintBed(function () {
+        operators.subtractShapes(function () {
+            shapes.cube(card_width + 2 * wall_thickness, total_box_length(), box_height + wall_thickness)
+            for (let section_width2 of sections) {
+                total_distance += section_width2 / 2
+                operators.setPosition(0, total_distance, wall_thickness, function () {
+                    operators.styleEdges(EdgeStyle.ConcaveChamfer, StyleEdgeDirection.Top, wall_thickness, function () {
+                        shapes.cube(card_width, section_width2, box_height)
+                    })
                 })
-            })
-            total_distance += section_width / 2 + wall_thickness
-        }
-        operators.move(box_height / 2, Axis.Z, function () {
-            operators.turn(90, RotateAxis.X, function () {
-                shapes.cylinder(notch_radius, total_box_length())
+                total_distance += section_width2 / 2 + wall_thickness
+            }
+            operators.move(box_height / 2, Axis.Z, function () {
+                operators.turn(90, RotateAxis.X, function () {
+                    shapes.cylinder(notch_radius, total_box_length())
+                })
             })
         })
     })
-    operators.layOnPrintBed(function () {
+}
+function make_lid () {
+    operators.alignToPrintBed(function () {
         operators.move(card_width + (2 * wall_thickness + 5), Axis.X, function () {
             operators.subtractShapes(function () {
                 shapes.cube(card_width + 4 * wall_thickness, total_box_length() + 2 * wall_thickness, notch_radius + 2 + 3 * wall_thickness)
@@ -57,5 +53,19 @@ operators.layOnPrintBed(function () {
             })
         })
     })
-})
+}
+let sum = 0
+let box_height = 0
+let sections: number[] = []
+let number_of_sections = 0
+let card_width = 0
+let notch_radius = 0
+let wall_thickness = 0
+let total_distance = 0
+set_variables()
+total_distance = total_box_length() * -1 / 2 + wall_thickness
+notch_radius = Math.min(10, card_width / 2)
+make_box()
+make_lid()
+
 ```
