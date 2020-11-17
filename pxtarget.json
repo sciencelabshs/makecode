@@ -64,6 +64,7 @@
         "githubUrl": "https://github.com/buildbee/makecode",
         "betaUrl": "https://makecode.buildbee.com/",
         "boardName": "BuildBee",
+        "hideShareEmbed": true,
         "docMenu": [
             {
                 "name": "About",
