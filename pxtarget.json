@@ -2,7 +2,7 @@
     "id": "buildbeemakecode",
     "name": "buildbeemakecode",
     "title": "BuildBee | MakeCode",
-    "description": "Design, customize and print your own 3D projects using BuildBee MakeCode",
+    "description": "Learn to code and 3D print your creation with BuildBee using the powerful Microsoft MakeCode Blocks / Javascript editor.",
     "thumbnailName": "BuildBeeMakeCode",
     "corepkg": "core",
     "cloud": {
