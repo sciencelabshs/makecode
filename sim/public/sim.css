@@ -1,5 +1,6 @@
 :root {
     --bodyColor: #ffffff;
+    --lightBodyColor: #999da2;
     --primary: #4ebed7;
     --primary-active: #66d1e9; /*review - match this to plater*/
     --background: #2b354f;
@@ -12,7 +13,9 @@
 body {
   color: var(--bodyColor) !important;
 }
-
+#header, pre {
+    color: var(--lightBodyColor) !important;
+}
 button {
     outline: 0px !important;
 }
@@ -158,4 +161,22 @@ input:focus {
 }
 .parameterDiv label, .parameterDiv input {
     padding: 3px;
+}
+
+
+.spinner  {
+    display: none;  
+    border: 6px solid white;
+    border-top: 6px solid #4ebed7;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-top: 12px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: spin 2s linear infinite;
+ }
+
+.saving .spinner  {
+   display: block;     
 }

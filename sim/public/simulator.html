@@ -33,7 +33,7 @@
 
 <script>
   window.jQuery(document).ready(function() {
-    debugger
+    // Check for thingiverse redirection code
     const search = window.parent.location.search
     console.log(search)
     if (search.includes("code")) {
@@ -170,6 +170,7 @@
     <div class="jscad-container">
 
       <div id="header">
+        <div class="partialCodeWarning"></div>
         <div id="errordiv"></div>
         <div id="savedElement"></div>
       </div>
