@@ -54,12 +54,12 @@ async function authorizeThingiverse(blob, name, code) {
 }
 
 
-async function sendToThingiverse(blob, name) {
+async function sendToThingiverse(blob, name, imageData) {
     const arrayBuffer = await blob.arrayBuffer()
     const arrayBufferStr = arrayBuffer2string(arrayBuffer)
-
+    const imageDataStr = arrayBuffer2string(imageData.data.buffer)
     if (window.parent) {
-        window.parent.postMessage({message: "sendToThingiverse", arrayBuffer:arrayBufferStr, name: name}, window.location.href)
+        window.parent.postMessage({message: "sendToThingiverse", arrayBuffer:arrayBufferStr, name: name, imageData: imageDataStr}, window.location.href)
     }
 }
 

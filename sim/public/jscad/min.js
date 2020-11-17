@@ -26,6 +26,16 @@
  */
 
 
+ /*
+ Debug switches
+ DEBUG_WORKER_SOURCE - turn this on when you want to see the source code 
+ executing in web worker 
+
+ DEBUG_WORKER_PERF - turn this on when you want to measure how long it 
+ takes to execute the web worker
+ */
+
+
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 
   var _workerShapeCache = {}
@@ -113,6 +123,7 @@
     }
   
     const DEBUG_WORKER_PERF = false
+    
     let worker;
     replaceIncludes(script, basePath, '', {includeResolver: options.includeResolver, memFs: options.memFs})
       .then(function ({source}) {
@@ -244,7 +255,13 @@
       return main(params)
     `
   
+    const DEBUG_WORKER_SOURCE = false
     var f = new Function('params', 'include', 'globals', source)
+    if (DEBUG_WORKER_SOURCE) {
+      console.log("// Worker source ---------- ")
+      console.log(source)
+      console.log("// ---------- ")
+    }
     return f
   }
   
@@ -48273,7 +48290,8 @@ const localCache = {}
         meshes.push(mesh);
       }
       
-  
+      if (window.DEBUG_MESHES) console.log("csgToMeshes", meshes)
+     
       return meshes;
     }
   };
