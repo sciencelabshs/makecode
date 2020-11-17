@@ -47,7 +47,6 @@ async function downloadSTL(blob, name) {
 async function authorizeThingiverse(blob, name, code) {
     const arrayBuffer = await blob.arrayBuffer()
     const arrayBufferStr = arrayBuffer2string(arrayBuffer)
-
     if (window.parent) {
         window.parent.postMessage({message: "authorizeThingiverse", code: code, arrayBuffer:arrayBufferStr, name: name}, window.location.href)
     }
@@ -56,10 +55,9 @@ async function authorizeThingiverse(blob, name, code) {
 
 async function sendToThingiverse(blob, name, imageData) {
     const arrayBuffer = await blob.arrayBuffer()
-    const arrayBufferStr = arrayBuffer2string(arrayBuffer)
-    const imageDataStr = arrayBuffer2string(imageData.data.buffer)
+    const imageBuffer = await imageData.arrayBuffer()
     if (window.parent) {
-        window.parent.postMessage({message: "sendToThingiverse", arrayBuffer:arrayBufferStr, name: name, imageData: imageDataStr}, window.location.href)
+        window.parent.postMessage({message: "sendToThingiverse", arrayBuffer, name: name, imageData: imageBuffer}, window.location.href, [arrayBuffer, imageBuffer])
     }
 }
 

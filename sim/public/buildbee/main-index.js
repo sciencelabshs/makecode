@@ -27,8 +27,8 @@ function sendToThingiverse(event) {
         if (event.data.arrayBuffer) {
             uploadToThingiverse(
                 {buffer: event.data.arrayBuffer, 
-                 name: event.data.name || "My BuildBee MakeCode Project",
-                 pngArrayBuffer: stringToArrayBuffer(event.data.imageData)
+                    name: event.data.name || "My BuildBee MakeCode Project",
+                    pngArrayBuffer: event.data.imageData
                 })
         }
     }
@@ -71,7 +71,7 @@ function uploadToThingiverse({buffer, name, pngArrayBuffer}) {
             'Content-Type': 'application/json',
             "Accept": "application/json"
         },
-        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        referrerPolicy: 'no-referrer',
         body: JSON.stringify({
             name: name,
             license: "cc",
@@ -79,45 +79,49 @@ function uploadToThingiverse({buffer, name, pngArrayBuffer}) {
             description: "# Made with [BuildBee MakeCode](https://makecode.buildbee.com).",
         })
     }).then(function (new_thing_response) {
-        new_thing_response.json().then(function(new_thing_data) {
+        new_thing_response.json().then(async function(new_thing_data) {
             const thing_id = new_thing_data.id
-            
-            fetch(`https://api.thingiverse.com/things/${thing_id}/files`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${access_token}`,
-                    'Content-Type': 'application/json',
-                    "Accept": "application/json"
-                },
-                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-                body: JSON.stringify({
-                    filename: "BuildBee MakeCode Export.stl"
-                })
-            }).then(function(get_url_response) {
-                get_url_response.json().then(function(data) {
+
+            const postFileToThingiverse = function(thing_id, arrayBufferToUpload, filename, mimetype="application/octet-stream") {
+                return new Promise(async function(resolve, reject) {
+                    const get_url_response = await fetch(`https://api.thingiverse.com/things/${thing_id}/files`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`,
+                            'Content-Type': 'application/json',
+                            "Accept": "application/json"
+                        },
+                        referrerPolicy: 'no-referrer',
+                        body: JSON.stringify({
+                            filename: filename
+                        })})
+                    const data = await get_url_response.json()
                     const formData  = new FormData()
                     for (const name in data.fields) {
                         formData.append(name, data.fields[name])
                     }
-                    const arrayBuffer = stringToArrayBuffer(buffer);
-                    var file = new File([arrayBuffer], "BuildBee MakeCode Export.stl", { type: "application/octet-stream" });
+                    var arrayBuffer = arrayBufferToUpload;
+                    var file = new File([arrayBuffer], filename, { type: mimetype });
                     formData.append('file', file)
-                    fetch(data.action, {
+                    const upload_response = await fetch(data.action, {
                         method: 'POST',
-                        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                        referrerPolicy: 'no-referrer',
                         body: formData
-                    }).then(function(upload_response) {
-                        fetch(data.fields.success_action_redirect, {
-                            method: 'POST',
-                            headers: {
-                                'Authorization': `Bearer ${access_token}`
-                            },
-                            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-                    })}).then(function() {
-                        window.open("https://www.thingiverse.com/thing:" + thing_id, "_blank")
-                    });
-                }
-            )})
+                    })
+                    await fetch(data.fields.success_action_redirect, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`
+                        },
+                        referrerPolicy: 'no-referrer',
+                    })
+                    resolve()
+                })}
+            await Promise.all([
+                postFileToThingiverse(thing_id, buffer, "BuildBee MakeCode Export.stl"),
+                postFileToThingiverse(thing_id, pngArrayBuffer, "Screenshot.png", "image/png")
+            ])
+            window.open("https://www.thingiverse.com/thing:" + thing_id, "_blank")
         });
     });
 }

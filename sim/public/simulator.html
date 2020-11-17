@@ -60,7 +60,7 @@
     // in png format.  We will serialize this into an array 
     // buffer - pass it across as a string then deal with it 
     // in the main frame. 
-    pxsim.board().screenshotAsync(/*width*/800).then(function (pngFormatImageData) {
+    pxsim.board().screenshotBlob(/*width*/ 800).then(function (pngFormatImageData) {
       sendToThingiverse(blob, pxsim.title, pngFormatImageData)
     })
     

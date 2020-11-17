@@ -405,48 +405,66 @@ namespace pxsim {
             return Promise.resolve();
         }
 
+        getCanvas(width?: number): Promise<CanvasRenderingContext2D> {
+            return new Promise<CanvasRenderingContext2D>((resolve, reject) => {
+                try {
+                    // determine image dimensions
+                    const webGLCanvas = document.querySelector(".viewer canvas") as HTMLCanvasElement
+                    const imageWidth = Math.max(400, (width) ? width : webGLCanvas.width)
+                    const imageHeight = webGLCanvas.height * (imageWidth / webGLCanvas.width)
+                    // grab the context that jscad is drawing into
+                    const webGlCanvasContext = (window as any).jscad.viewer.gl as WebGLRenderingContext
+                    // make a 2d canvas
+                    const canvas2d = document.createElement("canvas")
+                    canvas2d.width = imageWidth;
+                    canvas2d.height = imageHeight;
+                    const context2d = canvas2d.getContext("2d")
+    
+                    // draw the webgl context into the 2d image context
+                    context2d.drawImage(webGlCanvasContext.canvas, 0,0,imageWidth, imageHeight)
+
+                    resolve(context2d)
+    
+                }
+                catch(e) {
+                    console.error(e)
+                    resolve(undefined);
+            
+                }
+            })
+        }
+
         screenshotAsync(width?: number): Promise<ImageData> {
-         
-            return new Promise<ImageData>((resolve, reject) =>{
+            return new Promise<ImageData>(async (resolve, reject) => {
             try {
-                
-             
-                // determine image dimensions
-                const webGLCanvas = document.querySelector(".viewer canvas") as HTMLCanvasElement
-                const imageWidth = Math.max(400, (width) ? width : webGLCanvas.width)
-                const imageHeight = webGLCanvas.height * (imageWidth / webGLCanvas.width)
-             
-                             
-                
-                // grab the context that jscad is drawing into
-                const webGlCanvasContext = (window as any).jscad.viewer.gl as WebGLRenderingContext
-              
                 // make a 2d canvas
-                const canvas2d = document.createElement("canvas")
-                canvas2d.width = imageWidth;
-                canvas2d.height = imageHeight;
-                const context2d = canvas2d.getContext("2d")
-
-                // draw the webgl context into the 2d image context
-                context2d.drawImage(webGlCanvasContext.canvas, 0,0,imageWidth, imageHeight)
+                const context2d = await this.getCanvas(width);
+                const imageWidth = context2d.canvas.width
+                const imageHeight = context2d.canvas.height
                 
-                // return the image data from the 2d canvas
-                const imageData = context2d.getImageData(0,0,imageWidth, imageHeight)
-                canvas2d.remove()
+                // // return the image data from the 2d canvas
+                const imageData = context2d.getImageData(0, 0, imageWidth, imageHeight)
+                // canvas2d.remove()
                 resolve(imageData)
-
-               
-                
             }
             catch(e) {
                 console.error(e)
                 resolve(undefined);
-        
-            }
-                
-        })
+            }})
         }
-        
 
+        screenshotBlob(width?: number): Promise<Blob> {
+            return new Promise<Blob>(async (resolve, reject) => {
+            try {
+                // make a 2d canvas
+                const context2d = await this.getCanvas(width);context2d.canvas.toBlob(function(blob) {
+                    resolve(blob)
+                })
+            }
+            catch(e) {
+                console.error(e)
+                resolve(undefined);
+            }})
+        }
     }
 }
