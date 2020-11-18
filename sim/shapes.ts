@@ -82,7 +82,7 @@ namespace pxsim.shapes {
      */
     export function sphere(radius: number, color?: number, type?: SphereType, faces?: number) {
         const fn = (faces) ? Math.max(faces, 4) : 150
-        const sphereType = type === SphereType.geodesic ? "geodesic" : "icosahedron";
+        const sphereType = (type === SphereType.geodesic || isNaN(type)) ? "geodesic" : "icosahedron";
 
         board().addStatement(`sphere({r: ${radius}, center: [true, true, true],  fn: ${fn}, type: "${sphereType}"})`, color);
 
