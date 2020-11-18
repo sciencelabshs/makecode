@@ -82,20 +82,21 @@ input:focus {
   height: 80%;
   width: 80%;
 }
+.parameterDivScrollContainer {
+    overflow-y: scroll;
+    max-height: calc(70vh - 3.5em);
+    height: auto;
+}
 
 .parameterDivContainer {
     border-radius: 2em;
-    pointer-events: none;
     position: fixed;
     display: block;
+    overflow: hidden;
     left: .5em;
     bottom: 2em;
     max-width: 300px;
-    max-height: 300px;
-    width: 80vw;
-    height: 80vw;
     background-color: var(--modal-background);
-
     display: none;
     padding: 1em;
 
@@ -109,14 +110,16 @@ input:focus {
 }
 .closeParameterFormButton {
     border: 0px;
-    position: absolute;
-    bottom: .5em;
     background-color: transparent;
     color: var(--bodyColor);
     width: 3.5em;
     height: 3.5em;
     font-size: 1em;
     left: .5em;
+}
+.parameterDivUpdateButton {
+    margin-left: calc(100% - 4.5em - 90px);
+  
 }
 
 .paramaterDivContainerTitle {
