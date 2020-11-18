@@ -34,13 +34,13 @@ operators.alignToPrintBed(function () {
 
 ## Step 3 @fullscreen
 
-Add ``||Shapes:roof||`` below the  ``||Shapes:cube||`` block.
+Add ``||Shapes:roof||`` below the  ``||Shapes:cube||`` block. Set it's height to 5mm.
 
 ```blocks
 operators.alignToPrintBed(function () {
     operators.stack(StackDirection.Above, Axis.Z, function () {  
         shapes.cube(10, 10, 10)
-        shapes.triangleRoof(10, 10, 10)
+        shapes.triangleRoof(10, 5, 10)
     })
 })
 ```

@@ -16,7 +16,7 @@ operators.alignToPrintBed(function () {
 
 
 ## Step 2 @fullscreen
-Add a ``||Shapes:sphere||`` below the ``||Shapes:cone||`` block.  The sphere will be in the wrong spot but we'll move it next!
+Add a ``||Shapes:sphere||`` below the ``||Shapes:cone||`` block. Set the radius to 5 mm. The sphere will be in the wrong spot but we'll move it next!
 
 ```blocks
 operators.alignToPrintBed(function () {
