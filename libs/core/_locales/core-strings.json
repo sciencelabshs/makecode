@@ -28,7 +28,7 @@
   "String.substr|block": "substring of %this=text|from %start|of length %length",
   "String|block": "String",
   "colors.choose|block": "%value",
-  "colors.color|block": "color $color=chooseColor",
+  "colors.color|block": "color $color=colorsChooseColor",
   "colors.rainbowColor|block": "rainbow color: $rainbowColor || color wheel increment: $colorWheelDegrees °",
   "colors.randomColor|block": "random color",
   "extraMath.Phi|block": "ϕ",

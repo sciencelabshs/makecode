@@ -785,11 +785,13 @@ function sliceParams(orientation, radius, bounds) {
 
     }
 
+    
     //% blockId=flip_shapes block="turn $angle ° | $axis=main_rotateAxisPicker" 
     //% topblock=false
     //% handlerStatement=true
     //% angle.defl=45
-    //% angle.shadow="protractorPicker"
+    //% angle.min=0
+    //% angle.max=360
     //% axis.defl=2
     //% weight=80
     //% group="Position"
@@ -874,9 +876,11 @@ function sliceParams(orientation, radius, bounds) {
 
     //% blockId=rotateExtrude2dshapes block="rotate extrude 2d shape from angle $startAngle | to $stopAngle | faces $faces" 
     //% startAngle.defl=0
+    //% startAngle.min=0
+    //% startAngle.max=360
+    //% stopAngle.min=0
+    //% stopAngle.max=360
     //% stopAngle.defl=360
-    //% startAngle.shadow="protractorPicker"
-    //% stopAngle.shadow="protractorPicker"
     //% faces.defl=32
     //% topblock=false
     //% handlerStatement=true
@@ -894,7 +898,8 @@ function sliceParams(orientation, radius, bounds) {
     //% blockId=linearExtrude2dshapes block="linear extrude 2d shape to height: $height | twist: $twist | slices: $slices" 
     //% height.defl=10
     //% twist.defl=0
-    //% twist.shadow="protractorPicker"
+    //% twist.min=0
+    //% twist.max=360
     //% slices.defl=50
     //% topblock=false
     //% handlerStatement=true
