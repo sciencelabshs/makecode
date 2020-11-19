@@ -33,6 +33,13 @@ Here are some cool tutorials to get you started with your @boardname@!
   "url":"/examples/snowflake-ornament",
   "cardType": "tutorial",
   "imageUrl": "/static/examples/snowflake-ornament/project-image.png?v=DOCVER-1"
+},
+{
+  "name": "Parametric Vase",
+  "description": "Make a customizable rainbow vase!",
+  "url":"/examples/vase",
+  "cardType": "tutorial",
+  "imageUrl": "/static/examples/vase/project-image.png?v=DOCVER-1"
 }
 ]
 ```
