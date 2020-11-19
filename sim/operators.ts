@@ -646,43 +646,43 @@ function sliceParams(orientation, radius, bounds) {
     
 
 
-    // recenter the shape so that the bottom aligns 
+    // recenter a group of shapes so that the lowest face aligns 
     // to the bed.  
-    // The key is we still want alignToPrintBed( move 10 ) to work
-    // so this is only relative shifting by the size of the object, 
-    // assuming everything is aligned to 0,0,0.  Boardgame pawn is 
-    // the one most succeptable to changes to this
-    const ALIGN_TO_PRINT_BED = `
+    // If you work on this make sure you test all the starter 
+    // projects and tutorials to make sure behaviour is conserved
+    const PLACE_ON_GROUND = `
     
-    function alignToPrintBed(shapes) {
-        
+    function placeOnGround(shapes) {
         if (shapes.length > 0) {  
+            let collectionMinZ = shapes[0].getBounds()[0]._z
+
             let translatedShapes = []
+
+            for (var i = 0; i < shapes.length; i++) {
+                collectionMinZ = Math.min(collectionMinZ,  shapes[i].getBounds()[0]._z)
+            }
             for (var i = 0; i < shapes.length; i++) {
                 var shape = shapes[i]
-                const shapeHeight = Math.abs(shape.getBounds()[0]._z -  shape.getBounds()[1]._z)
-                
-                var translatedShape = shape.translate([0, 0, shapeHeight/2], shape);
+                var translatedShape = shape.translate([0, 0, -collectionMinZ], shape);
                 translatedShapes.push(translatedShape)
                 
             }
             return translatedShapes;
         }
-      
         return []
     }
     `
-    //% blockId=alignToPrintBed block="align to print bed" 
+    //% blockId=placeOnGround block="place on ground" 
     //% topblock=false
     //% handlerStatement=true
     //% group="Layout"
     /**
-     * Recenter all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
-     * @param body the shapes to move up
+     * Take all shapes inside this block and move them as a group so that they are on the ground.
+     * @param body the shapes to move
      */
-    export function alignToPrintBedAsync(body: RefAction): Promise<void> {
-        board().requireImport('ALIGN_TO_PRINT_BED', ALIGN_TO_PRINT_BED)
-        return _makeBlock(`...alignToPrintBed([<CHILDREN>])`, body);
+    export function placeOnGroundAsync(body: RefAction): Promise<void> {
+        board().requireImport('PLACE_ON_GROUND', PLACE_ON_GROUND)
+        return _makeBlock(`...placeOnGround([<CHILDREN>])`, body);
     }
 
 

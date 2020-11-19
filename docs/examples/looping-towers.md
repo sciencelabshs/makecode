@@ -5,10 +5,10 @@ Learn to loop making a tower!
 ## Step 1 @fullscreen
 Start building the base of the tower.  We will stack cylinders, so we need the stack shapes block.
 
-Add a ``||Operators:stackShapes||`` block to the ``||Operators:alignToPrintBed||`` block.  
+Add a ``||Operators:stackShapes||`` block to the ``||Operators:placeOnGround||`` block.  
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
         operators.stack(StackDirection.Above, Axis.Z, function () {
           
         })
@@ -19,13 +19,13 @@ operators.alignToPrintBed(function () {
 ## Step 2 @fullscreen
 Make a basic tower using cylinders. 
 
-Add two ``||Shapes:cylinder||`` blocks to the ``||Operators:alignToPrintBed||`` block.  
+Add two ``||Shapes:cylinder||`` blocks to the ``||Operators:placeOnGround||`` block.  
 
 First cylinder - radius 10, height 30
 Second cylinder - radius 12, height 10
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
         operators.stack(StackDirection.Above, Axis.Z, function () {
             shapes.cylinder(10, 30)
             shapes.cylinder(12, 10)
@@ -41,7 +41,7 @@ Below the ``||Operators:stackShapes||`` block, add a ``||Operators:move||`` bloc
 Move the new cylinder up 40mm in Z axis.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.stack(StackDirection.Above, Axis.Z, function () {
         shapes.cylinder(10, 30)
         shapes.cylinder(12, 10)
@@ -53,11 +53,11 @@ operators.alignToPrintBed(function () {
 ```
 
 ## Step 4 @fullscreen
-Cut the hole in the roof by adding a ``||Operators:subtractShapes||`` block around the ``||Operators:alignToPrintBed||``
+Cut the hole in the roof by adding a ``||Operators:subtractShapes||`` block around the ``||Operators:placeOnGround||``
 
 ```blocks
 operators.subtractShapes(function () {
-    operators.alignToPrintBed(function () {
+    operators.placeOnGround(function () {
         operators.stack(StackDirection.Above, Axis.Z, function () {
             shapes.cylinder(10, 30)
             shapes.cylinder(12, 10)
@@ -76,7 +76,7 @@ Add a ``||Shapes:cube||`` with width: 4, depth: 30, and height: 10.
 
 ```blocks
 operators.subtractShapes(function () {
-    operators.alignToPrintBed(function () {
+    operators.placeOnGround(function () {
         operators.stack(StackDirection.Above, Axis.Z, function () {
             shapes.cylinder(10, 30)
             shapes.cylinder(12, 10)
@@ -95,7 +95,7 @@ Turn the cube 45 degrees by wrapping the ``||Shapes:cube||`` in a ``||Operators:
 
 ```blocks
 operators.subtractShapes(function () {
-    operators.alignToPrintBed(function () {
+    operators.placeOnGround(function () {
         operators.stack(StackDirection.Above, Axis.Z, function () {
             shapes.cylinder(10, 30)
             shapes.cylinder(12, 10)
@@ -121,7 +121,7 @@ We wont be able to see all the cutouts yet! (See next step.)
 
 ```blocks
 operators.subtractShapes(function () {
-    operators.alignToPrintBed(function () {
+    operators.placeOnGround(function () {
         operators.stack(StackDirection.Above, Axis.Z, function () {
             shapes.cylinder(10, 30)
             shapes.cylinder(12, 10)
@@ -149,7 +149,7 @@ Set the multiply to be 45 * ``||Variables:index||``.
 
 ```blocks
 operators.subtractShapes(function () {
-    operators.alignToPrintBed(function () {
+    operators.placeOnGround(function () {
         operators.stack(StackDirection.Above, Axis.Z, function () {
             shapes.cylinder(10, 30)
             shapes.cylinder(12, 10)

@@ -578,7 +578,7 @@ declare namespace operators {
     //% shim=operators::styleEdgesAsync promise
     function styleEdges(edgeStyle: EdgeStyle, direction: StyleEdgeDirection, radius: number, body: () => void): void;
 
-    //% blockId=alignToPrintBed block="align to print bed" 
+    //% blockId=placeOnGround block="align to print bed" 
     //% topblock=false
     //% handlerStatement=true
     //% group="Layout"
@@ -586,8 +586,8 @@ declare namespace operators {
      * Recenter all shapes to lie on the XY Plane at Z = 0. A Great last thing to check before 3D Printing.
      * @param body the shapes to move up
      */
-    //% shim=operators::alignToPrintBedAsync promise
-    function alignToPrintBed(body: () => void): void;
+    //% shim=operators::placeOnGroundAsync promise
+    function placeOnGround(body: () => void): void;
 
     //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius" 
     //% topblock=false

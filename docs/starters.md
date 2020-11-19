@@ -13,11 +13,11 @@ Learn the basic blocks of BuildBee MakeCode!
   "imageUrl": "/static/examples/heart-shape/project-image.png?v=DOCVER-1"
 },
 {
-  "name": "Boardgame Pawn",
-  "description": "Learn basic shapes and the move command to make a boardgame pawn! ",
-  "url":"/examples/boardgame-pawn",
+  "name": "Chess Piece",
+  "description": "Learn basic shapes and the move command to make a chess piece! ",
+  "url":"/examples/chess-piece",
   "cardType": "tutorial",
-  "imageUrl": "/static/examples/boardgame-pawn/project-image.png?v=DOCVER-1"
+  "imageUrl": "/static/examples/chess-piece/project-image.png?v=DOCVER-1"
 },
 {
   "name": "Boardgame House",

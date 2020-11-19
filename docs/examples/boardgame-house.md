@@ -8,11 +8,11 @@ Learn to stack shapes around by making a boardgame house.
 ![Make a heart shape](/docs/static/examples/boardgame-house/project-image.png)
 
 ## Step 1 @fullscreen
-Add a ``||Operators:stackShapes||`` in the ``||loops:alignToPrintBed||`` block.  Shapes placed inside this block will stack on top of one another.
+Add a ``||Operators:stackShapes||`` in the ``||loops:placeOnGround||`` block.  Shapes placed inside this block will stack on top of one another.
 
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.stack(StackDirection.Above, Axis.Z, function () {
     
     })
@@ -25,7 +25,7 @@ operators.alignToPrintBed(function () {
 Add a ``||Shapes:cube||`` to the ``||Operators:stackShapes||`` block.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.stack(StackDirection.Above, Axis.Z, function () {  
         shapes.cube(10, 10, 10)
     })
@@ -37,7 +37,7 @@ operators.alignToPrintBed(function () {
 Add ``||Shapes:roof||`` below the  ``||Shapes:cube||`` block. Set it's height to 5mm.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.stack(StackDirection.Above, Axis.Z, function () {  
         shapes.cube(10, 10, 10)
         shapes.triangleRoof(10, 5, 10)
@@ -55,7 +55,7 @@ Add another the ``||Shapes:cube||``.
 Set the size to width: 2 depth: 2 height: 20.  Dont forget to make the block tall enough so it pokes through the roof!
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.stack(StackDirection.Above, Axis.Z, function () {
         shapes.cube(10, 10, 10)
         shapes.triangleRoof(10, 5, 10)
@@ -71,7 +71,7 @@ Use the ``||Shapes:move||`` blocks to position the chimney to the side.  Move by
 
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.stack(StackDirection.Above, Axis.Z, function () {
         shapes.cube(10, 10, 10)
         shapes.triangleRoof(10, 5, 10)

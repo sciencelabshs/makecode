@@ -8,13 +8,13 @@ Learn how to add and subtract shapes to make an impossible box.
 
 ## Step 1 @fullscreen
 
-Place the ``||Shapes:cube||`` block in the ``||Operators:alignToPrintBed||`` block.
+Place the ``||Shapes:cube||`` block in the ``||Operators:placeOnGround||`` block.
 
 Set the width to 50, depth to 50 and height to 50
 
 ```blocks
 
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     shapes.cube(50, 50, 50)
 })
 
@@ -25,7 +25,7 @@ operators.alignToPrintBed(function () {
 Add a subtract shapes ``||Operators:subtractShapes||`` block around the ``||Shapes:cube||`` block.  This will help us cut out the middle of the cube.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.subtractShapes(function () {
         shapes.cube(50, 50, 50)
     })
@@ -44,7 +44,7 @@ Cut through the main cube by setting the sizes of the cubes.
 
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
    operators.subtractShapes(function () {
             shapes.cube(50, 50, 50)
             shapes.cube(40, 40, 80)
@@ -60,7 +60,7 @@ Add a ``||Shapes:sphere||`` to the center.  Set the radius to 22mm.
 Since the cube cutouts are 40mm, the sphere will be 44mm, and won't be able to escape the box!
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
    operators.subtractShapes(function () {
             shapes.cube(50, 50, 50)
             shapes.cube(40, 40, 80)
@@ -79,7 +79,7 @@ Note when you go to print, you will need to print with supports and brim (if ava
 Add a ``||operators:turn||`` block and turn by 45 degrees in the x axis
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.turn(45, RotateAxis.X, function () {
         operators.subtractShapes(function () {
             shapes.cube(50, 50, 50)

@@ -10,13 +10,13 @@ We recommend completing the previous tutorials before starting this one.
 
 ## Step 1 @fullscreen
 
-Add two ``||Shapes:cylinder||`` blocks to the ``||operators:alignToPrintBed||`` block. 
+Add two ``||Shapes:cylinder||`` blocks to the ``||operators:placeOnGround||`` block. 
 
 Give the first cylinder a radius of 40.
 Give the second a radius of 30.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     shapes.cylinder(40, 10)
     shapes.cylinder(30, 10)
 })
@@ -27,7 +27,7 @@ operators.alignToPrintBed(function () {
 Wrap a ``||Operators:subtract||`` block around both cylinders. This should give you a ring.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.subtractShapes(function () {
         shapes.cylinder(40, 10)
         shapes.cylinder(30, 10)
@@ -39,7 +39,7 @@ operators.alignToPrintBed(function () {
 Add a ``||Shapes:cube||`` block. Set its width to 2, depth to 60 and height to 10.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.subtractShapes(function () {
         shapes.cylinder(40, 10)
         shapes.cylinder(30, 10)
@@ -52,7 +52,7 @@ operators.alignToPrintBed(function () {
 Add a ``||Operators:turn||`` block around the ``||Shapes:cube||``. Set the turn type to Z.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.subtractShapes(function () {
         shapes.cylinder(40, 10)
         shapes.cylinder(30, 10)
@@ -70,7 +70,7 @@ Add a ``||loops:for||`` block around the ``||Operators:turn||``. Set the loop co
 Note: This will make 4 cubes, but we wont be able to see  all of them yet!
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
 
     operators.subtractShapes(function () {
         shapes.cylinder(40, 10)
@@ -91,7 +91,7 @@ Separate the cubes by turning them all different amounts.
 Add a ``||Math:✕||`` into the ``||Operators:turn||`` block. Drag the ``||Variables:index||`` from the loop into the ``||Math:✕||`` and set the other number to be 45.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.subtractShapes(function () {
         shapes.cylinder(40, 10)
         shapes.cylinder(30, 10)
@@ -110,7 +110,7 @@ Make the center spoke.
 Add a ``||Shapes:cylinder||`` block. Set the radius to 7.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
 
     operators.subtractShapes(function () {
         shapes.cylinder(40, 10)
@@ -129,7 +129,7 @@ operators.alignToPrintBed(function () {
 Add a ``||Operators:add||`` block around all the other blocks.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.addShapes(function () {
         operators.subtractShapes(function () {
             shapes.cylinder(40, 10)
@@ -151,7 +151,7 @@ Cut the hole for the center spindle (part 1 of 2).
 Add a ``||Shapes:cylinder||`` block. Click the + button a few times and set the radius to 2, the height to 50 and radius2 to 5. 
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.addShapes(function () {
         operators.subtractShapes(function () {
         shapes.cylinder(40, 10)
@@ -175,7 +175,7 @@ Add a ``||Operators:subtract||`` block around all the other blocks.
 
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.subtractShapes(function () {
         operators.addShapes(function () {
             operators.subtractShapes(function () {
@@ -200,7 +200,7 @@ Make the spindle.
 Add  new ``||Shapes:cylinder||``. Expand the options by clicking + a few times. Set the radius to 5, the height to 50 and radius2 to 2. 
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.subtractShapes(function () {
         operators.addShapes(function () {
             operators.subtractShapes(function () {
@@ -229,7 +229,7 @@ Use the``||Operators:move||`` block around the new ``||Shapes:cylinder||``.
 Set the X value to 50 and the Z value to 20.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.subtractShapes(function () {
         operators.addShapes(function () {
             operators.subtractShapes(function () {

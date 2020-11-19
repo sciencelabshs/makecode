@@ -1,7 +1,7 @@
 
-# Boardgame pawn
+# Chess piece
 
-Make a pawn for a boardgame in code!
+Make a chess piece in code!
 
 
 ## Step 1 @fullscreen

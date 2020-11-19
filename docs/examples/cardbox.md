@@ -22,7 +22,7 @@ function total_box_length () {
     return sum + (sections.length + 1) * wall_thickness
 }
 function make_box () {
-    operators.alignToPrintBed(function () {
+    operators.placeOnGround(function () {
         operators.subtractShapes(function () {
             shapes.cube(card_width + 2 * wall_thickness, total_box_length(), box_height + wall_thickness)
             for (let section_width2 of sections) {
@@ -43,7 +43,7 @@ function make_box () {
     })
 }
 function make_lid () {
-    operators.alignToPrintBed(function () {
+    operators.placeOnGround(function () {
         operators.move(card_width + (2 * wall_thickness + 5), Axis.X, function () {
             operators.subtractShapes(function () {
                 shapes.cube(card_width + 4 * wall_thickness, total_box_length() + 2 * wall_thickness, notch_radius + 2 + 3 * wall_thickness)

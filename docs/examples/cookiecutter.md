@@ -8,11 +8,11 @@ Learn how to add and subtract shapes to make a cookie cutter.
 
 ## Step 1 @fullscreen
 
-Place the ``||Shapes:polygon||`` block in the ``||Operators:alignToPrintBed||`` block.
+Place the ``||Shapes:polygon||`` block in the ``||Operators:placeOnGround||`` block.
 
 ```blocks
 
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     shapes.polygon3D(6, 10, 10)
 })
 
@@ -23,7 +23,7 @@ operators.alignToPrintBed(function () {
 Add a subtract shapes ``||Operators:subtractShapes||`` block around the ``||Shapes:polygon||`` block.  This will help us cut out the middle of the block.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.subtractShapes(function () {
         shapes.polygon3D(6, 10, 10)
     })
@@ -38,7 +38,7 @@ Tip!  If your object just disappeared you haven't set the radius yet! :)
 
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.subtractShapes(function () {
         shapes.polygon3D(6, 10, 10)
         shapes.polygon3D(6, 8, 10)
@@ -58,7 +58,7 @@ Play with the edge style, to 'chamfer' or 'fillet' the top of the cookie cutter 
 Adjust the radius to .2mm, or whatever you think looks great!
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     operators.styleEdges(EdgeStyle.ConcaveFillet, StyleEdgeDirection.Top, 0.2, function () {
         operators.subtractShapes(function () {
             shapes.polygon3D(6, 10, 10)
