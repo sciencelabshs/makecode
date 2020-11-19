@@ -70,7 +70,7 @@ fontSize = 0.05555555555 * radius
 let characterOffset = fontSize / 2
 operators.addShapes(function () {
     operators.placeOnGround(function () {
-        shapes.cylinder(1.1 * radius, 2, shapes.__colorNumberPicker2(0x4ebed7))
+        shapes.cylinder(1.1 * radius, 2, shapes.chooseColor(0x4ebed7))
     })
     create_numbers()
     create_gnomnon()

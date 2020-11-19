@@ -33,10 +33,10 @@ Add another ``||Operators:placeOnGround||`` block and``||Shapes:text||`` block. 
 
 ```blocks
 operators.placeOnGround(function () {
-    shapes.text("BuildBee", 21, 4, shapes.__colorNumberPicker2(0x4ebed7), 8)
+    shapes.text("BuildBee", 21, 4, shapes.chooseColor(0x4ebed7), 8)
 })
 operators.placeOnGround(function () {
-    shapes.text("BuildBee", 21, 2, shapes.__colorNumberPicker2(0x4ebed7), 18)
+    shapes.text("BuildBee", 21, 2, shapes.chooseColor(0x4ebed7), 18)
 })
 
 ```
@@ -50,10 +50,10 @@ We will cut out the inside of the loop later.
 
 ```blocks
 operators.placeOnGround(function () {
-    shapes.text("BuildBee", 21, 4, shapes.__colorNumberPicker2(0x4ebed7), 8)
+    shapes.text("BuildBee", 21, 4, shapes.chooseColor(0x4ebed7), 8)
 })
  operators.placeOnGround(function () {
-    shapes.text("BuildBee", 21, 2, shapes.__colorNumberPicker2(0x4ebed7), 18)
+    shapes.text("BuildBee", 21, 2, shapes.chooseColor(0x4ebed7), 18)
     shapes.cylinder(10, 2)
 })
 ```
@@ -66,10 +66,10 @@ At the end the cylinder should be where you can see it, but it won't have a hole
 
 ```blocks
 operators.placeOnGround(function () {
-    shapes.text("BuildBee", 21, 4, shapes.__colorNumberPicker2(0x4ebed7), 8)
+    shapes.text("BuildBee", 21, 4, shapes.chooseColor(0x4ebed7), 8)
 })
 operators.placeOnGround(function () {
-    shapes.text("BuildBee", 21, 2, shapes.__colorNumberPicker2(0x4ebed7), 18)
+    shapes.text("BuildBee", 21, 2, shapes.chooseColor(0x4ebed7), 18)
     operators.move(24, Axis.Y, function () {
         operators.move(12, Axis.X, function () {
             shapes.cylinder(10, 2)
@@ -84,10 +84,10 @@ Cut the hole for the string to go through (part one of two).  Add a second cylin
 
 ```blocks  
 operators.placeOnGround(function () {
-    shapes.text("BuildBee", 21, 4, shapes.__colorNumberPicker2(0x4ebed7), 8)
+    shapes.text("BuildBee", 21, 4, shapes.chooseColor(0x4ebed7), 8)
 })
 operators.placeOnGround(function () {
-    shapes.text("BuildBee", 21, 2, shapes.__colorNumberPicker2(0x4ebed7), 18)
+    shapes.text("BuildBee", 21, 2, shapes.chooseColor(0x4ebed7), 18)
     operators.move(24, Axis.Y, function () {
         operators.move(12, Axis.X, function () {
             shapes.cylinder(10, 2)
@@ -103,10 +103,10 @@ Cut the hole for the string to go through (part two of two).  Cut away the inner
 
 ```blocks  
 operators.placeOnGround(function () {
-    shapes.text("BuildBee", 21, 4, shapes.__colorNumberPicker2(0x4ebed7), 8)
+    shapes.text("BuildBee", 21, 4, shapes.chooseColor(0x4ebed7), 8)
 })
 operators.placeOnGround(function () {
-    shapes.text("BuildBee", 21, 2, shapes.__colorNumberPicker2(0x4ebed7), 18)
+    shapes.text("BuildBee", 21, 2, shapes.chooseColor(0x4ebed7), 18)
     operators.move(24, Axis.Y, function () {
         operators.move(12, Axis.X, function () {
             operators.subtractShapes(function () {
