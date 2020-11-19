@@ -43,8 +43,6 @@ namespace pxsim.colors {
     //% blockId=rainbowColor block="rainbow color: $rainbowColor || color wheel increment: $colorWheelDegrees °"
     //% inlineInputMode=inline
     //% rainbowColor.defl=0
-    //% rainbowColor.min=0
-    //% rainbowColor.max=360
     //% colorWheelDegrees.defl=20
     //% group="Colors"
     //% advanced=false
@@ -58,7 +56,7 @@ namespace pxsim.colors {
 
 
        
-    //% blockId=chooseColor block="%value"
+    //% blockId=colorsChooseColor block="%value"
     //% blockHidden=true
     //% shim=TD_ID colorSecondary="#FFFFFF"
     //% value.fieldEditor="colornumber" value.fieldOptions.decompileLiterals=true
@@ -74,7 +72,7 @@ namespace pxsim.colors {
 
 
 
-    //% blockId=color_block block="color $color=chooseColor" 
+    //% blockId=color_block block="color $color=colorsChooseColor" 
     //% group="Colors"
     //% topblock=false
     //% handlerStatement=true
