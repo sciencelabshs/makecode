@@ -7,8 +7,7 @@ Learn how to add and subtract shapes to make a cookie cutter.
 
 
 ## Step 1 @fullscreen
-
-Place the ``||Shapes:polygon||`` block in the ``||Operators:placeOnGround||`` block.
+Add a ``||Operators:placeOnGround||`` block and put a ``||Shapes:polygon||`` block inside.
 
 ```blocks
 

@@ -10,7 +10,7 @@ We recommend completing the previous tutorials before starting this one.
 
 ## Step 1 @fullscreen
 
-Add two ``||Shapes:cylinder||`` blocks to the ``||operators:placeOnGround||`` block. 
+Add two ``||Shapes:cylinder||`` blocks and a ``||operators:placeOnGround||`` block. 
 
 Give the first cylinder a radius of 40.
 Give the second a radius of 30.
@@ -164,8 +164,8 @@ operators.placeOnGround(function () {
         }
         shapes.cylinder(7, 10)
     })
-    shapes.cylinder(2, 50, 0x4ebed7, 100, 5)
 })
+shapes.cylinder(2, 50, 0x4ebed7, 100, 5)
 ```
 
 ## Step 10
@@ -175,8 +175,8 @@ Add a ``||Operators:subtract||`` block around all the other blocks.
 
 
 ```blocks
-operators.placeOnGround(function () {
-    operators.subtractShapes(function () {
+operators.subtractShapes(function () {
+    operators.placeOnGround(function () {
         operators.addShapes(function () {
             operators.subtractShapes(function () {
             shapes.cylinder(40, 10)
@@ -189,8 +189,8 @@ operators.placeOnGround(function () {
             }
             shapes.cylinder(7, 10)
         })
-        shapes.cylinder(2, 50, 0x4ebed7, 100, 5)
     })
+    shapes.cylinder(2, 50, 0x4ebed7, 100, 5)
 })
 ```
 
@@ -200,8 +200,8 @@ Make the spindle.
 Add  new ``||Shapes:cylinder||``. Expand the options by clicking + a few times. Set the radius to 5, the height to 50 and radius2 to 2. 
 
 ```blocks
-operators.placeOnGround(function () {
-    operators.subtractShapes(function () {
+operators.subtractShapes(function () {
+    operators.placeOnGround(function () {
         operators.addShapes(function () {
             operators.subtractShapes(function () {
             shapes.cylinder(40, 10)
@@ -214,23 +214,23 @@ operators.placeOnGround(function () {
             }
             shapes.cylinder(7, 10)
         })
-        shapes.cylinder(2, 50, 0x4ebed7, 100, 5)
     })
-    shapes.cylinder(5, 50, 0x4ebed7, 100, 2)
+    shapes.cylinder(2, 50, 0x4ebed7, 100, 5)
 })
+shapes.cylinder(5, 50, 0x4ebed7, 100, 2)
 ```
 
 
 ## Step 12
 Move the spindle out of the way.  
 
-Use the``||Operators:move||`` block around the new ``||Shapes:cylinder||``. 
+Use the ``||Operators:placeOnGround||`` block and ``||Operators:move||`` block around the new ``||Shapes:cylinder||``. 
 
-Set the X value to 50 and the Z value to 20.
+Set the X value to 50mm.
 
 ```blocks
-operators.placeOnGround(function () {
-    operators.subtractShapes(function () {
+operators.subtractShapes(function () {
+    operators.placeOnGround(function () {
         operators.addShapes(function () {
             operators.subtractShapes(function () {
             shapes.cylinder(40, 10)
@@ -243,15 +243,17 @@ operators.placeOnGround(function () {
             }
             shapes.cylinder(7, 10)
         })
-        shapes.cylinder(2, 50, 0x4ebed7, 100, 5)
     })
+    shapes.cylinder(2, 50, 0x4ebed7, 100, 5)
+})
+operators.placeOnGround(function () {
     operators.move(50, Axis.X, function () {
         shapes.cylinder(5, 50, 0x4ebed7, 100, 2)
     })
 })
 ```
 
-#Step 13
+## Step 13
 Thats it! 
 
 You can conveniently upload your print directly to BuildBee for printing to your 3D printer, or download the STL file.  

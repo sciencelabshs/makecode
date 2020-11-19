@@ -53,7 +53,7 @@
   "operators.intersectShapes|block": "intersect shapes",
   "operators.linearExtrude|block": "linear extrude 2d shape to height: $height | twist: $twist | slices: $slices",
   "operators.move|block": "move $mm mm $direction=main_axisPicker",
-  "operators.placeOnGround|block": "align to print bed",
+  "operators.placeOnGround|block": "place on ground",
   "operators.rotateExtrude|block": "rotate extrude 2d shape from angle $startAngle | to $stopAngle | faces $faces",
   "operators.rotateShapes|block": "rotate shapes x°: $x|  y°: $y | z°: $z",
   "operators.scaleShapes|block": "scale shapes x: $x|  y: $y |  z: $z",

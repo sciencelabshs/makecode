@@ -8,7 +8,7 @@ Learn to stack shapes around by making a boardgame house.
 ![Make a heart shape](/docs/static/examples/boardgame-house/project-image.png)
 
 ## Step 1 @fullscreen
-Add a ``||Operators:stackShapes||`` in the ``||loops:placeOnGround||`` block.  Shapes placed inside this block will stack on top of one another.
+Add a ``||Operators:placeOnGround||`` block and put a ``||Operators:stackShapes||`` inside.  Shapes placed inside this block will stack on top of one another.
 
 
 ```blocks
@@ -51,8 +51,8 @@ operators.placeOnGround(function () {
 
 Let's make a chimney!
 
-Add another the ``||Shapes:cube||``.
-Set the size to width: 2 depth: 2 height: 20.  Dont forget to make the block tall enough so it pokes through the roof!
+Add another ``||Operators:placeOnGround||`` block and put a ``||Shapes:cube||`` inside.
+Set the cube size to width: 2 depth: 2 height: 15.  Dont forget to make the block tall enough so it pokes through the roof!
 
 ```blocks
 operators.placeOnGround(function () {
@@ -60,9 +60,9 @@ operators.placeOnGround(function () {
         shapes.cube(10, 10, 10)
         shapes.triangleRoof(10, 5, 10)
     })
-
-
-    shapes.cube(2, 2, 20)
+})
+operators.placeOnGround(function () {
+    shapes.cube(2, 2, 15)
 })
 ```
 
@@ -76,8 +76,10 @@ operators.placeOnGround(function () {
         shapes.cube(10, 10, 10)
         shapes.triangleRoof(10, 5, 10)
     })
+})
+operators.placeOnGround(function () {
     operators.move(2, Axis.X, function () {
-        shapes.cube(2, 2, 20)
+        shapes.cube(2, 2, 15)
     })
 })
 ```

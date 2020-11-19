@@ -8,7 +8,7 @@ Learn how to add and subtract shapes to make an impossible box.
 
 ## Step 1 @fullscreen
 
-Place the ``||Shapes:cube||`` block in the ``||Operators:placeOnGround||`` block.
+Add a ``||Operators:placeOnGround||``  and place a ``||Shapes:cube||`` block inside.
 
 Set the width to 50, depth to 50 and height to 50
 

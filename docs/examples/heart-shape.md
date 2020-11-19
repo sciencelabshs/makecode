@@ -8,6 +8,14 @@ Learn to add and move shapes around by making a heart.
 
 ## Step 1 @fullscreen
 
+Add a ``||operators:placeOnGround||`` block. This will keep all the blocks we add later laying nice and flat. 
+
+```blocks
+operators.placeOnGround(function () {})
+```
+
+## Step 2
+
 Place the ``||Shapes:cube||`` block in the ``||operators:placeOnGround||`` block.
 
 ```blocks
@@ -16,7 +24,7 @@ operators.placeOnGround(function () {
 })
 ```
 
-## Step 2
+## Step 3
 
 Set the width to 20 and depth to 20 on the ``||Shapes:cube||`` block.
 
@@ -26,7 +34,7 @@ operators.placeOnGround(function () {
 })
 ```
 
-## Step 3
+## Step 4
 
 Add a ``||Shapes:cylinder||`` block below your cube.
 
@@ -37,7 +45,7 @@ operators.placeOnGround(function () {
 })
 ```
 
-## Step 4
+## Step 5
 
 Move the first ``||Shapes:cylinder||`` into the correct position by using the ``||Operators:move||`` block.  Move 10mm in the X direction.
 
@@ -50,7 +58,7 @@ operators.placeOnGround(function () {
 })
 ```
 
-## Step 5
+## Step 6
 
 Add a second cylinder using the ``||Shapes:cylinder||`` block.
 
@@ -65,7 +73,7 @@ operators.placeOnGround(function () {
 ```
 
 
-## Step 6
+## Step 7
 
 Move the second ``||Shapes:cylinder||`` into the correct position by using the ``||Operators:move||`` block.  Move 10mm in the Y direction.
 

@@ -5,7 +5,7 @@ Learn to loop making a tower!
 ## Step 1 @fullscreen
 Start building the base of the tower.  We will stack cylinders, so we need the stack shapes block.
 
-Add a ``||Operators:stackShapes||`` block to the ``||Operators:placeOnGround||`` block.  
+Add a ``||Operators:placeOnGround||`` block with a ``||Operators:stackShapes||`` block inside.  
 
 ```blocks
 operators.placeOnGround(function () {
@@ -22,6 +22,7 @@ Make a basic tower using cylinders.
 Add two ``||Shapes:cylinder||`` blocks to the ``||Operators:placeOnGround||`` block.  
 
 First cylinder - radius 10, height 30
+
 Second cylinder - radius 12, height 10
 
 ```blocks
@@ -38,7 +39,7 @@ Start to make the hole that will be cut out of the roof.
 
 Below the ``||Operators:stackShapes||`` block, add a ``||Operators:move||`` block.   ``||Operators:move||``  a new ``||Shapes:cylinder||`` block.
 
-Move the new cylinder up 40mm in Z axis.
+Move the new cylinder up 25mm in Z axis.
 
 ```blocks
 operators.placeOnGround(function () {
@@ -46,7 +47,7 @@ operators.placeOnGround(function () {
         shapes.cylinder(10, 30)
         shapes.cylinder(12, 10)
     })
-    operators.move(40, Axis.Z, function () {
+    operators.move(25, Axis.Z, function () {
         shapes.cylinder(10, 10)
     })
 })
@@ -62,7 +63,7 @@ operators.subtractShapes(function () {
             shapes.cylinder(10, 30)
             shapes.cylinder(12, 10)
         })
-        operators.move(40, Axis.Z, function () {
+        operators.move(25, Axis.Z, function () {
             shapes.cylinder(10, 10)
         })
     })
@@ -81,7 +82,7 @@ operators.subtractShapes(function () {
             shapes.cylinder(10, 30)
             shapes.cylinder(12, 10)
         })
-        operators.move(40, Axis.Z, function () {
+        operators.move(25, Axis.Z, function () {
             shapes.cylinder(10, 10)
             shapes.cube(4, 30, 10)
         })
@@ -91,7 +92,7 @@ operators.subtractShapes(function () {
 
 
 ## Step 6 @fullscreen
-Turn the cube 45 degrees by wrapping the ``||Shapes:cube||`` in a ``||Operators:turn||`` block.
+Turn the cube 45 degrees by wrapping the ``||Shapes:cube||`` in a ``||Operators:turn||`` block. Make sure the turn axis is set to Z.
 
 ```blocks
 operators.subtractShapes(function () {
@@ -100,7 +101,7 @@ operators.subtractShapes(function () {
             shapes.cylinder(10, 30)
             shapes.cylinder(12, 10)
         })
-        operators.move(40, Axis.Z, function () {
+        operators.move(25, Axis.Z, function () {
             shapes.cylinder(10, 10)
             operators.turn(45, RotateAxis.Z, function () {
                 shapes.cube(4, 30, 10)
@@ -126,7 +127,7 @@ operators.subtractShapes(function () {
             shapes.cylinder(10, 30)
             shapes.cylinder(12, 10)
         })
-        operators.move(40, Axis.Z, function () {
+        operators.move(25, Axis.Z, function () {
             shapes.cylinder(10, 10)
             for (let index = 0; index <= 8; index++) {
                 operators.turn(index * (360 / 8), RotateAxis.Z, function () {
@@ -154,7 +155,7 @@ operators.subtractShapes(function () {
             shapes.cylinder(10, 30)
             shapes.cylinder(12, 10)
         })
-        operators.move(40, Axis.Z, function () {
+        operators.move(25, Axis.Z, function () {
             shapes.cylinder(10, 10)
             for (let index = 0; index <= 7; index++) {
                 operators.turn(index * 45, RotateAxis.Z, function () {

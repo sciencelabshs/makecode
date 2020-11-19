@@ -5,48 +5,54 @@ Make a chess piece in code!
 
 
 ## Step 1 @fullscreen
-Add a ``||Shapes:cone||`` in the ``||Operators:alignToPrintBed||`` block.  The cone will appear on top of the print bed area.
+Add a ``||Operators:placeOnGround||`` block  and place a ``||Shapes:cone||`` in it.  The cone will appear on top of the print bed area. Set the cone height to 20mm.
 
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     shapes.cone(10, 20)
 })
 ```
 
 
 ## Step 2 @fullscreen
-Add a ``||Shapes:sphere||`` below the ``||Shapes:cone||`` block. Set the radius to 5 mm. The sphere will be in the wrong spot but we'll move it next!
+Add another ``||Operators:placeOnGround||`` block  below the first one. This time add a ``||Shapes:donut||`` block. Set the donut thickness to 3mm.
 
 ```blocks
-operators.alignToPrintBed(function () {
-     shapes.cone(10, 20)
-     shapes.sphere(5)
+operators.placeOnGround(function () {
+    shapes.cone(10, 20)
+})
+operators.placeOnGround(function () {
+    shapes.donut(3, 10)
 })
 ```
 
 ## Step 3 @fullscreen
-Add the  ``||Operators:move||`` around  the ``||Shapes:sphere||`` block.    Move in the Z axis by 18mm.
+Add a ``||Shapes:sphere||`` block to the bottom of your code and set the radius to 5mm.
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     shapes.cone(10, 20)
-    operators.move(18, Axis.Z, function () {
-        shapes.sphere(5)
-    })
 })
+operators.placeOnGround(function () {
+    shapes.donut(3, 10)
+})
+shapes.sphere(5)
 ```
 
 ## Step 4 @fullscreen
-Add a  ``||Shapes:donut||`` to the bottom of your project.    Set the thickness to 3 and the radius to 10.
+Add an ``||operators.move||`` block around the sphere. Set the move block to 20mm in the z direction
 
 ```blocks
-operators.alignToPrintBed(function () {
+operators.placeOnGround(function () {
     shapes.cone(10, 20)
-    operators.move(18, Axis.Z, function () {
-        shapes.sphere(5)
-    })
+})
+operators.placeOnGround(function () {
     shapes.donut(3, 10)
 })
+operators.move(20, Axis.Z, function () {
+    shapes.sphere(5)
+})
+
 ```
 
