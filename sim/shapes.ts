@@ -244,7 +244,7 @@ namespace pxsim.shapes {
     //% text.defl="BuildBee"
     //% height.defl=4
     //% group="3D Shapes"
-    //% expandableArgumentMode="enabled"
+    //% expandableArgumentMode="toggle"
     /**
      * Add text
      * @param text The text to add

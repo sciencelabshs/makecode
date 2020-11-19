@@ -18,7 +18,7 @@ namespace pxsim.parameters {
     //% characterLimit.defl=0
     //% characterLimit.min=0
     //% group="Text"
-    //% expandableArgumentMode="enabled"
+    //% expandableArgumentMode="toggle"
     /**
      * Add text input parameter
      * @param parameterName The label for text input field
@@ -49,7 +49,7 @@ namespace pxsim.parameters {
     //% parameterName.defl="numberInput"
     //% defaultValue.defl="0"
     //% group="Numbers"
-    //% expandableArgumentMode="enabled"
+    //% expandableArgumentMode="toggle"
     /**
      * Add text input parameter
      * @param parameterName The label for number input field
@@ -81,7 +81,7 @@ namespace pxsim.parameters {
     //% maxValue.defl="10"
     //% stepValue.defl="1"
     //% group="Numbers"
-    //% expandableArgumentMode="enabled"
+    //% expandableArgumentMode="toggle"
     /**
      * Add text input parameter
      * @param parameterName The label for slider
