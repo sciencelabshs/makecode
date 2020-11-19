@@ -20,7 +20,7 @@ namespace shapes {
  * Add color to your project
  */
 //% color=#d74ebe icon="\uf1fc" weight=90
-//% groups='[]'
+//% groups='["Colors", "Converters"]'
 namespace colors {
 
 
@@ -53,7 +53,7 @@ namespace extraMath {
 /**
  * Parameters for making customizable objects
  */
-//% groups=["Text", "Numbers"]
+//% groups=["Numbers", "Text"]
 //% color=#d74ebe weight=80 icon="\uf1de" weight=10
 namespace parameters {
 

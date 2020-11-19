@@ -329,7 +329,7 @@ declare namespace shapes {
     //% text.defl="BuildBee"
     //% height.defl=4
     //% group="3D Shapes"
-    //% expandableArgumentMode="enabled"
+    //% expandableArgumentMode="toggle"
     /**
      * Add text
      * @param text The text to add
@@ -803,7 +803,7 @@ declare namespace parameters {
     //% characterLimit.defl=0
     //% characterLimit.min=0
     //% group="Text"
-    //% expandableArgumentMode="enabled"
+    //% expandableArgumentMode="toggle"
     /**
      * Add text input parameter
      * @param parameterName The label for text input field
@@ -818,7 +818,7 @@ declare namespace parameters {
     //% parameterName.defl="numberInput"
     //% defaultValue.defl="0"
     //% group="Numbers"
-    //% expandableArgumentMode="enabled"
+    //% expandableArgumentMode="toggle"
     /**
      * Add text input parameter
      * @param parameterName The label for number input field
@@ -835,7 +835,7 @@ declare namespace parameters {
     //% maxValue.defl="10"
     //% stepValue.defl="1"
     //% group="Numbers"
-    //% expandableArgumentMode="enabled"
+    //% expandableArgumentMode="toggle"
     /**
      * Add text input parameter
      * @param parameterName The label for slider
@@ -849,10 +849,19 @@ declare namespace parameters {
 
 }
 declare namespace colors {
+    //% blockId=color_block block="color $color=colorsChooseColor" 
+    //% group="Colors"
+    //% topblock=false
+    //% handlerStatement=true
+    //% weight=80
+    //% shim=colors::colorAsync promise
+    function color(color: number, body: () => void): void;
+
     //% blockId=randomColor block="random color"
     //% inlineInputMode=inline
     //% group="Colors"
     //% advanced=false
+    //% weight=90
     //% shim=colors::randomColor
     function randomColor(): number;
 
@@ -862,8 +871,86 @@ declare namespace colors {
     //% colorWheelDegrees.defl=20
     //% group="Colors"
     //% advanced=false
+    /**
+     * Use rainbow color in order to go through all the colors of the rainbow in order.
+     * Very handy to use inside of a for loop.
+     * @param rainbowColor - what index of the rainbow to use.
+     * @param colorWheelDegrees - how many degrees to skip across the color wheel.  
+     * By default this is set to 20 degrees, so the hues picked will be every 20 degrees on the color wheel.
+     */
+    //% weight=100
     //% shim=colors::rainbowColor
     function rainbowColor(rainbowColor: number, colorWheelDegrees?: number): number;
+
+    /**
+     * Kelvin is a temperature unit which is often used as a measure of the colour temperature of light sources. 
+     * Black bodies at temperatures below about 4000 K appear reddish, whereas those above about 7500 K appear bluish. 
+     * @param kelvinDegrees 
+     */
+    //% blockId=colorTemperature block="color temperature: $kelvinDegrees ° Kelvin"
+    //% inlineInputMode=inline
+    //% kelvinDegrees.defl=3500
+    //% kelvinDegrees.min=0
+    //% kelvinDegrees.max=10000
+    //% group="Colors"
+    //% advanced=false
+    //% shim=colors::colorTemperature
+    function colorTemperature(kelvinDegrees: number): number;
+
+    /**
+     * Color scale helps you go between two colors incrementally. 
+     * Pick a starting color and an ending color, then choose how many colors you want in your scale.
+     * Use the colorIndex to choose which color to use. 
+     * 
+     * The idea is you can go fromColor red toColor purple, and say there are 6 colors you will use.
+     * You can then draw each shape with a different color index to get a variation in colors along the scale. 
+     * 
+     * @param fromColor the starting color in your scale
+     * @param toColor the ending color in your scale
+     * @param colorIndex which color you want 
+     * @param numColors how many total colors there are in your scale
+     */
+    //% blockId=colorScale block="color scale from: $fromColor=colorsChooseColor to: $toColor=colorsChooseColor colorIndex: $colorIndex || numColors: $numColors"
+    //% inlineInputMode=inline
+    //% fromColor.defl=0x4ebed7
+    //% toColor.defl=0x6B3FA0
+    //% colorIndex.defl=0
+    //% numColors.defl=6
+    //% expandableArgumentMode="enabled" 
+    //% group="Colors"
+    //% advanced=false
+    //% shim=colors::colorScale
+    function colorScale(fromColor: number, toColor: number, colorIndex: number, numColors?: number): number;
+
+    //% blockId=convertFromHex block="convert from hex: $hex"
+    //% inlineInputMode=inline
+    //% hex.defl="#ED0A3F"
+    //% group="Converters"
+    //% advanced=false
+    //% shim=colors::convertFromHex
+    function convertFromHex(hex: string): number;
+
+    //% blockId=convertFromRGB block="convert from red: $red green: $green blue $blue (RGB)"
+    //% inlineInputMode=inline
+    //% red.defl=0xFF
+    //% green.defl=0x00
+    //% blue.defl=0x00
+    //% group="Converters"
+    //% advanced=false
+    //% shim=colors::convertFromRGB
+    function convertFromRGB(red: number, green: number, blue: number): number;
+
+    //% blockId=convertFromHSL block="convert from hue: $hue saturation: $saturation lightness $lightness (HSL)"
+    //% inlineInputMode=inline
+    //% hue.defl=0
+    //% hue.min=0
+    //% hue.max=360
+    //% saturation.defl=0.5
+    //% lightness.defl=0.5
+    //% group="Converters"
+    //% advanced=false
+    //% shim=colors::convertFromHSL
+    function convertFromHSL(hue: number, saturation: number, lightness: number): number;
 
     //% blockId=colorsChooseColor block="%value"
     //% blockHidden=true
@@ -873,13 +960,6 @@ declare namespace colors {
     //% value.defl="#4ebed7"
     //% shim=colors::choose
     function choose(value: number): number;
-
-    //% blockId=color_block block="color $color=colorsChooseColor" 
-    //% group="Colors"
-    //% topblock=false
-    //% handlerStatement=true
-    //% shim=colors::colorAsync promise
-    function color(color: number, body: () => void): void;
 
 }
 

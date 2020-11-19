@@ -28,10 +28,31 @@ namespace pxsim.colors {
     }
 
 
+
+    //% blockId=color_block block="color $color=colorsChooseColor" 
+    //% group="Colors"
+    //% topblock=false
+    //% handlerStatement=true
+    //% weight=80
+    export function colorAsync(color: number, body: RefAction): Promise<void> {
+
+        let statementCode = `union([<CHILDREN>])`
+        if (color !== undefined && color !== 0x4ebed7) {
+            const red = (color & 0xFF0000) >> 16;
+            const green = (color & 0x00FF00) >> 8;
+            const blue = (color & 0x0000FF);
+
+            statementCode = `color([${red / 255}, ${green / 255}, ${blue / 255}], ${statementCode})`
+        }
+        return _makeBlock(statementCode, body);
+
+
+    }
     //% blockId=randomColor block="random color"
     //% inlineInputMode=inline
     //% group="Colors"
     //% advanced=false
+    //% weight=90
     export function randomColor(): number {
         const randomLightness = .3 + Math.random() *.5
         const randomHue = Math.round(Math.random()*360)
@@ -46,6 +67,14 @@ namespace pxsim.colors {
     //% colorWheelDegrees.defl=20
     //% group="Colors"
     //% advanced=false
+    /**
+     * Use rainbow color in order to go through all the colors of the rainbow in order.
+     * Very handy to use inside of a for loop.
+     * @param rainbowColor - what index of the rainbow to use.
+     * @param colorWheelDegrees - how many degrees to skip across the color wheel.  
+     * By default this is set to 20 degrees, so the hues picked will be every 20 degrees on the color wheel.
+     */
+    //% weight=100
     export function rainbowColor(rainbowColor: number, colorWheelDegrees?: number): number {
         const colorWheelIncr = colorWheelDegrees || 20
  
@@ -54,6 +83,98 @@ namespace pxsim.colors {
     }
 
 
+     /**
+     * Kelvin is a temperature unit which is often used as a measure of the colour temperature of light sources. 
+     * Black bodies at temperatures below about 4000 K appear reddish, whereas those above about 7500 K appear bluish. 
+     * @param kelvinDegrees 
+     */
+    //% blockId=colorTemperature block="color temperature: $kelvinDegrees ° Kelvin"
+    //% inlineInputMode=inline
+    //% kelvinDegrees.defl=3500
+    //% kelvinDegrees.min=0
+    //% kelvinDegrees.max=10000
+    //% group="Colors"
+    //% advanced=false
+    export function colorTemperature(kelvinDegrees: number): number {
+        return chroma.temperature(kelvinDegrees).num() as number
+    }
+
+    /**
+     * Color scale helps you go between two colors incrementally. 
+     * Pick a starting color and an ending color, then choose how many colors you want in your scale.
+     * Use the colorIndex to choose which color to use. 
+     * 
+     * The idea is you can go fromColor red toColor purple, and say there are 6 colors you will use.
+     * You can then draw each shape with a different color index to get a variation in colors along the scale. 
+     * 
+     * @param fromColor the starting color in your scale
+     * @param toColor the ending color in your scale
+     * @param colorIndex which color you want 
+     * @param numColors how many total colors there are in your scale
+     */
+    //% blockId=colorScale block="color scale from: $fromColor=colorsChooseColor to: $toColor=colorsChooseColor colorIndex: $colorIndex || numColors: $numColors"
+    //% inlineInputMode=inline
+    //% fromColor.defl=0x4ebed7
+    //% toColor.defl=0x6B3FA0
+    //% colorIndex.defl=0
+    //% numColors.defl=6
+    //% expandableArgumentMode="enabled" 
+    //% group="Colors"
+    //% advanced=false
+    export function colorScale(fromColor: number, toColor: number,  colorIndex: number, numColors?: number): number {
+      
+        let colorCount = isNaN(numColors) ? 6 : Math.max(2, Math.floor(numColors))
+        let colorIdx = isNaN(colorIndex) ? 0 : colorIndex % colorCount
+       
+        const scaleOfColors = chroma.scale([chroma(fromColor), chroma(toColor)]).mode('lch').colors(colorCount + 1)
+        return chroma(scaleOfColors[colorIdx +1 ]).num()
+    }
+
+
+
+    //% blockId=convertFromHex block="convert from hex: $hex"
+    //% inlineInputMode=inline
+    //% hex.defl="#ED0A3F"
+    //% group="Converters"
+    
+    
+    //% advanced=false
+    export function convertFromHex(hex: string): number {
+        return chroma(hex).num() as number
+    }
+
+
+    //% blockId=convertFromRGB block="convert from red: $red green: $green blue $blue (RGB)"
+    //% inlineInputMode=inline
+    //% red.defl=0xFF
+    //% green.defl=0x00
+    //% blue.defl=0x00
+    //% group="Converters"
+    //% advanced=false
+    export function convertFromRGB(red: number, green: number, blue: number): number {
+        const boundedRed = (isNaN(red)) ? 0 : Math.max(0, Math.min(red, 255))
+        const boundedGreen= (isNaN(green)) ? 0 : Math.max(0, Math.min(green, 255))
+        const boundedBlue= (isNaN(blue)) ?  0 : Math.max(0, Math.min(blue, 255))
+
+        return chroma.rgb(boundedRed, boundedGreen, boundedBlue).num() as number
+    }
+
+    //% blockId=convertFromHSL block="convert from hue: $hue saturation: $saturation lightness $lightness (HSL)"
+    //% inlineInputMode=inline
+    //% hue.defl=0
+    //% hue.min=0
+    //% hue.max=360
+    //% saturation.defl=0.5
+    //% lightness.defl=0.5
+    //% group="Converters"
+    //% advanced=false
+    export function convertFromHSL(hue: number, saturation: number, lightness: number): number {
+        const boundedSat = (isNaN(saturation)) ? 0 : Math.max(0, Math.min(saturation, 1))
+        const boundedLight= (isNaN(lightness)) ? 0 : Math.max(0, Math.min(lightness, 1))
+        const boundedHue = (isNaN(hue)) ? 0 : hue % 360
+
+        return chroma.hsl(boundedHue, boundedSat, boundedLight).num() as number
+    }
 
        
     //% blockId=colorsChooseColor block="%value"
@@ -72,25 +193,5 @@ namespace pxsim.colors {
 
 
 
-    //% blockId=color_block block="color $color=colorsChooseColor" 
-    //% group="Colors"
-    //% topblock=false
-    //% handlerStatement=true
-    export function colorAsync(color: number, body: RefAction): Promise<void> {
-
-        let statementCode = `union([<CHILDREN>])`
-        if (color !== undefined && color !== 0x4ebed7) {
-            const red = (color & 0xFF0000) >> 16;
-            const green = (color & 0x00FF00) >> 8;
-            const blue = (color & 0x0000FF);
-
-            statementCode = `color([${red / 255}, ${green / 255}, ${blue / 255}], ${statementCode})`
-        }
-        return _makeBlock(statementCode, body);
-
-
-
-
-    }
 
 }
