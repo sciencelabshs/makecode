@@ -11,6 +11,7 @@ BuildBee MakeCode would like to acknowledge the open source contributions that m
 * Microsoft MakeCode Program Experience Toolkit
 * OpenJSCad
 * jscad-utils
+* chroma-js
 
 Thank you to the team at Microsoft who have been extremely helpful in the development of this application.
 
