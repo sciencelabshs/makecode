@@ -21,6 +21,13 @@ Here are some cool tutorials to get you started with your @boardname@!
   "imageUrl": "/static/examples/looping-towers/project-image.png?v=DOCVER-1"
 },
 {
+  "name": "Random Coasters",
+  "description": "Make some coasters that are randomly generated!",
+  "url":"/examples/random-coaster",
+  "cardType": "tutorial",
+  "imageUrl": "/static/examples/random-coaster/project-image.png?v=DOCVER-1"
+},
+{
   "name": "Spinning Top",
   "description": "Learn to use loops and make a spinning top!",
   "url":"/examples/top",

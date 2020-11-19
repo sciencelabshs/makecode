@@ -866,7 +866,7 @@ function sliceParams(orientation, radius, bounds) {
      * @param body List of shapes to intersect
      */
     export function intersectShapesAsync(body: RefAction): Promise<void> {
-        return _makeBlock("intersect( <CHILDREN> )", body);
+        return _makeBlock("intersection( <CHILDREN> )", body);
 
 
     }
