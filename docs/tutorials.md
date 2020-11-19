@@ -26,6 +26,13 @@ Here are some cool tutorials to get you started with your @boardname@!
   "url":"/examples/top",
   "cardType": "tutorial",
   "imageUrl": "/static/examples/top/project-image.png?v=DOCVER-1"
+},
+{
+  "name": "Snowflake Ornament",
+  "description": "Make a festive snowflake ornament and learn how working in different rotations can be useful!",
+  "url":"/examples/snowflake-ornament",
+  "cardType": "tutorial",
+  "imageUrl": "/static/examples/snowflake-ornament/project-image.png?v=DOCVER-1"
 }
 ]
 ```
