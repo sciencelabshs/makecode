@@ -30,17 +30,33 @@ namespace pxsim.shapes {
         return edgeStyle
     }
 
+    
+    //% blockId=chooseColor block="%value"
+    //% blockHidden=true
+    //% shim=TD_ID colorSecondary="#FFFFFF"
+    //% value.fieldEditor="colornumber" value.fieldOptions.decompileLiterals=true
+    //% value.fieldOptions.colours='["#ED0A3F","#ED0A3F","#C32148","#FD0E35","#C62D42","#CC474B","#CC3336","#E12C2C","#D92121","#B94E48","#FF5349","#FE4C40","#FE6F5E","#B33B24","#CC553D","#E6735C","#FF9980","#E58E73","#FF7F49","#FF681F","#FF8833","#FFB97B","#ECB176","#E77200","#FFAE42","#F2BA49","#FBE7B2","#F2C649","#F8D568","#FCD667","#FED85D","#FBE870","#F1E788","#FFEB00","#B5B35C","#ECEBBD","#FAFA37","#FFFF99","#FFFF9F","#D9E650","#ACBF60","#AFE313","#BEE64B","#C5E17A","#5E8C31","#7BA05B","#9DE093","#63B76C","#4D8C57","#3AA655","#6CA67C","#5FA777","#93DFB8","#33CC99","#1AB385","#29AB87","#00CC99","#00755E","#8DD9CC","#01786F","#30BFBF","#00CCCC","#008080","#8FD8D8","#95E0E8","#6CDAE7","#2D383A","#76D7EA","#7ED4E6","#0095B7","#009DC4","#02A4D3","#47ABCC","#4997D0","#339ACC","#93CCEA","#2887C8","#00468C","#0066CC","#1560BD","#0066FF","#A9B2C3","#C3CDE6","#4570E6","#7A89B8","#4F69C6","#8D90A1","#8C90C8","#7070CC","#9999CC","#ACACE6","#766EC8","#6456B7","#3F26BF","#8B72BE","#652DC1","#6B3FA0","#8359A3","#8F47B3","#C9A0DC","#BF8FCC","#803790","#733380","#D6AEDD","#C154C1","#FC74FD","#732E6C","#E667CE","#E29CD2","#8E3179","#D96CBE","#EBB0D7","#C8509B","#BB3385","#D982B5","#A63A79","#A50B5E","#614051","#F653A6","#DA3287","#FF3399","#FBAED2","#FFB7D5","#FFA6C9","#F7468A","#E30B5C","#FDD7E4","#E62E6B","#DB5079","#FC80A5","#F091A9","#FF91A4","#A55353","#CA3435","#FEBAAD","#F7A38E","#E97451","#AF593E","#9E5B40","#87421F","#926F5B","#DEA681","#D27D46","#664228","#D99A6C","#EDC9AF","#FFCBA4","#805533","#FDD5B1","#EED9C4","#665233","#837050","#E6BC5C","#D9D6CF","#92926E","#E6BE8A","#C9C0BB","#DA8A67","#C88A65","#000000","#736A62","#8B8680","#C8C8CD", "#4ebed7"]'
+    //% value.defl="#4ebed7"
+    export function chooseColor(value: number): number {
+        // For some reason I can't hide this block from writing to javascript.
+        // It should have been a shadow block.
+        // So I've made it part of the api.  :/
+        return value;
+    }
+
     //% blockId=colorNumberPicker2 block="%value"
     //% blockHidden=true
     //% shim=TD_ID colorSecondary="#FFFFFF"
     //% value.fieldEditor="colornumber" value.fieldOptions.decompileLiterals=true
-    //% value.fieldOptions.colours='["#4ebed7", "#ffffff","#001F3F","#0074D9", "#7FDBFF", "#39CCCC", "#3D9970", "#2ECC40", "#01FF70", "#FFDC00", "#FF851B", "#FF4136", "#F012BE", "#B10DC9", "#85144B", "#FFFFFF", "#AAAAAA", "#DDDDDD",  "#111111", "#663300", "#cc6600", "#ffcc99", "#fff2e6"]'
-    //% value.defl='#ff0000'
-    export function __colorNumberPicker2(value: number) {
-        return value;
+    //% value.fieldOptions.colours='["#ED0A3F","#ED0A3F","#C32148","#FD0E35","#C62D42","#CC474B","#CC3336","#E12C2C","#D92121","#B94E48","#FF5349","#FE4C40","#FE6F5E","#B33B24","#CC553D","#E6735C","#FF9980","#E58E73","#FF7F49","#FF681F","#FF8833","#FFB97B","#ECB176","#E77200","#FFAE42","#F2BA49","#FBE7B2","#F2C649","#F8D568","#FCD667","#FED85D","#FBE870","#F1E788","#FFEB00","#B5B35C","#ECEBBD","#FAFA37","#FFFF99","#FFFF9F","#D9E650","#ACBF60","#AFE313","#BEE64B","#C5E17A","#5E8C31","#7BA05B","#9DE093","#63B76C","#4D8C57","#3AA655","#6CA67C","#5FA777","#93DFB8","#33CC99","#1AB385","#29AB87","#00CC99","#00755E","#8DD9CC","#01786F","#30BFBF","#00CCCC","#008080","#8FD8D8","#95E0E8","#6CDAE7","#2D383A","#76D7EA","#7ED4E6","#0095B7","#009DC4","#02A4D3","#47ABCC","#4997D0","#339ACC","#93CCEA","#2887C8","#00468C","#0066CC","#1560BD","#0066FF","#A9B2C3","#C3CDE6","#4570E6","#7A89B8","#4F69C6","#8D90A1","#8C90C8","#7070CC","#9999CC","#ACACE6","#766EC8","#6456B7","#3F26BF","#8B72BE","#652DC1","#6B3FA0","#8359A3","#8F47B3","#C9A0DC","#BF8FCC","#803790","#733380","#D6AEDD","#C154C1","#FC74FD","#732E6C","#E667CE","#E29CD2","#8E3179","#D96CBE","#EBB0D7","#C8509B","#BB3385","#D982B5","#A63A79","#A50B5E","#614051","#F653A6","#DA3287","#FF3399","#FBAED2","#FFB7D5","#FFA6C9","#F7468A","#E30B5C","#FDD7E4","#E62E6B","#DB5079","#FC80A5","#F091A9","#FF91A4","#A55353","#CA3435","#FEBAAD","#F7A38E","#E97451","#AF593E","#9E5B40","#87421F","#926F5B","#DEA681","#D27D46","#664228","#D99A6C","#EDC9AF","#FFCBA4","#805533","#FDD5B1","#EED9C4","#665233","#837050","#E6BC5C","#D9D6CF","#92926E","#E6BE8A","#C9C0BB","#DA8A67","#C88A65","#000000","#736A62","#8B8680","#C8C8CD", "#4ebed7"]'
+    //% value.defl="#4ebed7"
+    export function __colorNumberPicker2(value: number): number {
+        // deprecated keep around for old serialization
+        return value
     }
+   
 
-    //% block="cube - width $width|depth $depth|height $height||color $color=colorNumberPicker2"
+    //% block="cube - width $width|depth $depth|height $height||color $color=chooseColor"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
@@ -63,7 +79,7 @@ namespace pxsim.shapes {
     }
 
 
-    //% block="sphere - radius $radius || color $color=colorNumberPicker2|type $type|faces $faces"
+    //% block="sphere - radius $radius || color $color=chooseColor|type $type|faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=20
     //% faces.defl=60
@@ -89,7 +105,7 @@ namespace pxsim.shapes {
     }
 
 
-    //% block="cylinder - radius $radius|height $height||$color=colorNumberPicker2|faces $faces|radius2 $radius2"
+    //% block="cylinder - radius $radius|height $height||$color=chooseColor|faces $faces|radius2 $radius2"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
@@ -113,7 +129,7 @@ namespace pxsim.shapes {
                                         h: ${height}})`, color);
     }
 
-    //% block="donut - thickness $thickness|radius $radius||$color=colorNumberPicker2|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
+    //% block="donut - thickness $thickness|radius $radius||$color=chooseColor|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
     //% thickness.defl=4 thickness.min=1
     //% radius.defl=10
@@ -153,7 +169,7 @@ namespace pxsim.shapes {
     }
 
 
-    //% block="cone - radius $radius|height $height|| color $color=colorNumberPicker2| faces $faces"
+    //% block="cone - radius $radius|height $height|| color $color=chooseColor| faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
@@ -219,7 +235,7 @@ namespace pxsim.shapes {
 
 
 
-    //% block="text - text $text | fontSize $fontSize | height $height ||color $color=colorNumberPicker2 | line width $lineWidth |  letterSpacing $letterSpacing | lineSpacing $lineSpacing"
+    //% block="text - text $text | fontSize $fontSize | height $height ||color $color=chooseColor | line width $lineWidth |  letterSpacing $letterSpacing | lineSpacing $lineSpacing"
     //% inlineInputMode=inline
     //% lineWidth.defl=4
     //% fontSize.defl=21,
@@ -256,7 +272,7 @@ namespace pxsim.shapes {
 
 
 
-    //% block="roof - width $width|depth $depth|height $height||color $color=colorNumberPicker2"
+    //% block="roof - width $width|depth $depth|height $height||color $color=chooseColor"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
@@ -287,7 +303,7 @@ namespace pxsim.shapes {
 
 
 
-    //% block="ramp - width $width|depth $depth|height $height||color $color=colorNumberPicker2"
+    //% block="ramp - width $width|depth $depth|height $height||color $color=chooseColor"
     //% inlineInputMode=inline
     //% width.defl=10
     //% depth.defl=10
@@ -332,7 +348,7 @@ namespace pxsim.shapes {
     `
 
 
-    //% block="polygon - sides $sides|radius $radius|height $height||color $color=colorNumberPicker2"
+    //% block="polygon - sides $sides|radius $radius|height $height||color $color=chooseColor"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% depth.defl=10
@@ -520,7 +536,7 @@ namespace pxsim.shapes {
     }
 
     
-    //% blockId=polyhedra block="polyhedron type: $polyhedron=main_polyhedraPicker with radius: $radius mm ||color $color=colorNumberPicker2" 
+    //% blockId=polyhedra block="polyhedron type: $polyhedron=main_polyhedraPicker with radius: $radius mm ||color $color=chooseColor" 
     //% topblock=false
     //% handlerStatement=true
     //% radius.defl=5
