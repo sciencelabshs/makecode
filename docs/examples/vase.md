@@ -1,48 +1,87 @@
 # Rainbow Vase
 
 ## Step 1 @unplugged
-We are going to make an awesome rainbow vase.
 
-Our vase will be made out of a tower of polygons that change in size. 
+Lets learn how to make a rainbow vase making app!
 
-## Step 2 @fullscreen
+![Parametric vase](/docs/static/examples/vase/project-image.png?v=DOCVER-1)
 
-Let's start by adding a ``||Loops:for||`` block. Set it to go to 27.
 
-Then add a ``||Shapes.polygon||`` block and set the sides to 7, the height to 10 and the radius to 20 ``||Math:+||`` ``||Variables:index||``.
+
+## Step X @fullscreen
+Add a ``||Shapes.polygon||`` block and set the sides to 7.
+
+```blocks
+    shapes.polygon3D(7, 10, 10)
+```
+
+
+## Step X @fullscreen
+Add a ``||Loops:for||`` block around the polygon, and set to go to 27.
 
 ```blocks
 for (let index = 0; index <= 27; index++) {
-    shapes.polygon3D(7, 20 + index, 10, shapes.__colorNumberPicker2(0x4ebed7))
+    shapes.polygon3D(7, 10, 10)
 }
 ```
 
-## Step X
-To make our vase increase in height we need to add an ``||Operators:move||`` block around the ``||Shapes.polygon||``.
 
-Set the direction to Z and the value to ``||Variables:index||`` ``||Math:X||`` 3.
+## Step X @fullscreen
+Add a ``||Shapes:move||`` block so that we can see all of the septagons piling up on top of one another.
+
+To do this, use the ``||Math:multiply||`` block in and move by ``||Variables:index||`` x 3.
 
 ```blocks
 for (let index = 0; index <= 27; index++) {
     operators.move(index * 3, Axis.Z, function () {
-        shapes.polygon3D(7, 20 + index, 10, shapes.__colorNumberPicker2(0x4ebed7))
+        shapes.polygon3D(7, 10, 10)
     })
 }
 ```
 
+## Step X @fullscreen
+Let's make it more vase like.
+
+Grow the polygons in size by growing the radius.  
+
+Grab out the ``||Math:+||`` block and use the ``||Variables:index||`` from the ``||Loops:for||`` block.  Set the radius to 20 + ``||Variables:index||``.
+
+```blocks
+for (let index = 0; index <= 27; index++) {
+    operators.move(index * 3, Axis.Z, function () {
+        shapes.polygon3D(7, index + 20, 10)
+    })
+}
+```
+
+
 ## Step X
+Add a twist (1 of 2)
+
 Let's add a twist to the vase. To let us control the twist easily we can add a variable. 
 
 Go to Variables and click "Make a variable". Call it spin. Now drag the ``||Variables:set spin||`` block to the top of the code and set it to 10.
 
-Finally, wrap the ``||Shapes:polygon||`` block with a ``||Operators:turn||`` block. Set the turn axis to Z and the value to ``||Variables:index||`` ``||Math:X||`` ``||Variables:spin||``.
+
+```blocks
+let spin = 10
+for (let index = 0; index <= 27; index++) {
+    operators.move(index * 3, Axis.Z, function () {
+        shapes.polygon3D(7, index + 20, 10)
+    })
+}
+```
+## Step X
+Add a twist (2 of 2)
+
+Wrap the ``||Shapes:polygon||`` block with a ``||Operators:turn||`` block. Set the turn axis to Z and the value to ``||Variables:index||`` ``||Math:X||`` ``||Variables:spin||``.
 
 ```blocks
 let spin = 10
 for (let index = 0; index <= 27; index++) {
     operators.move(index * 3, Axis.Z, function () {
         operators.turn(index * spin, RotateAxis.Z, function () {
-            shapes.polygon3D(7, 20 + index, 10, shapes.__colorNumberPicker2(0x4ebed7))
+            shapes.polygon3D(7, 20 + index, 10, shapes.chooseColor(0x4ebed7))
         })
     })
 }
@@ -59,7 +98,7 @@ for (let index = 0; index <= 27; index++) {
     operators.move(index * 3, Axis.Z, function () {
         operators.turn(index * spin, RotateAxis.Z, function () {
             operators.styleEdges(EdgeStyle.Chamfer, StyleEdgeDirection.Bottom, 10, function () {
-                shapes.polygon3D(7, 20 + index, 10, shapes.__colorNumberPicker2(0x4ebed7))
+                shapes.polygon3D(7, 20 + index, 10, shapes.chooseColor(0x4ebed7))
             })
         })
     })
@@ -80,7 +119,7 @@ for (let index = 0; index <= 27; index++) {
         operators.turn(index * spin, RotateAxis.Z, function () {
             colors.color(colors.rainbowColor(index), function () {
                 operators.styleEdges(EdgeStyle.Chamfer, StyleEdgeDirection.Bottom, 10, function () {
-                    shapes.polygon3D(7, 20 + index, 10, shapes.__colorNumberPicker2(0x4ebed7))
+                    shapes.polygon3D(7, 20 + index, 10, shapes.chooseColor(0x4ebed7))
                 })
             })
         })
@@ -101,7 +140,7 @@ operators.placeOnGround(function () {
                 operators.turn(index * spin, RotateAxis.Z, function () {
                     colors.color(colors.rainbowColor(index), function () {
                         operators.styleEdges(EdgeStyle.Chamfer, StyleEdgeDirection.Bottom, 10, function () {
-                            shapes.polygon3D(7, 20 + index, 10, shapes.__colorNumberPicker2(0x4ebed7))
+                            shapes.polygon3D(7, 20 + index, 10, shapes.chooseColor(0x4ebed7))
                         })
                     })
                 })
@@ -114,11 +153,9 @@ operators.placeOnGround(function () {
 ## Step X
 We can make the vase adjustable by adding a parameter. Add a ``||Parameters:range||`` block to the ``||Variables:set||`` block for spin. This will add a slider we can adjust.
 
-Click the + button a few times to set up the slider. Set the default to 10, the min to 0 and the max to 50.
+Click the + on the ``||Parameters:range||`` to expand it.
 
-You can now open the parameters menu by clicking the settings button at the bottom of the 3D view. Have a play with the slider, and don't forget to click the update button for your changes to take effect.
-
-If you go to 3D print this model, make sure you use Vase Mode so that it prints without a top!
+Set the default to 10, the min to 0 and the max to 50.
 
 ```blocks
 let spin = parameters.numberRangeParameter("spin", 10, 0, 360 / 7, 1)
@@ -130,7 +167,7 @@ operators.placeOnGround(function () {
                     operators.turn(index * spin, RotateAxis.Z, function () {
                         colors.color(colors.rainbowColor(index), function () {
                             operators.styleEdges(EdgeStyle.Chamfer, StyleEdgeDirection.Bottom, 10, function () {
-                                shapes.polygon3D(7, 20 + index, 10, shapes.__colorNumberPicker2(0x4ebed7))
+                                shapes.polygon3D(7, 20 + index, 10, shapes.chooseColor(0x4ebed7))
                             })
                         })
                     })
@@ -140,3 +177,13 @@ operators.placeOnGround(function () {
     })
 })
 ```
+
+## Step X 
+Done! 
+
+You can now open the parameters menu by clicking the settings button at the bottom of the 3D view. Have a play with the slider, and don't forget to click the update button for your changes to take effect.
+
+You can now share this as an app by clicking the 'Share' button at the top and sending to your friends! 
+
+Tip: When you 3D print this model, make sure you use *Vase Mode* so that it prints without a top!
+

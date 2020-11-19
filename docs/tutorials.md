@@ -42,8 +42,8 @@ Here are some cool tutorials to get you started with your @boardname@!
   "imageUrl": "/static/examples/snowflake-ornament/project-image.png?v=DOCVER-1"
 },
 {
-  "name": "Parametric Vase",
-  "description": "Make a customizable rainbow vase!",
+  "name": "Vase Maker App",
+  "description": "Learn to use parameters to create your own vase making app you can share with your friends!",
   "url":"/examples/vase",
   "cardType": "tutorial",
   "imageUrl": "/static/examples/vase/project-image.png?v=DOCVER-1"
