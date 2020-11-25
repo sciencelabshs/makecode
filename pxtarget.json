@@ -50,7 +50,7 @@
         "docsLogo": "./static/logo.square.white.svg",
         "portraitLogo": "./static/logo.square.white.svg",
         "footerLogo": "./static/logo.portrait.black.svg",
-        "cardLogo": "./static/icons/social-share.png",
+        "cardLogo": "https://makecode.buildbee.com/docs/static/icons/social-share.png",
         "appLogo": "./static/icons/app-icon.png",
         "thumbLogo": "./static/logo.portrait.white.svg",
         "homeUrl": "https://makecode.buildbee.com/",
