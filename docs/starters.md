@@ -8,6 +8,8 @@ Learn the basic blocks of BuildBee MakeCode!
 [{
   "name": "Heart Shape",
   "description": "Get started learning to build shapes by following this project. ",
+  "label": "New? Start Here!",
+  "labelClass": "teal ribbon large",
   "url":"/examples/heart-shape",
   "cardType": "tutorial",
   "imageUrl": "/static/examples/heart-shape/project-image.png?v=DOCVER-1"

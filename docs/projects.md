@@ -3,7 +3,7 @@
 ```codecard
 [
     {
-        "name": "Starter Projects",
+        "name": "Hour of Code",
         "url": "/starters",
         "imageUrl": "/static/examples/heart-shape/project-image.png?v=DOCVER-1"
     },
@@ -22,7 +22,7 @@
 
 ## See Also
 
-[Starter Projects](/starters),
+[Hour of Code](/starters),
 [Tutorials](/tutorials),
 [Examples](/examples)
 
