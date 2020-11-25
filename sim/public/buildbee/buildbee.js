@@ -40,7 +40,7 @@ async function downloadSTL(blob, name) {
     const arrayBufferStr = arrayBuffer2string(arrayBuffer)
 
     if (window.parent) {
-        window.parent.postMessage({message: "downloadSTL", arrayBuffer:arrayBufferStr, name: name}, window.location.href)
+        window.parent.postMessage({message: "downloadSTL", arrayBuffer:arrayBuffer, name: name}, window.location.href, [arrayBuffer])
     }
 }
 

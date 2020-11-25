@@ -126,6 +126,16 @@ function uploadToThingiverse({buffer, name, pngArrayBuffer}) {
     });
 }
 
+function saveSTL(event, fileName) {
+    if (event.data.arrayBuffer) {
+        const arrayBuffer = event.data.arrayBuffer;
+        if (arrayBuffer) {
+            var file = new File([arrayBuffer], fileName, { type: "application/octet-stream" });
+            saveAs(file);
+        }
+    }
+}
+
 function addBuildBeeScripts() {
 
     // plate the files
@@ -137,7 +147,7 @@ function addBuildBeeScripts() {
                 if (event.data.message === "sendToBuildBee") {
 
                     if (event.data.url) {
-                        const hostname = new URL(event.data.url).hostname;
+                        const hostname = new URL(event.data.url).hostname;x
                         if (hostname === "app.buildbee.com") {
                             window.location.href= event.data.url + "&utm_source=makecode&utm_medium=upload-to-buildbee&utm_campaign=codeeditor&file_name=" + fileName
                         }
@@ -146,11 +156,7 @@ function addBuildBeeScripts() {
 
                 if (event.data.message === "downloadSTL") {
 
-                    if (event.data.arrayBuffer) {
-                        const arrayBuffer = stringToArrayBuffer(event.data.arrayBuffer);
-                        var file = new File([arrayBuffer], fileName, { type: "application/octet-stream" });
-                        saveAs(file);
-                    }
+                    saveSTL(event, fileName)
                 }
                 if (event.data.message === "sendToThingiverse") {
                     sendToThingiverse(event)

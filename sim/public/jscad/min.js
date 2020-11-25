@@ -18650,7 +18650,8 @@ const localCache = {}
   function ensureManifoldness (input) {
     const transform = input => {
       input = 'reTesselated' in input ? input.reTesselated() : input
-      input = 'fixTJunctions' in input ? input.fixTJunctions() : input // fixTJunctions also calls this.canonicalized() so no need to do it twice
+  /// input = 'fixTJunctions' in input ? input.fixTJunctions() : input // fixTJunctions also calls this.canonicalized() so no need to do it twice
+      input = input.canonicalized()
       return input
     }
   
