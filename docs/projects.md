@@ -3,7 +3,7 @@
 ```codecard
 [
     {
-        "name": "Hour of Code",
+        "name": "Hour of Code with BuildBee",
         "url": "/starters",
         "imageUrl": "/static/examples/heart-shape/project-image.png?v=DOCVER-1"
     },
@@ -22,7 +22,7 @@
 
 ## See Also
 
-[Hour of Code](/starters),
+[Hour of Code with BuildBee](/starters),
 [Tutorials](/tutorials),
 [Examples](/examples)
 
