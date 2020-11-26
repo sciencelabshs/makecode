@@ -6581,7 +6581,7 @@ const localCache = {}
   const Properties = require('./Properties')
   const {fromPolygons} = require('./CSGFactories') // FIXME: circular dependency !
   
-  const fixTJunctions = require('./utils/fixTJunctions')
+  const {fixTJunctions} = require('./utils/fixTJunctions')
   const canonicalize = require('./utils/canonicalize')
   const retesselate = require('./utils/retesellate')
   const {bounds} = require('./utils/csgMeasurements')
@@ -11547,6 +11547,8 @@ const localCache = {}
 
 // START of STL Export Patch
 
+var CSGAPI; 
+
  const diffPoints = function(a,b) {
   if (Math.abs(a._x - b._x) > 0.00000001) {
       return true;
@@ -11562,8 +11564,7 @@ const localCache = {}
 
 
 const buildNeighborAndEdgeList = function(polygons) {
-
-
+ 
   var edgeList = [];
   var neighbors = {};
   var fixedEdges = {};
@@ -11633,18 +11634,18 @@ const buildNeighborAndEdgeList = function(polygons) {
 
     // console.log("***** end of a polygon: ", i);
 
-      return {
-        edgeList: edgeList,
-        neighbors: neighbors,
-        fixedEdges: fixedEdges
-      }
-
+  }
+  return {
+    edgeList: edgeList,
+    neighbors: neighbors,
+    fixedEdges: fixedEdges
   }
 
 }
 
-const solidifyMesh = function (csgObject, CSG) {
-
+const solidifyMesh = function (csgObject) {
+  var CSG = CSGAPI; // Not ideal.  Having trouble adding require statement after being minified
+  console.log("solidifyMesh")
   // what happens if I round off all the numbers first?
 
   // this will take the CSG model, sort of convert it to a half-edge structure,
@@ -11655,17 +11656,13 @@ const solidifyMesh = function (csgObject, CSG) {
 
   var polygons = csgObject.polygons
   const result = buildNeighborAndEdgeList(polygons)
+  console.log("solidifyMesh", result);
 
   var edgeList = result.edgeList;
   var neighbors = result.neighbors;
   var fixedEdges = result.fixedEdges;
 
-  // console.log("in MeshRepair");
-
-
-  // console.log("edgeList:", edgeList);
-  // console.log("neighbors:", neighbors);
-
+  
   // go through hedge list
 
   var unPairedEdges = [];
@@ -11674,7 +11671,7 @@ const solidifyMesh = function (csgObject, CSG) {
   var endsWith = {};
   var pairCount = 0;
 
-  var newpolys = [];
+  
 
   for (var i = 0; i < edgeList.length; i++) {
 
@@ -11725,41 +11722,92 @@ const solidifyMesh = function (csgObject, CSG) {
 
 
 
+  let data = {
+    polygons: polygons, 
+    unPairedEdges: unPairedEdges, 
+    neighbors: neighbors, 
+    startsWith: startsWith, 
+    endsWith: endsWith, 
+    fixedEdges: fixedEdges, 
+    fixCount: 0
+  }
 
   // go through unpaired list
   // for each edge, look for another edge that is || and close (close?).  If it shares a vertex great, but it won't always.
   // for a candidate "match", check all four vertices to see if they are on the line of the other edge, and add a vertex 
   // to the polygon (in the right place in the list, and check that it lies on the line of the edge).  We'll try this and see what happens.
-  var fixed = fixUnpairedEdges(CSG, polygons, unPairedEdges, neighbors, startsWith, endsWith, fixedEdges, 0, false);
+  data = fixUnpairedEdges(data);
+  if (data.fixCount) console.log("number of edges fixed:",data.fixCount);
 
-
-  if (fixed) console.log("number of edges fixed:",fixed);
-
-  if (fixed < unPairedEdges.length) {
+  if (data.fixCount < data.unPairedEdges.length) {
       // console.log("more work to do!");
 
       var stillUnpaired = [];
-      for (var i = 0; i < unPairedEdges.length; i++) {
-          var e = unPairedEdges[i];
-          if (fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].length)
+      for (var i = 0; i < data.unPairedEdges.length; i++) {
+          var e = data.unPairedEdges[i];
+          if (data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].length)
               continue;
 
           stillUnpaired.push(e);
 
       }
-      fixed = fixUnpairedEdges(CSG, polygons, stillUnpaired, neighbors, startsWith, endsWith, fixedEdges, fixed,true);
-      if (fixed) console.log("second pass edges fixed:", fixed);
+      data.unpairedEdges = stillUnpaired
+
+      data = fixUnpairedEdges(data);
+      if (data.fixCount) console.log("second pass edges fixed:", data.fixCount);
 
   }
 
   return polygons
 }
 
+const collinear =  function(a,b,c,threshold) {
+  var CSG = CSGAPI; // Not ideal.  Having trouble adding require statement after being minified
 
 
+  // return true if a,b,and c are all on the same line.
+  var e1 = new CSG.Vector3D(a._x - b._x, a._y - b._y, a._z - b._z);
+  var e2 = new CSG.Vector3D(b._x - c._x, b._y - c._y, b._z - c._z);
 
-const fixUnpairedEdges = function(CSG, polygons, unPairedEdges, neighbors, startsWith, endsWith, fixedEdges, fixCount, verbose) {
+  var c = e1.cross(e2);
 
+  if (Math.abs(c._x) < threshold && Math.abs(c._y) < threshold && Math.abs(c._z) < threshold)
+      return true;
+
+  return false;
+
+}
+
+const  within = function(a, b, c) {
+  // return true if c is within the range of a and b
+  if (a.x != b.x)
+      return ((a.x >= c.x && c.x >= b.x) || (a.x <= c.x && c.x <= b.x));
+  else  if (a.y != b.y)
+     return ((a.y >= c.y && c.y >= b.y) || (a.y <= c.y && c.y <= b.y));
+  else  if (a.z != b.z)
+     return ((a.z >= c.z && c.z >= b.z) || (a.z <= c.z && c.z <= b.z));
+}
+const isOn = function(a, b, c, threshold) {
+  // return true if and only if the point c intersects the segment between a and b.
+  // threshold is used to allow "close enough" matches for rounding errons.
+
+  // first check if it is in the right area
+  // console.log("within:" + CSG.within(a,b,c) + '  collinear:' + CSG.collinear(a,b,c,threshold));
+  return (within(a,b,c) && collinear(a,b,c,threshold));
+}
+
+
+const fixUnpairedEdges = function(data) {
+
+ var polygons = data.polygons, 
+      unPairedEdges = data.unPairedEdges, 
+      neighbors = data.neighbors, 
+      startsWith = data.startsWith, 
+      endsWith = data.endsWith, 
+      fixedEdges = data.fixedEdges, 
+      fixCount = data.fixCount
+      
+var CSG = CSGAPI; // Not ideal.  Having trouble adding require statement after being minified
 var eFinished = true;
 var timesThrough = 0;
 for (var i = 0; i < unPairedEdges.length + 1; i++) {
@@ -11837,7 +11885,7 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
             // these two lines are parallel.  Are there any vertices to add?
 
             // check vertex 1
-            if (diffPoints(e.u, b.u) && diffPoints(e.v,b.u) && CSG.isOn(e.u,e.v,b.u, 0.0001)) {
+            if (diffPoints(e.u, b.u) && diffPoints(e.v,b.u) && isOn(e.u,e.v,b.u, 0.0001)) {
                 // if (verbose) console.log("b.u on segment e: ",j);
                 // b.u is on the segment e.  Add the vertex.
                 var poly = polygons[e.face];
@@ -11949,7 +11997,7 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
                 // these two lines are parallel.  Are there any vertices to add?
 
                 // check vertex 2
-                if (diffPoints(e.u, b.v) && diffPoints(e.v,b.v) && CSG.isOn(e.u,e.v,b.v, 0.0001)) {
+                if (diffPoints(e.u, b.v) && diffPoints(e.v,b.v) && isOn(e.u,e.v,b.v, 0.0001)) {
                     // if (verbose) console.log("backwards: b.v on segment e: ",j);
                     // b.u is on the segment e.  Add the vertex.
                     var poly = polygons[e.face];
@@ -12031,7 +12079,17 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
 
 
 // console.log("from inside fixUnpaired function, fixCount is:", fixCount);
-return fixCount;
+//return fixCount;
+
+  return {
+    polygons: polygons, 
+    unPairedEdges: unPairedEdges, 
+    neighbors: neighbors, 
+    startsWith: startsWith, 
+    endsWith: endsWith, 
+    fixedEdges: fixedEdges, 
+    fixCount: fixCount
+  }
 
 }
 
@@ -12058,7 +12116,8 @@ return fixCount;
      not be used for further CSG operations!
 */
 const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
-  const newPolygons =  solidifyMesh(csgObject.canonicalized(), csgAPI)
+  CSGAPI = csgAPI
+  const newPolygons =  solidifyMesh(csgObject.canonicalized())
   return csgFromPolygons(newPolygons)
 
 }
@@ -12066,7 +12125,7 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
  
  
 
-  module.exports = fixTJunctions;
+  module.exports = {fixTJunctions, solidifyMesh};
 
 
 },{"../constants":50,"../math/Vector3D":56,"../math/Polygon3":58}],75:[function(require,module,exports){
