@@ -135,7 +135,7 @@ function calcSnap(moveobj, withobj, axes, orientation) {
     var m = moveobj.getBounds();
     var w = withobj.getBounds();
   
-    console.time("centroid")
+   
     if (side[0] === -1) {
         w[-1] = centroid(withobj);
     }

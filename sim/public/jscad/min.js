@@ -48516,7 +48516,8 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
           var vertextag = vertex.getTag();
           var vertexindex = vertexTag2Index[vertextag];
           var prevcolor = colors[vertexindex];
-          if (smoothlighting && vertexTag2Index[vertextag] && prevcolor[0] === color[0] && prevcolor[1] === color[1] && prevcolor[2] === color[2]) {
+          const hasColorChanged = (prevcolor && prevcolor[0] === color[0] && prevcolor[1] === color[1] && prevcolor[2] === color[2])
+          if (smoothlighting && vertexTag2Index[vertextag] && !hasColorChanged ) {
             vertexindex = vertexTag2Index[vertextag];
           } else {
             vertexindex = vertices.length;
