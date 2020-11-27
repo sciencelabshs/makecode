@@ -11644,7 +11644,6 @@ const buildNeighborAndEdgeList = function(polygons) {
 }
 
 const solidifyMesh = function (csgObject) {
-  var CSG = CSGAPI; // Not ideal.  Having trouble adding require statement after being minified
   console.log("solidifyMesh")
   // what happens if I round off all the numbers first?
 
@@ -11736,25 +11735,36 @@ const solidifyMesh = function (csgObject) {
   // for each edge, look for another edge that is || and close (close?).  If it shares a vertex great, but it won't always.
   // for a candidate "match", check all four vertices to see if they are on the line of the other edge, and add a vertex 
   // to the polygon (in the right place in the list, and check that it lies on the line of the edge).  We'll try this and see what happens.
+  console.log("before fix", data)
   data = fixUnpairedEdges(data);
+  console.log("after first fix", data)
   if (data.fixCount) console.log("number of edges fixed:",data.fixCount);
 
-  if (data.fixCount < data.unPairedEdges.length) {
+  let fixIterations = 0
+  while (data.unPairedEdges.length > 0) {
       // console.log("more work to do!");
+      if (fixIterations++ > 3) {
+        break;
+      }
 
       var stillUnpaired = [];
-      for (var i = 0; i < data.unPairedEdges.length; i++) {
-          var e = data.unPairedEdges[i];
-          if (data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].length)
+      for (var iu = 0; iu< data.unPairedEdges.length; iu++) {
+          var e = data.unPairedEdges[iu];
+          if (data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].length) {
               continue;
+          }
 
           stillUnpaired.push(e);
 
       }
-      data.unpairedEdges = stillUnpaired
+      console.log("Still unpaired:", stillUnpaired.length, "old unpaired", data.unPairedEdges)
+      data.unPairedEdges = stillUnpaired
 
       data = fixUnpairedEdges(data);
-      if (data.fixCount) console.log("second pass edges fixed:", data.fixCount);
+      console.log("after " + fixIterations +  " pass fix", data)
+      if (data.fixCount) {
+        console.log("pass "  + fixIterations +  " edges fixed:", data.fixCount);
+      }
 
   }
 
@@ -11798,19 +11808,12 @@ const isOn = function(a, b, c, threshold) {
 
 
 const fixUnpairedEdges = function(data) {
-
- var polygons = data.polygons, 
-      unPairedEdges = data.unPairedEdges, 
-      neighbors = data.neighbors, 
-      startsWith = data.startsWith, 
-      endsWith = data.endsWith, 
-      fixedEdges = data.fixedEdges, 
-      fixCount = data.fixCount
-      
+     
 var CSG = CSGAPI; // Not ideal.  Having trouble adding require statement after being minified
 var eFinished = true;
 var timesThrough = 0;
-for (var i = 0; i < unPairedEdges.length + 1; i++) {
+
+for (var i = 0; i < data.unPairedEdges.length; i++) {
 
     if (!eFinished) {
         timesThrough++;
@@ -11826,13 +11829,13 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
     else { 
         timesThrough = 0;
     }
-
-    if (i == unPairedEdges.length)
+ 
+    if (i == data.unPairedEdges.length)
         break;
 
-    var e = unPairedEdges[i];
+    var e = data.unPairedEdges[i];
     // if (verbose) console.log("working on unPairedEdge: " + i + ', [ ' + e.u._x + ',' + e.u._y + ',' + e.u._z + ' ], [ ' + e.v._x + ',' + e.v._y + ',' + e.v._z + ' ]');
-    if (fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].length > 0) {
+    if (data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].length > 0) {
         // if (verbose) console.log("this edge already fixed in previous chain.  Skipping-1.");
         continue;
     }
@@ -11842,22 +11845,22 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
 
     var addedSomething = false;
 
-    if (!([e.u._x,e.u._y,e.u._z] in endsWith)) {
+    if (!([e.u._x,e.u._y,e.u._z] in data.endsWith)) {
         console.log("had to add a point to endsWith");
-        endsWith[[e.u._x,e.u._y,e.u._z]] = [];
+        data.endsWith[[e.u._x,e.u._y,e.u._z]] = [];
     }
 
-    for (var j = 0; j < endsWith[[e.u._x,e.u._y,e.u._z]].length; j++) {
+    for (var j = 0; j < data.endsWith[[e.u._x,e.u._y,e.u._z]].length; j++) {
         // here are all the rest of the unpaired edges to try matching with
 
-        var b = endsWith[[e.u._x,e.u._y,e.u._z]][j];
+        var b = data.endsWith[[e.u._x,e.u._y,e.u._z]][j];
 
 
-        if (!([b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z] in fixedEdges)) {
+        if (!([b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z] in data.fixedEdges)) {
             console.log("had to add an edge to fixedEdges");
-            fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]] = [];
+            data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]] = [];
         }
-        if (fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]] && fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].length > 0) {
+        if (data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]] && data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].length > 0) {
             continue;
         }
         // if these two edges are the same, just keep going.
@@ -11866,9 +11869,9 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
 
         // if these two points are pairs, consider them "fixed" and add them to the fixed thing.
         if (!diffPoints(e.u, b.v) && !(diffPoints(e.v, b.u))) {
-            fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].push(e);
-            fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].push(b);
-            fixCount += 2;
+            data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].push(e);
+            data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].push(b);
+            data.fixCount += 2;
             continue;
         }
 
@@ -11888,7 +11891,7 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
             if (diffPoints(e.u, b.u) && diffPoints(e.v,b.u) && isOn(e.u,e.v,b.u, 0.0001)) {
                 // if (verbose) console.log("b.u on segment e: ",j);
                 // b.u is on the segment e.  Add the vertex.
-                var poly = polygons[e.face];
+                var poly = data.polygons[e.face];
                 var verts = poly.vertices;
                 for (var k = 0; k < verts.length; k++) {
                     if (verts[k].pos._x == e.u._x && verts[k].pos._y == e.u._y && verts[k].pos._z == e.u._z) {
@@ -11911,23 +11914,23 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
 
                         // now I need to mark these edges as fixed.
                         if (addedSomething) { 
-                            fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].push(b);
+                            data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].push(b);
                             
-                            fixCount++;
+                            data.fixCount++;
                             // e was the long edge.  I took a segment off one side.  is the rest of it paired with another edge in my unpaired edges list?
                             // actually I want to look in my neighbors list.
 
-                            if (neighbors[[e.v._x,e.v._y,e.v._z,b.u._x,b.u._y,b.u._z]]) {
+                            if (data.neighbors[[e.v._x,e.v._y,e.v._z,b.u._x,b.u._y,b.u._z]]) {
                                 // console.log("found a matching edge to the newly shortened edge");
 
                                 // if (neighbors[[e.v._x,e.v._y,e.v._z,b.u._x,b.u._y,b.u._z]].length > 1)
                                 //     console.log("there are more than one newly matching edge!!!");
-                                var foundEdge = neighbors[[e.v._x,e.v._y,e.v._z,b.u._x,b.u._y,b.u._z]][0];
+                                var foundEdge = data.neighbors[[e.v._x,e.v._y,e.v._z,b.u._x,b.u._y,b.u._z]][0];
 
-                                fixedEdges[[e.v._x,e.v._y,e.v._z,b.u._x,b.u._y,b.u._z]].push(foundEdge);
+                                data.fixedEdges[[e.v._x,e.v._y,e.v._z,b.u._x,b.u._y,b.u._z]].push(foundEdge);
 
-                                fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].push(b);
-                                fixCount += 2;
+                                data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].push(b);
+                                data.fixCount += 2;
 
                                 eFinished = true;
 
@@ -11938,18 +11941,20 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
 
                                 e.u = b.u;
 
-                                neighbors[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]] = [e];
-                                fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]] = [];
+                                data.neighbors[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]] = [e];
+                                data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]] = [];
 
-                                if (!([e.u._x,e.u._y,e.u._z] in startsWith))
-                                    startsWith[[e.u._x,e.u._y,e.u._z]] = [];
+                                if (!([e.u._x,e.u._y,e.u._z] in data.startsWith)) {
+                                    data.startsWith[[e.u._x,e.u._y,e.u._z]] = [];
+                                }
 
-                                if (!([e.u._x,e.u._y,e.u._z] in endsWith))
-                                    endsWith[[e.u._x,e.u._y,e.u._z]] = [];
+                                if (!([e.u._x,e.u._y,e.u._z] in data.endsWith)){
+                                    data.endsWith[[e.u._x,e.u._y,e.u._z]] = [];
+                                }
 
-                                startsWith[[e.u._x,e.u._y,e.u._z]].push(e);
+                                data.startsWith[[e.u._x,e.u._y,e.u._z]].push(e);
 
-                                endsWith[[e.v._x,e.v._y,e.v._z]].push(e);
+                                data.endsWith[[e.v._x,e.v._y,e.v._z]].push(e);
 
                                 // console.log("this edge isn't finished.  I'll try it again.")
 
@@ -11964,12 +11969,12 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
         }
     }
     if (!addedSomething) {
-        for (var j = 0; j < startsWith[[e.v._x,e.v._y,e.v._z]].length; j++) {
+        for (var j = 0; j < data.startsWith[[e.v._x,e.v._y,e.v._z]].length; j++) {
             // if (verbose) console.log("try a backwards match");
             // here are all the rest of the unpaired edges to try matching with
-            var b = startsWith[[e.v._x,e.v._y,e.v._z]][j];
+            var b = data.startsWith[[e.v._x,e.v._y,e.v._z]][j];
 
-            if (fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].length > 0) {
+            if (data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].length > 0) {
                 continue;
             }
             // if these two edges are the same, just keep going.
@@ -11978,9 +11983,9 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
 
             // if these two points are pairs, just keep going.
             if (!diffPoints(e.u, b.v) && !(diffPoints(e.v, b.u))) {
-                fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].push(e);
-                fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].push(b);
-                fixCount+=2;
+                data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].push(e);
+                data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].push(b);
+                data.fixCount+=2;
                 continue;
             }
 
@@ -12000,7 +12005,7 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
                 if (diffPoints(e.u, b.v) && diffPoints(e.v,b.v) && isOn(e.u,e.v,b.v, 0.0001)) {
                     // if (verbose) console.log("backwards: b.v on segment e: ",j);
                     // b.u is on the segment e.  Add the vertex.
-                    var poly = polygons[e.face];
+                    var poly = data.polygons[e.face];
                     var verts = poly.vertices;
                     for (var k = 0; k < verts.length; k++) {
                         if (verts[k].pos._x == e.u._x && verts[k].pos._y == e.u._y && verts[k].pos._z == e.u._z) {
@@ -12023,22 +12028,22 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
 
                             // now I need to mark these edges as fixed.
                           
-                            fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].push(b);
-                            fixCount++;
+                            data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].push(b);
+                            data.fixCount++;
                             // e was the long edge.  I took a segment off one side.  is the rest of it paired with another edge in my unpaired edges list?
                             // actually I want to look in my neighbors list.
 
-                            if (neighbors[[b.v._x,b.v._y,b.v._z,e.u._x,e.u._y,e.u._z]]) {
+                            if (data.neighbors[[b.v._x,b.v._y,b.v._z,e.u._x,e.u._y,e.u._z]]) {
                                 // console.log("backwards found a matching edge to the newly shortened edge");
 
-                                if (neighbors[[b.v._x,b.v._y,b.v._z,e.u._x,e.u._y,e.u._z]].length > 1)
+                                if (data.neighbors[[b.v._x,b.v._y,b.v._z,e.u._x,e.u._y,e.u._z]].length > 1)
                                     // console.log("there are more than one newly matching edge!!!");
-                                var foundEdge = neighbors[[b.v._x,b.v._y,b.v._z,e.u._x,e.u._y,e.u._z]][0];
+                                var foundEdge = data.neighbors[[b.v._x,b.v._y,b.v._z,e.u._x,e.u._y,e.u._z]][0];
 
-                                fixedEdges[[b.v._x,b.v._y,b.v._z,e.u._x,e.u._y,e.u._z]].push(foundEdge);
+                                data.fixedEdges[[b.v._x,b.v._y,b.v._z,e.u._x,e.u._y,e.u._z]].push(foundEdge);
 
-                                fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].push(b);
-                                fixCount += 2;
+                                data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].push(b);
+                                data.fixCount += 2;
 
                                 eFinished = true;
 
@@ -12048,14 +12053,15 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
                                 // I'm going to re-set this edge's U coordinate and run the edge again.
 
                                 e.v = b.v;
-                                neighbors[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]] = [e];
-                                fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]] = [];
-                                if (!([e.v._x,e.v._y,e.v._z] in endsWith))
-                                    endsWith[[e.v._x,e.v._y,e.v._z]] = [];
+                                data.neighbors[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]] = [e];
+                                data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]] = [];
+                                if (!([e.v._x,e.v._y,e.v._z] in data.endsWith)) {
+                                    data.endsWith[[e.v._x,e.v._y,e.v._z]] = [];
+                                }
 
-                                endsWith[[e.v._x,e.v._y,e.v._z]].push(e);
+                                data.endsWith[[e.v._x,e.v._y,e.v._z]].push(e);
 
-                                startsWith[[e.u._x,e.u._y,e.u._z]].push(e);
+                                data.startsWith[[e.u._x,e.u._y,e.u._z]].push(e);
 
                                 // console.log("this edge isn't finished.  I'll try it again.")
 
@@ -12081,15 +12087,7 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
 // console.log("from inside fixUnpaired function, fixCount is:", fixCount);
 //return fixCount;
 
-  return {
-    polygons: polygons, 
-    unPairedEdges: unPairedEdges, 
-    neighbors: neighbors, 
-    startsWith: startsWith, 
-    endsWith: endsWith, 
-    fixedEdges: fixedEdges, 
-    fixCount: fixCount
-  }
+  return data
 
 }
 
@@ -12116,9 +12114,14 @@ for (var i = 0; i < unPairedEdges.length + 1; i++) {
      not be used for further CSG operations!
 */
 const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
+  // set the CSG variable for this module.  Require is tricky given this is
+  // already minimized 
   CSGAPI = csgAPI
-  const newPolygons =  solidifyMesh(csgObject.canonicalized())
-  return csgFromPolygons(newPolygons)
+
+  let newPolygons =  solidifyMesh(csgObject.canonicalized())
+  let repairCSG =  csgFromPolygons(newPolygons)
+
+  return repairCSG
 
 }
  
@@ -18919,7 +18922,6 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
     const transform = input => {
       input = 'reTesselated' in input ? input.reTesselated() : input
       input = 'fixTJunctions' in input ? input.fixTJunctions() : input // fixTJunctions also calls this.canonicalized() so no need to do it twice
-      input = input.canonicalized()
       return input
     }
   
