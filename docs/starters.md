@@ -41,6 +41,20 @@ Learn the basic blocks of BuildBee MakeCode!
   "url":"/examples/name-tag",
   "cardType": "tutorial",
   "imageUrl": "/static/examples/name-tag/project-image.png?v=DOCVER-1"
+},
+{
+  "name": "Bauble",
+  "description": "Make a bauble you can 3D print and decorate.",
+  "url":"/examples/bauble",
+  "cardType": "tutorial",
+  "imageUrl": "/static/examples/bauble/project-image.png?v=DOCVER-1"
+},
+{
+  "name": "Hour of Code trophy!",
+  "description": "Finish your Hour of Code and walk away with a cool 3D printable trophy!",
+  "url":"/examples/trophy",
+  "cardType": "tutorial",
+  "imageUrl": "/static/examples/trophy/project-image.png?v=DOCVER-1"
 }
 ]
 ```

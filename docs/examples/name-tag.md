@@ -29,7 +29,7 @@ operators.placeOnGround(function () {
 ```
 
 ## Step 3 @fullscreen
-Add another ``||Operators:placeOnGround||`` block and``||Shapes:text||`` block. Change the text to "BuildBee" field, set the height to 2 and set the line width to 18.
+Add another ``||Operators:placeOnGround||`` block and ``||Shapes:text||`` block. Change the text to "BuildBee" field, set the height to 2 and set the line width to 18.
 
 ```blocks
 operators.placeOnGround(function () {
