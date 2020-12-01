@@ -13,6 +13,8 @@
 /*-------------------
      Fonts
 --------------------*/
+@fontName  : 'Poppins';
+
 @bodyFont: "Poppins", Verdana, sans-serif;
 @headerFont        : "Roboto Mono", serif;
 @pageFont          : "Roboto Mono", serif;
