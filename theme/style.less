@@ -17,9 +17,27 @@
     margin-left: 1em;
     margin-right: unset;
 }
-.tutorialsegment {
-    font-family: "Poppins", Verdana, Helvetica, Tahoma, sans-serif;
+.ui.modal, .tutorialsegment {
+    font-family: @bodyFont;
 }
+
+#tutorialcard strong { /* cheeky reporter block styling! put a circle whenever anyone **s something*/
+    font-weight: normal;
+    font-family: "Roboto Mono", monospace;
+    font-size: 14px;
+    border: 2px solid #4ebed7;
+    border-radius: 1em;
+    background: white;
+    padding: 0px 2px;
+    margin-right: 2px;
+    display: inline-block;
+    text-align: center;
+    min-width: 2.5em;
+}
+.tutorialmessage .content p {
+    margin-bottom: .8em;
+}
+
 .projectsdialog .getting-started-segment {
     /* for some reason the banner image leaves a 1px gap*/
     margin-left: -2px;

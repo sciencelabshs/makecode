@@ -73,7 +73,7 @@ Let's make a chimney! (part 1 of 3)
 
 Add another ``||Shapes:cube||`` to the ``||Loops:on start||`` block.
 
-Set the ``||Shapes:cube||`` size to width: 2 depth: 2 height: 22.  The cube will poke below the ground!
+Set the ``||Shapes:cube||`` size to width: **2** depth: **2** height: **22**.  The cube will poke below the ground!
 
 
 ```blocks
@@ -116,7 +116,7 @@ operators.placeOnGround(function () {
 
 Let's make a chimney! (part 3 of 3)
 
-Add a ``||Shapes:move||`` block to move the chimney into place.  Move by 2mm in the X axis - or anywhere you like!
+Add a ``||Shapes:move||`` block to move the chimney into place.  Move by **2** mm in the X axis - or anywhere you like!
 
 
 ```blocks
@@ -134,22 +134,22 @@ operators.placeOnGround(function () {
 })
 ```
 
-## Step 8 @unplugged
+## Step Last @unplugged
 That's it! Here's some things you could do next!
 
 ### 3D Print your creation!
 *  Send to BuildBee - easily print on your 3D printer!  
-    ![how to print]](/docs/static/examples/boardgame-house/print-buildbee.png) 
+    ![how to print]](/docs/static/examples/shared/print-buildbee.png) 
 
 *  Advanced - download a STL file for printing. 
-    ![how to download]](/docs/static/examples/boardgame-house/download-stl.png)  
+    ![how to download]](/docs/static/examples/shared/download-stl.png)  
 <!-- -->
 ### Save and Share with Friends!
 * Save your MakeCode file to your computer.  This will save a .mkcd file, which contains all your code.
-    ![how to save]](/docs/static/examples/boardgame-house/save.png) 
+    ![how to save]](/docs/static/examples/shared/save.png) 
 
 * Share a link with a friend!  
-    ![how to share]](/docs/static/examples/boardgame-house/share.png)
+    ![how to share]](/docs/static/examples/shared/share.png)
 
 
 

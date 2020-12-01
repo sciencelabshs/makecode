@@ -53,6 +53,8 @@
      PXT Variables
 *******************************/
 
+@tutorialCardHeight: 10.5rem; // how tall do we want the tutorials
+
 /*-------------------
    Menu
 --------------------*/
@@ -111,3 +113,5 @@
 @blocklyFlyoutColor: @grey;
 @blocklyFlyoutColorOpacity: 0.9;
 @monacoFlyoutColor: fade(@blocklyFlyoutColor, 90%);
+
+
