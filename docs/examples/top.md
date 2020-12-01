@@ -10,7 +10,7 @@ We recommend completing the previous tutorials before starting this one.
 
 ## Step 1 @fullscreen
 
-Add two ``||Shapes:cylinder||`` blocks and a ``||operators:placeOnGround||`` block. 
+Add two ``||Shapes:cylinder||`` blocks and a ``||operators:place on ground||`` block. 
 
 Give the first cylinder a radius of 40.
 Give the second a radius of 30.
@@ -224,7 +224,7 @@ shapes.cylinder(5, 50, 0x4ebed7, 100, 2)
 ## Step 12
 Move the spindle out of the way.  
 
-Use the ``||Operators:placeOnGround||`` block and ``||Operators:move||`` block around the new ``||Shapes:cylinder||``. 
+Use the ``||operators:place on ground||`` block and ``||Operators:move||`` block around the new ``||Shapes:cylinder||``. 
 
 Set the X value to 50mm.
 

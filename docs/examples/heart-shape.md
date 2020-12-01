@@ -8,7 +8,7 @@ Learn to add and move shapes around by making a heart.
 
 ## Step 1 @fullscreen
 
-Add a ``||operators:placeOnGround||`` block. This will keep all the blocks we add later laying nice and flat. 
+Add a ``||operators:place on ground||`` block. This will keep all the blocks we add later laying nice and flat. 
 
 ```blocks
 operators.placeOnGround(function () {})
@@ -16,7 +16,7 @@ operators.placeOnGround(function () {})
 
 ## Step 2
 
-Place the ``||Shapes:cube||`` block in the ``||operators:placeOnGround||`` block.
+Place the ``||Shapes:cube||`` block in the ``||operators:place on ground||`` block.
 
 ```blocks
 operators.placeOnGround(function () {

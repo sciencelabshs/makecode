@@ -128,7 +128,7 @@ for (let index = 0; index <= 27; index++) {
 ```
 
 ## Step X
-To get ready for 3D printing wrap everything in ``||Operators:placeOnGround||`` and ``||Operators:addShapes||`` blocks.
+To get ready for 3D printing wrap everything in ``||operators:place on ground||`` and ``||Operators:addShapes||`` blocks.
 
 This ensures everything is joined together and is lying flat on the ground.
 ```blocks

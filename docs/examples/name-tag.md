@@ -8,7 +8,7 @@ Learn to use text to create a name tag.
 
 ## Step 1 @fullscreen
 
-Add a ``||Operators:placeOnGround||`` block  and place a ``||Shapes:text||`` block inside.  For now, leave the text saying "BuildBee" - we will change this at the end. 
+Add a ``||operators:place on ground||`` block  and place a ``||Shapes:text||`` block inside.  For now, leave the text saying "BuildBee" - we will change this at the end. 
 
 ```blocks
 operators.placeOnGround(function () {
@@ -29,7 +29,7 @@ operators.placeOnGround(function () {
 ```
 
 ## Step 3 @fullscreen
-Add another ``||Operators:placeOnGround||`` block and ``||Shapes:text||`` block. Change the text to "BuildBee" field, set the height to 2 and set the line width to 18.
+Add another ``||operators:place on ground||`` block and ``||Shapes:text||`` block. Change the text to "BuildBee" field, set the height to 2 and set the line width to 18.
 
 ```blocks
 operators.placeOnGround(function () {
@@ -44,7 +44,7 @@ operators.placeOnGround(function () {
 ## Step 4 @fullscreen
 Make a loop for a string or keyring to pass through. 
 
-Add a ``||Shapes:cylinder||`` block in the in the second ``||Operators:placeOnGround||`` block.   Set the radius to 10mm, and height to 2mm.
+Add a ``||Shapes:cylinder||`` block in the in the second ``||operators:place on ground||`` block.   Set the radius to 10mm, and height to 2mm.
 
 We will cut out the inside of the loop later.
 

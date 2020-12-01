@@ -45,7 +45,7 @@ operators.move(-15, Axis.Y, function () {
 ## Step 5
 Cut-out text 3D print's much better than text that sticks out.
 
-Let's add a ``||operators:subtractShapes||`` block around all the other blocks.
+Let's add a ``||operators:subtract shapes||`` block around all the other blocks.
 
 ```blocks
 operators.subtractShapes(function () {
@@ -78,9 +78,9 @@ operators.styleEdges(EdgeStyle.Chamfer, StyleEdgeDirection.Top, 2, function () {
 
 
 ## Step 7
-Let's add a column to our trophy. Add a ``||operators:stackShapes||`` block around everything.
+Let's add a column to our trophy. Add a ``||operators:stack shapes||`` block around everything.
 
-Inside the ``||operators:stackShapes||`` block place a ``||shapes:cylinder||`` block. Set the radius to 7mm and the height to 20mm.
+Inside the ``||operators:stack shapes||`` block place a ``||shapes:cylinder||`` block. Set the radius to 7mm and the height to 20mm.
 
 ```blocks
 operators.stack(StackDirection.Above, Axis.Z, function () {
@@ -196,7 +196,7 @@ operators.move(25, Axis.Z, function () {
 ```
 
 ## Step 11
-To get everything ready for 3D printing, wrap everything in an ``||operators:addShapes||`` block and a ``||operators:placeOnGround||`` block.
+To get everything ready for 3D printing, wrap everything in an ``||operators:add shapes||`` block and a ``||operators:place on ground||`` block.
 
 Double check that the text matches your name.
 
