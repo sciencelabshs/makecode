@@ -13,10 +13,34 @@
     Add your custom CSS here
 *******************************/
 
+.ui.modal.hintdialog img, .tutorialsegment .tutorialmessage img  {
+    margin-left: 1em;
+    margin-right: unset;
+}
+.tutorialsegment {
+    font-family: "Poppins", Verdana, Helvetica, Tahoma, sans-serif;
+}
 .projectsdialog .getting-started-segment {
     /* for some reason the banner image leaves a 1px gap*/
     margin-left: -2px;
     margin-right: -2px;
+}
+
+
+/** let people put #left-icon  in the markdown 
+and automatically float left*/
+img[src*='#left-icon'] {
+    padding: 6px;
+    float: left;
+    height: 5em;
+}
+
+/** let people put #right-icon  in the markdown 
+and automatically float right*/
+img[src*='#right-icon'] {
+    padding: 6px;
+    float: right;
+    height: 5em;
 }
 
 #downloadArea {
@@ -28,12 +52,17 @@
 
 /* Open Sans font */
 @font-face {
-    font-family: 'Share Tech Mono';
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: 400;
-    src: local('Share Tech Mono'),
-         data-uri('../docs/static/fonts/ShareTechMono-Regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
+    src: url('../fonts/poppins-v15-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('../fonts/poppins-v15-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/poppins-v15-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../fonts/poppins-v15-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/poppins-v15-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/poppins-v15-latin-regular.svg#Poppins') format('svg'); /* Legacy iOS */
+  }
 
 .ui.item.logo .name {
     font-size: 20px;
@@ -42,6 +71,10 @@
     color: white;
     text-transform: uppercase;
     margin-left: 1rem;
+}
+
+.ui.page {
+    font-family: @bodyFont;
 }
 
 .simtoolbar .ui.button,
