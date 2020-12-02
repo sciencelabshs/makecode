@@ -135,22 +135,12 @@ operators.placeOnGround(function () {
 ```
 
 ## Step Last @unplugged
-That's it! Here's some things you could do next!
 
-### 3D Print your creation!
-*  Send to BuildBee - easily print on your 3D printer!  
-    ![how to print]](/docs/static/examples/shared/print-buildbee.png) 
+Wahoo!  Congratulations on finishing boardgame house!
 
-*  Advanced - download a STL file for printing. 
-    ![how to download]](/docs/static/examples/shared/download-stl.png)  
-<!-- -->
-### Save and Share with Friends!
-* Save your MakeCode file to your computer.  This will save a .mkcd file, which contains all your code.
-    ![how to save]](/docs/static/examples/shared/save.png) 
+Here are some things you can do with it.  When you are ready to move onto the next project, click finish, then Home in the menu bar.
 
-* Share a link with a friend!  
-    ![how to share]](/docs/static/examples/shared/share.png)
-
+![last steps]](/docs/static/examples/shared/done.png#center?v=DOCVER-1)
 
 
 

@@ -44,10 +44,14 @@
     margin-right: -2px;
 }
 
+#tutorialcard .ui.tutorialsegment .avatar-image {
+    background-image: data-uri("../docs/static/avatar.svg");
+}
 
 /** let people put #left-icon  in the markdown 
 and automatically float left*/
-img[src*='#left-icon'] {
+.ui.modal.hintdialog img[src*='#left-icon']
+.tutorialmessage .tutorialsegment img[src*='#left-icon'] {
     padding: 6px;
     float: left;
     height: 5em;
@@ -55,10 +59,18 @@ img[src*='#left-icon'] {
 
 /** let people put #right-icon  in the markdown 
 and automatically float right*/
-img[src*='#right-icon'] {
+.ui.modal.hintdialog img[src*='#right-icon'], 
+.tutorialmessage .tutorialsegment img[src*='#right-icon'] {
     padding: 6px;
     float: right;
     height: 5em;
+}
+
+/** let people put #center  in the markdown centers the image*/
+.ui.modal.hintdialog img[src*='#center'],
+.tutorialmessage .tutorialsegment img[src*='#center']  {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #downloadArea {

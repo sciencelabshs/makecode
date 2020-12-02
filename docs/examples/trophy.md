@@ -1,7 +1,17 @@
 # Hour of Code Trophy 
 
 ## Step 1 @unplugged
-So you've completed the Hour of Code. Congratulations!
+<img width="100%" height="100%" src="/docs/static/examples/shared/confetti.svg" style="position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;"/>
+
+
+![bee]](/docs/static/avatar.svg#left-icon)
+Congratulations on completing the Hour of Code with BuildBee! 
+
 
 Let's put everything you have learned together to make an Hour of Code trophy!
 

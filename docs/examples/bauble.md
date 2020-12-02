@@ -132,19 +132,6 @@ Done! If you want to customize your bauble, have a play around!
 
 A great idea is to paint and decorate the model after you print it. PVA glue and glitter are a perfect way to make your bauble shine!
 
+Here are some things you can do with it.  When you are ready to move onto the next project, click finish, then Home in the menu bar.
 
-### 3D Print your creation!
-*  Send to BuildBee - easily print on your 3D printer!  
-    ![how to print]](/docs/static/examples/shared/print-buildbee.png) 
-
-*  Advanced - download a STL file for printing. 
-    ![how to download]](/docs/static/examples/shared/download-stl.png)  
-
-<!-- -->
-
-### Save and Share with Friends!
-* Save your MakeCode file to your computer.  This will save a .mkcd file, which contains all your code.
-    ![how to save]](/docs/static/examples/shared/save.png) 
-
-* Share a link with a friend!  
-    ![how to share]](/docs/static/examples/shared/share.png)
+![last steps]](/docs/static/examples/shared/done.png#center?v=DOCVER-1)
