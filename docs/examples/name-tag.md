@@ -30,7 +30,7 @@ operators.placeOnGround(function () {
 
 Click the + to reveal the line width setting. 
 
-Set the line width to *8*.
+Set the line width to **8**.
 
 ```blocks
 operators.placeOnGround(function () {
@@ -38,10 +38,10 @@ operators.placeOnGround(function () {
 })
 ```
 
-## Step 3 @fullscreen
+## Step 3 
 Add another ``||Shapes:text||`` block. 
 
-Set the height to *2* and set the line width to *18*.
+Set the height to **2** and set the line width to **18**.
 
 This will be the taller text in the middle.
 
@@ -54,7 +54,7 @@ operators.placeOnGround(function () {
 
 ```
 
-## Step 4 @fullscreen
+## Step 4
 Make a loop for a string or keyring to pass through. 
 
 Add a ``||Shapes:cylinder||`` block.
