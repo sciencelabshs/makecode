@@ -138,7 +138,7 @@ operators.placeOnGround(function () {
 
 Wahoo!  Congratulations on finishing the heart shape!
 
-Here are some things you can do with it.  When you are ready to move onto the next project, click finish, then Home in the menu bar.
+ When you are ready to move onto the next project, click finish, then Home in the menu bar. You can also, save, print or share your project!
 
 ![last steps]](/docs/static/examples/shared/done.png#center?v=DOCVER-1)
 

@@ -167,11 +167,17 @@ operators.subtractShapes(function () {
 })
 ```
 
-## Step 9 @fullscreen
-You're done!  
+## Step 9
 
-Extra: Add some style!
+Optional: Add some style!
 
-Click the plus button on the first ``||shapes.cylinder||`` in the project until you find a "radius2".  You can change this to be 8 to taper in the sides of the base to make it feel more cone-like.
+Click the plus button on the first ``||shapes.cylinder||`` in the project until you find a "radius2".  
 
-To 3D print, click the download to STL button in the simulator - or directly add to BuildBee to print with your printer!
+You can change this to be **8** to taper in the sides of the base to make it feel more cone-like.
+
+## Step 10
+Way to go!  For loop 👑 of the castle! 
+ 
+ When you are ready to move onto the next project, click finish, then Home in the menu bar. You can also, save, print or share your project!
+
+![last steps]](/docs/static/examples/shared/done.png#center?v=DOCVER-1)

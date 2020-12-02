@@ -132,6 +132,6 @@ Done! If you want to customize your bauble, have a play around!
 
 A great idea is to paint and decorate the model after you print it. PVA glue and glitter are a perfect way to make your bauble shine!
 
-Here are some things you can do with it.  When you are ready to move onto the next project, click finish, then Home in the menu bar.
+When you are ready to move onto the next project, click finish, then Home in the menu bar. You can also, save, print or share your project!
 
 ![last steps]](/docs/static/examples/shared/done.png#center?v=DOCVER-1)

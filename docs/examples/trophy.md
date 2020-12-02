@@ -1,6 +1,36 @@
 # Hour of Code Trophy 
 
+```template
+make_trophy_base("BuildBee")
+    
+function make_trophy_base (name: string) {
+    operators.placeOnGround(function () {
+        operators.styleEdges(EdgeStyle.Chamfer, StyleEdgeDirection.Top, 2, function () {
+            operators.subtractShapes(function () {
+                shapes.cube(30, 30, 10)
+                operators.move(-15, Axis.Y, function () {
+                    operators.turn(90, RotateAxis.X, function () {
+                        shapes.text(name, 2.2, 1, 0x0564f6, .5, 1, 2.2)
+                    })
+                })
+            })
+        })
+    })
+}
+function make_cup (radius: number) {
+    operators.wrapShapes(function () {
+        operators.move(-1 * radius, Axis.Z, function () {
+            shapes.sphere(radius)
+        })
+        shapes.cylinder(radius + 1, 10, shapes.chooseColor(0xED0A3F), 100, radius + 3)
+    });
+}
+```
+
+
 ## Step 1 @unplugged
+
+
 <img width="100%" height="100%" src="/docs/static/examples/shared/confetti.svg" style="position: absolute;
     top: 0;
     bottom: 0;
@@ -10,237 +40,157 @@
 
 
 ![bee]](/docs/static/avatar.svg#left-icon)
-Congratulations on completing the Hour of Code with BuildBee! 
+One last project for your Hour of Code with BuildBee! 
 
 
-Let's put everything you have learned together to make an Hour of Code trophy!
+Let's put everything you have learned together to make an Hour of Code Trophy!
 
-## Step 2 @fullscreen
+## Step 2 
+![base](/docs/static/examples/trophy/base.png#left-icon)
 
-Let's start by making a base for the trophy. Add a ``||shapes:cube||`` block and set the width and depth to 30.
+We have given you a few extra blocks, which will appear in the functions section.  Lets start out with the base of the trophy.
+
+We added a ``||functions:make trophy base||`` block. Change the **BuildBee** to your name! 
 
 ```blocks
-shapes.cube(30, 30, 10)
+make_trophy_base("BuildBee")
+
 ```
 
-## Step 3
+## Step 3 
+![base hexbelow](/docs/static/examples/trophy/base-hexbelow.png#left-icon)
 
-All trophies need your name on them! Add a ``||shapes:text||`` block. Click the + button.
+Add a ``||Shapes:polygon||`` to form the stem of the trophy.  
 
-Set the font size to 3, height to 1 and line width to 1. Make sure to set the text field to be your name!
+It will poke below the trophy - we will move it next!
 
-You might not be able to see your name yet. That's okay,  we will move it into position in the next step.
+Set the sides **6** radius **4** and height **10**.
 
 ```blocks
-shapes.cube(30, 30, 10)
-shapes.text("BuildBee", 3, 1, shapes.chooseColor(0xED0A3F), 1, 1, 1.4)
+make_trophy_base("BuildBee")
+//@highlight
+shapes.polygon3D(6, 4, 10)
+
+
+
 ```
 
-## Step 4
-Let's put the text in the right place. 
+## Step 4 
+![base hexabove](/docs/static/examples/trophy/base-hexabove.png#left-icon)
 
-Add a ``||operators:turn||`` block around the ``||shapes:text||`` block. Set the angle to 90.
+Add a ``||operators:move||`` to put the stem in the right place. 
 
-Add a ``||operators:move||`` block around the ``||operators:turn||`` block. Set the distance to -15mm and the axis to Y.
+Move **10**  in the **Z** direction.
 
 ```blocks
-shapes.cube(30, 30, 10)
-operators.move(-15, Axis.Y, function () {
-    operators.turn(90, RotateAxis.X, function () {
-        shapes.text("BuildBee", 3, 1, shapes.chooseColor(0xED0A3F), 1, 1, 1.4)
-    })
+make_trophy_base("BuildBee")
+//@highlight
+operators.move(10, Axis.Z, function () {
+    shapes.polygon3D(6, 4, 10)
 })
+
 ```
 
-## Step 5
-Cut-out text 3D print's much better than text that sticks out.
+## Step 5 
+![cup](/docs/static/examples/trophy/makecup.png#left-icon)
+Let's add a cup to our trophy. 
 
-Let's add a ``||operators:subtract shapes||`` block around all the other blocks.
+From advanced - functions add a ``||functions:call make cup||`` block.
+
+Set the radius to **10**. The cup will appear below the trophy - we will move it next!
 
 ```blocks
-operators.subtractShapes(function () {
-    shapes.cube(30, 30, 10)
-    operators.move(-15, Axis.Y, function () {
-        operators.turn(90, RotateAxis.X, function () {
-            shapes.text("BuildBee", 3, 1, shapes.chooseColor(0xED0A3F), 1, 1, 1.4)
-        })
-    })
+make_trophy_base("BuildBee")
+//@highlight
+operators.move(10, Axis.Z, function () {
+    shapes.polygon3D(6, 4, 10)
+
 })
+make_cup(10)
+
 ```
 
-## Step 6
-Let's finish of the trophy base by styling the top edges. 
+## Step 6 
+![no hole](/docs/static/examples/trophy/nohole.png#left-icon)
+Raise the cup up high! If you're this far, you've earned it!
 
-Add a ``||operators:styleEdges||`` block around everything.
+Add a ``||operators:move||`` block around ``||functions:make cup||``.
+Raise the cup by **32** mm in the **Z** direction.
 
 ```blocks
-operators.styleEdges(EdgeStyle.Chamfer, StyleEdgeDirection.Top, 2, function () {
+make_trophy_base("BuildBee")
+operators.move(10, Axis.Z, function () {
+    shapes.polygon3D(6, 4, 10)
+
+})
+//@highlight
+operators.move(32, Axis.Z, function () {
+    make_cup(10)
+})
+
+```
+
+## Step 7 
+![no hole](/docs/static/examples/trophy/nohole.png#left-icon)
+Hollowing out the cup (part 1 of 2)  
+
+You will notice the top of the cup has no hole!  Let's fix that.
+
+Add a ``||operators:subtract shapes||`` block around ``||functions:make cup||``. Nothing will happen yet! 
+
+
+```blocks
+make_trophy_base("BuildBee")
+
+operators.move(10, Axis.Z, function () {
+    shapes.polygon3D(6, 4, 10)
+
+})
+operators.move(32, Axis.Z, function () {
+     //@highlight
     operators.subtractShapes(function () {
-        shapes.cube(30, 30, 10)
-        operators.move(-15, Axis.Y, function () {
-            operators.turn(90, RotateAxis.X, function () {
-                shapes.text("BuildBee", 3, 1, shapes.chooseColor(0xED0A3F), 1, 1, 1.4)
-            })
-        })
+        make_cup(10)
     })
 })
+
 ```
 
+## Step 8 
+![cup hole](/docs/static/examples/trophy/cuphole.png#left-icon)
 
-## Step 7
-Let's add a column to our trophy. Add a ``||operators:stack shapes||`` block around everything.
+Hollowing out the cup (part 2 of 2)  
 
-Inside the ``||operators:stack shapes||`` block place a ``||shapes:cylinder||`` block. Set the radius to 7mm and the height to 20mm.
+Add a second ``||functions:make cup||`` underneath the first one.
+
+Set radius of the 2nd ``||functions:make cup||`` to **9**
 
 ```blocks
-operators.stack(StackDirection.Above, Axis.Z, function () {
-    operators.styleEdges(EdgeStyle.Chamfer, StyleEdgeDirection.Top, 2, function () {
-        operators.subtractShapes(function () {
-            shapes.cube(30, 30, 10)
-            operators.move(-15, Axis.Y, function () {
-                operators.turn(90, RotateAxis.X, function () {
-                    shapes.text("BuildBee", 3, 1, shapes.chooseColor(0xED0A3F), 1, 1, 1.4)
-                })
-            })
-        })
-    })
-    shapes.cylinder(7, 20)
+make_trophy_base("BuildBee")
+
+operators.move(10, Axis.Z, function () {
+    shapes.polygon3D(6, 4, 10)
+
 })
+operators.move(32, Axis.Z, function () {
+     //@highlight
+    operators.subtractShapes(function () {
+         make_cup(10)
+         
+         //@highlight
+         make_cup(9)
+    })
+})
+
+
 ```
 
+## Step last @unplugged
 
-## Step 8
-Now we need something to sit on top of the column. A star would look nice.
+![bee]](/docs/static/avatar.svg#left-icon)    
+Congratulations on your trophy!  🏆🏆🏆 
 
-Add a ``||operators:move||`` block and a ``||operators:turn||`` block. Set the move block to 25mm in the Z direction and set the turn to 60 degrees. Put a ``||shapes:cube||`` inside.
+There's lots more to do in BuildBee MakeCode.  
 
-```blocks
-operators.stack(StackDirection.Above, Axis.Z, function () {
-    operators.styleEdges(EdgeStyle.Chamfer, StyleEdgeDirection.Top, 2, function () {
-        operators.subtractShapes(function () {
-            shapes.cube(30, 30, 10)
-            operators.move(-15, Axis.Y, function () {
-                operators.turn(90, RotateAxis.X, function () {
-                    shapes.text("BuildBee", 3, 1, shapes.chooseColor(0xED0A3F), 1, 1, 1.4)
-                })
-            })
-        })
-    })
-    shapes.cylinder(7, 20)
-})
-operators.move(25, Axis.Z, function () {
-    operators.turn(60, RotateAxis.X, function () {
-        shapes.cube(10, 10, 10)
-    })
-})
-```
+If you dont have access to a 3D printer at the moment, you can take a photo of your project or share a link to friends!
 
-## Step 9
-To turn that ``||shapes:cube||`` into a star we need to set the width to 20mm, depth to 20mm and height to 8mm.
-
-Then add a second ``||shapes:cube||`` and give it the same settings.
-
-Finally add a ``||operators:turn||`` block around the second cube. Set it's axis to Z.
-
-```blocks
-operators.stack(StackDirection.Above, Axis.Z, function () {
-    operators.styleEdges(EdgeStyle.Chamfer, StyleEdgeDirection.Top, 2, function () {
-        operators.subtractShapes(function () {
-            shapes.cube(30, 30, 10)
-            operators.move(-15, Axis.Y, function () {
-                operators.turn(90, RotateAxis.X, function () {
-                    shapes.text("BuildBee", 3, 1, shapes.chooseColor(0xED0A3F), 1, 1, 1.4)
-                })
-            })
-        })
-    })
-    shapes.cylinder(7, 20)
-})
-operators.move(25, Axis.Z, function () {
-    operators.turn(60, RotateAxis.X, function () {
-        shapes.cube(20, 20, 8)
-        operators.turn(45, RotateAxis.Z, function () {
-            shapes.cube(20, 20, 8)
-        })
-    })
-})
-```
-
-
-## Step 10
-Let's put something nice in the middle of the star to cover up the column that is sticking through.
-
-At the end of the script add a ``||operators:move||`` block. Set the distance to 25mm and the direction to Z.
-
-Inside the ``||operators:move||`` block add a ``||shapes:polyhedron||``. Set the type to 12 sided and the radius to 10mm.
-
-Finally to make it stand out, wrap the ``||shapes:polyhedron||`` block in a ``||colors:color||`` block.
-
-```blocks
-operators.stack(StackDirection.Above, Axis.Z, function () {
-    operators.styleEdges(EdgeStyle.Chamfer, StyleEdgeDirection.Top, 2, function () {
-        operators.subtractShapes(function () {
-            shapes.cube(30, 30, 10)
-            operators.move(-15, Axis.Y, function () {
-                operators.turn(90, RotateAxis.X, function () {
-                    shapes.text("BuildBee", 3, 1, shapes.chooseColor(0xED0A3F), 1, 1, 1.4)
-                })
-            })
-        })
-    })
-    shapes.cylinder(7, 20)
-})
-operators.move(25, Axis.Z, function () {
-    operators.turn(60, RotateAxis.X, function () {
-        shapes.cube(20, 20, 8)
-        operators.turn(45, RotateAxis.Z, function () {
-            shapes.cube(20, 20, 8)
-        })
-    })
-})
-operators.move(25, Axis.Z, function () {
-    colors.color(colors.choose(0xED0A3F), function () {
-        shapes.polyhedron(Polyhedra.Dodecahedron, 10)
-    })
-})
-```
-
-## Step 11
-To get everything ready for 3D printing, wrap everything in an ``||operators:add shapes||`` block and a ``||operators:place on ground||`` block.
-
-Double check that the text matches your name.
-
-That's it, your hour of code trophy is complete! You can now take a picture by clicking the camera button under the 3D view or 3D print the model so you have a real life trophy! 
-
-```blocks
-operators.placeOnGround(function () {
-    operators.addShapes(function () {
-        operators.stack(StackDirection.Above, Axis.Z, function () {
-            operators.styleEdges(EdgeStyle.Chamfer, StyleEdgeDirection.Top, 2, function () {
-                operators.subtractShapes(function () {
-                    shapes.cube(30, 30, 10)
-                    operators.move(-15, Axis.Y, function () {
-                        operators.turn(90, RotateAxis.X, function () {
-                            shapes.text("BuildBee", 3, 1, shapes.chooseColor(0xED0A3F), 1, 1, 1.4)
-                        })
-                    })
-                })
-            })
-            shapes.cylinder(7, 20)
-        })
-        operators.move(25, Axis.Z, function () {
-            operators.turn(60, RotateAxis.X, function () {
-                shapes.cube(20, 20, 8)
-                operators.turn(45, RotateAxis.Z, function () {
-                    shapes.cube(20, 20, 8)
-                })
-            })
-        })
-        operators.move(25, Axis.Z, function () {
-            colors.color(colors.choose(0xED0A3F), function () {
-                shapes.polyhedron(Polyhedra.Dodecahedron, 10)
-            })
-        })
-    })
-})
-```
+![last steps]](/docs/static/examples/shared/done.png#center?v=DOCVER-1)

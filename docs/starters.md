@@ -50,7 +50,7 @@ Learn the basic blocks of BuildBee MakeCode!
   "imageUrl": "/static/examples/bauble/project-image.png?v=DOCVER-1"
 },
 {
-  "name": "Hour of Code trophy!",
+  "name": "Hour of Code Trophy!",
   "description": "Finish your Hour of Code and walk away with a cool 3D printable trophy!",
   "url":"/examples/trophy",
   "cardType": "tutorial",
