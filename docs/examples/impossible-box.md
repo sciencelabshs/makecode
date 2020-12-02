@@ -8,9 +8,9 @@ Learn how to add and subtract shapes to make an impossible box.
 
 ## Step 1 @fullscreen
 
-Add a ``||Operators:placeOnGround||``  and place a ``||Shapes:cube||`` block inside.
+Add a ``||operators:place on ground||``  and place a ``||Shapes:cube||`` block inside.
 
-Set the width to 50, depth to 50 and height to 50
+Set the width to **50**, depth to **50** and height to **50**
 
 ```blocks
 
@@ -26,6 +26,7 @@ Add a subtract shapes ``||Operators:subtractShapes||`` block around the ``||Shap
 
 ```blocks
 operators.placeOnGround(function () {
+    //@highlight
     operators.subtractShapes(function () {
         shapes.cube(50, 50, 50)
     })
@@ -37,18 +38,20 @@ Add 3 more ``||Shapes:cube||`` blocks in the ``||Operators:subtractShapes||`` bl
 
 Cut through the main cube by setting the sizes of the cubes.
 
-* First cube: 50, 50, 50
-* Second cube: 40, 40, 80
-* Third cube: 80, 40, 40
-* Fourth cube: 80, 40, 40
+* 2nd cube: **40** **40** **80**
+* 3rd cube: **80** **40** **40**
+* 4th cube: **80** **40** **40**
 
 
 ```blocks
 operators.placeOnGround(function () {
    operators.subtractShapes(function () {
             shapes.cube(50, 50, 50)
+            //@highlight
             shapes.cube(40, 40, 80)
+            //@highlight
             shapes.cube(80, 40, 40)
+            //@highlight
             shapes.cube(40, 80, 40)
     })
 
@@ -56,7 +59,8 @@ operators.placeOnGround(function () {
 ```
 
 ## Step 4 @fullscreen
-Add a ``||Shapes:sphere||`` to the center.  Set the radius to 22mm.
+Add a ``||Shapes:sphere||`` to the center.  Set the radius to **22** mm.
+
 Since the cube cutouts are 40mm, the sphere will be 44mm, and won't be able to escape the box!
 
 ```blocks
@@ -67,6 +71,7 @@ operators.placeOnGround(function () {
             shapes.cube(80, 40, 40)
             shapes.cube(40, 80, 40)
     })
+    //@highlight
     shapes.sphere(22)
 })
 ```
@@ -76,10 +81,11 @@ Prepare for 3D printing.  Because this model has a lot of overhanging parts, it 
 
 Note when you go to print, you will need to print with supports and brim (if available). 
 
-Add a ``||operators:turn||`` block and turn by 45 degrees in the x axis
+Add a ``||operators:turn||`` block and turn by **45** degrees in the x axis
 
 ```blocks
 operators.placeOnGround(function () {
+    //@highlight
     operators.turn(45, RotateAxis.X, function () {
         operators.subtractShapes(function () {
             shapes.cube(50, 50, 50)
@@ -93,5 +99,7 @@ operators.placeOnGround(function () {
 ```
 ## Step 6 @fullscreen
 You're ready to print!  (Approx print time: 2.5h)
+ 
+ When you are ready to move onto the next project, click finish, then Home in the menu bar. You can also, save, print or share your project!
 
-Either download to STL or directly print to your 3D printer using BuildBee by pressing the download button in the simulator.  Dont forget to add supports!
+![last steps]](/docs/static/examples/shared/done.png#center?v=DOCVER-1)

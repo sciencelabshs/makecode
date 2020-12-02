@@ -33,7 +33,13 @@ Here are some fun programs for your @boardname@!
   "url": "/examples/mandelbrot",
   "cardType": "example",
   "imageUrl": "/static/examples/mandelbrot/project-image.png?v=DOCVER-1"
+}, 
+{
+  "name": "Stacking boxes",
+  "description": "Make stacking storage containers of a customisable size.",
+  "url": "/examples/stacking-boxes",
+  "cardType": "example",
+  "imageUrl": "/static/examples/stacking-boxes/project-image.png?v=DOCVER-1"
 }
-
 ]
 ```

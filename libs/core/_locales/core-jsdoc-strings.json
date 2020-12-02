@@ -243,6 +243,8 @@
   "operators.turn|param|body": "the shapes to rotate",
   "operators.wrap2DShapes": "For 2D shapes, apply a shrinkwrapping technique to join them together.  Also known as hull.",
   "operators.wrap2DShapes|param|body": "List of 2D shapes to shrink wrap",
+  "operators.wrapShapes": "Intersect shapes - only leave the parts from all shapes that overlap.",
+  "operators.wrapShapes|param|body": "List of shapes to intersect",
   "parameters": "Parameters for making customizable objects",
   "parameters.numberParameter": "Add text input parameter",
   "parameters.numberParameter|param|defaultValue": "The default value for the number input field",

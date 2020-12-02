@@ -72,6 +72,7 @@
   "operators.translateShapes|block": "translate shapes x: $x|  y: $y |  z: $z",
   "operators.turn|block": "turn $angle ° | $axis=main_rotateAxisPicker",
   "operators.wrap2DShapes|block": "wrap 2d shapes (hull)",
+  "operators.wrapShapes|block": "wrap shapes",
   "operators|block": "operators",
   "parameters.numberParameter|block": "number - label: $parameterName || default: $defaultValue",
   "parameters.numberRangeParameter|block": "range - label: $parameterName || default: $defaultValue | min: $minValue | max: $maxValue | step: $stepValue",

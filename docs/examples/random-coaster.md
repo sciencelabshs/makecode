@@ -4,7 +4,7 @@ We are going to use loops and random numbers to make a program that generates a 
 ## Step 2 @fullscreen
 Let's start by adding a rim for the coaster.
 
-Add a ``||Operators:placeOnGround||`` block, a ``||Operators:subtractShapes||`` block and two ``||Shapes:polygon||`` blocks.
+Add a ``||operators:place on ground||`` block, a ``||Operators:subtractShapes||`` block and two ``||Shapes:polygon||`` blocks.
 
 Set the polygon to have 6 sides and height 3.
 
@@ -25,7 +25,7 @@ operators.placeOnGround(function () {
 ## Step 3
 Let's give the coaster a nice flat base.
 
-Add a ``||Operators:placeOnGround||`` block and a ``||Shapes:polygon||`` block.
+Add a ``||operators:place on ground||`` block and a ``||Shapes:polygon||`` block.
 
 Set the polygon to have 6 sides, radius 25 and height 1.
 
@@ -45,7 +45,7 @@ operators.placeOnGround(function () {
 ## Step 4
 Let's add some shapes to the middle of the coaster.
 
-To do this, add ``||Operators:placeOnGround||``, ``||Operators:subtractShapes||`` and two ``||Shapes:polygon||`` blocks.
+To do this, add ``||operators:place on ground||``, ``||Operators:subtractShapes||`` and two ``||Shapes:polygon||`` blocks.
 
 Set the polygons to have 6 sides and height 3.
 

@@ -731,6 +731,17 @@ declare namespace operators {
     //% shim=operators::intersectShapesAsync promise
     function intersectShapes(body: () => void): void;
 
+    //% blockId=wrap_shapes block="wrap shapes" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% group="Operations"
+    /**
+     * Intersect shapes - only leave the parts from all shapes that overlap.
+     * @param body List of shapes to intersect
+     */
+    //% shim=operators::wrapShapesAsync promise
+    function wrapShapes(body: () => void): void;
+
     //% blockId=rotateExtrude2dshapes block="rotate extrude 2d shape from angle $startAngle | to $stopAngle | faces $faces" 
     //% startAngle.defl=0
     //% startAngle.min=0

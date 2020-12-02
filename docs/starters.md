@@ -8,6 +8,8 @@ Learn the basic blocks of BuildBee MakeCode!
 [{
   "name": "Heart Shape",
   "description": "Get started learning to build shapes by following this project. ",
+  "label": "New? Start Here!",
+  "labelClass": "teal ribbon large",
   "url":"/examples/heart-shape",
   "cardType": "tutorial",
   "imageUrl": "/static/examples/heart-shape/project-image.png?v=DOCVER-1"
@@ -39,6 +41,20 @@ Learn the basic blocks of BuildBee MakeCode!
   "url":"/examples/name-tag",
   "cardType": "tutorial",
   "imageUrl": "/static/examples/name-tag/project-image.png?v=DOCVER-1"
+},
+{
+  "name": "Bauble",
+  "description": "Make a bauble you can 3D print and decorate.",
+  "url":"/examples/bauble",
+  "cardType": "tutorial",
+  "imageUrl": "/static/examples/bauble/project-image.png?v=DOCVER-1"
+},
+{
+  "name": "Hour of Code Trophy!",
+  "description": "Finish your Hour of Code and walk away with a cool 3D printable trophy!",
+  "url":"/examples/trophy",
+  "cardType": "tutorial",
+  "imageUrl": "/static/examples/trophy/project-image.png?v=DOCVER-1"
 }
 ]
 ```

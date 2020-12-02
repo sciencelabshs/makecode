@@ -2,7 +2,8 @@
      User Global Variables
 *******************************/
 
-@darkgrey         : #293547;
+@darkgrey         : #2b354f;
+
 /*--------------
       Page
 ---------------*/
@@ -12,7 +13,9 @@
 /*-------------------
      Fonts
 --------------------*/
+@fontName  : 'Poppins';
 
+@bodyFont: "Poppins", Verdana, sans-serif;
 @headerFont        : "Roboto Mono", serif;
 @pageFont          : "Roboto Mono", serif;
 @googleFontName    : 'Roboto Mono';
@@ -51,6 +54,8 @@
 /*******************************
      PXT Variables
 *******************************/
+
+@tutorialCardHeight: 10.5rem; // how tall do we want the tutorials
 
 /*-------------------
    Menu
@@ -110,3 +115,5 @@
 @blocklyFlyoutColor: @grey;
 @blocklyFlyoutColorOpacity: 0.9;
 @monacoFlyoutColor: fade(@blocklyFlyoutColor, 90%);
+
+

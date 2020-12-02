@@ -13,14 +13,83 @@
     Add your custom CSS here
 *******************************/
 
+.ui.modal.hintdialog img, .tutorialsegment .tutorialmessage img  {
+    margin-left: 1em;
+    margin-right: unset;
+}
+.ui.modal, .tutorialsegment {
+    font-family: @bodyFont;
+}
+
+#tutorialcard strong { /* cheeky reporter block styling! put a circle whenever anyone **s something*/
+    font-weight: normal;
+    font-family: "Roboto Mono", monospace;
+    font-size: 14px;
+    border: 2px solid #4ebed7;
+    border-radius: 1em;
+    background: white;
+    padding: 0px 2px;
+    margin-right: 2px;
+    display: inline-block;
+    text-align: center;
+    min-width: 2.5em;
+}
+.tutorialmessage .content p {
+    margin-bottom: .8em;
+}
+
+.projectsdialog .getting-started-segment {
+    /* for some reason the banner image leaves a 1px gap*/
+    margin-left: -2px;
+    margin-right: -2px;
+}
+
+#tutorialcard .ui.tutorialsegment .avatar-image {
+    background-image: data-uri("../docs/static/avatar.svg");
+}
+
+/** let people put #left-icon  in the markdown 
+and automatically float left*/
+img[src*='#left-icon'] {
+    padding: 6px;
+    float: left;
+    height: 5em;
+}
+
+/** let people put #right-icon  in the markdown 
+and automatically float right*/
+img[src*='#right-icon'] {
+    padding: 6px;
+    float: right;
+    height: 5em;
+}
+
+/** let people put #center  in the markdown centers the image*/
+img[src*='#center'] {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#downloadArea {
+    display: none;
+}
+#projectNameArea {
+    margin-left: 1em;
+}
+
 /* Open Sans font */
 @font-face {
-    font-family: 'Share Tech Mono';
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: 400;
-    src: local('Share Tech Mono'),
-         data-uri('../docs/static/fonts/ShareTechMono-Regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
+    src: url('../docs/static/fonts/poppins-v15-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('../docs/static/fonts/poppins-v15-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../docs/static/fonts/poppins-v15-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../docs/static/fonts/poppins-v15-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('../docs/static/fonts/poppins-v15-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../docs/static/fonts/poppins-v15-latin-regular.svg#Poppins') format('svg'); /* Legacy iOS */
+  }
 
 .ui.item.logo .name {
     font-size: 20px;
@@ -29,6 +98,10 @@
     color: white;
     text-transform: uppercase;
     margin-left: 1rem;
+}
+
+.ui.page {
+    font-family: @bodyFont;
 }
 
 .simtoolbar .ui.button,

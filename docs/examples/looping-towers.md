@@ -5,7 +5,7 @@ Learn to loop making a tower!
 ## Step 1 @fullscreen
 Start building the base of the tower.  We will stack cylinders, so we need the stack shapes block.
 
-Add a ``||Operators:placeOnGround||`` block with a ``||Operators:stackShapes||`` block inside.  
+Add a ``||operators:place on ground||`` block with a ``||operators:stack shapes||`` block inside.  
 
 ```blocks
 operators.placeOnGround(function () {
@@ -19,7 +19,7 @@ operators.placeOnGround(function () {
 ## Step 2 @fullscreen
 Make a basic tower using cylinders. 
 
-Add two ``||Shapes:cylinder||`` blocks to the ``||Operators:placeOnGround||`` block.  
+Add two ``||Shapes:cylinder||`` blocks to the ``||operators:place on ground||`` block.  
 
 First cylinder - radius 10, height 30
 
@@ -37,7 +37,7 @@ operators.placeOnGround(function () {
 ## Step 3 @fullscreen
 Start to make the hole that will be cut out of the roof.  
 
-Below the ``||Operators:stackShapes||`` block, add a ``||Operators:move||`` block.   ``||Operators:move||``  a new ``||Shapes:cylinder||`` block.
+Below the ``||operators:stack shapes||`` block, add a ``||Operators:move||`` block.   ``||Operators:move||``  a new ``||Shapes:cylinder||`` block.
 
 Move the new cylinder up 25mm in Z axis.
 
@@ -54,7 +54,7 @@ operators.placeOnGround(function () {
 ```
 
 ## Step 4 @fullscreen
-Cut the hole in the roof by adding a ``||Operators:subtractShapes||`` block around the ``||Operators:placeOnGround||``
+Cut the hole in the roof by adding a ``||Operators:subtractShapes||`` block around the ``||operators:place on ground||``
 
 ```blocks
 operators.subtractShapes(function () {
@@ -167,11 +167,17 @@ operators.subtractShapes(function () {
 })
 ```
 
-## Step 9 @fullscreen
-You're done!  
+## Step 9
 
-Extra: Add some style!
+Optional: Add some style!
 
-Click the plus button on the first ``||shapes.cylinder||`` in the project until you find a "radius2".  You can change this to be 8 to taper in the sides of the base to make it feel more cone-like.
+Click the plus button on the first ``||shapes.cylinder||`` in the project until you find a "radius2".  
 
-To 3D print, click the download to STL button in the simulator - or directly add to BuildBee to print with your printer!
+You can change this to be **8** to taper in the sides of the base to make it feel more cone-like.
+
+## Step 10
+Way to go!  For loop 👑 of the castle! 
+ 
+ When you are ready to move onto the next project, click finish, then Home in the menu bar. You can also, save, print or share your project!
+
+![last steps]](/docs/static/examples/shared/done.png#center?v=DOCVER-1)

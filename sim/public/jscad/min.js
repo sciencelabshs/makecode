@@ -20,7 +20,8 @@
  *  - PERF: Reduce allocations of Vector3D while calling getBounds
  *  - PERF: Shave 40ms off translate by not mapping over the vertexes
  *  - Disable coloring of cuts, by commenting out setColor in the difference operator
- * 
+ *  - Replace fixTJunctions as it was causing more damage than it was repairing
+
  * NOTE this is based on lightgl - docs are here
  * https://evanw.github.io/lightgl.js/docs/mesh.html
  */
@@ -6580,7 +6581,7 @@ const localCache = {}
   const Properties = require('./Properties')
   const {fromPolygons} = require('./CSGFactories') // FIXME: circular dependency !
   
-  const fixTJunctions = require('./utils/fixTJunctions')
+  const {fixTJunctions} = require('./utils/fixTJunctions')
   const canonicalize = require('./utils/canonicalize')
   const retesselate = require('./utils/retesellate')
   const {bounds} = require('./utils/csgMeasurements')
@@ -6885,7 +6886,7 @@ const localCache = {}
   
     // ALIAS !
     fixTJunctions: function () {
-      return fixTJunctions(fromPolygons, this)
+      return fixTJunctions(fromPolygons, this, CSG)
     },
   
     // ALIAS !
@@ -11543,324 +11544,594 @@ const localCache = {}
   module.exports = {projectToOrthoNormalBasis}
   
   },{"../CAG":41,"../constants":50}],74:[function(require,module,exports){
-  const {EPS} = require('../constants')
-  const Polygon = require('../math/Polygon3')
-  const Plane = require('../math/Plane')
-  
-  function addSide (sidemap, vertextag2sidestart, vertextag2sideend, vertex0, vertex1, polygonindex) {
-    let starttag = vertex0.getTag()
-    let endtag = vertex1.getTag()
-    if (starttag === endtag) throw new Error('Assertion failed')
-    let newsidetag = starttag + '/' + endtag
-    let reversesidetag = endtag + '/' + starttag
-    if (reversesidetag in sidemap) {
-      // we have a matching reverse oriented side.
-      // Instead of adding the new side, cancel out the reverse side:
-      // console.log("addSide("+newsidetag+") has reverse side:");
-      deleteSide(sidemap, vertextag2sidestart, vertextag2sideend, vertex1, vertex0, null)
-      return null
-    }
-    //  console.log("addSide("+newsidetag+")");
-    let newsideobj = {
-      vertex0: vertex0,
-      vertex1: vertex1,
-      polygonindex: polygonindex
-    }
-    if (!(newsidetag in sidemap)) {
-      sidemap[newsidetag] = [newsideobj]
-    } else {
-      sidemap[newsidetag].push(newsideobj)
-    }
-    if (starttag in vertextag2sidestart) {
-      vertextag2sidestart[starttag].push(newsidetag)
-    } else {
-      vertextag2sidestart[starttag] = [newsidetag]
-    }
-    if (endtag in vertextag2sideend) {
-      vertextag2sideend[endtag].push(newsidetag)
-    } else {
-      vertextag2sideend[endtag] = [newsidetag]
-    }
-    return newsidetag
+
+// START of STL Export Patch
+
+var CSGAPI; 
+
+ const diffPoints = function(a,b) {
+  if (Math.abs(a._x - b._x) > 0.00000001) {
+      return true;
   }
-  
-  function deleteSide (sidemap, vertextag2sidestart, vertextag2sideend, vertex0, vertex1, polygonindex) {
-    let starttag = vertex0.getTag()
-    let endtag = vertex1.getTag()
-    let sidetag = starttag + '/' + endtag
-    // console.log("deleteSide("+sidetag+")");
-    if (!(sidetag in sidemap)) throw new Error('Assertion failed')
-    let idx = -1
-    let sideobjs = sidemap[sidetag]
-    for (let i = 0; i < sideobjs.length; i++) {
-      let sideobj = sideobjs[i]
-      if (sideobj.vertex0 !== vertex0) continue
-      if (sideobj.vertex1 !== vertex1) continue
-      if (polygonindex !== null) {
-        if (sideobj.polygonindex !== polygonindex) continue
-      }
-      idx = i
-      break
-    }
-    if (idx < 0) throw new Error('Assertion failed')
-    sideobjs.splice(idx, 1)
-    if (sideobjs.length === 0) {
-      delete sidemap[sidetag]
-    }
-    idx = vertextag2sidestart[starttag].indexOf(sidetag)
-    if (idx < 0) throw new Error('Assertion failed')
-    vertextag2sidestart[starttag].splice(idx, 1)
-    if (vertextag2sidestart[starttag].length === 0) {
-      delete vertextag2sidestart[starttag]
-    }
-  
-    idx = vertextag2sideend[endtag].indexOf(sidetag)
-    if (idx < 0) throw new Error('Assertion failed')
-    vertextag2sideend[endtag].splice(idx, 1)
-    if (vertextag2sideend[endtag].length === 0) {
-      delete vertextag2sideend[endtag]
-    }
+  else if (Math.abs(a._y - b._y) > 0.00000001) {
+      return true;
   }
+  else if (Math.abs(a._z - b._z) > 0.00000001) {
+      return true;
+  }
+  return false;
+}
+
+
+const buildNeighborAndEdgeList = function(polygons) {
+ 
+  var edgeList = [];
+  var neighbors = {};
+  var fixedEdges = {};
   
-  /*
-       fixTJunctions:
+  for (var i = 0; i < polygons.length; i++) {
+    // how many vertices in this polygon?
+    var poly = polygons[i];
+    var len = poly.vertices.length;
+    if (len < 3)
+        console.log("Degenerate Poly!!!!");
+    // do rounding of all vertex positions
+    for (var m = 0; m < len; m++) {
+        var vert = poly.vertices[m];
+        vert.pos._x = parseFloat(vert.pos._x.toPrecision(9));
+        vert.pos._y = parseFloat(vert.pos._y.toPrecision(9));
+        vert.pos._z = parseFloat(vert.pos._z.toPrecision(9));
+    }
+
+ 
+
+    for (var j = 0; j < poly.vertices.length - 1; j++) {
+    
+        var edge = {};
+        edge.u = poly.vertices[j].pos;
+        edge.v = poly.vertices[j+1].pos;
+        // console.log('( ' + edge.u + ', ' + edge.v + ' )');
+        edge.face = i;
+
+        // console.log(edge.u);
+
+        if (!([edge.u._x,edge.u._y,edge.u._z,edge.v._x,edge.v._y,edge.v._z] in neighbors))
+            neighbors[[edge.u._x,edge.u._y,edge.u._z,edge.v._x,edge.v._y,edge.v._z]] = [];
+
+        fixedEdges[[edge.u._x,edge.u._y,edge.u._z,edge.v._x,edge.v._y,edge.v._z]] = [];
+
+        neighbors[[edge.u._x,edge.u._y,edge.u._z,edge.v._x,edge.v._y,edge.v._z]].push(edge);
+
+        edgeList.push(edge);
+    }
+    // add in the last edge that closes the polygon
+    var edge = {};
+    edge.u = poly.vertices[poly.vertices.length - 1].pos;
+    edge.v = poly.vertices[0].pos;
+    // console.log('( ' + edge.u + ', ' + edge.v + ' )');
+    edge.face = i;
+    if (!([edge.u._x,edge.u._y,edge.u._z,edge.v._x,edge.v._y,edge.v._z] in neighbors)) {
+        neighbors[[edge.u._x,edge.u._y,edge.u._z,edge.v._x,edge.v._y,edge.v._z]] = [];
+    }
+
+    fixedEdges[[edge.u._x,
+                edge.u._y,
+                edge.u._z,
+                edge.v._x,
+                edge.v._y,
+                edge.v._z]] = [];
+
+    neighbors[[edge.u._x,
+               edge.u._y,
+               edge.u._z,
+               edge.v._x,
+               edge.v._y,
+               edge.v._z]].push(edge);
+
+    // console.log([edge.u._x,edge.u._y,edge.u._z,edge.v._x,edge.v._y,edge.v._z].toString());
+
+    edgeList.push(edge);
+
+    // console.log("***** end of a polygon: ", i);
+
+  }
+  return {
+    edgeList: edgeList,
+    neighbors: neighbors,
+    fixedEdges: fixedEdges
+  }
+
+}
+
+const solidifyMesh = function (csgObject) {
+  console.log("solidifyMesh")
+  // what happens if I round off all the numbers first?
+
+  // this will take the CSG model, sort of convert it to a half-edge structure,
+  // find holes and non-manifold edges and gaps, and try to fix what it can,
+  // then return to the regular CSG model structure.
+
+  // go through polygons
+
+  var polygons = csgObject.polygons
+  const result = buildNeighborAndEdgeList(polygons)
+  console.log("solidifyMesh", result);
+
+  var edgeList = result.edgeList;
+  var neighbors = result.neighbors;
+  var fixedEdges = result.fixedEdges;
+
   
-       Suppose we have two polygons ACDB and EDGF:
+  // go through hedge list
+
+  var unPairedEdges = [];
+  var multiPairedEdges = [];
+  var startsWith = {};
+  var endsWith = {};
+  var pairCount = 0;
+
   
-        A-----B
-        |     |
-        |     E--F
-        |     |  |
-        C-----D--G
-  
-       Note that vertex E forms a T-junction on the side BD. In this case some STL slicers will complain
-       that the solid is not watertight. This is because the watertightness check is done by checking if
-       each side DE is matched by another side ED.
-  
-       This function will return a new solid with ACDB replaced by ACDEB
-  
-       Note that this can create polygons that are slightly non-convex (due to rounding errors). Therefore the result should
-       not be used for further CSG operations!
-  */
-  const fixTJunctions = function (fromPolygons, csg) {
-    csg = csg.canonicalized()
-    let sidemap = {}
-  
-    // STEP 1
-    for (let polygonindex = 0; polygonindex < csg.polygons.length; polygonindex++) {
-      let polygon = csg.polygons[polygonindex]
-      let numvertices = polygon.vertices.length
-      // should be true
-      if (numvertices >= 3) {
-        let vertex = polygon.vertices[0]
-        let vertextag = vertex.getTag()
-        for (let vertexindex = 0; vertexindex < numvertices; vertexindex++) {
-          let nextvertexindex = vertexindex + 1
-          if (nextvertexindex === numvertices) nextvertexindex = 0
-          let nextvertex = polygon.vertices[nextvertexindex]
-          let nextvertextag = nextvertex.getTag()
-          let sidetag = vertextag + '/' + nextvertextag
-          let reversesidetag = nextvertextag + '/' + vertextag
-          if (reversesidetag in sidemap) {
-            // this side matches the same side in another polygon. Remove from sidemap:
-            let ar = sidemap[reversesidetag]
-            ar.splice(-1, 1)
-            if (ar.length === 0) {
-              delete sidemap[reversesidetag]
-            }
-          } else {
-            let sideobj = {
-              vertex0: vertex,
-              vertex1: nextvertex,
-              polygonindex: polygonindex
-            }
-            if (!(sidetag in sidemap)) {
-              sidemap[sidetag] = [sideobj]
-            } else {
-              sidemap[sidetag].push(sideobj)
-            }
+
+  for (var i = 0; i < edgeList.length; i++) {
+
+      var edge = edgeList[i];
+      var numberOfMes = neighbors[[edge.u._x,edge.u._y,edge.u._z,edge.v._x,edge.v._y,edge.v._z]].length;
+
+      if (numberOfMes == 1) {
+          var numberOfYous = 0
+          if (neighbors[[edge.v._x,edge.v._y,edge.v._z,edge.u._x,edge.u._y,edge.u._z]]) {
+              numberOfYous = neighbors[[edge.v._x,edge.v._y,edge.v._z,edge.u._x,edge.u._y,edge.u._z]].length;
           }
-          vertex = nextvertex
-          vertextag = nextvertextag
-        }
+         
+          if (numberOfYous > 1) {
+              // console.log("copies of opposite edge:", numberOfYous);
+              multiPairedEdges.push(edge);
+
+          }
+
+          if (numberOfYous == 1) {
+              pairCount++;
+              edge.opp = neighbors[[edge.v._x,edge.v._y,edge.v._z,edge.u._x,edge.u._y,edge.u._z]][0];
+              neighbors[[edge.v._x,edge.v._y,edge.v._z,edge.u._x,edge.u._y,edge.u._z]][0].opp = edge;
+              // console.log("found a pair!:" + edge.face + '*****' + edge.opp);
+              continue;
+          }
       }
+
+      else {
+        
+        multiPairedEdges.push(edge);
+      }
+     
+      unPairedEdges.push(edge);
+      if (!([edge.u._x,edge.u._y,edge.u._z] in startsWith))
+          startsWith[[edge.u._x,edge.u._y,edge.u._z]] = [];
+      if (!([edge.v._x,edge.v._y,edge.v._z] in endsWith))
+          endsWith[[edge.v._x,edge.v._y,edge.v._z]] = [];
+
+      startsWith[[edge.u._x,edge.u._y,edge.u._z]].push(edge);
+      endsWith[[edge.v._x,edge.v._y,edge.v._z]].push(edge);
+
+
+
     }
-    // STEP 2
-    // now sidemap contains 'unmatched' sides
-    // i.e. side AB in one polygon does not have a matching side BA in another polygon
-    let vertextag2sidestart = {}
-    let vertextag2sideend = {}
-    let sidestocheck = {}
-    let sidemapisempty = true
-    for (let sidetag in sidemap) {
-      sidemapisempty = false
-      sidestocheck[sidetag] = true
-      sidemap[sidetag].map(function (sideobj) {
-        let starttag = sideobj.vertex0.getTag()
-        let endtag = sideobj.vertex1.getTag()
-        if (starttag in vertextag2sidestart) {
-          vertextag2sidestart[starttag].push(sidetag)
-        } else {
-          vertextag2sidestart[starttag] = [sidetag]
-        }
-        if (endtag in vertextag2sideend) {
-          vertextag2sideend[endtag].push(sidetag)
-        } else {
-          vertextag2sideend[endtag] = [sidetag]
-        }
-      })
-    }
-  
-    // STEP 3 : if sidemap is not empty
-    if (!sidemapisempty) {
-      // make a copy of the polygons array, since we are going to modify it:
-      let polygons = csg.polygons.slice(0)
-      while (true) {
-        let sidemapisempty = true
-        for (let sidetag in sidemap) {
-          sidemapisempty = false
-          sidestocheck[sidetag] = true
-        }
-        if (sidemapisempty) break
-        let donesomething = false
-        while (true) {
-          let sidetagtocheck = null
-          for (let sidetag in sidestocheck) {
-            sidetagtocheck = sidetag
-            break // FIXME  : say what now ?
+
+  // this.polygons = newpolys;
+  console.log("paired, unpaired, multiply paired edges: " +  pairCount + "," + unPairedEdges.length + "," + multiPairedEdges.length);
+
+
+
+  let data = {
+    polygons: polygons, 
+    unPairedEdges: unPairedEdges, 
+    neighbors: neighbors, 
+    startsWith: startsWith, 
+    endsWith: endsWith, 
+    fixedEdges: fixedEdges, 
+    fixCount: 0
+  }
+
+  // go through unpaired list
+  // for each edge, look for another edge that is || and close (close?).  If it shares a vertex great, but it won't always.
+  // for a candidate "match", check all four vertices to see if they are on the line of the other edge, and add a vertex 
+  // to the polygon (in the right place in the list, and check that it lies on the line of the edge).  We'll try this and see what happens.
+  console.log("before fix", data)
+  data = fixUnpairedEdges(data);
+  console.log("after first fix", data)
+  if (data.fixCount) console.log("number of edges fixed:",data.fixCount);
+
+  let fixIterations = 0
+  while (data.unPairedEdges.length > 0) {
+      // console.log("more work to do!");
+      if (fixIterations++ > 3) {
+        break;
+      }
+
+      var stillUnpaired = [];
+      for (var iu = 0; iu< data.unPairedEdges.length; iu++) {
+          var e = data.unPairedEdges[iu];
+          if (data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].length) {
+              continue;
           }
-          if (sidetagtocheck === null) break // sidestocheck is empty, we're done!
-          let donewithside = true
-          if (sidetagtocheck in sidemap) {
-            let sideobjs = sidemap[sidetagtocheck]
-            if (sideobjs.length === 0) throw new Error('Assertion failed')
-            let sideobj = sideobjs[0]
-            for (let directionindex = 0; directionindex < 2; directionindex++) {
-              let startvertex = (directionindex === 0) ? sideobj.vertex0 : sideobj.vertex1
-              let endvertex = (directionindex === 0) ? sideobj.vertex1 : sideobj.vertex0
-              let startvertextag = startvertex.getTag()
-              let endvertextag = endvertex.getTag()
-              let matchingsides = []
-              if (directionindex === 0) {
-                if (startvertextag in vertextag2sideend) {
-                  matchingsides = vertextag2sideend[startvertextag]
-                }
-              } else {
-                if (startvertextag in vertextag2sidestart) {
-                  matchingsides = vertextag2sidestart[startvertextag]
-                }
-              }
-              for (let matchingsideindex = 0; matchingsideindex < matchingsides.length; matchingsideindex++) {
-                let matchingsidetag = matchingsides[matchingsideindex]
-                let matchingside = sidemap[matchingsidetag][0]
-                let matchingsidestartvertex = (directionindex === 0) ? matchingside.vertex0 : matchingside.vertex1
-                let matchingsideendvertex = (directionindex === 0) ? matchingside.vertex1 : matchingside.vertex0
-                let matchingsidestartvertextag = matchingsidestartvertex.getTag()
-                let matchingsideendvertextag = matchingsideendvertex.getTag()
-                if (matchingsideendvertextag !== startvertextag) throw new Error('Assertion failed')
-                if (matchingsidestartvertextag === endvertextag) {
-                  // matchingside cancels sidetagtocheck
-                  deleteSide(sidemap, vertextag2sidestart, vertextag2sideend, startvertex, endvertex, null)
-                  deleteSide(sidemap, vertextag2sidestart, vertextag2sideend, endvertex, startvertex, null)
-                  donewithside = false
-                  directionindex = 2 // skip reverse direction check
-                  donesomething = true
-                  break
-                } else {
-                  let startpos = startvertex.pos
-                  let endpos = endvertex.pos
-                  let checkpos = matchingsidestartvertex.pos
-                  let direction = checkpos.minus(startpos)
-                  // Now we need to check if endpos is on the line startpos-checkpos:
-                  let t = endpos.minus(startpos).dot(direction) / direction.dot(direction)
-                  if ((t > 0) && (t < 1)) {
-                    let closestpoint = startpos.plus(direction.times(t))
-                    let distancesquared = closestpoint.distanceToSquared(endpos)
-                    if (distancesquared < (EPS * EPS)) {
-                      // Yes it's a t-junction! We need to split matchingside in two:
-                      let polygonindex = matchingside.polygonindex
-                      let polygon = polygons[polygonindex]
-                      // find the index of startvertextag in polygon:
-                      let insertionvertextag = matchingside.vertex1.getTag()
-                      let insertionvertextagindex = -1
-                      for (let i = 0; i < polygon.vertices.length; i++) {
-                        if (polygon.vertices[i].getTag() === insertionvertextag) {
-                          insertionvertextagindex = i
-                          break
+
+          stillUnpaired.push(e);
+
+      }
+      console.log("Still unpaired:", stillUnpaired.length, "old unpaired", data.unPairedEdges)
+      data.unPairedEdges = stillUnpaired
+
+      data = fixUnpairedEdges(data);
+      console.log("after " + fixIterations +  " pass fix", data)
+      if (data.fixCount) {
+        console.log("pass "  + fixIterations +  " edges fixed:", data.fixCount);
+      }
+
+  }
+
+  return polygons
+}
+
+const collinear =  function(a,b,c,threshold) {
+  var CSG = CSGAPI; // Not ideal.  Having trouble adding require statement after being minified
+
+
+  // return true if a,b,and c are all on the same line.
+  var e1 = new CSG.Vector3D(a._x - b._x, a._y - b._y, a._z - b._z);
+  var e2 = new CSG.Vector3D(b._x - c._x, b._y - c._y, b._z - c._z);
+
+  var c = e1.cross(e2);
+
+  if (Math.abs(c._x) < threshold && Math.abs(c._y) < threshold && Math.abs(c._z) < threshold)
+      return true;
+
+  return false;
+
+}
+
+const  within = function(a, b, c) {
+  // return true if c is within the range of a and b
+  if (a.x != b.x)
+      return ((a.x >= c.x && c.x >= b.x) || (a.x <= c.x && c.x <= b.x));
+  else  if (a.y != b.y)
+     return ((a.y >= c.y && c.y >= b.y) || (a.y <= c.y && c.y <= b.y));
+  else  if (a.z != b.z)
+     return ((a.z >= c.z && c.z >= b.z) || (a.z <= c.z && c.z <= b.z));
+}
+const isOn = function(a, b, c, threshold) {
+  // return true if and only if the point c intersects the segment between a and b.
+  // threshold is used to allow "close enough" matches for rounding errons.
+
+  // first check if it is in the right area
+  // console.log("within:" + CSG.within(a,b,c) + '  collinear:' + CSG.collinear(a,b,c,threshold));
+  return (within(a,b,c) && collinear(a,b,c,threshold));
+}
+
+
+const fixUnpairedEdges = function(data) {
+     
+var CSG = CSGAPI; // Not ideal.  Having trouble adding require statement after being minified
+var eFinished = true;
+var timesThrough = 0;
+
+for (var i = 0; i < data.unPairedEdges.length; i++) {
+
+    if (!eFinished) {
+        timesThrough++;
+        if (timesThrough < 100) {
+            i--;
+        }
+        else  {
+            console.log("Stopping working on this side.  I think it is busted.")
+            timesThrough = 0;
+            eFinished = true;
+        }
+    }
+    else { 
+        timesThrough = 0;
+    }
+ 
+    if (i == data.unPairedEdges.length)
+        break;
+
+    var e = data.unPairedEdges[i];
+    // if (verbose) console.log("working on unPairedEdge: " + i + ', [ ' + e.u._x + ',' + e.u._y + ',' + e.u._z + ' ], [ ' + e.v._x + ',' + e.v._y + ',' + e.v._z + ' ]');
+    if (data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].length > 0) {
+        // if (verbose) console.log("this edge already fixed in previous chain.  Skipping-1.");
+        continue;
+    }
+
+    // console.log("here's how many end with my starting point:");
+    // console.log(endsWith[[e.u._x,e.u._y,e.u._z]].length);
+
+    var addedSomething = false;
+
+    if (!([e.u._x,e.u._y,e.u._z] in data.endsWith)) {
+        console.log("had to add a point to endsWith");
+        data.endsWith[[e.u._x,e.u._y,e.u._z]] = [];
+    }
+
+    for (var j = 0; j < data.endsWith[[e.u._x,e.u._y,e.u._z]].length; j++) {
+        // here are all the rest of the unpaired edges to try matching with
+
+        var b = data.endsWith[[e.u._x,e.u._y,e.u._z]][j];
+
+
+        if (!([b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z] in data.fixedEdges)) {
+            console.log("had to add an edge to fixedEdges");
+            data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]] = [];
+        }
+        if (data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]] && data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].length > 0) {
+            continue;
+        }
+        // if these two edges are the same, just keep going.
+        if (!diffPoints(e.u, b.u) && !(diffPoints(e.v, b.v)))
+            continue;
+
+        // if these two points are pairs, consider them "fixed" and add them to the fixed thing.
+        if (!diffPoints(e.u, b.v) && !(diffPoints(e.v, b.u))) {
+            data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].push(e);
+            data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].push(b);
+            data.fixCount += 2;
+            continue;
+        }
+
+
+        var e1 = new CSG.Vector3D(e.u._x - e.v._x, e.u._y - e.v._y,e.u._z - e.v._z);
+        var e2 = new CSG.Vector3D(b.u._x - b.v._x, b.u._y - b.v._y, b.u._z - b.v._z);
+
+        var c = e1.cross(e2);
+        if (Math.abs(c._x) < 0.00001 && Math.abs(c._y) < 0.00001 && Math.abs(c._z) < 0.00001) {
+            // if (verbose) {
+            //     console.log("parallel b is:" + '[ ' + b.u._x + ',' + b.u._y + ',' + b.u._z + ' ], [ ' + b.v._x + ',' + b.v._y + ',' + b.v._z + ' ]');
+            //     console.log("checkers should all be true:" + diffPoints(b.v,b.u) + diffPoints(e.u, b.u) + diffPoints(e.v,b.u) + CSG.isOn(e.u,e.v,b.u, 0.0001));
+            // }
+            // these two lines are parallel.  Are there any vertices to add?
+
+            // check vertex 1
+            if (diffPoints(e.u, b.u) && diffPoints(e.v,b.u) && isOn(e.u,e.v,b.u, 0.0001)) {
+                // if (verbose) console.log("b.u on segment e: ",j);
+                // b.u is on the segment e.  Add the vertex.
+                var poly = data.polygons[e.face];
+                var verts = poly.vertices;
+                for (var k = 0; k < verts.length; k++) {
+                    if (verts[k].pos._x == e.u._x && verts[k].pos._y == e.u._y && verts[k].pos._z == e.u._z) {
+                        // console.log("foundVert: ", verts[k].pos);
+                        var vec = new CSG.Vector3D(b.u.x,b.u.y,b.u.z);
+                        var nv = new CSG.Vertex(vec);
+                        // but where to add it?  I might need to go after a previously added vertex
+                        // while (verts[k+1] && (verts[k+1].pos.distanceToSquared(verts[k].pos) < vec.distanceToSquared(verts[k].pos))) {
+                        //     console.log("try the next vert.");
+                        //     k++;
+                        // }
+                        // if (vec.distanceToSquared(verts[k].pos) < 0.000000001 || (verts[k+1] && vec.distanceToSquared(verts[k+1]) < 0.00001)) {
+                        //     console.log("actually, don't bother adding vertex.  It is too close to an existing vertex.");
+                        // }
+                        // else {
+                            // console.log("adding a vertex:", [b.u.x,b.u.y,b.u.z]);
+                            addedSomething = true;
+                            verts.splice(k + 1, 0, nv);
+                        // }
+
+                        // now I need to mark these edges as fixed.
+                        if (addedSomething) { 
+                            data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].push(b);
+                            
+                            data.fixCount++;
+                            // e was the long edge.  I took a segment off one side.  is the rest of it paired with another edge in my unpaired edges list?
+                            // actually I want to look in my neighbors list.
+
+                            if (data.neighbors[[e.v._x,e.v._y,e.v._z,b.u._x,b.u._y,b.u._z]]) {
+                                // console.log("found a matching edge to the newly shortened edge");
+
+                                // if (neighbors[[e.v._x,e.v._y,e.v._z,b.u._x,b.u._y,b.u._z]].length > 1)
+                                //     console.log("there are more than one newly matching edge!!!");
+                                var foundEdge = data.neighbors[[e.v._x,e.v._y,e.v._z,b.u._x,b.u._y,b.u._z]][0];
+
+                                data.fixedEdges[[e.v._x,e.v._y,e.v._z,b.u._x,b.u._y,b.u._z]].push(foundEdge);
+
+                                data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].push(b);
+                                data.fixCount += 2;
+
+                                eFinished = true;
+
+                            }
+                            else {
+                                // I haven't fully matched this one and need to keep going.
+                                // I'm going to re-set this edge's U coordinate and run the edge again.
+
+                                e.u = b.u;
+
+                                data.neighbors[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]] = [e];
+                                data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]] = [];
+
+                                if (!([e.u._x,e.u._y,e.u._z] in data.startsWith)) {
+                                    data.startsWith[[e.u._x,e.u._y,e.u._z]] = [];
+                                }
+
+                                if (!([e.u._x,e.u._y,e.u._z] in data.endsWith)){
+                                    data.endsWith[[e.u._x,e.u._y,e.u._z]] = [];
+                                }
+
+                                data.startsWith[[e.u._x,e.u._y,e.u._z]].push(e);
+
+                                data.endsWith[[e.v._x,e.v._y,e.v._z]].push(e);
+
+                                // console.log("this edge isn't finished.  I'll try it again.")
+
+                                eFinished = false;
+                            }
+
+                            break;
                         }
-                      }
-                      if (insertionvertextagindex < 0) throw new Error('Assertion failed')
-                      // split the side by inserting the vertex:
-                      let newvertices = polygon.vertices.slice(0)
-                      newvertices.splice(insertionvertextagindex, 0, endvertex)
-                      let newpolygon = new Polygon(newvertices, polygon.shared /* polygon.plane */)
-  
-                      // calculate plane with differents point
-                      if (isNaN(newpolygon.plane.w)) {
-                        let found = false
-                        let loop = function (callback) {
-                          newpolygon.vertices.forEach(function (item) {
-                            if (found) return
-                            callback(item)
-                          })
-                        }
-  
-                        loop(function (a) {
-                          loop(function (b) {
-                            loop(function (c) {
-                              newpolygon.plane = Plane.fromPoints(a.pos, b.pos, c.pos)
-                              if (!isNaN(newpolygon.plane.w)) {
-                                found = true
-                              }
-                            })
-                          })
-                        })
-                      }
-                      polygons[polygonindex] = newpolygon
-                      // remove the original sides from our maps
-                      // deleteSide(sideobj.vertex0, sideobj.vertex1, null)
-                      deleteSide(sidemap, vertextag2sidestart, vertextag2sideend, matchingside.vertex0, matchingside.vertex1, polygonindex)
-                      let newsidetag1 = addSide(sidemap, vertextag2sidestart, vertextag2sideend, matchingside.vertex0, endvertex, polygonindex)
-                      let newsidetag2 = addSide(sidemap, vertextag2sidestart, vertextag2sideend, endvertex, matchingside.vertex1, polygonindex)
-                      if (newsidetag1 !== null) sidestocheck[newsidetag1] = true
-                      if (newsidetag2 !== null) sidestocheck[newsidetag2] = true
-                      donewithside = false
-                      directionindex = 2 // skip reverse direction check
-                      donesomething = true
-                      break
-                    } // if(distancesquared < 1e-10)
-                  } // if( (t > 0) && (t < 1) )
-                } // if(endingstidestartvertextag === endvertextag)
-              } // for matchingsideindex
-            } // for directionindex
-          } // if(sidetagtocheck in sidemap)
-          if (donewithside) {
-            delete sidestocheck[sidetagtocheck]
-          }
+                    }
+                }
+            }
         }
-        if (!donesomething) break
-      }
-      let newcsg = fromPolygons(polygons)
-      newcsg.properties = csg.properties
-      newcsg.isCanonicalized = true
-      newcsg.isRetesselated = true
-      csg = newcsg
     }
-  
-    // FIXME : what is even the point of this ???
-    /* sidemapisempty = true
-    for (let sidetag in sidemap) {
-      sidemapisempty = false
-      break
+    if (!addedSomething) {
+        for (var j = 0; j < data.startsWith[[e.v._x,e.v._y,e.v._z]].length; j++) {
+            // if (verbose) console.log("try a backwards match");
+            // here are all the rest of the unpaired edges to try matching with
+            var b = data.startsWith[[e.v._x,e.v._y,e.v._z]][j];
+
+            if (data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].length > 0) {
+                continue;
+            }
+            // if these two edges are the same, just keep going.
+            if (!diffPoints(e.u, b.u) && !(diffPoints(e.v, b.v)))
+                continue;
+
+            // if these two points are pairs, just keep going.
+            if (!diffPoints(e.u, b.v) && !(diffPoints(e.v, b.u))) {
+                data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].push(e);
+                data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].push(b);
+                data.fixCount+=2;
+                continue;
+            }
+
+            var e1 = new CSG.Vector3D(e.u._x - e.v._x, e.u._y - e.v._y,e.u._z - e.v._z);
+            var e2 = new CSG.Vector3D(b.u._x - b.v._x, b.u._y - b.v._y, b.u._z - b.v._z);
+
+            var c = e1.cross(e2);
+            if (Math.abs(c._x) < 0.00001 && Math.abs(c._y) < 0.00001 && Math.abs(c._z) < 0.00001) {
+                // if (verbose) {
+                //     // console.log("found parallel line:", j);
+                //     console.log("parallel b is:" + '[ ' + b.u._x + ',' + b.u._y + ',' + b.u._z + ' ], [ ' + b.v._x + ',' + b.v._y + ',' + b.v._z + ' ]');
+                //     console.log("checkers should all be true:" + diffPoints(e.u, b.v) + diffPoints(e.v,b.v) + CSG.isOn(e.u,e.v,b.v, 0.0001));
+                // }
+                // these two lines are parallel.  Are there any vertices to add?
+
+                // check vertex 2
+                if (diffPoints(e.u, b.v) && diffPoints(e.v,b.v) && isOn(e.u,e.v,b.v, 0.0001)) {
+                    // if (verbose) console.log("backwards: b.v on segment e: ",j);
+                    // b.u is on the segment e.  Add the vertex.
+                    var poly = data.polygons[e.face];
+                    var verts = poly.vertices;
+                    for (var k = 0; k < verts.length; k++) {
+                        if (verts[k].pos._x == e.u._x && verts[k].pos._y == e.u._y && verts[k].pos._z == e.u._z) {
+                            // console.log("foundVert: ", verts[k].pos);
+                            var vec = new CSG.Vector3D(b.v.x,b.v.y,b.v.z);
+                            var nv = new CSG.Vertex(vec);
+                            // but where to add it?  I might need to go after a previously added vertex
+                            // while (verts[k+1] && (verts[k+1].pos.distanceToSquared(verts[k].pos) < vec.distanceToSquared(verts[k].pos))) {
+                            //     console.log("try the next vert.");
+                            //     k++;
+                            // }
+                            // if (vec.distanceToSquared(verts[k].pos) < 0.00001 || (verts[k+1] && vec.distanceToSquared(verts[k+1]) < 0.00001)) {
+                            //     console.log("actually, don't bother adding vertex.  It is too close to an existing vertex.");
+                            // }
+                            // else {
+                                // console.log("backwards adding a vertex:", [b.v.x,b.v.y,b.v.z]);
+                                addedSomething = true;
+                                verts.splice(k + 1, 0, nv);
+                            // }
+
+                            // now I need to mark these edges as fixed.
+                          
+                            data.fixedEdges[[b.u._x,b.u._y,b.u._z,b.v._x,b.v._y,b.v._z]].push(b);
+                            data.fixCount++;
+                            // e was the long edge.  I took a segment off one side.  is the rest of it paired with another edge in my unpaired edges list?
+                            // actually I want to look in my neighbors list.
+
+                            if (data.neighbors[[b.v._x,b.v._y,b.v._z,e.u._x,e.u._y,e.u._z]]) {
+                                // console.log("backwards found a matching edge to the newly shortened edge");
+
+                                if (data.neighbors[[b.v._x,b.v._y,b.v._z,e.u._x,e.u._y,e.u._z]].length > 1)
+                                    // console.log("there are more than one newly matching edge!!!");
+                                var foundEdge = data.neighbors[[b.v._x,b.v._y,b.v._z,e.u._x,e.u._y,e.u._z]][0];
+
+                                data.fixedEdges[[b.v._x,b.v._y,b.v._z,e.u._x,e.u._y,e.u._z]].push(foundEdge);
+
+                                data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]].push(b);
+                                data.fixCount += 2;
+
+                                eFinished = true;
+
+                            }
+                            else {
+                                // I haven't fully matched this one and need to keep going.
+                                // I'm going to re-set this edge's U coordinate and run the edge again.
+
+                                e.v = b.v;
+                                data.neighbors[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]] = [e];
+                                data.fixedEdges[[e.u._x,e.u._y,e.u._z,e.v._x,e.v._y,e.v._z]] = [];
+                                if (!([e.v._x,e.v._y,e.v._z] in data.endsWith)) {
+                                    data.endsWith[[e.v._x,e.v._y,e.v._z]] = [];
+                                }
+
+                                data.endsWith[[e.v._x,e.v._y,e.v._z]].push(e);
+
+                                data.startsWith[[e.u._x,e.u._y,e.u._z]].push(e);
+
+                                // console.log("this edge isn't finished.  I'll try it again.")
+
+                                eFinished = false;
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }    
+    if (!eFinished && !addedSomething) {
+        // even though this edge isn't finished, I didn't add anything through this round.  Stop trying.
+        eFinished = true;
     }
-    */
-  
-    return csg
-  }
-  
-  module.exports = fixTJunctions
-  
-  },{"../constants":50,"../math/Plane":56,"../math/Polygon3":58}],75:[function(require,module,exports){
+}
+
+
+
+
+// console.log("from inside fixUnpaired function, fixCount is:", fixCount);
+//return fixCount;
+
+  return data
+
+}
+
+
+
+/*
+     fixTJunctions:
+
+     Suppose we have two polygons ACDB and EDGF:
+
+      A-----B
+      |     |
+      |     E--F
+      |     |  |
+      C-----D--G
+
+     Note that vertex E forms a T-junction on the side BD. In this case some STL slicers will complain
+     that the solid is not watertight. This is because the watertightness check is done by checking if
+     each side DE is matched by another side ED.
+
+     This function will return a new solid with ACDB replaced by ACDEB
+
+     Note that this can create polygons that are slightly non-convex (due to rounding errors). Therefore the result should
+     not be used for further CSG operations!
+*/
+const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
+  // set the CSG variable for this module.  Require is tricky given this is
+  // already minimized 
+  CSGAPI = csgAPI
+
+  let newPolygons =  solidifyMesh(csgObject.canonicalized())
+  let repairCSG =  csgFromPolygons(newPolygons)
+
+  return repairCSG
+
+}
+ 
+ 
+ 
+
+  module.exports = {fixTJunctions, solidifyMesh};
+
+
+},{"../constants":50,"../math/Vector3D":56,"../math/Polygon3":58}],75:[function(require,module,exports){
   const FuzzyCSGFactory = require('../FuzzyFactory3d')
   const reTesselateCoplanarPolygons = require('../math/reTesselateCoplanarPolygons')
   const {fromPolygons} = require('../CSGFactories')
@@ -47438,14 +47709,14 @@ const localCache = {}
       }
     },
   
-    currentObjectsToBlob: function currentObjectsToBlob() {
+    currentObjectsToBlob: function currentObjectsToBlob(format="stl") {
       var startpoint = this.selectStartPoint;
       var endpoint = this.selectEndPoint;
       if (startpoint > endpoint) {
         startpoint = this.selectEndPoint;endpoint = this.selectStartPoint;
       }
   
-      var format = this.selectedFormat();
+    
   
       // if output format is jscad or js , use that, otherwise use currentObjects
       var objects = format === 'jscad' || format === 'js' ? this.script : this.currentObjects.slice(startpoint, endpoint + 1);
@@ -48245,7 +48516,8 @@ const localCache = {}
           var vertextag = vertex.getTag();
           var vertexindex = vertexTag2Index[vertextag];
           var prevcolor = colors[vertexindex];
-          if (smoothlighting && vertexTag2Index[vertextag] && prevcolor[0] === color[0] && prevcolor[1] === color[1] && prevcolor[2] === color[2]) {
+          const hasColorChanged = (prevcolor && prevcolor[0] === color[0] && prevcolor[1] === color[1] && prevcolor[2] === color[2])
+          if (smoothlighting && vertexTag2Index[vertextag] && !hasColorChanged ) {
             vertexindex = vertexTag2Index[vertextag];
           } else {
             vertexindex = vertices.length;

@@ -63,7 +63,12 @@ Housekeeping: Please use lowercase for all filenames and dashes for all filename
 * Copy and paste into a markdown file
 * For step-by-step tutorials, follow the formatting in heart-shape.md
 * List your project by adding a codecard to tutorials.md or examples.md
-* To test your new example 
+
+* To live test your new file
+``` yarn start ``
+```http://localhost:3232/index.html#tutorial:/examples/YOUR-MD-FILE.md```
+
+* OR to build your new example and have it appear on the dashboard
 ```yarn checkdocs && yarn start```
 * When the browser loads, hard refresh 
 

@@ -8,7 +8,7 @@ Snowflake's are special because they have symmetry.
 This means we can make one arm and copy it to make the whole snowflake!
 
 ## Step 2 @fullscreen
-To get started add an ``||operators:placeOnGround||`` block and a ``||shapes:cube||`` width width: 5, depth: 3 and height: 40. This will be the center of our snowflake's arm.
+To get started add an ``||operators:place on ground||`` block and a ``||shapes:cube||`` width width: 5, depth: 3 and height: 40. This will be the center of our snowflake's arm.
 
 ```blocks
 operators.placeOnGround(function () {
@@ -125,7 +125,7 @@ operators.turn(90, RotateAxis.X, function () {
 ## Step 7
 Let's put a hexagon in the center to make the snowflake a bit stronger.
 
-Add an ``||operators:addShapes||`` block around all the other blocks. 
+Add an ``||operators:add shapes||`` block around all the other blocks. 
 
 Place a ``||shapes:polygon||`` block inside and set the sides to 6, radius to 12 and height to 3.
 
@@ -158,7 +158,7 @@ operators.addShapes(function () {
 ## Step 8
 Let's make a window in the center of the snowflake.
 
-Add a ``||operators:subtractShapes||`` block around all the other blocks. 
+Add a ``||operators:subtract shapes||`` block around all the other blocks. 
 
 Place a ``||shapes:polygon||`` block inside and set the sides to 6, radius to 7 and height to 3.
 
@@ -237,7 +237,7 @@ operators.move(50, Axis.Y, function () {
 
 
 ## Step 9
-To finish everything up ready to 3D Print, wrap everything in an ``||operators:placeOnGround||`` and an ``||operators:addShapes||`` block. This makes sure everything is lying flat and is properly joined together.
+To finish everything up ready to 3D Print, wrap everything in an ``||operators:place on ground||`` and an ``||operators:addShapes||`` block. This makes sure everything is lying flat and is properly joined together.
 
 And that's it, you are done!
 
