@@ -139,7 +139,9 @@ function addBuildBeeScripts() {
                     if (event.data.url) {
                         const hostname = new URL(event.data.url).hostname;
                         if (hostname === "app.buildbee.com") {
-                            window.location.href= event.data.url + "&utm_source=makecode&utm_medium=upload-to-buildbee&utm_campaign=codeeditor&file_name=" + fileName
+                            window.open(event.data.url + "&utm_source=makecode&utm_medium=upload-to-buildbee&utm_campaign=codeeditor&file_name=" + fileName, "_blank")
+
+                            
                         }
                     }
                 }
