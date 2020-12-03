@@ -74,7 +74,7 @@
 
 @sideBarWidth: 360px;
 @simulatorWidth: 360px;
-/*@simulatorHeight: 400px; this is set in the style.less*/ 
+@simulatorHeight: 400px; /*this is set in the style.less*/ 
 @simulatorWidthSmall: 360px;
 
 /*-------------------

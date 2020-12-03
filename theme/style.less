@@ -175,6 +175,27 @@ img[src*='#center'] {
     
 }
 
+
+#filelist .simtoolbar {
+    z-index: 99;
+    pointer-events: none; // prevent the toolbar from eating clicks on the parameters button
+    button {
+        pointer-events: all;
+    }
+}
+@media only screen and (max-width: 991px) {
+#root:not(.fullscreensim) #filelist .simtoolbar {
+    // floating simulator    
+    position: absolute;
+        right: 0px;
+        bottom: 10px;
+        margin: 0px;
+}
+
+}
+
+
+
 /* Mobile */
 @media only screen and (max-width: @largestMobileScreen) {
 
@@ -182,18 +203,27 @@ img[src*='#center'] {
         display: flex;
         flex-direction: column;
     }
-    .simtoolbar {
-        z-index: 99;
-    }
-    .ui.embed { // jscad editor dimension on mobile
-        position: fixed;
-        padding-bottom: 12px !important;
-        bottom: 0px;
-        min-height: 400px !important;
-        transform: translate(-120px,80px) scale(.5);
+ 
+    .editorFloat {
+        .ui.embed  { // jscad editor dimension on mobile
+            /*top: mobile view for simulator */ 
+         
+            position: fixed;
+            padding-bottom: 12px !important;
+            bottom: 2em;
+            min-height: 400px !important;
+         
+            min-width: 600px !important;
+            transform: translate(-300px, 60px) scale(0.5);
+         
+        }
+      
     }
     .fullscreensim {
+
         .ui.embed { // jscad editor dimension on mobile
+             /*top: full screen simulator (sharing, etc) */ 
+         
             position: fixed;
             padding-bottom: 12px !important;
             bottom: 0px;
@@ -213,13 +243,39 @@ img[src*='#center'] {
     .simtoolbar {
         z-index: 99;
     }
-    .ui.embed { // jscad editor dimensions on tablet
-        position: fixed;
-        bottom: 0px;
-        padding-bottom: 12px !important;
-        margin-left: 42px !important;
-        min-height: 400px !important;
-        transform: translate(-120px,80px) scale(.5);
+    
+    .editorFloat { 
+        .ui.embed {
+            /*top: mobile view for simulator */ 
+            position: fixed;
+            bottom: 0px;
+            padding-bottom: 12px !important;
+            margin-left: 42px !important;
+            min-height: 400px !important;
+         
+            min-width: 600px !important;
+            transform: translate(-300px, 60px) scale(0.5);
+         
+            //transform: translate(-120px,80px) scale(.5);
+        }
+    
+    }
+    /** sharing page*/
+    .simView .simframe.ui.embed {
+        transform: unset;
+    }
+
+    .fullscreensim {
+        .ui.embed { // jscad editor dimensions on tablet
+            /*top: full screen and sharing*/
+            position: fixed;
+            bottom: 0px;
+            padding-bottom: 12px !important;
+            margin-left: 42px !important;
+            min-height: 400px !important;
+            
+            transform: unset;
+        }
     }
 }
 
