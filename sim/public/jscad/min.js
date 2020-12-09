@@ -21,6 +21,12 @@
  *  - PERF: Shave 40ms off translate by not mapping over the vertexes
  *  - Disable coloring of cuts, by commenting out setColor in the difference operator
  *  - Replace fixTJunctions as it was causing more damage than it was repairing
+ * -  PERF: CSGToMeshes was allocating solidFaceColor for every polygon
+
+ * - Things we've learned when working with large data:  
+      map/foreach slow over a large array (sphere with many faces)  
+      "instanceof" slow compared to "typeof" as it checks the prototype  
+      "In" a hashtable is slow.  
 
  * NOTE this is based on lightgl - docs are here
  * https://evanw.github.io/lightgl.js/docs/mesh.html
@@ -174,7 +180,6 @@
               
               __sharedShapeCache = Object.assign({}, __sharedShapeCache, e.data.shapeCache)
             
-
               onWorkComplete(function(){
         //        console.log("Work complete. setting", data)
                 callback(undefined, data)
@@ -289,7 +294,6 @@
         var data = e.data
 
         if (data.cmd === 'setcache') {
-          
           _workerShapeCache = data.shapeCache || {}
           //console.log("GOT Setcache - cache now: ", Object.keys( _workerShapeCache).length)
         }
@@ -315,7 +319,7 @@
           }
 
           // we're done with the work - call back to the main function
-          self.postMessage({cmd: 'rendered', objects: renderObjects, shapeCache: _workerShapeCache})
+          self.postMessage({cmd: 'rendered', objects: renderObjects, shapeCache: _workerShapeCache})         
         }
       }
     }
@@ -4544,7 +4548,15 @@
    *   fn: 20
    * })
    */
-  function cube (params) {
+   const cube = function (options) {
+     options = options || {}
+ 
+     return shapeCache("cube", options, function() {
+       const cube =  createCube(options)
+       return cube
+     })
+  }
+  function createCube (params) {
     const defaults = {
       size: 1,
       offset: [0, 0, 0],
@@ -4604,7 +4616,7 @@
    * })
    */
 
-const DEBUG_PERF = true
+const DEBUG_PERF = false
 
 const localCache = {}
 
@@ -4817,7 +4829,16 @@ const localCache = {}
    *   fn: 20
    * })
    */
-  function cylinder (params) {
+  const cylinder = function (options) {
+     options = options || {}
+ 
+     return shapeCache("cylinder", options, function() {
+       const cylinder =  createCylinder(options)
+       return cylinder
+     })
+  }
+ 
+  function createCylinder (params) {
     const defaults = {
       r: 1,
       r1: 1,
@@ -11101,6 +11122,7 @@ const localCache = {}
         let _this = node
         if (!node.plane) {
           let bestplane = polygontreenodes[0].getPolygon().plane
+
           node.plane = bestplane
         }
         let frontnodes = []
@@ -48494,10 +48516,12 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
       var smoothlighting = this.options.solid.smooth;
       var polygons = csg.toPolygons();
       var numpolygons = polygons.length;
+      var solidFaceColor = colorBytes(this.options.solid.faceColor); // default color
+  
       for (var j = 0; j < numpolygons; j++) {
         var polygon = polygons[j];
-        var color = colorBytes(this.options.solid.faceColor); // default color
-  
+        var color = solidFaceColor;
+
         if (polygon.shared && polygon.shared.color) {
           color = polygon.shared.color;
         } else if (polygon.color) {
@@ -49254,11 +49278,28 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
         for (var i = 0; i < this.vertices.length; i++) {
           this.normals[i] = new Vector();
         }
+        // PERF - try not to keep allocating arrays over and over again
+        var a = Vector.fromArray([0,0,0])
+        var b = Vector.fromArray([0,0,0])
+        var c = Vector.fromArray([0,0,0])
+
         for (var i = 0; i < this.triangles.length; i++) {
           var t = this.triangles[i];
-          var a = Vector.fromArray(this.vertices[t[0]]);
-          var b = Vector.fromArray(this.vertices[t[1]]);
-          var c = Vector.fromArray(this.vertices[t[2]]);
+          var vertexA = this.vertices[t[0]]
+          a.x = vertexA[0]; 
+          a.y = vertexA[1]; 
+          a.z = vertexA[2]; 
+          
+          var vertexB = this.vertices[t[1]]
+          b.x = vertexB[0]; 
+          b.y = vertexB[1]; 
+          b.z = vertexB[2]; 
+
+          var vertexC = this.vertices[t[2]]
+          c.x = vertexC[0]; 
+          c.y = vertexC[1]; 
+          c.z = vertexC[2]; 
+          
           var normal = b.subtract(a).cross(c.subtract(a)).unit();
           this.normals[t[0]] = this.normals[t[0]].add(normal);
           this.normals[t[1]] = this.normals[t[1]].add(normal);
@@ -49518,16 +49559,31 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
         return new Vector(-this.x, -this.y, -this.z);
       },
       add: function add(v) {
-        if (v instanceof Vector) return new Vector(this.x + v.x, this.y + v.y, this.z + v.z);else return new Vector(this.x + v, this.y + v, this.z + v);
+        if (typeof v === "object") { //instanceof Vector is slow because of the prototype chain check
+          return new Vector(this.x + v.x, this.y + v.y, this.z + v.z);
+        }
+        else {
+          return new Vector(this.x + v, this.y + v, this.z + v);
+        }
       },
       subtract: function subtract(v) {
-        if (v instanceof Vector) return new Vector(this.x - v.x, this.y - v.y, this.z - v.z);else return new Vector(this.x - v, this.y - v, this.z - v);
+        if (typeof v === "object") {
+           return new Vector(this.x - v.x, this.y - v.y, this.z - v.z);
+        }
+        else {
+          return new Vector(this.x - v, this.y - v, this.z - v);
+        }
       },
       multiply: function multiply(v) {
-        if (v instanceof Vector) return new Vector(this.x * v.x, this.y * v.y, this.z * v.z);else return new Vector(this.x * v, this.y * v, this.z * v);
+        if (typeof v === "object") {
+          return new Vector(this.x * v.x, this.y * v.y, this.z * v.z);
+        }
+        else {
+          return new Vector(this.x * v, this.y * v, this.z * v);
+        }
       },
       divide: function divide(v) {
-        if (v instanceof Vector) return new Vector(this.x / v.x, this.y / v.y, this.z / v.z);else return new Vector(this.x / v, this.y / v, this.z / v);
+        if(typeof v === "object") return new Vector(this.x / v.x, this.y / v.y, this.z / v.z);else return new Vector(this.x / v, this.y / v, this.z / v);
       },
       equals: function equals(v) {
         return this.x == v.x && this.y == v.y && this.z == v.z;
@@ -49669,6 +49725,7 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
     Vector.lerp = function (a, b, fraction) {
       return b.subtract(a).multiply(fraction).add(a);
     };
+  
     Vector.fromArray = function (a) {
       return new Vector(a[0], a[1], a[2]);
     };

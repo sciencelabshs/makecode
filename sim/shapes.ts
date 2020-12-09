@@ -109,7 +109,7 @@ namespace pxsim.shapes {
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
-    //% faces.defl=100
+    //% faces.defl=60
     //% weight=90
     //% group="3D Shapes"
     /**
