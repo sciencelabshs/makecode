@@ -6,7 +6,7 @@ async function sendSTLToBuildBee(blob, name) {
        appName: 'PrintWithBuildBeeButton'
     })
     const finalUrl = await BuildBeeUpload({ buffer: arrayBuffer, extension: "stl", progressCallback: (percent)=>{
-        document.getElementById("savedElement").innerHTML = "Saving... " + percent + "%"
+        document.getElementById("savedElement").innerHTML = "Saving... " + parseFloat(percent).toFixed(1) + "%"
     }});
     if (finalUrl) {
         // target='_blank' noopenner noreferrer

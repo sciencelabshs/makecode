@@ -156,6 +156,8 @@
           
           }
           finally {
+            window.postMessage({message: "JSCAD-progress-endSimulatorRender"})
+  
             // make sure we clean up the web worker
             if (worker) {
               worker.terminate()
@@ -189,16 +191,22 @@
           
         }
         worker.onerror = function (e) {
+          window.postMessage({message: "JSCAD-progress-endSimulatorRender"})
+  
           onWorkComplete(function(){
             callback(`Error in line ${e.lineno} : ${e.message}`, undefined)
           })
          
         }
-        
+        // hand the current shape cache to the worker thread
         worker.postMessage({cmd: 'setcache', shapeCache: __sharedShapeCache})
         if (DEBUG_WORKER_PERF) console.time("worker" + workerId)
+        
+        // BREAKPOINTHERE.  Step through to debug the web worker
         worker.postMessage({cmd: 'render', fullurl, source, parameters, options: workerOptions})
       }).catch(error => {
+        window.postMessage({message: "JSCAD-progress-endSimulatorRender"})
+  
         console.error("rebuildSolidsInWorker", this, error)
         callback(error, undefined)
       })
@@ -209,6 +217,8 @@
         return (worker !== null)
       },
       cancel: () => {
+        window.postMessage({message: "JSCAD-progress-endSimulatorRender"})
+  
         if (worker) {
           worker.terminate()
           worker = null;
@@ -47587,6 +47597,7 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
       // console.log('setJsCad', script, filename)
       if (!filename) filename = 'openjscad.jscad';
   
+      window.postMessage({message: "JSCAD-progress-beginSimulatorRender"})
       var prevParamValues = {};
       // this will fail without existing form
       try {
