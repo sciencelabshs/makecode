@@ -7369,11 +7369,15 @@ const localCache = {}
           return this.lookuptable[hash]
         } else {
           let object = defaultObject
-          let hashparts = els.map(function (el) {
+          let hashparts = []
+          for (let i =0; i < els.length; i++) {
+            let el = els[i]
             let q0 = Math.floor(el * multiplier)
             let q1 = q0 + 1
-            return ['' + q0 + '/', '' + q1 + '/']
-          })
+            hashparts.push( ['' + q0 + '/', '' + q1 + '/'])
+          }
+           
+       
           let numelements = els.length
           let numhashes = 1 << numelements
           for (let hashmask = 0; hashmask < numhashes; ++hashmask) {
