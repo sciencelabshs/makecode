@@ -62,7 +62,7 @@
       $(".spinner").addClass("d-hidden");
     }
   }
-  function receiveMessage(e) {
+  function receiveMessage(event) {
       if (event.data) {
             /** progress messages from min.js **/
             if (event.data.message === "JSCAD-progress-beginSimulatorRender") {
