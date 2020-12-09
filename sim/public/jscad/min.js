@@ -7379,10 +7379,12 @@ const localCache = {}
           for (let hashmask = 0; hashmask < numhashes; ++hashmask) {
             let hashmaskShifted = hashmask
             hash = ''
-            hashparts.forEach(function (hashpart) {
+            for (let i =0; i < hashparts.length; i++) {
+              let hashpart = hashparts[i]
               hash += hashpart[hashmaskShifted & 1]
               hashmaskShifted >>= 1
-            })
+            }
+           
             this.lookuptable[hash] = object
           }
           return object
