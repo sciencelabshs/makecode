@@ -198,7 +198,10 @@
         worker.postMessage({cmd: 'setcache', shapeCache: __sharedShapeCache})
         if (DEBUG_WORKER_PERF) console.time("worker" + workerId)
         worker.postMessage({cmd: 'render', fullurl, source, parameters, options: workerOptions})
-      }).catch(error => callback(error, undefined))
+      }).catch(error => {
+        console.error("rebuildSolidsInWorker", this, error)
+        callback(error, undefined)
+      })
   
     // have we been asked to stop our work?
     return {
@@ -298,6 +301,7 @@
           //console.log("GOT Setcache - cache now: ", Object.keys( _workerShapeCache).length)
         }
         if (data.cmd === 'render') {
+          try {
           const {source, parameters, options} = e.data
           const include = x => x
           const globals = options.implicitGlobals ? { oscad } : {}
@@ -317,9 +321,14 @@
           if (renderObjects.length === 0) {
             throw new Error('The JSCAD script must return one or more CSG or CAG solids.')
           }
+        
 
           // we're done with the work - call back to the main function
           self.postMessage({cmd: 'rendered', objects: renderObjects, shapeCache: _workerShapeCache})         
+          }
+          catch (err) {
+            console.error("ERROR", err, e.data)
+          }
         }
       }
     }
@@ -7340,64 +7349,46 @@ const localCache = {}
 
   var PERF_DISABLE_CACHE = true
   var hashparts = [] // PERF - prevent reallocation 
-
   FuzzyFactory.prototype = {
-      // let obj = f.lookupOrCreate([el1, el2, el3], function(elements) {/* create the new object */});
-      // Performs a fuzzy lookup of the object with the specified elements.
-      // If found, returns the existing object
-      // If not found, calls the supplied callback function which should create a new object with
-      // the specified properties. This object is inserted in the lookup database.
+
+ // let obj = f.lookupOrCreate([el1, el2, el3], function(elements) {/* create the new object */});
+    // Performs a fuzzy lookup of the object with the specified elements.
+    // If found, returns the existing object
+    // If not found, calls the supplied callback function which should create a new object with
+    // the specified properties. This object is inserted in the lookup database.
+
+   
     lookupOrCreate: function (els, defaultObject) {
-
-    
-      if (PERF_DISABLE_CACHE) {
-        // special switch to just skip caching
-        // use this for testing purposes
-        let object = defaultObject //creatorCallback(els)
-        return object
-      }
-      
-      
-      let hash = ''
-      
-      let multiplier = this.multiplier
-      for (i = 0; i < els.length; i++) {
-        let valueQuantized = Math.round(els[i] * multiplier)
-        hash += valueQuantized + '/'
-      }
-    
-      if (this.lookuptable[hash] !== undefined) {
-        this.lookupTableCacheHits++;
-        return this.lookuptable[hash]
-      } else {
-        let object =  defaultObject//creatorCallback(els)
-
-        hashparts.length = 0 
-        // foreach element in the array... 
-        for (let i = 0; i < els.length; i++) {
-          let q0 = Math.floor(els[i] * multiplier)
-          let q1 = q0 + 1
-          hashparts.push( ['' + q0 + '/', '' + q1 + '/'])
+        let hash = ''
+        let multiplier = this.multiplier
+        for (i = 0; i < els.length; i++) {
+          let valueQuantized = Math.round(els[i] * multiplier)
+          hash += valueQuantized + '/'
         }
-      
-       
-        let numelements = els.length
-        let numhashes = 1 << numelements
-        for (let hashmask = 0; hashmask < numhashes; ++hashmask) {
-          let hashmaskShifted = hashmask
-          hash = ''
-          for (let h = 0; h < hashparts.length; h++) {
-            hash += hashparts[h][hashmaskShifted & 1]
-            hashmaskShifted >>= 1
+        if (this.lookuptable[hash] !== undefined) {
+          return this.lookuptable[hash]
+        } else {
+          let object = defaultObject
+          let hashparts = els.map(function (el) {
+            let q0 = Math.floor(el * multiplier)
+            let q1 = q0 + 1
+            return ['' + q0 + '/', '' + q1 + '/']
+          })
+          let numelements = els.length
+          let numhashes = 1 << numelements
+          for (let hashmask = 0; hashmask < numhashes; ++hashmask) {
+            let hashmaskShifted = hashmask
+            hash = ''
+            hashparts.forEach(function (hashpart) {
+              hash += hashpart[hashmaskShifted & 1]
+              hashmaskShifted >>= 1
+            })
+            this.lookuptable[hash] = object
           }
-          this.lookuptable[hash] = object
-          this.lookupTableLength++
+          return object
         }
-        return object
       }
-    }
   }
-  
   module.exports = FuzzyFactory
   
   },{}],46:[function(require,module,exports){
