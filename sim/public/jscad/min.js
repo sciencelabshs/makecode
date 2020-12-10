@@ -21,6 +21,12 @@
  *  - PERF: Shave 40ms off translate by not mapping over the vertexes
  *  - Disable coloring of cuts, by commenting out setColor in the difference operator
  *  - Replace fixTJunctions as it was causing more damage than it was repairing
+ * -  PERF: CSGToMeshes was allocating solidFaceColor for every polygon
+
+ * - Things we've learned when working with large data:  
+      map/foreach slow over a large array (sphere with many faces)  
+      "instanceof" slow compared to "typeof" as it checks the prototype  
+      "In" a hashtable is slow.  
 
  * NOTE this is based on lightgl - docs are here
  * https://evanw.github.io/lightgl.js/docs/mesh.html
@@ -150,6 +156,8 @@
           
           }
           finally {
+            window.postMessage({message: "JSCAD-progress-endSimulatorRender"})
+  
             // make sure we clean up the web worker
             if (worker) {
               worker.terminate()
@@ -174,7 +182,6 @@
               
               __sharedShapeCache = Object.assign({}, __sharedShapeCache, e.data.shapeCache)
             
-
               onWorkComplete(function(){
         //        console.log("Work complete. setting", data)
                 callback(undefined, data)
@@ -184,16 +191,25 @@
           
         }
         worker.onerror = function (e) {
+          window.postMessage({message: "JSCAD-progress-endSimulatorRender"})
+  
           onWorkComplete(function(){
             callback(`Error in line ${e.lineno} : ${e.message}`, undefined)
           })
          
         }
-        
+        // hand the current shape cache to the worker thread
         worker.postMessage({cmd: 'setcache', shapeCache: __sharedShapeCache})
         if (DEBUG_WORKER_PERF) console.time("worker" + workerId)
+        
+        // BREAKPOINTHERE.  Step through to debug the web worker
         worker.postMessage({cmd: 'render', fullurl, source, parameters, options: workerOptions})
-      }).catch(error => callback(error, undefined))
+      }).catch(error => {
+        window.postMessage({message: "JSCAD-progress-endSimulatorRender"})
+  
+        console.error("rebuildSolidsInWorker", this, error)
+        callback(error, undefined)
+      })
   
     // have we been asked to stop our work?
     return {
@@ -201,6 +217,8 @@
         return (worker !== null)
       },
       cancel: () => {
+        window.postMessage({message: "JSCAD-progress-endSimulatorRender"})
+  
         if (worker) {
           worker.terminate()
           worker = null;
@@ -289,11 +307,11 @@
         var data = e.data
 
         if (data.cmd === 'setcache') {
-          
           _workerShapeCache = data.shapeCache || {}
           //console.log("GOT Setcache - cache now: ", Object.keys( _workerShapeCache).length)
         }
         if (data.cmd === 'render') {
+          try {
           const {source, parameters, options} = e.data
           const include = x => x
           const globals = options.implicitGlobals ? { oscad } : {}
@@ -313,9 +331,14 @@
           if (renderObjects.length === 0) {
             throw new Error('The JSCAD script must return one or more CSG or CAG solids.')
           }
+        
 
           // we're done with the work - call back to the main function
-          self.postMessage({cmd: 'rendered', objects: renderObjects, shapeCache: _workerShapeCache})
+          self.postMessage({cmd: 'rendered', objects: renderObjects, shapeCache: _workerShapeCache})         
+          }
+          catch (err) {
+            console.error("ERROR", err, e.data)
+          }
         }
       }
     }
@@ -4544,7 +4567,15 @@
    *   fn: 20
    * })
    */
-  function cube (params) {
+   const cube = function (options) {
+     options = options || {}
+ 
+     return shapeCache("cube", options, function() {
+       const cube =  createCube(options)
+       return cube
+     })
+  }
+  function createCube (params) {
     const defaults = {
       size: 1,
       offset: [0, 0, 0],
@@ -4604,7 +4635,7 @@
    * })
    */
 
-const DEBUG_PERF = true
+const DEBUG_PERF = false
 
 const localCache = {}
 
@@ -4817,7 +4848,16 @@ const localCache = {}
    *   fn: 20
    * })
    */
-  function cylinder (params) {
+  const cylinder = function (options) {
+     options = options || {}
+ 
+     return shapeCache("cylinder", options, function() {
+       const cylinder =  createCylinder(options)
+       return cylinder
+     })
+  }
+ 
+  function createCylinder (params) {
     const defaults = {
       r: 1,
       r1: 1,
@@ -7319,64 +7359,52 @@ const localCache = {}
 
   var PERF_DISABLE_CACHE = true
   var hashparts = [] // PERF - prevent reallocation 
-
   FuzzyFactory.prototype = {
-      // let obj = f.lookupOrCreate([el1, el2, el3], function(elements) {/* create the new object */});
-      // Performs a fuzzy lookup of the object with the specified elements.
-      // If found, returns the existing object
-      // If not found, calls the supplied callback function which should create a new object with
-      // the specified properties. This object is inserted in the lookup database.
+
+ // let obj = f.lookupOrCreate([el1, el2, el3], function(elements) {/* create the new object */});
+    // Performs a fuzzy lookup of the object with the specified elements.
+    // If found, returns the existing object
+    // If not found, calls the supplied callback function which should create a new object with
+    // the specified properties. This object is inserted in the lookup database.
+
+   
     lookupOrCreate: function (els, defaultObject) {
-
-    
-      if (PERF_DISABLE_CACHE) {
-        // special switch to just skip caching
-        // use this for testing purposes
-        let object = defaultObject //creatorCallback(els)
-        return object
-      }
-      
-      
-      let hash = ''
-      
-      let multiplier = this.multiplier
-      for (i = 0; i < els.length; i++) {
-        let valueQuantized = Math.round(els[i] * multiplier)
-        hash += valueQuantized + '/'
-      }
-    
-      if (this.lookuptable[hash] !== undefined) {
-        this.lookupTableCacheHits++;
-        return this.lookuptable[hash]
-      } else {
-        let object =  defaultObject//creatorCallback(els)
-
-        hashparts.length = 0 
-        // foreach element in the array... 
-        for (let i = 0; i < els.length; i++) {
-          let q0 = Math.floor(els[i] * multiplier)
-          let q1 = q0 + 1
-          hashparts.push( ['' + q0 + '/', '' + q1 + '/'])
+        let hash = ''
+        let multiplier = this.multiplier
+        for (i = 0; i < els.length; i++) {
+          let valueQuantized = Math.round(els[i] * multiplier)
+          hash += valueQuantized + '/'
         }
-      
-       
-        let numelements = els.length
-        let numhashes = 1 << numelements
-        for (let hashmask = 0; hashmask < numhashes; ++hashmask) {
-          let hashmaskShifted = hashmask
-          hash = ''
-          for (let h = 0; h < hashparts.length; h++) {
-            hash += hashparts[h][hashmaskShifted & 1]
-            hashmaskShifted >>= 1
+        if (this.lookuptable[hash] !== undefined) {
+          return this.lookuptable[hash]
+        } else {
+          let object = defaultObject
+          let hashparts = []
+          for (let i =0; i < els.length; i++) {
+            let el = els[i]
+            let q0 = Math.floor(el * multiplier)
+            let q1 = q0 + 1
+            hashparts.push( ['' + q0 + '/', '' + q1 + '/'])
           }
-          this.lookuptable[hash] = object
-          this.lookupTableLength++
+           
+       
+          let numelements = els.length
+          let numhashes = 1 << numelements
+          for (let hashmask = 0; hashmask < numhashes; ++hashmask) {
+            let hashmaskShifted = hashmask
+            hash = ''
+            for (let i =0; i < hashparts.length; i++) {
+              let hashpart = hashparts[i]
+              hash += hashpart[hashmaskShifted & 1]
+              hashmaskShifted >>= 1
+            }
+           
+            this.lookuptable[hash] = object
+          }
+          return object
         }
-        return object
       }
-    }
   }
-  
   module.exports = FuzzyFactory
   
   },{}],46:[function(require,module,exports){
@@ -11101,6 +11129,7 @@ const localCache = {}
         let _this = node
         if (!node.plane) {
           let bestplane = polygontreenodes[0].getPolygon().plane
+
           node.plane = bestplane
         }
         let frontnodes = []
@@ -47568,6 +47597,7 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
       // console.log('setJsCad', script, filename)
       if (!filename) filename = 'openjscad.jscad';
   
+      window.postMessage({message: "JSCAD-progress-beginSimulatorRender"})
       var prevParamValues = {};
       // this will fail without existing form
       try {
@@ -48494,10 +48524,12 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
       var smoothlighting = this.options.solid.smooth;
       var polygons = csg.toPolygons();
       var numpolygons = polygons.length;
+      var solidFaceColor = colorBytes(this.options.solid.faceColor); // default color
+  
       for (var j = 0; j < numpolygons; j++) {
         var polygon = polygons[j];
-        var color = colorBytes(this.options.solid.faceColor); // default color
-  
+        var color = solidFaceColor;
+
         if (polygon.shared && polygon.shared.color) {
           color = polygon.shared.color;
         } else if (polygon.color) {
@@ -49254,11 +49286,28 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
         for (var i = 0; i < this.vertices.length; i++) {
           this.normals[i] = new Vector();
         }
+        // PERF - try not to keep allocating arrays over and over again
+        var a = Vector.fromArray([0,0,0])
+        var b = Vector.fromArray([0,0,0])
+        var c = Vector.fromArray([0,0,0])
+
         for (var i = 0; i < this.triangles.length; i++) {
           var t = this.triangles[i];
-          var a = Vector.fromArray(this.vertices[t[0]]);
-          var b = Vector.fromArray(this.vertices[t[1]]);
-          var c = Vector.fromArray(this.vertices[t[2]]);
+          var vertexA = this.vertices[t[0]]
+          a.x = vertexA[0]; 
+          a.y = vertexA[1]; 
+          a.z = vertexA[2]; 
+          
+          var vertexB = this.vertices[t[1]]
+          b.x = vertexB[0]; 
+          b.y = vertexB[1]; 
+          b.z = vertexB[2]; 
+
+          var vertexC = this.vertices[t[2]]
+          c.x = vertexC[0]; 
+          c.y = vertexC[1]; 
+          c.z = vertexC[2]; 
+          
           var normal = b.subtract(a).cross(c.subtract(a)).unit();
           this.normals[t[0]] = this.normals[t[0]].add(normal);
           this.normals[t[1]] = this.normals[t[1]].add(normal);
@@ -49518,16 +49567,31 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
         return new Vector(-this.x, -this.y, -this.z);
       },
       add: function add(v) {
-        if (v instanceof Vector) return new Vector(this.x + v.x, this.y + v.y, this.z + v.z);else return new Vector(this.x + v, this.y + v, this.z + v);
+        if (typeof v === "object") { //instanceof Vector is slow because of the prototype chain check
+          return new Vector(this.x + v.x, this.y + v.y, this.z + v.z);
+        }
+        else {
+          return new Vector(this.x + v, this.y + v, this.z + v);
+        }
       },
       subtract: function subtract(v) {
-        if (v instanceof Vector) return new Vector(this.x - v.x, this.y - v.y, this.z - v.z);else return new Vector(this.x - v, this.y - v, this.z - v);
+        if (typeof v === "object") {
+           return new Vector(this.x - v.x, this.y - v.y, this.z - v.z);
+        }
+        else {
+          return new Vector(this.x - v, this.y - v, this.z - v);
+        }
       },
       multiply: function multiply(v) {
-        if (v instanceof Vector) return new Vector(this.x * v.x, this.y * v.y, this.z * v.z);else return new Vector(this.x * v, this.y * v, this.z * v);
+        if (typeof v === "object") {
+          return new Vector(this.x * v.x, this.y * v.y, this.z * v.z);
+        }
+        else {
+          return new Vector(this.x * v, this.y * v, this.z * v);
+        }
       },
       divide: function divide(v) {
-        if (v instanceof Vector) return new Vector(this.x / v.x, this.y / v.y, this.z / v.z);else return new Vector(this.x / v, this.y / v, this.z / v);
+        if(typeof v === "object") return new Vector(this.x / v.x, this.y / v.y, this.z / v.z);else return new Vector(this.x / v, this.y / v, this.z / v);
       },
       equals: function equals(v) {
         return this.x == v.x && this.y == v.y && this.z == v.z;
@@ -49669,6 +49733,7 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
     Vector.lerp = function (a, b, fraction) {
       return b.subtract(a).multiply(fraction).add(a);
     };
+  
     Vector.fromArray = function (a) {
       return new Vector(a[0], a[1], a[2]);
     };
