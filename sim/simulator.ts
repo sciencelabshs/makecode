@@ -290,7 +290,7 @@ namespace pxsim {
             }
             catch (e) {
             }
-            if (!this.warnCodeDepth) this.warnCodeDepth = 500
+            if (!this.warnCodeDepth) this.warnCodeDepth = 1000
             this.noChangesHaveBeenMadeNotRerenderingCount = 0
             this.bus = new EventBus(runtime);
             this.imports = {}
@@ -424,7 +424,7 @@ namespace pxsim {
 
             let codeStr = "";
             try {
-                codeStr = this.mainStatement.getCode(allInitScripts, this.warnCodeDepth)
+                codeStr = this.mainStatement.getCode(allInitScripts, this.warnCodeDepth+1)
                 $(".partialCodeWarning").html("")
             }
             catch (e) {
