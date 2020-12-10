@@ -22,7 +22,8 @@
  *  - Disable coloring of cuts, by commenting out setColor in the difference operator
  *  - Replace fixTJunctions as it was causing more damage than it was repairing
  * -  PERF: CSGToMeshes was allocating solidFaceColor for every polygon
-
+ * -  PERF: cache matrix4x4.isMirror - gets asked over and over again, allocates arrays 
+*  -  PERF: fix unnecessary array allocations on transform.
  * - Things we've learned when working with large data:  
       map/foreach slow over a large array (sphere with many faces)  
       "instanceof" slow compared to "typeof" as it checks the prototype  
@@ -10098,10 +10099,13 @@ const localCache = {}
   
       // find a vector that is somewhat perpendicular to this one
     randomNonParallelVector: function () {
-      var abs = this.abs()
-      if ((abs._x <= abs._y) && (abs._x <= abs._z)) {
+      let absX = Math.abs(this._x)
+      let absY = Math.abs(this._y)
+      let absZ = Math.abs(this._z)
+      
+      if ((absX <= absY) && (absY <= absZ)) {
         return Vector3D.Create(1, 0, 0)
-      } else if ((abs._y <= abs._x) && (abs._y <= abs._z)) {
+      } else if ((absY <= absX) && (absY <= absZ)) {
         return Vector3D.Create(0, 1, 0)
       } else {
         return Vector3D.Create(0, 0, 1)
@@ -10296,7 +10300,7 @@ const localCache = {}
               maxy = y
               maxindex = i
             }
-            if (!(y in ycoordinatetopolygonindexes)) {
+            if (!ycoordinatetopolygonindexes[y]) {
               ycoordinatetopolygonindexes[y] = {}
             }
             ycoordinatetopolygonindexes[y][polygonindex] = true
@@ -10307,7 +10311,7 @@ const localCache = {}
             numvertices = 0
             minindex = -1
           } else {
-            if (!(miny in topy2polygonindexes)) {
+            if (!topy2polygonindexes[miny]) {
               topy2polygonindexes[miny] = []
             }
             topy2polygonindexes[miny].push(polygonindex)
@@ -10319,8 +10323,10 @@ const localCache = {}
         polygonvertices2d.push(vertices2d)
         polygontopvertexindexes.push(minindex)
       }
-      let ycoordinates = []
-      for (let ycoordinate in ycoordinatetopolygonindexes) ycoordinates.push(ycoordinate)
+      
+      let ycoordinates = Object.keys(ycoordinatetopolygonindexes)
+      
+      // sort it.
       ycoordinates.sort(fnNumberSort)
   
           // Now we will iterate over all y coordinates, from lowest to highest y coordinate
@@ -10536,11 +10542,14 @@ const localCache = {}
                 prevpolygon.outpolygon.leftpoints.reverse()
                 let points2d = prevpolygon.outpolygon.rightpoints.concat(prevpolygon.outpolygon.leftpoints)
                 let vertices3d = []
-                points2d.map(function (point2d) {
+
+                for (let p = 0; p < points2d.length; p++) {
+                  let point2d = points2d[p]
                   let point3d = orthobasis.to3D(point2d)
                   let vertex3d = new Vertex(point3d)
                   vertices3d.push(vertex3d)
-                })
+                }
+                
                 let polygon = new Polygon(vertices3d, shared, plane)
                 destpolygons.push(polygon)
               }
@@ -12172,6 +12181,7 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
   const reTesselateCoplanarPolygons = require('../math/reTesselateCoplanarPolygons')
   const {fromPolygons} = require('../CSGFactories')
   
+  // THERETESSELATE
   const reTesselate = function (csg) {
     if (csg.isRetesselated) {
       return csg
