@@ -6281,10 +6281,13 @@ const localCache = {}
       let polys = csgplane.polygons.filter(function (polygon) {
         return Math.abs(polygon.plane.normal.z) > 0.99
       })
+
       // finally, position the plane per passed transformations
-      return polys.map(function (poly) {
-        return poly.transform(m)
-      })
+      for (let i = 0; i < polys.length; i++) {
+        polys[i] = polys[i].transform(m)
+      }
+      return polys 
+      
     },
   
     /*
@@ -8250,6 +8253,10 @@ const localCache = {}
   
       // determine whether this matrix is a mirroring transformation
     isMirroring: function () {
+      // caching isMirror because it is called over and over again
+      if (this._isMirror !== undefined) {
+        return this._isMirror
+      }
       var u = new Vector3D(this.elements[0], this.elements[4], this.elements[8])
       var v = new Vector3D(this.elements[1], this.elements[5], this.elements[9])
       var w = new Vector3D(this.elements[2], this.elements[6], this.elements[10])
@@ -8257,8 +8264,8 @@ const localCache = {}
           // for a true orthogonal, non-mirrored base, u.cross(v) == w
           // If they have an opposite direction then we are mirroring
       var mirrorvalue = u.cross(v).dot(w)
-      var ismirror = (mirrorvalue < 0)
-      return ismirror
+      this._isMirror = (mirrorvalue < 0)
+      return this._isMirror;
     }
   }
   
