@@ -195,6 +195,7 @@
           window.postMessage({message: "JSCAD-progress-endSimulatorRender"})
   
           onWorkComplete(function(){
+
             callback(`Error in line ${e.lineno} : ${e.message}`, undefined)
           })
          
@@ -204,10 +205,13 @@
         if (DEBUG_WORKER_PERF) console.time("worker" + workerId)
         
         // BREAKPOINTHERE.  Step through to debug the web worker
+        if (window.DEBUG_JSCAD) {
+          debugger
+        }
         worker.postMessage({cmd: 'render', fullurl, source, parameters, options: workerOptions})
       }).catch(error => {
         window.postMessage({message: "JSCAD-progress-endSimulatorRender"})
-  
+
         console.error("rebuildSolidsInWorker", this, error)
         callback(error, undefined)
       })
@@ -274,14 +278,19 @@
   
       return main(params)
     `
-  
-    const DEBUG_WORKER_SOURCE = false
-    var f = new Function('params', 'include', 'globals', source)
-    if (DEBUG_WORKER_SOURCE) {
-      console.log("// Worker source ---------- ")
-      console.log(source)
-      console.log("// ---------- ")
+    let f;
+    try {
+      f = new Function('params', 'include', 'globals', source)
     }
+    catch (e) {
+      console.error(e)
+      console.error(e.lineno)
+      console.error("// Compiler error in worker.  ---------- ")
+      console.error(source)
+      console.error("// ---------- ")
+      throw e;
+    }
+  
     return f
   }
   
@@ -312,8 +321,9 @@
           //console.log("GOT Setcache - cache now: ", Object.keys( _workerShapeCache).length)
         }
         if (data.cmd === 'render') {
-          try {
           const {source, parameters, options} = e.data
+          
+          try {
           const include = x => x
           const globals = options.implicitGlobals ? { oscad } : {}
           const func = createJscadFunction(source, globals)
@@ -338,7 +348,8 @@
           self.postMessage({cmd: 'rendered', objects: renderObjects, shapeCache: _workerShapeCache})         
           }
           catch (err) {
-            console.error("ERROR", err, e.data)
+            // dump the worker thread info to the console.
+            throw err;
           }
         }
       }

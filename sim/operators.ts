@@ -1049,7 +1049,7 @@ function sliceParams(orientation, radius, bounds) {
           // var thispoly = new CSG.Polygon.createFromPoints(pp).sC(color);
       
           var np = new CSG.Polygon.createFromPoints(pp);
-          if (color) np.sC(color);
+   
           polygons.push(np);
         }
         // console.log("polygons");
