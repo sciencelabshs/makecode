@@ -10,7 +10,7 @@ declare const enum BasicShapes {
 */
 
 declare const enum SphereType {
-    geodesic = 1,
+    geodesic = 0,
     icosahedron = 1
 }
 

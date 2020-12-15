@@ -3,7 +3,7 @@
 
 /**
  * 3D Shapes to create on the surface
- * 
+ * http://makecode.buildbee.com/docs/shapes.html
  */
 namespace pxsim.shapes {
 
@@ -65,12 +65,12 @@ namespace pxsim.shapes {
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
     /**
-        * Add a cube
-        * @param width The width of the cube
-        * @param depth The depth of the cube
-        * @param height The height of the cube
-        * @param color If specified, what color to make the cube.  In hex (0xab1234)
-        */
+    * Add a cube
+    * @param width The width of the cube
+    * @param depth The depth of the cube
+    * @param height The height of the cube
+    * @param color If specified, what color to make the cube.  In hex (0xab1234)
+    */
     export function cube(width: number = 1, depth: number = 1, height: number = 1, color?: number) {
         const statement = `cube({size: [${width}, ${depth}, ${height}], center: [true, true, true]})`
         board().addStatement(statement, color)
@@ -85,7 +85,7 @@ namespace pxsim.shapes {
     //% faces.defl=60
     //% faces.min=4
     //% faces.max=1000
-    //% type.defl=SphereType.icosahedron
+    //% type.defl=SphereType.geodesic
     //% weight=94
     //% expandableArgumentMode="toggle"
     //% group="3D Shapes"
@@ -98,7 +98,7 @@ namespace pxsim.shapes {
      */
     export function sphere(radius: number, color?: number, type?: SphereType, faces?: number) {
         const fn = (faces) ? Math.max(faces, 4) : 150
-        const sphereType = (type === SphereType.geodesic || isNaN(type)) ? "geodesic" : "icosahedron";
+        const sphereType = (isNaN(type) || type === SphereType.geodesic) ? "geodesic" : "icosahedron";
 
         board().addStatement(`sphere({r: ${radius}, center: [true, true, true],  fn: ${fn}, type: "${sphereType}"})`, color);
 
@@ -178,7 +178,7 @@ namespace pxsim.shapes {
     //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
     /**
-     * 
+     * Make a cone like shape that is as tall as height.  The cone will be twice as wide as the radius. 
      * @param radius The radius of the cone
      * @param height How high to make the cone
      * @param color The color to use for the cone

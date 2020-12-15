@@ -248,7 +248,7 @@ declare namespace shapes {
     //% faces.defl=60
     //% faces.min=4
     //% faces.max=1000
-    //% type.defl=SphereType.icosahedron
+    //% type.defl=SphereType.geodesic
     //% weight=94
     //% expandableArgumentMode="toggle"
     //% group="3D Shapes"
@@ -311,7 +311,7 @@ declare namespace shapes {
     //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
     /**
-     * 
+     * Make a cone like shape that is as tall as height.  The cone will be twice as wide as the radius. 
      * @param radius The radius of the cone
      * @param height How high to make the cone
      * @param color The color to use for the cone

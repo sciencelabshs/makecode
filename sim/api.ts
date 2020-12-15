@@ -6,14 +6,14 @@
 /// <reference path="./parameters.ts"/>
 /// <reference path="./colors.ts"/>
 
-/**
- * How to set fields and colours
- * @external https://makecode.com/playground#basic-default-values
- * @external https://makecode.com/extensions/getting-started/simple-extension
- * use the playground to configure the pickers
- * 
- * With the block command, try and keep the order of arguments consistent
- * the first one after (+) being color.   Use || to deliniate extra expandable
- * arguments
+/*
+  How to set fields and colours
+  @external https://makecode.com/playground#basic-default-values
+  @external https://makecode.com/extensions/getting-started/simple-extension
+  use the playground to configure the pickers
+  
+  With the block command, try and keep the order of arguments consistent
+  the first one after (+) being color.   Use || to deliniate extra expandable
+  arguments
  */
 
