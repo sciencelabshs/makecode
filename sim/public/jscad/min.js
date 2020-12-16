@@ -2793,7 +2793,7 @@
       if (isCAG(a[i])) {
         object = object.intersect(a[i])
       } else {
-        object = object.intersect(a[i].setColor(1, 1, 0)) // -- color the cuts
+        object = object.intersect(a[i]/*.setColor(1, 1, 0)*/) // -- color the cuts
       }
     }
     return object
