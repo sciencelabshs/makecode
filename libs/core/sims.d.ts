@@ -226,6 +226,7 @@ declare namespace shapes {
 
     //% block="cube - width $width|depth $depth|height $height||color $color=chooseColor"
     //% inlineInputMode=inline
+    //% help=shapes/cube
     //% width.defl=10
     //% depth.defl=10
     //% height.defl=10
@@ -233,7 +234,7 @@ declare namespace shapes {
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
     /**
-     * Add a cube
+     * The cube, (or more technically a rectangular prism) allows you to make box like shapes. 
      * @param width The width of the cube
      * @param depth The depth of the cube
      * @param height The height of the cube
@@ -248,6 +249,7 @@ declare namespace shapes {
     //% faces.defl=60
     //% faces.min=4
     //% faces.max=1000
+    //% help=shapes/sphere
     //% type.defl=SphereType.geodesic
     //% weight=94
     //% expandableArgumentMode="toggle"
@@ -267,6 +269,7 @@ declare namespace shapes {
     //% radius.defl=10
     //% height.defl=10
     //% faces.defl=60
+    //% help=shapes/cylinder
     //% weight=90
     //% group="3D Shapes"
     /**
@@ -280,18 +283,19 @@ declare namespace shapes {
     //% shim=shapes::cylinder
     function cylinder(radius: number, height: number, color?: number, faces?: number, radius2?: number): void;
 
-    //% block="donut - thickness $thickness|radius $radius||$color=chooseColor|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
+    //% block="donut - thickness $thickness|radius $radius||color $color=chooseColor|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
     //% thickness.defl=4 thickness.min=1
     //% radius.defl=10
     //% innerFaces.defl=16
     //% outerFaces.defl=32
     //% innerRotation.defl=0
+    //% help=shapes/donut
     //% weight=80
     //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
     /**
-     * 
+     * Add a donut (torus)
      * @param thickness How thick to make the donut
      * @param radius The radius of the donut
      * @param color Color (in hex 0xab12345)
@@ -302,12 +306,36 @@ declare namespace shapes {
     //% shim=shapes::donut
     function donut(thickness: number, radius: number, color?: number, innerFaces?: number, outerFaces?: number, innerRotation?: number): void;
 
+    //% block="tube - thickness $thickness|radius $radius|height $height||sides $sides | color $color=chooseColor"
+    //% inlineInputMode=inline
+    //% thickness.defl=1 thickness.min=1
+    //% radius.defl=5
+    //% height.defl=10
+    //% sides.defl=60
+    //% help=shapes/tube
+    //% weight=81
+    //% group="3D Shapes - Round Shapes"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Add a tube with a flat top and bottom
+     * For non-circular tubes, lower the sides.
+     * e.g. Set the sides to 6 to get hexagonal tubes! 
+     * @param thickness How thick to make the walls of the tube
+     * @param radius The radius of the tube
+     * @param height The height of the tube
+     * @param color Color (in hex 0xab12345)
+     * @param sides How many sides on the object
+     */
+    //% shim=shapes::tube
+    function tube(thickness: number, radius: number, height: number, sides?: number, color?: number): void;
+
     //% block="cone - radius $radius|height $height|| color $color=chooseColor| faces $faces"
     //% inlineInputMode=inline
     //% radius.defl=10
     //% height.defl=10
     //% faces.defl=100
     //% weight=75
+    //% help=shapes/cone
     //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
     /**
@@ -329,6 +357,7 @@ declare namespace shapes {
     //% text.defl="BuildBee"
     //% height.defl=4
     //% group="3D Shapes"
+    //% help=shapes/text
     //% expandableArgumentMode="toggle"
     /**
      * Add text
@@ -346,6 +375,7 @@ declare namespace shapes {
     //% depth.defl=10
     //% height.defl=10
     //% weight=93
+    //% help=shapes/polygons
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
     /**
@@ -364,6 +394,7 @@ declare namespace shapes {
     //% depth.defl=10
     //% height.defl=10
     //% weight=92
+    //% help=shapes/ramp
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
     /**
@@ -383,6 +414,7 @@ declare namespace shapes {
     //% height.defl=10
     //% sides.defl=6
     //% sides.min=3
+    //% help=shapes/polygons
     //% weight=80
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
@@ -512,6 +544,7 @@ declare namespace shapes {
     //% topblock=false
     //% handlerStatement=true
     //% radius.defl=5
+    //% help=shapes/polyhedron
     //% group="More Shapes"
     //% advanced=false
     //% inlineInputMode=inline
@@ -535,6 +568,7 @@ declare namespace operators {
     //% topblock=false
     //% mm.defl=10
     //% handlerStatement=true
+    //% help=operators/move
     //% group="Position"
     //% weight=82
     //% shim=operators::moveAsync promise
@@ -543,6 +577,7 @@ declare namespace operators {
     //% blockId=setPoition block="set position to x: $x|  y: $y |  z: $z" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/set-position
     //% group="Position"
     //% x.defl=0
     //% y.defl=0
@@ -560,6 +595,7 @@ declare namespace operators {
     //% blockId=stackshapes block="stack shapes|$direction|axis: $axis" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/stack-shapes
     //% direction.defl=StackDirection.Above
     //% axis.defl=Axis.Z
     //% group="Layout"
@@ -575,6 +611,7 @@ declare namespace operators {
     //% blockId=trim_edges block="style edges: $edgeStyle=main_edgeStylePicker | sides: $direction | with radius: $radius mm" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/style-edges
     //% axis.defl=3
     //% radius.defl=2
     //% group="Edges"
@@ -590,6 +627,7 @@ declare namespace operators {
     //% blockId=placeOnGround block="place on ground" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/place-on-ground
     //% group="Layout"
     /**
      * Take all shapes inside this block and move them as a group so that they are on the ground.
@@ -600,6 +638,7 @@ declare namespace operators {
 
     //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius" 
     //% topblock=false
+    //% help=operators/hollow-shapes
     //% handlerStatement=true
     //% wallThickness.defl=2
     //% wallThickness.min=1
@@ -618,6 +657,7 @@ declare namespace operators {
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/translate
     //% group="Position and Size"
     //% advanced=true
     /**
@@ -636,6 +676,7 @@ declare namespace operators {
     //% z.defl=1
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/scale
     //% group="Position and Size"
     //% advanced=true
     /**
@@ -652,6 +693,7 @@ declare namespace operators {
     //% x.defl=2
     //% y.defl=2
     //% z.defl=2
+    //% help=operators/enlarge
     //% topblock=false
     //% handlerStatement=true
     //% group="Position and Size"
@@ -669,6 +711,7 @@ declare namespace operators {
     //% blockId=flip_shapes block="turn $angle ° | $axis=main_rotateAxisPicker" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/turn
     //% angle.defl=45
     //% angle.min=0
     //% angle.max=360
@@ -686,6 +729,7 @@ declare namespace operators {
     //% blockId=rotate_shapes block="rotate shapes x°: $x|  y°: $y | z°: $z" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/rotate
     //% group="Rotation"
     //% advanced=true
     /**
@@ -701,6 +745,7 @@ declare namespace operators {
     //% blockId=add_shapes block="add shapes" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/add-shapes
     //% group="Operations"
     /**
      * Add shapes together. Sometimes called "union".
@@ -712,6 +757,7 @@ declare namespace operators {
     //% blockId=subtract_shapes block="subtract shapes" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/subtract-shapes
     //% group="Operations"
     /**
      * From the first shape, cut away all other shapes.  Sometimes called "difference"
@@ -723,6 +769,7 @@ declare namespace operators {
     //% blockId=intersect_shapes block="intersect shapes" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/intersect-shapes
     //% group="Operations"
     /**
      * Intersect shapes - only leave the parts from all shapes that overlap.
@@ -734,6 +781,7 @@ declare namespace operators {
     //% blockId=wrap_shapes block="wrap shapes" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/wrap-shapes
     //% group="Operations"
     /**
      * Intersect shapes - only leave the parts from all shapes that overlap.
@@ -770,6 +818,7 @@ declare namespace operators {
     //% topblock=false
     //% handlerStatement=true
     //% group="2D to 3D Shape Converters"
+    //% help=operators/linear-extrude
     //% advanced=true
     /**
      * Give a 2D shape height, optionally twist it

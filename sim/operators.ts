@@ -33,6 +33,7 @@ namespace pxsim.operators {
     //% topblock=false
     //% mm.defl=10
     //% handlerStatement=true
+    //% help=operators/move
     //% group="Position"
     //% weight=82
     export function moveAsync(mm: number, direction: Axis, body: RefAction): Promise<void> {
@@ -72,6 +73,7 @@ namespace pxsim.operators {
     //% blockId=setPoition block="set position to x: $x|  y: $y |  z: $z" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/set-position
     //% group="Position"
     //% x.defl=0
     //% y.defl=0
@@ -188,6 +190,7 @@ function stackShapes(direction, axis, shapes) {
     //% blockId=stackshapes block="stack shapes|$direction|axis: $axis" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/stack-shapes
     //% direction.defl=StackDirection.Above
     //% axis.defl=Axis.Z
     //% group="Layout"
@@ -585,6 +588,7 @@ function sliceParams(orientation, radius, bounds) {
     //% blockId=trim_edges block="style edges: $edgeStyle=main_edgeStylePicker | sides: $direction | with radius: $radius mm" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/style-edges
     //% axis.defl=3
     //% radius.defl=2
     //% group="Edges"
@@ -675,6 +679,7 @@ function sliceParams(orientation, radius, bounds) {
     //% blockId=placeOnGround block="place on ground" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/place-on-ground
     //% group="Layout"
     /**
      * Take all shapes inside this block and move them as a group so that they are on the ground.
@@ -688,6 +693,7 @@ function sliceParams(orientation, radius, bounds) {
 
     //% blockId=makehollow block="hollow shapes: $wallThickness mm walls | with $insideRound mm radius" 
     //% topblock=false
+    //% help=operators/hollow-shapes
     //% handlerStatement=true
     //% wallThickness.defl=2
     //% wallThickness.min=1
@@ -726,6 +732,7 @@ function sliceParams(orientation, radius, bounds) {
     //% blockId=move_shapes block="translate shapes x: $x|  y: $y |  z: $z" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/translate
     //% group="Position and Size"
     //% advanced=true
     /**
@@ -747,6 +754,7 @@ function sliceParams(orientation, radius, bounds) {
     //% z.defl=1
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/scale
     //% group="Position and Size"
     //% advanced=true
     /**
@@ -766,6 +774,7 @@ function sliceParams(orientation, radius, bounds) {
     //% x.defl=2
     //% y.defl=2
     //% z.defl=2
+    //% help=operators/enlarge
     //% topblock=false
     //% handlerStatement=true
     //% group="Position and Size"
@@ -789,6 +798,7 @@ function sliceParams(orientation, radius, bounds) {
     //% blockId=flip_shapes block="turn $angle ° | $axis=main_rotateAxisPicker" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/turn
     //% angle.defl=45
     //% angle.min=0
     //% angle.max=360
@@ -815,6 +825,7 @@ function sliceParams(orientation, radius, bounds) {
     //% blockId=rotate_shapes block="rotate shapes x°: $x|  y°: $y | z°: $z" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/rotate
     //% group="Rotation"
     //% advanced=true
     /**
@@ -835,6 +846,7 @@ function sliceParams(orientation, radius, bounds) {
     //% blockId=add_shapes block="add shapes" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/add-shapes
     //% group="Operations"
     /**
      * Add shapes together. Sometimes called "union".
@@ -848,6 +860,7 @@ function sliceParams(orientation, radius, bounds) {
     //% blockId=subtract_shapes block="subtract shapes" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/subtract-shapes
     //% group="Operations"
     /**
      * From the first shape, cut away all other shapes.  Sometimes called "difference"
@@ -862,6 +875,7 @@ function sliceParams(orientation, radius, bounds) {
     //% blockId=intersect_shapes block="intersect shapes" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/intersect-shapes
     //% group="Operations"
     /**
      * Intersect shapes - only leave the parts from all shapes that overlap.
@@ -877,6 +891,7 @@ function sliceParams(orientation, radius, bounds) {
     //% blockId=wrap_shapes block="wrap shapes" 
     //% topblock=false
     //% handlerStatement=true
+    //% help=operators/wrap-shapes
     //% group="Operations"
     /**
      * Intersect shapes - only leave the parts from all shapes that overlap.
@@ -924,6 +939,7 @@ function sliceParams(orientation, radius, bounds) {
     //% topblock=false
     //% handlerStatement=true
     //% group="2D to 3D Shape Converters"
+    //% help=operators/linear-extrude
     //% advanced=true
     /**
      * Give a 2D shape height, optionally twist it

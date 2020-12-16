@@ -58,6 +58,7 @@ namespace pxsim.shapes {
 
     //% block="cube - width $width|depth $depth|height $height||color $color=chooseColor"
     //% inlineInputMode=inline
+    //% help=shapes/cube
     //% width.defl=10
     //% depth.defl=10
     //% height.defl=10
@@ -65,7 +66,7 @@ namespace pxsim.shapes {
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
     /**
-    * Add a cube
+    * The cube, (or more technically a rectangular prism) allows you to make box like shapes. 
     * @param width The width of the cube
     * @param depth The depth of the cube
     * @param height The height of the cube
@@ -85,6 +86,7 @@ namespace pxsim.shapes {
     //% faces.defl=60
     //% faces.min=4
     //% faces.max=1000
+    //% help=shapes/sphere
     //% type.defl=SphereType.geodesic
     //% weight=94
     //% expandableArgumentMode="toggle"
@@ -110,6 +112,7 @@ namespace pxsim.shapes {
     //% radius.defl=10
     //% height.defl=10
     //% faces.defl=60
+    //% help=shapes/cylinder
     //% weight=90
     //% group="3D Shapes"
     /**
@@ -129,18 +132,19 @@ namespace pxsim.shapes {
                                         h: ${height}})`, color);
     }
 
-    //% block="donut - thickness $thickness|radius $radius||$color=chooseColor|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
+    //% block="donut - thickness $thickness|radius $radius||color $color=chooseColor|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
     //% thickness.defl=4 thickness.min=1
     //% radius.defl=10
     //% innerFaces.defl=16
     //% outerFaces.defl=32
     //% innerRotation.defl=0
+    //% help=shapes/donut
     //% weight=80
     //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
     /**
-     * 
+     * Add a donut (torus)
      * @param thickness How thick to make the donut
      * @param radius The radius of the donut
      * @param color Color (in hex 0xab12345)
@@ -161,11 +165,65 @@ namespace pxsim.shapes {
         board().addStatement(`torus({
                                     ri: ${thickness / 2}, 
                                     ro: ${radius}, 
-                                    fni: ${innerFaces === undefined ? 16 : innerFaces},
-                                    fno: ${outerFaces === undefined ? 32 : outerFaces},
-                                    roti: ${innerRotation === undefined ? 32 : innerRotation}, 
+                                    fni: ${isNaN(innerFaces) ? 16 : innerFaces},
+                                    fno: ${isNaN(outerFaces) ? 32 : outerFaces},
+                                    roti: ${isNaN(innerRotation) ? 32 : innerRotation}, 
                                     center: [true, true, true],
                                 })`, color)
+    }
+
+    //% block="tube - thickness $thickness|radius $radius|height $height||sides $sides | color $color=chooseColor"
+    //% inlineInputMode=inline
+    //% thickness.defl=1 thickness.min=1
+    //% radius.defl=5
+    //% height.defl=10
+    //% sides.defl=60
+    //% help=shapes/tube
+    //% weight=81
+    //% group="3D Shapes - Round Shapes"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Add a tube with a flat top and bottom
+     * For non-circular tubes, lower the sides.
+     * e.g. Set the sides to 6 to get hexagonal tubes! 
+     * @param thickness How thick to make the walls of the tube
+     * @param radius The radius of the tube
+     * @param height The height of the tube
+     * @param color Color (in hex 0xab12345)
+     * @param sides How many sides on the object
+     */
+    export function tube(thickness: number, radius: number, height: number, sides?: number, color?: number) {
+        const outerTubeRadius = Math.max(0, radius)
+        const innerTubeRadius = Math.max(0, radius - thickness)
+        const tubeHeight = Math.max(0, height)
+     
+        if (innerTubeRadius <= 0) {
+            // if there's nothing to cut out, how about don't try!
+           board().addStatement(`cylinder({
+                r1: ${outerTubeRadius}, 
+                r2:${outerTubeRadius}, 
+                fn: ${isNaN(sides) ? 60 : sides},
+                center: [true, true, true],
+                h: ${tubeHeight}})
+                `)
+        }
+        else {
+        board().addStatement( `difference( 
+            cylinder({
+                r1: ${outerTubeRadius}, 
+                r2:${outerTubeRadius}, 
+                fn: ${isNaN(sides) ? 60 : sides},
+                center: [true, true, true],
+                h: ${tubeHeight}}),
+            cylinder({
+                r1: ${innerTubeRadius}, 
+                r2: ${innerTubeRadius}, 
+                fn: ${isNaN(sides) ? 60 : sides},
+                center: [true, true, true],
+                h: ${tubeHeight}}) )`
+
+        )
+            }
     }
 
 
@@ -175,6 +233,7 @@ namespace pxsim.shapes {
     //% height.defl=10
     //% faces.defl=100
     //% weight=75
+    //% help=shapes/cone
     //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
     /**
@@ -244,6 +303,7 @@ namespace pxsim.shapes {
     //% text.defl="BuildBee"
     //% height.defl=4
     //% group="3D Shapes"
+    //% help=shapes/text
     //% expandableArgumentMode="toggle"
     /**
      * Add text
@@ -278,6 +338,7 @@ namespace pxsim.shapes {
     //% depth.defl=10
     //% height.defl=10
     //% weight=93
+    //% help=shapes/polygons
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
     /**
@@ -309,6 +370,7 @@ namespace pxsim.shapes {
     //% depth.defl=10
     //% height.defl=10
     //% weight=92
+    //% help=shapes/ramp
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
     /**
@@ -355,6 +417,7 @@ namespace pxsim.shapes {
     //% height.defl=10
     //% sides.defl=6
     //% sides.min=3
+    //% help=shapes/polygons
     //% weight=80
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
@@ -540,6 +603,7 @@ namespace pxsim.shapes {
     //% topblock=false
     //% handlerStatement=true
     //% radius.defl=5
+    //% help=shapes/polyhedron
     //% group="More Shapes"
     //% advanced=false
     //% inlineInputMode=inline

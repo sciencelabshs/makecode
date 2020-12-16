@@ -1,14 +1,18 @@
-# Docs for Sample Target
+# BuildBee MakeCode Documentation
 
-This is a pure javascript sample target for [Microsoft MakeCode](https://makecode.com). 
-For more information about setting your own target, 
-see https://makecode.com/packages .
 
-You can embed code snippets and [more](https://makecode.com/markdown)
+## @boardname@ reference
 
-```blocks
-loops.forever(() => {
-    turtle.turn(Direction.Left, 10);
-    turtle.forward(1);
-});
-```
+* [BuildBee APIs](/reference)
+
+
+
+## Operators
+
+
+## Parameters (Making your own apps)
+
+
+## About 3D Printing
+
+

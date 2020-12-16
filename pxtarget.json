@@ -43,11 +43,11 @@
 
     },
     "appTheme": {
-
+        "name": "BuildBee MakeCode",
         "accentColor": "#4ebed7",
         "logoUrl": "https://buildbee.com",
         "logo": "./static/logo.portrait.white.svg",
-        "docsLogo": "./static/logo.square.white.svg",
+        "docsLogo": "/docs/static/logo.square.white.svg",
         "portraitLogo": "./static/logo.square.white.svg",
         "footerLogo": "./static/logo.portrait.black.svg",
         "cardLogo": "https://makecode.buildbee.com/docs/static/icons/social-share.png",
