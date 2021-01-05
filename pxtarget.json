@@ -44,6 +44,7 @@
     },
     "appTheme": {
         "name": "BuildBee MakeCode",
+        "extendFieldEditors": true,
         "accentColor": "#4ebed7",
         "logoUrl": "https://buildbee.com",
         "logo": "./static/logo.portrait.white.svg",
