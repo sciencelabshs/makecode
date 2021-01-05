@@ -1,38 +1,51 @@
-# All Shapes
+# Basic Shapes
+Here are the basic shapes available in BuildBee MakeCode
+
 ```codecard
 [{
     "name": "Cube",
-    "url": "/docs/reference/shapes/cube.html",
+    "url": "reference/shapes/cube",
     "imageUrl": "/docs/reference/shapes/cube.png?v=DOCVER-1"
 
 }, {
     "name": "Cylinder",
-    "url": "/docs/reference/shapes/cylinder.html",
+    "url": "reference/shapes/cylinder",
     "imageUrl": "/docs/reference/shapes/cylinder.png?v=DOCVER-1"
 }, {
     "name": "Cone",
-    "url": "/docs/reference/shapes/cone.html",
+    "url": "reference/shapes/cone",
     "imageUrl": "/docs/reference/shapes/cone.png?v=DOCVER-1"
 }, {
     "name": "Sphere",
-    "url": "/docs/reference/shapes/sphere.html",
+    "url": "reference/shapes/sphere",
     "imageUrl": "/docs/reference/shapes/sphere.png?v=DOCVER-1"
 },  
 {
     "name": "Roof",
-    "url": "/docs/reference/shapes/roof.html",
+    "url": "reference/shapes/roof",
     "imageUrl": "/docs/reference/shapes/roof.png?v=DOCVER-1"
 }, 
 {
     "name": "Ramp",
-    "url": "/docs/reference/shapes/ramp.html",
+    "url": "reference/shapes/ramp",
     "imageUrl": "/docs/reference/shapes/ramp.png?v=DOCVER-1"
 },
 {
     "name": "Polygon",
-    "url": "/docs/reference/shapes/polygons.html",
+    "url": "reference/shapes/polygons",
     "imageUrl": "/docs/reference/shapes/polygons.png?v=DOCVER-1"
-}]
+},
+{
+    "name": "Donut",
+    "url": "reference/shapes/donut",
+    "imageUrl": "/docs/reference/shapes/donut.png?v=DOCVER-1"
+},
+{
+    "name": "Tube",
+    "url": "reference/shapes/tube",
+    "imageUrl": "/docs/reference/shapes/tube.png?v=DOCVER-1"
+}
+]
 ```
 
 ### All Shape Blocks

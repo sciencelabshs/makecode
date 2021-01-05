@@ -794,7 +794,7 @@ function sliceParams(orientation, radius, bounds) {
 
     }
 
-    
+  
     //% blockId=flip_shapes block="turn $angle ° | $axis=main_rotateAxisPicker" 
     //% topblock=false
     //% handlerStatement=true
@@ -802,6 +802,8 @@ function sliceParams(orientation, radius, bounds) {
     //% angle.defl=45
     //% angle.min=0
     //% angle.max=360
+    //% angle.fieldEditor="protractor360"
+    //% angle.fieldOptions.precision=3
     //% axis.defl=2
     //% weight=80
     //% group="Position"
@@ -863,7 +865,7 @@ function sliceParams(orientation, radius, bounds) {
     //% help=operators/subtract-shapes
     //% group="Operations"
     /**
-     * From the first shape, cut away all other shapes.  Sometimes called "difference"
+     * Cut shapes away from the first shape in the list.  Sometimes called "difference"
      * @param body List of shapes to subtract
      */
     export function subtractShapesAsync(body: RefAction): Promise<void> {
@@ -894,7 +896,7 @@ function sliceParams(orientation, radius, bounds) {
     //% help=operators/wrap-shapes
     //% group="Operations"
     /**
-     * Intersect shapes - only leave the parts from all shapes that overlap.
+     * Wrap shapes - cover all the shapes, leaving only the outermost edges.  Sometimes called "quick hull" or "convex hull".
      * @param body List of shapes to intersect
      */
     export function wrapShapesAsync(body: RefAction): Promise<void> {

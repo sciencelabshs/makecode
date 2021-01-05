@@ -3,7 +3,8 @@
 
 ## @boardname@ reference
 
-* [BuildBee APIs](/reference)
+* [Shapes](/reference/shapes/all)
+* [Operators](/reference/operators/all)
 
 
 

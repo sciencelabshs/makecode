@@ -9,7 +9,7 @@ declare namespace extraMath {
      * Convert any number to text
      */
     //% shim=extraMath::convert
-    function convert(number: number): string;
+    function convert(number: number): any;
 
     //% block="convert $angle to radians"
     //% inlineInputMode=inline
@@ -45,7 +45,7 @@ declare namespace extraMath {
      * @param theta The angle in degrees
      */
     //% shim=extraMath::sin
-    function sin(theta: number): number;
+    function sin(theta: number): any;
 
     //% block="cos $theta°"
     //% inlineInputMode=inline
@@ -57,7 +57,7 @@ declare namespace extraMath {
      * @param theta The angle in degrees
      */
     //% shim=extraMath::cos
-    function cos(theta: number): number;
+    function cos(theta: number): any;
 
     //% block="tan $theta°"
     //% inlineInputMode=inline
@@ -69,7 +69,7 @@ declare namespace extraMath {
      * @param theta The angle in degrees
      */
     //% shim=extraMath::tan
-    function tan(theta: number): number;
+    function tan(theta: number): any;
 
     //% block="arcsin $x"
     //% inlineInputMode=inline
@@ -130,7 +130,7 @@ declare namespace extraMath {
      * @param x The operand for the natural log
      */
     //% shim=extraMath::ln
-    function ln(x: number): number;
+    function ln(x: number): any;
 
     //% block="log $x base $base"
     //% inlineInputMode=inline
@@ -154,7 +154,7 @@ declare namespace extraMath {
      * The mathematical constant Pi, the circle constant.
      */
     //% shim=extraMath::Pi
-    function Pi(): number;
+    function Pi(): any;
 
     //% block="e"
     //% inlineInputMode=inline
@@ -164,7 +164,7 @@ declare namespace extraMath {
      * The mathematical constant e, the exponential constant.
      */
     //% shim=extraMath::e
-    function e(): number;
+    function e(): any;
 
     //% block="ϕ"
     //% inlineInputMode=inline
@@ -184,7 +184,7 @@ declare namespace extraMath {
      * The mathematical constant the square root of 2.
      */
     //% shim=extraMath::Sqrt2
-    function Sqrt2(): number;
+    function Sqrt2(): any;
 
 }
 declare namespace shapes {
@@ -715,6 +715,8 @@ declare namespace operators {
     //% angle.defl=45
     //% angle.min=0
     //% angle.max=360
+    //% angle.fieldEditor="protractor360"
+    //% angle.fieldOptions.precision=3
     //% axis.defl=2
     //% weight=80
     //% group="Position"
@@ -760,7 +762,7 @@ declare namespace operators {
     //% help=operators/subtract-shapes
     //% group="Operations"
     /**
-     * From the first shape, cut away all other shapes.  Sometimes called "difference"
+     * Cut shapes away from the first shape in the list.  Sometimes called "difference"
      * @param body List of shapes to subtract
      */
     //% shim=operators::subtractShapesAsync promise
@@ -784,7 +786,7 @@ declare namespace operators {
     //% help=operators/wrap-shapes
     //% group="Operations"
     /**
-     * Intersect shapes - only leave the parts from all shapes that overlap.
+     * Wrap shapes - cover all the shapes, leaving only the outermost edges.  Sometimes called "quick hull" or "convex hull".
      * @param body List of shapes to intersect
      */
     //% shim=operators::wrapShapesAsync promise
@@ -871,7 +873,7 @@ declare namespace parameters {
      * @param characterLimit The character limit to apply to the text input. (0 means no limit)
      */
     //% shim=parameters::textParameter
-    function textParameter(parameterName: string, defaultText?: string, characterLimit?: number): string;
+    function textParameter(parameterName: string, defaultText?: string, characterLimit?: number): any;
 
     //% block="number - label: $parameterName || default: $defaultValue"
     //% inlineInputMode=inline
@@ -885,7 +887,7 @@ declare namespace parameters {
      * @param defaultValue The default value for the number input field
      */
     //% shim=parameters::numberParameter
-    function numberParameter(parameterName: string, defaultValue?: number): number;
+    function numberParameter(parameterName: string, defaultValue?: number): any;
 
     //% block="range - label: $parameterName || default: $defaultValue | min: $minValue | max: $maxValue | step: $stepValue"
     //% inlineInputMode=inline
@@ -905,7 +907,7 @@ declare namespace parameters {
      * @param stepValue The default value of the slider
      */
     //% shim=parameters::numberRangeParameter
-    function numberRangeParameter(parameterName: string, defaultValue?: number, minValue?: number, maxValue?: number, stepValue?: number): number;
+    function numberRangeParameter(parameterName: string, defaultValue?: number, minValue?: number, maxValue?: number, stepValue?: number): any;
 
 }
 declare namespace colors {
