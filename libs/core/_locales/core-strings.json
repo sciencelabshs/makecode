@@ -85,6 +85,7 @@
   "shapes._edgeStylePicker|block": "%input",
   "shapes._polyhedraPicker|block": "%input",
   "shapes._rotateAxisPicker|block": "%input",
+  "shapes.arc|block": "arc - radius $radius|height $height|startAngle $startAngle|endAngle $endAngle|| color $color=chooseColor| faces $faces",
   "shapes.chooseColor|block": "%value",
   "shapes.circle|block": "circle (2d) - radius $radius",
   "shapes.cone|block": "cone - radius $radius|height $height|| color $color=chooseColor| faces $faces",

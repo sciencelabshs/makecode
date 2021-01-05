@@ -1,6 +1,6 @@
 /// <reference path="../libs/core/enums.d.ts"/>
 /// <reference path="./solids.ts"/>
-/// <reference path="./extraMaths.ts"/>
+/// <reference path="./extraMath.ts"/>
 /// <reference path="./shapes.ts"/>
 /// <reference path="./operators.ts"/>
 /// <reference path="./parameters.ts"/>
