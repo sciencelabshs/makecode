@@ -265,7 +265,8 @@ namespace pxsim.shapes {
         path = path.appendPoint([0,0])
                 
         let shape = path.close().innerToCAG()
-        return linear_extrude({ height: height }, shape);
+        const shape3d =  linear_extrude({ height: height }, shape);
+        return shape3d.translate([0, 0, -height/2])
     }
 
     `
