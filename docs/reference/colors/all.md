@@ -2,24 +2,10 @@
 ```codecard
 [{
     "name": "Rainbow",
-    "url": "reference/color/rainbow",
-    "imageUrl": "/docs/reference/color/rainbow.png?v=DOCVER-1"
+    "url": "reference/colors/rainbow",
+    "imageUrl": "/docs/reference/colors/rainbow.png?v=DOCVER-1"
 
-},
-{
-    "name": "Color Scale",
-    "url": "reference/color/colorscale",
-    "imageUrl": "/docs/reference/color/colorscale.png?v=DOCVER-1"
-
-},
-{
-    "name": "Color Temperature",
-    "url": "reference/color/colortemperature",
-    "imageUrl": "/docs/reference/color/colortemperature.png?v=DOCVER-1"
-
-},
-]
-```
+}]```
 
 ### Adding Color to Projects
 Make your 3D printing projects look great with the use of color!
