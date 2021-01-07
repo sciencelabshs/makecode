@@ -798,14 +798,12 @@ function sliceParams(orientation, radius, bounds) {
     //% blockId=flip_shapes block="turn $angle ° | $axis=main_rotateAxisPicker" 
     //% topblock=false
     //% handlerStatement=true
-    //% help=operators/turn
     //% angle.defl=45
     //% angle.min=0
     //% angle.max=360
-    //% angle.fieldEditor="protractor360"
-    //% angle.fieldOptions.precision=3
     //% axis.defl=2
     //% weight=80
+    //% help=operators/turn
     //% group="Position"
     /**
      * Flip along the X axis
