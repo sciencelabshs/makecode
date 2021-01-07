@@ -205,7 +205,7 @@ namespace pxsim.shapes {
                 fn: ${isNaN(sides) ? 60 : sides},
                 center: [true, true, true],
                 h: ${tubeHeight}})
-                `)
+                `, color)
         }
         else {
         board().addStatement( `difference( 
@@ -220,7 +220,7 @@ namespace pxsim.shapes {
                 r2: ${innerTubeRadius}, 
                 fn: ${isNaN(sides) ? 60 : sides},
                 center: [true, true, true],
-                h: ${tubeHeight}}) )`
+                h: ${tubeHeight}}) )`, color
 
         )
             }
@@ -251,6 +251,54 @@ namespace pxsim.shapes {
                 fn: ${faces === undefined ? 100 : faces},
                 center: [true, true, true]}
             )`, color);
+    }
+
+    const ARC = `
+    function arc({radius, height, startAngle, endAngle, fn}) {
+        var path = CSG.Path2D.arc({
+            center: [0,0,0],
+            radius: radius,
+            startangle:startAngle,
+            endangle:endAngle,
+            resolution: fn || 32,
+        });
+        path = path.appendPoint([0,0])
+                
+        let shape = path.close().innerToCAG()
+        const shape3d =  linear_extrude({ height: height }, shape);
+        return shape3d.translate([0, 0, -height/2])
+    }
+
+    `
+    //% block="arc - radius $radius|height $height|startAngle $startAngle|endAngle $endAngle|| color $color=chooseColor| faces $faces"
+    //% inlineInputMode=inline
+    //% radius.defl=10
+    //% height.defl=10
+    //% faces.defl=60
+    //% startAngle.defl=0
+    //% endAngle.defl=30
+    //% weight=60
+    //% help=shapes/all
+    //% group="3D Shapes - Round Shapes"
+    //% expandableArgumentMode="enabled"
+   /**
+    * Make an arc (pie chart piece) - from an starting angle to end angle
+    * @param radius The radius of the circle
+    * @param height The thickness of your pie slice 
+    * @param startAngle The starting angle (in degrees)
+    * @param endAngle The end angle (in degrees)
+    * @param color The color of the pie slice
+    * @param faces The resolution of the pie slice.  The more faces it has, the slower it will draw. 
+    */
+    export function arc(radius: number, height: number, startAngle: number, endAngle: number,  color?: number, faces?: number) {
+        board().requireImport('ARC', ARC)
+        board().addStatement(`arc({
+            startAngle: ${startAngle},
+            endAngle: ${endAngle},
+            radius: ${radius}, 
+            height: ${height},
+            fn: ${faces === undefined ? 32 : faces},
+            })`, color);
     }
 
 
@@ -374,7 +422,7 @@ namespace pxsim.shapes {
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
     /**
-    * Add a triangular prism (rampe)
+    * Add a triangular prism (ramp)
     * @param width The width of the cube
     * @param depth The depth of the cube
     * @param height The height of the cube

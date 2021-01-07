@@ -9,17 +9,19 @@ namespace pxsim.extraMath {
     //% weight=99
     //% number.defl=0
     //% group="Conversion"
+    //% help=extraMath/all
     /**
-        * Convert any number to text
+    * Convert any number to text
     */
-   export function convert(number: number = 0) {
-    return number.toString()
-}
+    export function convert(number: number = 0) {
+        return number.toString()
+    }
 
     //% block="convert $angle to radians"
     //% inlineInputMode=inline
     //% angle.defl=0
     //% weight=95
+    //% help=extraMath/all
     //% group="Conversion"
     /**
         * Convert an angle in degrees to an angle in radians
@@ -33,6 +35,7 @@ namespace pxsim.extraMath {
     //% inlineInputMode=inline
     //% angle.defl=0
     //% weight=94
+    //% help=extraMath/all
     //% group="Conversion"
     /**
         * Convert an angle in degrees to an angle in degrees
@@ -47,6 +50,7 @@ namespace pxsim.extraMath {
     //% inlineInputMode=inline
     //% theta.defl=0
     //% weight=93
+    //% help=extraMath/all
     //% group="Trigonometry in Degrees"
     /**
         * Sine of angle in degrees
@@ -60,6 +64,7 @@ namespace pxsim.extraMath {
     //% inlineInputMode=inline
     //% theta.defl=0
     //% weight=92
+    //% help=extraMath/all
     //% group="Trigonometry in Degrees"
     /**
         * Cosine of angle in degrees
@@ -74,6 +79,7 @@ namespace pxsim.extraMath {
     //% inlineInputMode=inline
     //% theta.defl=0
     //% weight=91
+    //% help=extraMath/all
     //% group="Trigonometry in Degrees"
     /**
         * Tangent of angle in degrees
@@ -88,6 +94,7 @@ namespace pxsim.extraMath {
     //% inlineInputMode=inline
     //% x.defl=0
     //% weight=90
+    //% help=extraMath/all
     //% group="Trigonometry in Degrees"
     /**
         * Inverse sine of angle in degrees
@@ -101,6 +108,7 @@ namespace pxsim.extraMath {
     //% inlineInputMode=inline
     //% x.defl=0
     //% weight=89
+    //% help=extraMath/all
     //% group="Trigonometry in Degrees"
     /**
         * Inverse sine of angle in degrees
@@ -114,6 +122,7 @@ namespace pxsim.extraMath {
     //% inlineInputMode=inline
     //% x.defl=1
     //% weight=88
+    //% help=extraMath/all
     /**
         * Inverse sine of angle in degrees
         * @param x The operand for inverse tan
@@ -127,6 +136,7 @@ namespace pxsim.extraMath {
     //% x.defl=0
     //% y.defl=0
     //% weight=87
+    //% help=extraMath/all
     //% group="Trigonometry in Degrees"
     /**
         * Inverse sine of angle in degrees
@@ -143,6 +153,7 @@ namespace pxsim.extraMath {
     //% x.defl=1
     //% weight=86
     //% group="Logarithms"
+    //% help=extraMath/all
     /**
         * Inverse sine of angle in degrees
         * @param x The operand for the natural log
@@ -156,6 +167,7 @@ namespace pxsim.extraMath {
     //% x.defl=1
     //% base.defl=10
     //% weight=85
+    //% help=extraMath/all
     //% group="Logarithms"
     /**
         * Inverse sine of angle in degrees
@@ -169,6 +181,7 @@ namespace pxsim.extraMath {
     //% block="π"
     //% inlineInputMode=inline
     //% weight=84
+    //% help=extraMath/all
     //% group="Constants"
     /**
         * The mathematical constant Pi, the circle constant.
@@ -180,6 +193,7 @@ namespace pxsim.extraMath {
     //% block="e"
     //% inlineInputMode=inline
     //% weight=83
+    //% help=extraMath/all
     //% group="Constants"
     /**
         * The mathematical constant e, the exponential constant.
@@ -191,6 +205,7 @@ namespace pxsim.extraMath {
     //% block="ϕ"
     //% inlineInputMode=inline
     //% weight=82
+    //% help=extraMath/all
     //% group="Constants"
     /**
         * The mathematical constant Phi, the golden ratio.
@@ -203,8 +218,9 @@ namespace pxsim.extraMath {
     //% inlineInputMode=inline
     //% weight=81
     //% group="Constants"
+    //% help=extraMath/all
     /**
-        * The mathematical constant the square root of 2.
+    * The mathematical constant the square root of 2.
     */
     export function Sqrt2() {
         return Math.sqrt(2)
