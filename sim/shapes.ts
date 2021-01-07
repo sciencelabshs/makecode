@@ -205,7 +205,7 @@ namespace pxsim.shapes {
                 fn: ${isNaN(sides) ? 60 : sides},
                 center: [true, true, true],
                 h: ${tubeHeight}})
-                `)
+                `, color)
         }
         else {
         board().addStatement( `difference( 
@@ -220,7 +220,7 @@ namespace pxsim.shapes {
                 r2: ${innerTubeRadius}, 
                 fn: ${isNaN(sides) ? 60 : sides},
                 center: [true, true, true],
-                h: ${tubeHeight}}) )`
+                h: ${tubeHeight}}) )`, color
 
         )
             }
