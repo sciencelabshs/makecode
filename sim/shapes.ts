@@ -3,7 +3,7 @@
 
 /**
  * 3D Shapes to create on the surface
- * 
+ * http://makecode.buildbee.com/docs/shapes.html
  */
 namespace pxsim.shapes {
 
@@ -58,6 +58,7 @@ namespace pxsim.shapes {
 
     //% block="cube - width $width|depth $depth|height $height||color $color=chooseColor"
     //% inlineInputMode=inline
+    //% help=shapes/cube
     //% width.defl=10
     //% depth.defl=10
     //% height.defl=10
@@ -65,12 +66,12 @@ namespace pxsim.shapes {
     //% group="3D Shapes"
     //% expandableArgumentMode="enabled"
     /**
-        * Add a cube
-        * @param width The width of the cube
-        * @param depth The depth of the cube
-        * @param height The height of the cube
-        * @param color If specified, what color to make the cube.  In hex (0xab1234)
-        */
+    * The cube, (or more technically a rectangular prism) allows you to make box like shapes. 
+    * @param width The width of the cube
+    * @param depth The depth of the cube
+    * @param height The height of the cube
+    * @param color If specified, what color to make the cube.  In hex (0xab1234)
+    */
     export function cube(width: number = 1, depth: number = 1, height: number = 1, color?: number) {
         const statement = `cube({size: [${width}, ${depth}, ${height}], center: [true, true, true]})`
         board().addStatement(statement, color)
@@ -85,7 +86,8 @@ namespace pxsim.shapes {
     //% faces.defl=60
     //% faces.min=4
     //% faces.max=1000
-    //% type.defl=SphereType.icosahedron
+    //% help=shapes/sphere
+    //% type.defl=SphereType.geodesic
     //% weight=94
     //% expandableArgumentMode="toggle"
     //% group="3D Shapes"
@@ -98,7 +100,7 @@ namespace pxsim.shapes {
      */
     export function sphere(radius: number, color?: number, type?: SphereType, faces?: number) {
         const fn = (faces) ? Math.max(faces, 4) : 150
-        const sphereType = (type === SphereType.geodesic || isNaN(type)) ? "geodesic" : "icosahedron";
+        const sphereType = (isNaN(type) || type === SphereType.geodesic) ? "geodesic" : "icosahedron";
 
         board().addStatement(`sphere({r: ${radius}, center: [true, true, true],  fn: ${fn}, type: "${sphereType}"})`, color);
 
@@ -110,6 +112,7 @@ namespace pxsim.shapes {
     //% radius.defl=10
     //% height.defl=10
     //% faces.defl=60
+    //% help=shapes/cylinder
     //% weight=90
     //% group="3D Shapes"
     /**
@@ -129,18 +132,19 @@ namespace pxsim.shapes {
                                         h: ${height}})`, color);
     }
 
-    //% block="donut - thickness $thickness|radius $radius||$color=chooseColor|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
+    //% block="donut - thickness $thickness|radius $radius||color $color=chooseColor|inner faces $innerFaces|outer faces $outerFaces|innerRotation $innerRotation"
     //% inlineInputMode=inline
     //% thickness.defl=4 thickness.min=1
     //% radius.defl=10
     //% innerFaces.defl=16
     //% outerFaces.defl=32
     //% innerRotation.defl=0
+    //% help=shapes/donut
     //% weight=80
     //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
     /**
-     * 
+     * Add a donut (torus)
      * @param thickness How thick to make the donut
      * @param radius The radius of the donut
      * @param color Color (in hex 0xab12345)
@@ -161,11 +165,65 @@ namespace pxsim.shapes {
         board().addStatement(`torus({
                                     ri: ${thickness / 2}, 
                                     ro: ${radius}, 
-                                    fni: ${innerFaces === undefined ? 16 : innerFaces},
-                                    fno: ${outerFaces === undefined ? 32 : outerFaces},
-                                    roti: ${innerRotation === undefined ? 32 : innerRotation}, 
+                                    fni: ${isNaN(innerFaces) ? 16 : innerFaces},
+                                    fno: ${isNaN(outerFaces) ? 32 : outerFaces},
+                                    roti: ${isNaN(innerRotation) ? 32 : innerRotation}, 
                                     center: [true, true, true],
                                 })`, color)
+    }
+
+    //% block="tube - thickness $thickness|radius $radius|height $height||sides $sides | color $color=chooseColor"
+    //% inlineInputMode=inline
+    //% thickness.defl=1 thickness.min=1
+    //% radius.defl=5
+    //% height.defl=10
+    //% sides.defl=60
+    //% help=shapes/tube
+    //% weight=81
+    //% group="3D Shapes - Round Shapes"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Add a tube with a flat top and bottom
+     * For non-circular tubes, lower the sides.
+     * e.g. Set the sides to 6 to get hexagonal tubes! 
+     * @param thickness How thick to make the walls of the tube
+     * @param radius The radius of the tube
+     * @param height The height of the tube
+     * @param color Color (in hex 0xab12345)
+     * @param sides How many sides on the object
+     */
+    export function tube(thickness: number, radius: number, height: number, sides?: number, color?: number) {
+        const outerTubeRadius = Math.max(0, radius)
+        const innerTubeRadius = Math.max(0, radius - thickness)
+        const tubeHeight = Math.max(0, height)
+     
+        if (innerTubeRadius <= 0) {
+            // if there's nothing to cut out, how about don't try!
+           board().addStatement(`cylinder({
+                r1: ${outerTubeRadius}, 
+                r2:${outerTubeRadius}, 
+                fn: ${isNaN(sides) ? 60 : sides},
+                center: [true, true, true],
+                h: ${tubeHeight}})
+                `, color)
+        }
+        else {
+        board().addStatement( `difference( 
+            cylinder({
+                r1: ${outerTubeRadius}, 
+                r2:${outerTubeRadius}, 
+                fn: ${isNaN(sides) ? 60 : sides},
+                center: [true, true, true],
+                h: ${tubeHeight}}),
+            cylinder({
+                r1: ${innerTubeRadius}, 
+                r2: ${innerTubeRadius}, 
+                fn: ${isNaN(sides) ? 60 : sides},
+                center: [true, true, true],
+                h: ${tubeHeight}}) )`, color
+
+        )
+            }
     }
 
 
@@ -175,10 +233,11 @@ namespace pxsim.shapes {
     //% height.defl=10
     //% faces.defl=100
     //% weight=75
+    //% help=shapes/cone
     //% group="3D Shapes - Round Shapes"
     //% expandableArgumentMode="enabled"
     /**
-     * 
+     * Make a cone like shape that is as tall as height.  The cone will be twice as wide as the radius. 
      * @param radius The radius of the cone
      * @param height How high to make the cone
      * @param color The color to use for the cone
@@ -192,6 +251,54 @@ namespace pxsim.shapes {
                 fn: ${faces === undefined ? 100 : faces},
                 center: [true, true, true]}
             )`, color);
+    }
+
+    const ARC = `
+    function arc({radius, height, startAngle, endAngle, fn}) {
+        var path = CSG.Path2D.arc({
+            center: [0,0,0],
+            radius: radius,
+            startangle:startAngle,
+            endangle:endAngle,
+            resolution: fn || 32,
+        });
+        path = path.appendPoint([0,0])
+                
+        let shape = path.close().innerToCAG()
+        const shape3d =  linear_extrude({ height: height }, shape);
+        return shape3d.translate([0, 0, -height/2])
+    }
+
+    `
+    //% block="arc - radius $radius|height $height|startAngle $startAngle|endAngle $endAngle|| color $color=chooseColor| faces $faces"
+    //% inlineInputMode=inline
+    //% radius.defl=10
+    //% height.defl=10
+    //% faces.defl=60
+    //% startAngle.defl=0
+    //% endAngle.defl=30
+    //% weight=60
+    //% help=shapes/all
+    //% group="3D Shapes - Round Shapes"
+    //% expandableArgumentMode="enabled"
+   /**
+    * Make an arc (pie chart piece) - from an starting angle to end angle
+    * @param radius The radius of the circle
+    * @param height The thickness of your pie slice 
+    * @param startAngle The starting angle (in degrees)
+    * @param endAngle The end angle (in degrees)
+    * @param color The color of the pie slice
+    * @param faces The resolution of the pie slice.  The more faces it has, the slower it will draw. 
+    */
+    export function arc(radius: number, height: number, startAngle: number, endAngle: number,  color?: number, faces?: number) {
+        board().requireImport('ARC', ARC)
+        board().addStatement(`arc({
+            startAngle: ${startAngle},
+            endAngle: ${endAngle},
+            radius: ${radius}, 
+            height: ${height},
+            fn: ${faces === undefined ? 32 : faces},
+            })`, color);
     }
 
 
@@ -244,6 +351,7 @@ namespace pxsim.shapes {
     //% text.defl="BuildBee"
     //% height.defl=4
     //% group="3D Shapes"
+    //% help=shapes/text
     //% expandableArgumentMode="toggle"
     /**
      * Add text
@@ -278,6 +386,7 @@ namespace pxsim.shapes {
     //% depth.defl=10
     //% height.defl=10
     //% weight=93
+    //% help=shapes/polygons
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
     /**
@@ -309,10 +418,11 @@ namespace pxsim.shapes {
     //% depth.defl=10
     //% height.defl=10
     //% weight=92
+    //% help=shapes/ramp
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
     /**
-    * Add a triangular prism (rampe)
+    * Add a triangular prism (ramp)
     * @param width The width of the cube
     * @param depth The depth of the cube
     * @param height The height of the cube
@@ -355,6 +465,7 @@ namespace pxsim.shapes {
     //% height.defl=10
     //% sides.defl=6
     //% sides.min=3
+    //% help=shapes/polygons
     //% weight=80
     //% group="3D Shapes - Triangles/Polygons"
     //% expandableArgumentMode="enabled"
@@ -540,6 +651,7 @@ namespace pxsim.shapes {
     //% topblock=false
     //% handlerStatement=true
     //% radius.defl=5
+    //% help=shapes/polyhedron
     //% group="More Shapes"
     //% advanced=false
     //% inlineInputMode=inline

@@ -16,13 +16,13 @@
 @fontName  : 'Poppins';
 
 @bodyFont: "Poppins", Verdana, sans-serif;
-@headerFont        : "Roboto Mono", serif;
+@headerFont        : "Poppins", serif;
 @pageFont          : "Roboto Mono", serif;
 @googleFontName    : 'Roboto Mono';
 @importGoogleFonts : true;
 
 @docsHeaderFont: @headerFont;
-@docsPageFont: @pageFont;
+@docsPageFont: @bodyFont;
 
 /*-------------------
       Site Colors

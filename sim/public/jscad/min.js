@@ -2793,7 +2793,7 @@
       if (isCAG(a[i])) {
         object = object.intersect(a[i])
       } else {
-        object = object.intersect(a[i].setColor(1, 1, 0)) // -- color the cuts
+        object = object.intersect(a[i]/*.setColor(1, 1, 0)*/) // -- color the cuts
       }
     }
     return object
@@ -48576,6 +48576,7 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
           var vertextag = vertex.getTag();
           var vertexindex = vertexTag2Index[vertextag];
           var prevcolor = colors[vertexindex];
+          
           const hasColorChanged = (prevcolor && prevcolor[0] === color[0] && prevcolor[1] === color[1] && prevcolor[2] === color[2])
           if (smoothlighting && vertexTag2Index[vertextag] && !hasColorChanged ) {
             vertexindex = vertexTag2Index[vertextag];
@@ -48745,7 +48746,7 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
         lines: false, // draw outlines or not
         faces: true,
         overlay: false, // use overlay when drawing lines or not
-        smooth: true, // use smoothing or not
+        smooth: false, // use smoothing or not.  This seems to break using colors in stackshapes. Visually not much diff?
         faceColor: { r: 0xff/255.0, g: 0xff/255.0, b: 0xff/255.0, a: 1 }, // 4ebed7 face color
         outlineColor: { r: 0.0, g: 0.0, b: 0.0, a: 1.0 // default outline color
         } },
