@@ -1,8 +1,7 @@
 # Mandelbrot
-## Step 1 @unplugged
 Make an awesome mandelbrot fractal coaster!
 
-```template
+```blocks
 let tempReal = 0
 let imaginaryComponent = 0
 let realComponent = 0

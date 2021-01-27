@@ -1,5 +1,5 @@
 # Storage Tray
-## Step 1 @unplugged
+
 A customizable storage tray!
 
 ```blocks

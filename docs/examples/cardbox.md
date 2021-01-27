@@ -1,11 +1,8 @@
 # Card Box
-## Step 1 @unplugged
-Create a custom box for your cards! 
 
-Click the button in the simulator to change the number of sections and spacing for your box.
+Create a custom box for your cards!
 
-
-```template
+```blocks
 function set_variables () {
     number_of_sections = parameters.numberParameter("Number of sections", 2)
     sections = []
