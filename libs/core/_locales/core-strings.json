@@ -55,6 +55,7 @@
   "extraMath.tan|block": "tan $theta°",
   "extraMath|block": "extraMath",
   "operators.addShapes|block": "add shapes",
+  "operators.chooseDegrees|block": "$angle",
   "operators.enlargeShapes|block": "enlarge shapes x: $x|  y: $y |  z: $z",
   "operators.hollowShapes|block": "hollow shapes: $wallThickness mm walls | with $insideRound mm radius",
   "operators.intersectShapes|block": "intersect shapes",

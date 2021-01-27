@@ -794,13 +794,21 @@ function sliceParams(orientation, radius, bounds) {
 
     }
 
-  
-    //% blockId=flip_shapes block="turn $angle ° | $axis=main_rotateAxisPicker" 
+
+    //% blockId=main_protractor360 block="$angle"
+    //% blockHidden=true
+    //% shim=TD_ID
+    //% angle.fieldEditor="protractor360" angle.fieldOptions.decompileLiterals=true
+    export function chooseDegrees(angle: number): number {
+        return angle
+    }
+
+    //% blockId=flip_shapes 
+    //% block="turn $angle ° | $axis=main_rotateAxisPicker" 
     //% topblock=false
     //% handlerStatement=true
+    //% angle.shadow=main_protractor360
     //% angle.defl=45
-    //% angle.min=0
-    //% angle.max=360
     //% axis.defl=2
     //% weight=80
     //% help=operators/turn

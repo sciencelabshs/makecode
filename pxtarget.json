@@ -66,6 +66,7 @@
         "betaUrl": "https://makecode.buildbee.com/",
         "boardName": "BuildBee",
         "hideShareEmbed": true,
+        "allowParentController": true,
         "docMenu": [
             {
                 "name": "About",
@@ -106,13 +107,14 @@
                 "id": "ie"
             }
         ],
-        "simAnimationEnter": "fly right in",
-        "simAnimationExit": "fly right out",
+        "simAnimationEnter": "none",
+        "simAnimationExit": "none",
         "simScreenshot": true,
         "simScreenshotKey": "P",
         "simScreenshotMaxUriLength": 300000,
         "simGif": false,
         "simGifKey": "R",
+        "python": false,
         "scriptManager": true,
         "debugger": true,
         "print": true,

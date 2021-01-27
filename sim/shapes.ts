@@ -5,6 +5,8 @@
  * 3D Shapes to create on the surface
  * http://makecode.buildbee.com/docs/shapes.html
  */
+
+// for more info on defining blocks see https://makecode.com/defining-blocks
 namespace pxsim.shapes {
 
 
@@ -22,6 +24,8 @@ namespace pxsim.shapes {
     export function _rotateAxisPicker(axis: RotateAxis): number {
         return axis
     }
+
+
 
     //% blockId="main_edgeStylePicker" block="%input" shim=TD_ID
     //% blockHidden=true
