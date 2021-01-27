@@ -456,13 +456,18 @@ namespace pxsim {
                     }
                     return
                 }
-                this.lastExecutingCode = codeStr;
+               
+                if (this.lastExecutingCode != codeStr) {
 
+                    // only update if the code changed
+                    this.lastExecutingCode = codeStr;
 
-                this.cancelPreviousBuild()
-                jsCadInterpreter.setJsCad(
-                    codeStr
-                );
+                    this.cancelPreviousBuild()
+                    jsCadInterpreter.setJsCad(
+                        codeStr
+                    );
+                }
+
 
 
             }
@@ -488,7 +493,6 @@ namespace pxsim {
             currentRenderSeed = Math.random()
 
             // when someone hits the refresh button cancel everything in progress
-            this.cancelPreviousBuild()
             this.updateJSCad()
             return Promise.resolve();
         }
