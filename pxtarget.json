@@ -67,7 +67,7 @@
         "betaUrl": "https://makecode.buildbee.com/",
         "boardName": "BuildBee",
         "hideShareEmbed": true,
-        "allowParentController": true,
+        "allowParentController": false,
         "docMenu": [
             {
                 "name": "About",
