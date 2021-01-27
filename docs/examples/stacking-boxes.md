@@ -1,7 +1,8 @@
 # Stacking Boxes
+## Step 1 @unplugged
 Make stacking storage containers of a customisable size.
 
-```blocks
+```template
 function makeIndent () {
     operators.subtractShapes(function () {
         shapes.cube(width - stepWidth, depth - stepWidth, stepHeight)

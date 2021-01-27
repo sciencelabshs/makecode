@@ -1,8 +1,8 @@
 # Sundial
-
+## Step 1 @unplugged
 Enter your latitude and get a sundial perfect for your house!
 
-```blocks
+```template
 function create_numbers () {
     operators.placeOnGround(function () {
         for (let index = 0; index <= 6; index++) {
