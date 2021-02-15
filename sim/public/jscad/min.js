@@ -11256,14 +11256,16 @@ const localCache = {}
   }
   
   function isCAG (object) {
+    if (!object) return false
+
     // objects[i] instanceof CAG => NOT RELIABLE
     // 'instanceof' causes huge issues when using objects from
     // two different versions of CSG.js as they are not reckonized as one and the same
     // so DO NOT use instanceof to detect matching types for CSG/CAG
-    if (!('sides' in object)) {
+    if (object.sides === undefined) {
       return false
     }
-    if (!('length' in object.sides)) {
+    if (object.sides.length === undefined) {
       return false
     }
   
@@ -11271,14 +11273,16 @@ const localCache = {}
   }
   
   function isCSG (object) {
+    if (!object) return false
+
     // objects[i] instanceof CSG => NOT RELIABLE
     // 'instanceof' causes huge issues when using objects from
     // two different versions of CSG.js as they are not reckonized as one and the same
     // so DO NOT use instanceof to detect matching types for CSG/CAG
-    if (!('polygons' in object)) {
+    if (object.polygons === undefined) {
       return false
     }
-    if (!('length' in object.polygons)) {
+    if (object.polygons.length === undefined) {
       return false
     }
     return true
@@ -20406,6 +20410,7 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
     options && options.statusCallback && options.statusCallback({progress: 100})
     return result
   }
+  
   
   /**
    * Parse the given SVG source and return a JSCAD script
