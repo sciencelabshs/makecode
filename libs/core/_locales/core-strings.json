@@ -54,6 +54,8 @@
   "extraMath.sin|block": "sin $theta°",
   "extraMath.tan|block": "tan $theta°",
   "extraMath|block": "extraMath",
+  "fasteners.metricCoarseSizePicker|block": "Metric coarse|$size",
+  "fasteners|block": "fasteners",
   "operators.addShapes|block": "add shapes",
   "operators.chooseDegrees|block": "$angle",
   "operators.enlargeShapes|block": "enlarge shapes x: $x|  y: $y |  z: $z",
@@ -111,6 +113,7 @@
   "{id:category}Colors": "Colors",
   "{id:category}Control": "Control",
   "{id:category}ExtraMath": "ExtraMath",
+  "{id:category}Fasteners": "Fasteners",
   "{id:category}Helpers": "Helpers",
   "{id:category}Math": "Math",
   "{id:category}Number": "Number",
@@ -142,5 +145,6 @@
   "{id:group}Read": "Read",
   "{id:group}Rotation": "Rotation",
   "{id:group}Text": "Text",
+  "{id:group}Threads": "Threads",
   "{id:group}Trigonometry in Degrees": "Trigonometry in Degrees"
 }

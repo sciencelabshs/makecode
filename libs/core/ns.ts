@@ -58,3 +58,12 @@ namespace extraMath {
 namespace parameters {
 
 }
+
+/**
+ * Blocks for making fasteners
+ */
+//% groups=["Threads"]
+//% color=#4ebed7 weight=90 icon="\u26ad" weight=10
+namespace fasteners {
+
+}
