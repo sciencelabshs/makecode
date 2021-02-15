@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "skipLibCheck": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "declaration": false,
+        "out": "../built/editor.js",
+        "rootDir": ".",
+        "newLine": "LF",
+        "sourceMap": false
+    }
+}

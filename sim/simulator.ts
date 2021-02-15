@@ -292,7 +292,7 @@ namespace pxsim {
             }
             if (!this.warnCodeDepth) this.warnCodeDepth = 1000
             this.noChangesHaveBeenMadeNotRerenderingCount = 0
-            this.bus = new EventBus(runtime);
+            this.bus = new EventBus(runtime, this);
             this.imports = {}
             this.initScripts = {}
             this.mainStatement = new MainStatement();

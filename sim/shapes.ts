@@ -26,6 +26,15 @@ namespace pxsim.shapes {
     }
 
 
+    //% blockId=main_stlEditor block="$stl"
+    //% blockHidden=true
+    //% shim=TD_ID
+    //% stl.fieldEditor="stlEditor" stl.fieldOptions.decompileLiterals=true
+    export function loadSTL(stl: string): string {
+        return stl
+    }
+
+
 
     //% blockId="main_edgeStylePicker" block="%input" shim=TD_ID
     //% blockHidden=true
@@ -484,8 +493,22 @@ namespace pxsim.shapes {
         cylinder(radius, height, color, sides, radius);
     }
 
+
+
+
+    //% blockId=load_stl 
+    //% block="stl $asciiStl" 
+    //% topblock=false
+    //% asciiStl.shadow=main_stlEditor
+    //% handlerStatement=true
+    //% weight=80
+    //% help=shapes/stl
+    //% group="Position"
+    export function stl(asciiStl: string)  {
+        board().addStatement(`console.log(${asciiStl})`)
+    } 
+
     /*
-    enum Animal {
         'Penguin', 
         'Giraffe'
     }
@@ -544,7 +567,6 @@ namespace pxsim.shapes {
             board().addStatement(`rectangular_extrude([${pointsArrayStr}], {w: ${width}, h: ${height}, closed: ${closed}})`);
        
          }*/
-
 
 
 

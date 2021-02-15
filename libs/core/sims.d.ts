@@ -216,6 +216,13 @@ declare namespace shapes {
     //% shim=shapes::_rotateAxisPicker
     function _rotateAxisPicker(axis: RotateAxis): number;
 
+    //% blockId=main_stlEditor block="$stl"
+    //% blockHidden=true
+    //% shim=TD_ID
+    //% stl.fieldEditor="stlEditor" stl.fieldOptions.decompileLiterals=true
+    //% shim=shapes::loadSTL
+    function loadSTL(stl: string): string;
+
     //% blockId="main_edgeStylePicker" block="%input" shim=TD_ID
     //% blockHidden=true
     //% input.fieldEditor="imagedropdown" input.fieldOptions.columns=3
@@ -467,8 +474,18 @@ declare namespace shapes {
     //% shim=shapes::polygon3D
     function polygon3D(sides: number, radius: number, height: number, color?: number): void;
 
+    //% blockId=load_stl 
+    //% block="stl $asciiStl" 
+    //% topblock=false
+    //% asciiStl.shadow=main_stlEditor
+    //% handlerStatement=true
+    //% weight=80
+    //% help=shapes/stl
+    //% group="Position"
+    //% shim=shapes::stl
+    function stl(asciiStl: string): void;
+
     /*
-    enum Animal {
     'Penguin', 
     'Giraffe'
     }

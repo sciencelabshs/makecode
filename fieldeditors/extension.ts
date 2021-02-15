@@ -7,6 +7,9 @@ namespace pxt.editor {
             fieldEditors: [{
                 selector: "protractor360",
                 editor: FieldProtractor360
+            }, {
+                selector: "stlEditor",
+                editor: FieldSTLEditor
             }]
         };
         return Promise.resolve<pxt.editor.FieldExtensionResult>(res);
