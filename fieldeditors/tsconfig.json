@@ -2,12 +2,20 @@
     "compilerOptions": {
         "target": "es5",
         "skipLibCheck": true,
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "noImplicitReturns": true,
         "declaration": false,
-        "out": "../built/fieldeditors.js",
+        "outDir": "../built/fieldeditors",
+        "baseUrl": ".",
         "rootDir": ".",
         "newLine": "LF",
-        "sourceMap": false
-    }
+        "sourceMap": false,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "module": "es2015"
+    },
+    "include": [
+        "decs.d.ts",
+        "*.ts"
+    ] 
 }

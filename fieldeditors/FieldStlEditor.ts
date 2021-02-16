@@ -2,12 +2,18 @@
 /// <reference path="../node_modules/pxt-core/built/pxtsim.d.ts"/>
 /// <reference path="../node_modules/pxt-core/built/pxtlib.d.ts" />
 
-namespace pxt.editor {
+
+import * as io from "@jscad/io"
+
+
+
+
+
 
     // This is based upon 
     // https://github.com/microsoft/pxt/blob/f12637e112e46acda74e76248755f15ee0ff18aa/pxtblocks/fields/field_ledmatrix.ts
 
-    export interface FieldSTLEditorOptions extends Blockly.FieldCustomOptions {
+    export interface FieldStlEditorOptions extends Blockly.FieldCustomOptions {
 
     }
 
@@ -17,12 +23,12 @@ namespace pxt.editor {
     const BG_WIDTH = BG_PADDING * 2 + PREVIEW_WIDTH;
     const TOTAL_WIDTH = PADDING * 2 + BG_PADDING * 2 + PREVIEW_WIDTH;
 
-    export class FieldSTLEditor extends Blockly.Field implements Blockly.FieldCustom {
+    export class FieldStlEditor extends Blockly.Field implements Blockly.FieldCustom {
 
         public isFieldCustom_ = true;
         public SERIALIZABLE = true;
 
-        private params: FieldSTLEditorOptions;
+        private params: FieldStlEditorOptions;
         private blocksInfo: pxtc.BlocksInfo;
         private state: any;
 
@@ -33,6 +39,7 @@ namespace pxt.editor {
         constructor(text: string, params: any, validator?: Function) {
             super(text, validator);
 
+            console.log(io)
             this.params = params
             this.blocksInfo = params.blocksInfo;
 
@@ -98,6 +105,8 @@ namespace pxt.editor {
                         const fileReader = new FileReader()
                         fileReader.onload = () => {
                             const textResult = fileReader.result as string
+                            console.log(io)
+                            debugger
                             this.setValue(`"${textResult}"`)
                         }
                         fileReader.readAsDataURL(file)
@@ -167,4 +176,3 @@ namespace pxt.editor {
 
 
 
-}

@@ -1,8 +1,9 @@
 /// <reference path="../node_modules/pxt-core/localtypings/blockly.d.ts" />
 /// <reference path="../node_modules/pxt-core/built/pxtsim.d.ts"/>
+/// <reference path="../node_modules/pxt-core/built/pxteditor.d.ts" />
 
 
-namespace pxt.editor {
+
 
   
     export interface FieldProtractorOptions360 extends Blockly.FieldCustomOptions {
@@ -124,4 +125,3 @@ namespace pxt.editor {
             } 
         }
     }
-}

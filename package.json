@@ -46,6 +46,7 @@
     "typescript": "3.7.5"
   },
   "dependencies": {
+    "@jscad/io": "^0.5.0",
     "pxt-core": "^6.9.11",
     "replace-in-file": "^6.1.0"
   }

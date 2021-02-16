@@ -506,7 +506,7 @@ namespace pxsim.shapes {
     //% group="Position"
     export function stl(stlDataUri?: string)  {
         if (stlDataUri) {
-            board().addSTLFromDataUri(stlDataUri)
+            //board().addSTLFromDataUri(stlDataUri)
         }
     } 
 
