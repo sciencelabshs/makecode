@@ -30,7 +30,7 @@ namespace pxsim.shapes {
     //% blockHidden=true
     //% shim=TD_ID
     //% stl.fieldEditor="stlEditor" stl.fieldOptions.decompileLiterals=true
-    export function loadSTL(stl: string): string {
+    export function loadSTL(stl?: string): string {
         return stl
     }
 
@@ -497,15 +497,17 @@ namespace pxsim.shapes {
 
 
     //% blockId=load_stl 
-    //% block="stl $asciiStl" 
+    //% block="stl $stlDataUri" 
     //% topblock=false
-    //% asciiStl.shadow=main_stlEditor
+    //% stlDataUri.shadow=main_stlEditor
     //% handlerStatement=true
     //% weight=80
     //% help=shapes/stl
     //% group="Position"
-    export function stl(asciiStl: string)  {
-        board().addStatement(`console.log(${asciiStl})`)
+    export function stl(stlDataUri?: string)  {
+        if (stlDataUri) {
+            board().addSTLFromDataUri(stlDataUri)
+        }
     } 
 
     /*
