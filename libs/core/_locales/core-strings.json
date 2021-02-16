@@ -102,7 +102,7 @@
   "shapes.rect|block": "rect (2d) - width $width|height $height",
   "shapes.regularPolygon|block": "regular polygon (2d) - sides $sides|radius $radius",
   "shapes.sphere|block": "sphere - radius $radius || color $color=chooseColor|type $type|faces $faces",
-  "shapes.stl|block": "stl $asciiStl",
+  "shapes.stl|block": "stl $stlDataUri",
   "shapes.text|block": "text - text $text | fontSize $fontSize | height $height ||color $color=chooseColor | line width $lineWidth |  letterSpacing $letterSpacing | lineSpacing $lineSpacing",
   "shapes.triangleRamp|block": "ramp - width $width|depth $depth|height $height||color $color=chooseColor",
   "shapes.triangleRoof|block": "roof - width $width|depth $depth|height $height||color $color=chooseColor",

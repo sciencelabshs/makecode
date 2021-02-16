@@ -221,7 +221,7 @@ declare namespace shapes {
     //% shim=TD_ID
     //% stl.fieldEditor="stlEditor" stl.fieldOptions.decompileLiterals=true
     //% shim=shapes::loadSTL
-    function loadSTL(stl: string): string;
+    function loadSTL(stl?: string): string;
 
     //% blockId="main_edgeStylePicker" block="%input" shim=TD_ID
     //% blockHidden=true
@@ -475,15 +475,15 @@ declare namespace shapes {
     function polygon3D(sides: number, radius: number, height: number, color?: number): void;
 
     //% blockId=load_stl 
-    //% block="stl $asciiStl" 
+    //% block="stl $stlDataUri" 
     //% topblock=false
-    //% asciiStl.shadow=main_stlEditor
+    //% stlDataUri.shadow=main_stlEditor
     //% handlerStatement=true
     //% weight=80
     //% help=shapes/stl
     //% group="Position"
     //% shim=shapes::stl
-    function stl(asciiStl: string): void;
+    function stl(stlDataUri?: string): void;
 
     /*
     'Penguin', 
