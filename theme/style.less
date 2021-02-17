@@ -221,20 +221,23 @@ img[src*='#center'] {
         flex-direction: column;
     }
  
-    .editorFloat {
-        .ui.embed  { // jscad editor dimension on mobile
-            /*top: mobile view for simulator */ 
-         
-            position: fixed;
-            padding-bottom: 12px !important;
-            bottom: 2em;
-            min-height: 400px !important;
-         
-            min-width: 600px !important;
-            transform: translate(-300px, 60px) scale(0.5);
-         
+    /* floating editor mode */
+    #root:not(.fullscreensim, .simView) {
+        .editorFloat {
+            .ui.embed  { // jscad editor dimension on mobile
+                /*top: mobile view for simulator */ 
+            
+                position: fixed;
+                padding-bottom: 12px !important;
+                bottom: 2em;
+                min-height: 400px !important;
+            
+                min-width: 600px !important;
+                transform: translate(-300px, 60px) scale(0.5);
+            
+            }
+        
         }
-      
     }
     .fullscreensim {
 
@@ -247,6 +250,17 @@ img[src*='#center'] {
             min-height: 400px !important;
             transform: unset;
         }  
+    }
+    /* sharing page on tablet*/
+    .simView {
+        .editorFloat { 
+            .ui.embed {
+                min-width: unset;
+                transform: unset;
+                min-width: unset !important;
+                min-height: unset !important;
+            }
+        }
     }
 }
 
@@ -262,24 +276,27 @@ img[src*='#center'] {
     }
     
     /* floating editor mode */
-    .editorFloat { 
-        .ui.embed {
-            /*top: mobile view for simulator */ 
-            position: fixed;
-            bottom: 0px;
-            padding-bottom: 12px !important;
-            margin-left: 42px !important;
-            min-height: 400px !important;
-         
-            min-width: 600px !important;
-            transform: translate(-300px, 60px) scale(0.5);
-         
+    #root:not(.fullscreensim, .simView) {
+         .editorFloat { 
+            .ui.embed {
+                /*top: mobile view for simulator */ 
+                position: fixed;
+                bottom: 0px;
+                padding-bottom: 12px !important;
+                margin-left: 42px !important;
+                min-height: 400px !important;
             
+                min-width: 600px !important;
+                transform: translate(-300px, 60px) scale(0.5);
+            
+                
+            }
+        
         }
-    
     }
 
-    /* unset the transform and height/width restrictions when you're in full screen mode*/
+
+     /* unset the transform and height/width restrictions when you're in full screen mode*/
     .fullscreensim {
         .editorFloat { 
             .ui.embed {
@@ -290,11 +307,7 @@ img[src*='#center'] {
             }
         }
     }
-  
-    /** sharing page*/
-    .simView .simframe.ui.embed {
-        transform: unset;
-    }
+
 
     .fullscreensim {
         .ui.embed { // jscad editor dimensions on tablet
@@ -308,6 +321,18 @@ img[src*='#center'] {
             transform: unset;
         }
     }
+      
+    .simView {
+        .editorFloat { 
+            .ui.embed {
+                min-width: unset;
+                transform: unset;
+                min-width: unset !important;
+                min-height: unset !important;
+            }
+        }
+    }
+
 }
 
 /* Small Monitor */
