@@ -193,19 +193,25 @@ img[src*='#center'] {
     button {
         pointer-events: all;
     }
+
 }
 @media only screen and (max-width: 991px) {
-#root:not(.fullscreensim) #filelist .simtoolbar {
-    // floating simulator    
-    position: absolute;
+    #root:not(.fullscreensim) #filelist .simtoolbar {
+        // floating simulator    
+        position: absolute;
         right: 0px;
         bottom: 10px;
         margin: 0px;
-}
+    }
 
 }
 
 
+/* in the fullscreen sim toolbar and sharing - save room for the parameters button*/
+.fullscreensim #filelist .simtoolbar {
+    left: 100px;
+    width: "calc(100% - 100px)";
+}
 
 /* Mobile */
 @media only screen and (max-width: @largestMobileScreen) {
@@ -255,6 +261,7 @@ img[src*='#center'] {
         z-index: 99;
     }
     
+    /* floating editor mode */
     .editorFloat { 
         .ui.embed {
             /*top: mobile view for simulator */ 
@@ -267,10 +274,23 @@ img[src*='#center'] {
             min-width: 600px !important;
             transform: translate(-300px, 60px) scale(0.5);
          
-            //transform: translate(-120px,80px) scale(.5);
+            
         }
     
     }
+
+    /* unset the transform and height/width restrictions when you're in full screen mode*/
+    .fullscreensim {
+        .editorFloat { 
+            .ui.embed {
+                min-width: unset;
+                transform: unset;
+                min-width: unset !important;
+                min-height: unset !important;
+            }
+        }
+    }
+  
     /** sharing page*/
     .simView .simframe.ui.embed {
         transform: unset;
