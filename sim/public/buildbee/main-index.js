@@ -125,6 +125,9 @@ function saveSTL(event, fileName) {
         }
     }
 }
+function isSafari() {
+    return (/apple/i.test(navigator.vendor))
+}
 
 function addBuildBeeScripts() {
 
@@ -139,9 +142,16 @@ function addBuildBeeScripts() {
                     if (event.data.url) {
                         const hostname = new URL(event.data.url).hostname;
                         if (hostname === "app.buildbee.com") {
-                            window.open(event.data.url + "&utm_source=makecode&utm_medium=upload-to-buildbee&utm_campaign=codeeditor&file_name=" + fileName, "_blank")
-
-                            
+                            if (isSafari()) {
+                                // safari popup blocks the url - hasn't checked that
+                                // it's a result of a button.  Longer term fix is to move the button
+                                // to the main frame instead of the simulator, then open the window immediately
+                                window.location.href = event.data.url + "&utm_source=makecode&utm_medium=upload-to-buildbee&utm_campaign=codeeditor&file_name=" + fileName
+                            }
+                            else {
+                                // prefer to open in separate tab
+                                window.open(event.data.url + "&utm_source=makecode&utm_medium=upload-to-buildbee&utm_campaign=codeeditor&file_name=" + fileName, "_blank")
+                            }
                         }
                     }
                 }
