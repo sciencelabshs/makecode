@@ -10,7 +10,7 @@ declare namespace extraMath {
      * Convert any number to text
      */
     //% shim=extraMath::convert
-    function convert(number: number): any;
+    function convert(number: number): string;
 
     //% block="convert $angle to radians"
     //% inlineInputMode=inline
@@ -49,7 +49,7 @@ declare namespace extraMath {
      * @param theta The angle in degrees
      */
     //% shim=extraMath::sin
-    function sin(theta: number): any;
+    function sin(theta: number): number;
 
     //% block="cos $theta°"
     //% inlineInputMode=inline
@@ -62,7 +62,7 @@ declare namespace extraMath {
      * @param theta The angle in degrees
      */
     //% shim=extraMath::cos
-    function cos(theta: number): any;
+    function cos(theta: number): number;
 
     //% block="tan $theta°"
     //% inlineInputMode=inline
@@ -75,7 +75,7 @@ declare namespace extraMath {
      * @param theta The angle in degrees
      */
     //% shim=extraMath::tan
-    function tan(theta: number): any;
+    function tan(theta: number): number;
 
     //% block="arcsin $x"
     //% inlineInputMode=inline
@@ -141,7 +141,7 @@ declare namespace extraMath {
      * @param x The operand for the natural log
      */
     //% shim=extraMath::ln
-    function ln(x: number): any;
+    function ln(x: number): number;
 
     //% block="log $x base $base"
     //% inlineInputMode=inline
@@ -167,7 +167,7 @@ declare namespace extraMath {
      * The mathematical constant Pi, the circle constant.
      */
     //% shim=extraMath::Pi
-    function Pi(): any;
+    function Pi(): number;
 
     //% block="e"
     //% inlineInputMode=inline
@@ -178,7 +178,7 @@ declare namespace extraMath {
      * The mathematical constant e, the exponential constant.
      */
     //% shim=extraMath::e
-    function e(): any;
+    function e(): number;
 
     //% block="ϕ"
     //% inlineInputMode=inline
@@ -200,7 +200,7 @@ declare namespace extraMath {
      * The mathematical constant the square root of 2.
      */
     //% shim=extraMath::Sqrt2
-    function Sqrt2(): any;
+    function Sqrt2(): number;
 
 }
 declare namespace shapes {
@@ -934,7 +934,7 @@ declare namespace parameters {
      * @param characterLimit The character limit to apply to the text input. (0 means no limit)
      */
     //% shim=parameters::textParameter
-    function textParameter(parameterName: string, defaultText?: string, characterLimit?: number): any;
+    function textParameter(parameterName: string, defaultText?: string, characterLimit?: number): string;
 
     //% block="number - label: $parameterName || default: $defaultValue"
     //% inlineInputMode=inline
@@ -948,7 +948,7 @@ declare namespace parameters {
      * @param defaultValue The default value for the number input field
      */
     //% shim=parameters::numberParameter
-    function numberParameter(parameterName: string, defaultValue?: number): any;
+    function numberParameter(parameterName: string, defaultValue?: number): number;
 
     //% block="range - label: $parameterName || default: $defaultValue | min: $minValue | max: $maxValue | step: $stepValue"
     //% inlineInputMode=inline
@@ -968,7 +968,7 @@ declare namespace parameters {
      * @param stepValue The default value of the slider
      */
     //% shim=parameters::numberRangeParameter
-    function numberRangeParameter(parameterName: string, defaultValue?: number, minValue?: number, maxValue?: number, stepValue?: number): any;
+    function numberRangeParameter(parameterName: string, defaultValue?: number, minValue?: number, maxValue?: number, stepValue?: number): number;
 
 }
 declare namespace colors {
