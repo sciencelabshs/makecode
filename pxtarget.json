@@ -117,7 +117,7 @@
         "simScreenshotMaxUriLength": 300000,
         "simGif": false,
         "simGifKey": "R",
-        "python": false,
+        "python": true,
         "scriptManager": true,
         "debugger": true,
         "print": true,
