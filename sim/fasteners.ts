@@ -63,11 +63,18 @@ namespace pxsim.fasteners {
     }
     `
 
+    const GET_POINTS_FROM_PROFILE = `
+    function getPointsFromProfile(profile) {
+        const points = profile.map(function (profilePoint2d) {
+            return [profilePoint2d[0], profilePoint2d[1], 0]
+        })
+        return points
+    }
+    `
+
     const MAKE_THREAD = `
         function makeThread(profile, pitch, rRotation, turns, higbee_arc = 20, fn = 120) {
-            const points = profile.map(profilePoint2d => {
-                return [profilePoint2d[0], profilePoint2d[1], 0]
-            })
+            const points = getPointsFromProfile(profile)
             const threadProfilePolygon = CSG.Polygon.createFromPoints(points)
             const r = rRotation
             const steps = Math.floor(turns * fn)
@@ -94,25 +101,28 @@ namespace pxsim.fasteners {
         }
     `
 
-    const MAKE_THREADED_HOLE_CHAMFER = `
-        function makeThreadHoleChamfer(profile, rRotation, fn = 120, top=false) {
-            const points = profile.map(profilePoint2d => {
-                return [profilePoint2d[0], profilePoint2d[1], 0]
-            })
-            const threadProfilePolygon = CSG.Polygon.createFromPoints(points)
-            const r = rRotation
-            const steps = Math.floor(fn)+1
+   
 
+    const MAKE_THREADED_HOLE_CHAMFER = `
+    
+        function makeThreadHoleChamfer(profile, rRotation, fn = 120, top = false) {
+            const points = getPointsFromProfile(profile)
+          
+            const threadProfilePolygon = CSG.Polygon.createFromPoints(points);
+            const r = rRotation;
+            const steps = Math.floor(fn) + 20;/*20 is a fudge factor that makes it big enough not to leave artefacts*/
+          
             return threadProfilePolygon.solidFromSlices({
-                numslices: steps,
-                callback: function (t, slice) {
-                    return rotate([0, 0, (360 * slice / fn - 90) + 3],  // The +3 just makes it so that vertexes dont line up with the threads
-                        translate([0, r, 0],
-                            rotate([90, 0, 0],
-                                rotate([0, 90, 0], this))))
-                }
+              numslices: steps,
+              callback: function(t, slice) {
+                return rotate(
+                  [0, 0, (360 * slice) / fn - 90 + 3], // The +3 just makes it so that vertexes dont line up with the threads
+                  translate([0, r, 0], rotate([90, 0, 0], rotate([0, 90, 0], this)))
+                );
+              }
             });
-        }
+          }
+          
     `
 
     const MAKE_THREADED_SHAFT = `
@@ -145,61 +155,86 @@ namespace pxsim.fasteners {
     `
 
     const MAKE_THREADED_HOLE = `
-        function threadedHole(profile, pitch, rRotation, dSupport, height, fn = 120, children) {
-            const turns = height / pitch;
-            // Minimum pitch requirements
-            let subtractionTool
-            if (height < pitch){
-                subtractionTool = translate([0, 0, -pitch / 2],
-                        cylinder({
-                            h: height,
-                            d: dSupport,
-                            fn: fn
-                        }))
+        function getMaxZBounds(children) {
+            let maxZ = -99999
+            for (let i = 0; i < children.length; i++) {
+                let child = children[i]
+                const childZ = child.getBounds()[1]._z
+                maxZ = Math.max(childZ, maxZ)
             }
-            else {
-                const profileHeightValues = profile.map(point => point[1])
-                const halfProfileHeight = Math.sqrt((Math.max(...profileHeightValues) - Math.min(...profileHeightValues))**2)
-                subtractionTool = union(
-                    cylinder({
-                        h: height,
-                        d: dSupport,
-                        fn: fn
-                    }),
-                    difference(
-                        difference(
-                            union(
-                                union(
-                                    makeThread(profile, pitch, rRotation, turns, 1, fn),
-                                    makeThreadHoleChamfer(profile, rRotation, fn)
-                                ),
-                                translate(
-                                    [0, 0, height],
-                                    makeThreadHoleChamfer(profile, rRotation, fn, true)
-                                )
-                            ),
-                            translate(
-                                [-dSupport, -dSupport, height],
-                                cube({ size:[ 2*dSupport, 2*dSupport, halfProfileHeight]})
-                            )
-                        ),
-                        translate(
-                            [-dSupport, -dSupport, -halfProfileHeight],
-                            cube({ size:[ 2*dSupport, 2*dSupport, halfProfileHeight]})
-                        )
-                    )
-                )
-            }
-            const childZMax = Math.max(...children.map(child => child.getBounds()[1]._z))
-
-            return difference(
-                union(children),
-                translate(
-                    [0, 0, childZMax - height],
-                    subtractionTool
-                )
-            )
+            return maxZ
         }
+         
+
+        function getHalfProfileHeight(profile) {
+         
+            let minHeight = 999999999, maxHeight =  -999999999 
+            for (let i = 0; i < profile.length; i++) {
+                const height = profile[i][1]
+                minHeight = Math.min(minHeight, height)
+                maxHeight = Math.max(maxHeight, height)
+            }
+            return  Math.abs(maxHeight - minHeight)
+        }
+
+        function getInteriorThread(
+            profile,
+            pitch,
+            rRotation,
+            dSupport,
+            height,
+            fn = 120
+          ) {
+            const turns = (height / pitch) +1;
+            const shaft = cylinder({
+              h: height + 10, /* RE 10: this shaft will be cut away, make sure it's tall enough*/
+              d: dSupport,
+              fn: fn
+            });
+          
+            // Minimum pitch requirements
+            let interiorThread;
+            if (height < pitch) {
+              subtractionTool = translate([0, 0, -pitch / 2], shaft);
+              return shaft;
+            } else {
+             
+              interiorThread = union(
+                shaft,
+                makeThread(profile, pitch, rRotation, turns, 1, fn),
+                makeThreadHoleChamfer(profile, rRotation, fn),
+                translate(
+                  [0, 0, height],
+                  makeThreadHoleChamfer(profile, rRotation, fn, true)
+                )
+              );
+          
+              return interiorThread;
+            }
+          }
+          function threadedHole(
+            profile,
+            pitch,
+            rRotation,
+            dSupport,
+            height,
+            fn = 120,
+            children
+          ) {
+            const interiorThread = getInteriorThread(
+              profile,
+              pitch,
+              rRotation,
+              dSupport,
+              height,
+              fn
+            );
+            const childZMax = getMaxZBounds(children);
+            return difference(
+              union(children),
+              translate([0, 0, childZMax - height], interiorThread)
+            );
+          }
     `
 
     // -------------------------------------------- SIZES --------------------------------------------
@@ -321,6 +356,7 @@ namespace pxsim.fasteners {
         const { sectionProfile, pitch, rRotation, dSupport } = threadForm["ext"]
         const stringifiedProfile = JSON.stringify(sectionProfile)
         board().requireImport('CENTER_CHILDREN', CENTER_CHILDREN)
+        board().requireImport('GET_POINTS_FROM_PROFILE', GET_POINTS_FROM_PROFILE)
         board().requireImport('MAKE_THREAD', MAKE_THREAD)
         board().requireImport('MAKE_THREADED_SHAFT', MAKE_THREADED_SHAFT)
         board().addStatement(`centerChildren(threadedShaft(${stringifiedProfile}, ${pitch}, ${rRotation}, ${dSupport}, ${height}, ${lead || 20}, ${resolution || 120}))`)
@@ -348,6 +384,7 @@ namespace pxsim.fasteners {
         const { sectionProfile, pitch, rRotation, dSupport } = threadForm["ext"]
         const stringifiedProfile = JSON.stringify(sectionProfile)
         board().requireImport('CENTER_CHILDREN', CENTER_CHILDREN)
+        board().requireImport('GET_POINTS_FROM_PROFILE', GET_POINTS_FROM_PROFILE)
         board().requireImport('MAKE_THREAD', MAKE_THREAD)
         board().requireImport('MAKE_THREADED_HOLE', MAKE_THREADED_HOLE)
         board().requireImport('MAKE_THREADED_HOLE_CHAMFER', MAKE_THREADED_HOLE_CHAMFER)
