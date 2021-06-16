@@ -283,6 +283,7 @@ namespace pxsim {
         private updateSimulatorTimer: any;
         private warnCodeDepth: number
         private noChangesHaveBeenMadeNotRerenderingCount: number
+        private externalScriptId: number
         constructor() {
             super();
             try {
@@ -297,6 +298,7 @@ namespace pxsim {
             this.initScripts = {}
             this.mainStatement = new MainStatement();
             this.currentStatement = this.mainStatement;
+            this.externalScriptId = 1;
         }
 
         popBlock() {
@@ -305,6 +307,28 @@ namespace pxsim {
             }
         }
 
+        addExternalJSCadScript(jscadScript: string) {
+            if (!jscadScript) return
+            let script = jscadScript
+            this.externalScriptId++
+           
+            // convert from data uri
+            if (/data:application\/jscad;/.test(script)) {
+                script = script.replace(/data:application\/jscad;/, "")
+                script = atob(script)
+            }
+
+            if (!/function\s+main/g.test(script)) {
+                throw new Error("no main defined")
+            }
+
+            const newScriptName = `loadExternalJSCAD${this.externalScriptId}`
+            // replace the main() with externalMain23
+            script = script.replace(/function\s+main/g, `function ${newScriptName}`)
+            this.requireImport(newScriptName, script)
+
+            this.addStatement(`${newScriptName}()`)
+        }
         addBlock(str: string) {
             const newBlock = new Statement(str, true)
             this.currentStatement.addChild(newBlock)

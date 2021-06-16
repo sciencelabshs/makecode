@@ -26,12 +26,12 @@ namespace pxsim.shapes {
     }
 
 
-    //% blockId=main_stlEditor block="$stl"
+    //% blockId=main_jsCadEditor block="$jscadScript"
     //% blockHidden=true
     //% shim=TD_ID
-    //% stl.fieldEditor="stlEditor" stl.fieldOptions.decompileLiterals=true
-    export function loadSTL(stl?: string): string {
-        return stl
+    //% jscadScript.fieldEditor="stlEditor" jscadScript.fieldOptions.decompileLiterals=true
+    export function fromJSCAD(jscadScript?: string): string {
+        return jscadScript
     }
 
 
@@ -497,17 +497,15 @@ namespace pxsim.shapes {
 
 
     //% blockId=load_stl 
-    //% block="stl $stlDataUri" 
+    //% block="load 3D file $jscadScript" 
     //% topblock=false
-    //% stlDataUri.shadow=main_stlEditor
+    //% jscadScript.shadow=main_jsCadEditor
     //% handlerStatement=true
     //% weight=80
-    //% help=shapes/stl
-    //% group="Position"
-    export function stl(stlDataUri?: string)  {
-        if (stlDataUri) {
-            //board().addSTLFromDataUri(stlDataUri)
-        }
+    //% help=shapes/file3D
+    //% group="Files"
+    export function load3DFile(jscadScript?: string)  {
+        board().addExternalJSCadScript(jscadScript)
     } 
 
     /*
