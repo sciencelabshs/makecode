@@ -1102,15 +1102,131 @@ declare namespace colors {
 
 }
 declare namespace fasteners {
-    //% blockId=metricCoarseSizes block="Metric coarse|$size" 
-    //% size.defl="test"
-    //% group="Threads"
+    // -------------------------------------------- SIZES --------------------------------------------
+    //% blockId=bottleSize block="Soda Bottle size" 
+    //% group="Sizes"
     /**
-     * move shapes up the z axis
+     * Specify a size for a thread
+     */
+    //% shim=fasteners::bottleSize
+    function bottleSize(): string;
+
+    //% blockId=metricCoarseSizes block="Metric coarse | $size" 
+    //% shim=TD_ID
+    //% size.defl="M6x0.7"
+    //% group="Sizes"
+    /**
+     * Specify a size for a thread
      * @param size the direction to stack
      */
     //% shim=fasteners::metricCoarseSizePicker
-    function metricCoarseSizePicker(size: "int" | "ext" | "sortSize"): number;
+    function metricCoarseSizePicker(size: MetricCoarseSizes): string;
+
+    //% blockId=metricFineSizes block="Metric fine | $size" 
+    //% shim=TD_ID
+    //% size.defl="M6x0.8"
+    //% group="Sizes"
+    /**
+     * Specify a size for a thread
+     * @param size the direction to stack
+     */
+    //% shim=fasteners::metricFineSizePicker
+    function metricFineSizePicker(size: MetricFineSizes): string;
+
+    //% blockId=unifiedCoarseSizes block="Unified coarse | $size" 
+    //% shim=TD_ID
+    //% size.defl="UNC 1/2"
+    //% group="Sizes"
+    /**
+     * Specify a size for a thread
+     * @param size the direction to stack
+     */
+    //% shim=fasteners::unifiedCoarseSizePicker
+    function unifiedCoarseSizePicker(size: UnifiedCoarseSizes): string;
+
+    //% blockId=unifiedFineSizes block="Unified fine | $size" 
+    //% shim=TD_ID
+    //% size.defl="UNF 1/2"
+    //% group="Sizes"
+    /**
+     * Specify a size for a thread
+     * @param size the direction to stack
+     */
+    //% shim=fasteners::unifiedFineSizePicker
+    function unifiedFineSizePicker(size: UnifiedFineSizes): string;
+
+    //% blockId=unifiedExtraFineSizes block="Unified extra fine | $size" 
+    //% shim=TD_ID
+    //% size.defl="UNEF 1/2"
+    //% group="Sizes"
+    /**
+     * Specify a size for a thread
+     * @param size the direction to stack
+     */
+    //% shim=fasteners::unifiedExtraFineSizePicker
+    function unifiedExtraFineSizePicker(size: UnifiedExtraFineSizes): string;
+
+    //% blockId=unifiedNumberedSizes block="Unified numbered | $size" 
+    //% shim=TD_ID
+    //% size.defl="32 UN"
+    //% group="Sizes"
+    /**
+     * Specify a size for a thread
+     * @param size the direction to stack
+     */
+    //% shim=fasteners::unifiedNumberedSizePicker
+    function unifiedNumberedSizePicker(size: UnifiedNumberedSizes): string;
+
+    //% blockId=britishSizes block="British standard | $size" 
+    //% shim=TD_ID
+    //% size.defl="G1"
+    //% group="Sizes"
+    /**
+     * Specify a size for a thread
+     * @param size the direction to stack
+     */
+    //% shim=fasteners::britishSizePicker
+    function britishSizePicker(size: BritishSizes): string;
+
+    // -------------------------------------------- THREADS --------------------------------------------
+    //% blockId=threadedShaft block="threaded shaft - $thread|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/threadedShaft
+    //% thread.defl="bottle"
+    //% height.defl=20
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Make a cylinder with an external thread
+     * @param thread the type of thread you want
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    //% shim=fasteners::threadedShaft
+    function threadedShaft(thread: string, height: number, lead?: number, resolution?: number): void;
+
+    //% blockId=threadedHole block="threaded hole - $thread|height $height|resolution $resolution" 
+    //% topblock=false
+    //% handlerStatement=true
+    //% help=fasteners/threadedHole
+    //% thread.defl="bottle"
+    //% height.defl=20
+    //% resolution.defl=120
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Make a cylinder with an external thread
+     * @param thread the type of thread you want
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     * @param body the shapes to put a hole in
+     */
+    //% shim=fasteners::threadedHoleAsync promise
+    function threadedHole(thread: string, height: number, resolution: number, body: () => void): void;
 
 }
 
