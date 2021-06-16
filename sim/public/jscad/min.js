@@ -4652,7 +4652,9 @@ const DEBUG_PERF = false
 const localCache = {}
 
   const shapeCache = function(shapeType, params, createFunction) {
-    const shapeKey = shapeType + JSON.stringify(params);
+    
+    const shapeKey = shapeType + (params.shapeId || JSON.stringify(params));
+    
     //console.log("key -- " + shapeKey)
     if (_workerShapeCache[shapeKey]) {
        //console.log("using cache")
@@ -4987,7 +4989,16 @@ const localCache = {}
    *   points: [...]
    * })
    */
-  function polyhedron (params) {
+  function polyhedron (options) {
+
+      options = options || {}
+  
+      return shapeCache("polyhedron", options, function() {
+        const cube =  createPolyhedron(options)
+        return cube
+      })
+   }
+   function createPolyhedron(params) {
     let pgs = []
     let ref = params.triangles || params.polygons
     let colors = params.colors || null
@@ -7384,6 +7395,7 @@ const localCache = {}
 
    
     lookupOrCreate: function (els, defaultObject) {
+      
         let hash = ''
         let multiplier = this.multiplier
         for (i = 0; i < els.length; i++) {
@@ -7394,7 +7406,7 @@ const localCache = {}
           return this.lookuptable[hash]
         } else {
           let object = defaultObject
-          let hashparts = []
+          hashparts = []
           for (let i =0; i < els.length; i++) {
             let el = els[i]
             let q0 = Math.floor(el * multiplier)
