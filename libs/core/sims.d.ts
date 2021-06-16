@@ -1118,5 +1118,17 @@ declare namespace colors {
     function choose(value: number): number;
 
 }
+declare namespace fasteners {
+    //% blockId=metricCoarseSizes block="Metric coarse|$size" 
+    //% size.defl="test"
+    //% group="Threads"
+    /**
+     * move shapes up the z axis
+     * @param size the direction to stack
+     */
+    //% shim=fasteners::metricCoarseSizePicker
+    function metricCoarseSizePicker(size: "int" | "ext" | "sortSize"): number;
+
+}
 
 // Auto-generated. Do not edit. Really.
