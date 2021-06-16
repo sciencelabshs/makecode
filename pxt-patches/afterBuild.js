@@ -1,4 +1,6 @@
 const replace = require('replace-in-file')
+const fs = require("fs");
+const path = require("path");
 
 // files deployed might not have a sha so (eh) - lets 
 // just use the unixTimestamp instead. 
@@ -24,4 +26,15 @@ replace.replaceInFileSync({
     to: 'pxtRelId:"'+ buildTag +'"', // in their version this is the github hash
 })
 
+
+
+console.log("Copying buildbee services");
+console.log("===============");
+fs.copyFileSync(
+  path.resolve(
+    __dirname,
+    "../../../../cloud-buildbee/cli/makecode-scripts/cloud-buildbee-scripts/buildbee-services.js"
+  ),
+  path.resolve(__dirname, "../built/packaged/buildbee/buildbee-services.js")
+);
 

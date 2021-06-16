@@ -29,7 +29,7 @@
   ],
   "scripts": {
     "patchBuild": "node pxt-patches/applyPatches.js",
-    "start": "pxt clean && yarn patchBuild && pxt staticpkg && pxt serve -pkg",
+    "start": "pxt clean && yarn patchBuild && pxt staticpkg && yarn build:after-build && pxt serve -pkg",
     "checkdocs": "pxt checkdocs",
     "build:static": "yarn patchBuild && pxt staticpkg --bump && yarn build:after-build",
     "build:static-dev": "yarn patchBuild && pxt staticpkg && yarn build:after-build",
