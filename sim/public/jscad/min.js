@@ -6,6 +6,7 @@
  * Fixes
  *  - add camera controls for left/right/top/bottom
  *  - enable mouseout/mousedown to stop panning
+ *  - PERF: lookupOrCreate - use round instead of 16x allocation
  *  - PERF: fixes FuzzyFactory.lookupOrCreate being slow
  *  - PERF: fixes Vector.toArray allocating two arrays on every call
  *  - PERF: CSG.Sphere - address unnecessary array allocations 
@@ -7393,9 +7394,30 @@ const localCache = {}
     // If not found, calls the supplied callback function which should create a new object with
     // the specified properties. This object is inserted in the lookup database.
 
-   
+
     lookupOrCreate: function (els, defaultObject) {
       
+      // Original source code was using all combinations, which can get expensive
+      // for large numbers of vertexes.  We're just going to use round and see how we go.
+      //  el1/el2/el3, el1+1/el2/el3, el1/el2+1/el3, el1/el2/el3+1  
+      let hash = ''
+      let multiplier = this.multiplier
+      
+      for (i = 0; i < els.length; i++) {
+        let valueQuantized = Math.round(els[i] * multiplier)
+        hash = hash.concat(valueQuantized, '/')
+      }
+      if (this.lookuptable[hash] !== undefined) {
+        return this.lookuptable[hash]
+      } else {
+        this.lookuptable[hash] = defaultObject
+        return defaultObject
+      }
+    },
+   
+    lookupOrCreateORIG: function (els, defaultObject) {
+        // this is the original version. 
+        
         let hash = ''
         let multiplier = this.multiplier
         for (i = 0; i < els.length; i++) {
@@ -7414,7 +7436,10 @@ const localCache = {}
             hashparts.push( ['' + q0 + '/', '' + q1 + '/'])
           }
            
-       
+          // this appears to dump in a whole bunch of duplicates into the table
+          //  el1/el2/el3, el1+1/el2/el3, el1/el2+1/el3, el1/el2/el3+1  
+          //  up to 16 combinations for a plane, which is expensive memory wise...
+          
           let numelements = els.length
           let numhashes = 1 << numelements
           for (let hashmask = 0; hashmask < numhashes; ++hashmask) {
@@ -7428,6 +7453,7 @@ const localCache = {}
            
             this.lookuptable[hash] = object
           }
+          
           return object
         }
       }
