@@ -10309,7 +10309,7 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
       let orthobasis = new OrthoNormalBasis(plane)
       let polygonvertices2d = [] // array of array of Vector2D
       let polygontopvertexindexes = [] // array of indexes of topmost vertex per polygon
-      let topy2polygonindexes = {}
+      let topy2polygonindexes = new Map()
       let ycoordinatetopolygonindexes = new Map()
   
       let ycoordinatebins = new Set()
@@ -10368,10 +10368,10 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
             numvertices = 0
             minindex = -1
           } else {
-            if (!topy2polygonindexes[miny]) {
-              topy2polygonindexes[miny] = []
+            if (!topy2polygonindexes.has(miny)) {
+              topy2polygonindexes.set(miny, [])
             }
-            topy2polygonindexes[miny].push(polygonindex)
+            topy2polygonindexes.get(miny).push(polygonindex)
           }
         } // if(numvertices > 0)
               // reverse the vertex order:
@@ -10498,7 +10498,7 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
           nextycoordinate = Number(ycoordinates[yindex + 1])
           let middleycoordinate = 0.5 * (ycoordinate + nextycoordinate)
                   // update activepolygons by adding any polygons that start here:
-          let startingpolygonindexes = topy2polygonindexes[ycoordinate_as_string]
+          let startingpolygonindexes = topy2polygonindexes.get(ycoordinate_as_string)
           for (let polygonindex_key in startingpolygonindexes) {
             let polygonindex = startingpolygonindexes[polygonindex_key]
             let vertices2d = polygonvertices2d[polygonindex]
