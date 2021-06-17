@@ -162,7 +162,7 @@
   
             // make sure we clean up the web worker
             if (worker) {
-              worker.terminate()
+              if (!window.DEBUG_PERF) worker.terminate()
               worker =null;
             }
           }
@@ -226,7 +226,7 @@
         window.postMessage({message: "JSCAD-progress-endSimulatorRender"})
   
         if (worker) {
-          worker.terminate()
+          if (!window.DEBUG_PERF) worker.terminate()
           worker = null;
         }
       }
@@ -7403,10 +7403,12 @@ const localCache = {}
       let hash = ''
       let multiplier = this.multiplier
       
+
       for (i = 0; i < els.length; i++) {
         let valueQuantized = Math.round(els[i] * multiplier)
         hash = hash.concat(valueQuantized, '/')
       }
+    
       if (this.lookuptable[hash] !== undefined) {
         return this.lookuptable[hash]
       } else {
@@ -10295,10 +10297,9 @@ const localCache = {}
   const Line2D = require('./Line2')
   const Polygon = require('./Polygon3')
   
-  // Retesselation function for a set of coplanar polygons. See the introduction at the top of
-  // this file.
-  const reTesselateCoplanarPolygons = function (sourcepolygons, destpolygons) {
-    let numpolygons = sourcepolygons.length
+
+const getYCoodinatesForPolygons = function({sourcepolygons}) {
+  let numpolygons = sourcepolygons.length
     if (numpolygons > 0) {
       let plane = sourcepolygons[0].plane
       let shared = sourcepolygons[0].shared
@@ -10372,7 +10373,40 @@ const localCache = {}
         polygonvertices2d.push(vertices2d)
         polygontopvertexindexes.push(minindex)
       }
+      return {
+        plane,
+        shared,
+        orthobasis,
+        polygonvertices2d,
+        polygontopvertexindexes,
+        topy2polygonindexes,
+        ycoordinatetopolygonindexes
+      }
       
+    }
+  }
+
+   
+
+  
+  // Retesselation function for a set of coplanar polygons. See the introduction at the top of
+  // this file.
+  const reTesselateCoplanarPolygons = function (sourcepolygons, destpolygons) {
+    
+    let numpolygons = sourcepolygons.length
+    if (numpolygons <= 0) {
+      return
+    }
+      let {
+        plane,
+        shared,
+        orthobasis,
+        polygonvertices2d,
+        polygontopvertexindexes,
+        topy2polygonindexes,
+        ycoordinatetopolygonindexes
+      } = getYCoodinatesForPolygons({sourcepolygons})
+
       let ycoordinates = Object.keys(ycoordinatetopolygonindexes)
       
       // sort it.
@@ -10630,7 +10664,7 @@ const localCache = {}
           prevoutpolygonrow = newoutpolygonrow
         }
       } // for yindex
-    } // if(numpolygons > 0)
+
   }
   
   module.exports = reTesselateCoplanarPolygons
