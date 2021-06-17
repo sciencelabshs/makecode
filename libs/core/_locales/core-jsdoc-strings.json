@@ -328,7 +328,7 @@
   "randint": "Returns a pseudorandom number between min and max included.\nIf both numbers are integral, the result is integral.",
   "randint|param|max": "the upper inclusive bound, eg: 10",
   "randint|param|min": "the lower inclusive bound, eg: 0",
-  "shapes": "How to set fields and colours\n@external https://makecode.com/playground#basic-default-values\n@external https://makecode.com/extensions/getting-started/simple-extension\nuse the playground to configure the pickers\n\n3D Shapes to create on the surface",
+  "shapes": "How to set fields and colours\n@external https://makecode.com/playground#basic-default-values\n@external https://makecode.com/extensions/getting-started/simple-extension\n@external https://makecode.com/defining-blocks\nuse the playground to configure the pickers\n\n3D Shapes to create on the surface",
   "shapes.arc": "Make an arc (pie chart piece) - from an starting angle to end angle",
   "shapes.arc|param|color": "The color of the pie slice",
   "shapes.arc|param|endAngle": "The end angle (in degrees)",
