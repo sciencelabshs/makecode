@@ -10312,8 +10312,7 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
       let topy2polygonindexes = {}
       let ycoordinatetopolygonindexes = new Map()
   
-      let xcoordinatebins = {}
-      let ycoordinatebins = {}
+      let ycoordinatebins = new Set()
   
           // convert all polygon vertices to 2D
           // Make a list of all encountered y coordinates
@@ -10332,15 +10331,15 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
                       // close to each other, give them the same y coordinate:
             let ycoordinatebin = Math.floor(pos2d.y * ycoordinateBinningFactor)
             let newy
-            if (ycoordinatebin in ycoordinatebins) {
-              newy = ycoordinatebins[ycoordinatebin]
-            } else if (ycoordinatebin + 1 in ycoordinatebins) {
-              newy = ycoordinatebins[ycoordinatebin + 1]
-            } else if (ycoordinatebin - 1 in ycoordinatebins) {
-              newy = ycoordinatebins[ycoordinatebin - 1]
+            if (ycoordinatebins.has(ycoordinatebin)) {
+              newy = ycoordinatebin
+            } else if (ycoordinatebins.has(ycoordinatebin + 1)) {
+              newy = ycoordinatebin + 1
+            } else if (ycoordinatebins.has(ycoordinatebin - 1 )) {
+              newy = ycoordinatebin - 1
             } else {
               newy = pos2d.y
-              ycoordinatebins[ycoordinatebin] = pos2d.y
+              ycoordinatebins.add(newy)
             }
             pos2d = Vector2D.Create(pos2d.x, newy)
             vertices2d.push(pos2d)
