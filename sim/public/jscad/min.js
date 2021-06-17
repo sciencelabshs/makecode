@@ -1,3 +1,4 @@
+
 // BUGS
 // Leaking worker threads
 // 
@@ -46,6 +47,8 @@
 
 
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+
+  window.DEBUG_PERF = false
 
   var _workerShapeCache = {}
   var __sharedShapeCache = {}
@@ -10307,7 +10310,7 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
       let polygonvertices2d = [] // array of array of Vector2D
       let polygontopvertexindexes = [] // array of indexes of topmost vertex per polygon
       let topy2polygonindexes = {}
-      let ycoordinatetopolygonindexes = {}
+      let ycoordinatetopolygonindexes = new Map()
   
       let xcoordinatebins = {}
       let ycoordinatebins = {}
@@ -10350,10 +10353,15 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
               maxy = y
               maxindex = i
             }
-            if (!ycoordinatetopolygonindexes[y]) {
-              ycoordinatetopolygonindexes[y] = {}
+            //if (!ycoordinatetopolygonindexes[y]) {
+            if (!ycoordinatetopolygonindexes.has(y)) {
+                ycoordinatetopolygonindexes.set(y, new Set())
+              //ycoordinatetopolygonindexes[y] = {}
             }
-            ycoordinatetopolygonindexes[y][polygonindex] = true
+            
+            ycoordinatetopolygonindexes.get(y).add(polygonindex)
+           // ycoordinatetopolygonindexes[y].add(polygonindex)
+            //ycoordinatetopolygonindexes[y][polygonindex] = true
           }
           if (miny >= maxy) {
                       // degenerate polygon, all vertices have same y coordinate. Just ignore it from now:
@@ -10407,7 +10415,8 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
         ycoordinatetopolygonindexes
       } = getYCoodinatesForPolygons({sourcepolygons})
 
-      let ycoordinates = Object.keys(ycoordinatetopolygonindexes)
+      //let ycoordinates = Object.keys(ycoordinatetopolygonindexes)
+      let ycoordinates = Array.from(ycoordinatetopolygonindexes.keys())
       
       // sort it.
       ycoordinates.sort(fnNumberSort)
@@ -10435,11 +10444,15 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
               // - update leftvertexindex and rightvertexindex (which point to the current vertex index
               //   at the the left and right side of the polygon
               // Iterate over all polygons that have a corner at this y coordinate:
-        let polygonindexeswithcorner = ycoordinatetopolygonindexes[ycoordinate_as_string]
+        //let polygonindexeswithcorner = ycoordinatetopolygonindexes[ycoordinate_as_string]
+        let polygonindexeswithcorner = ycoordinatetopolygonindexes.get(ycoordinate_as_string)
+
         for (let activepolygonindex = 0; activepolygonindex < activepolygons.length; ++activepolygonindex) {
           let activepolygon = activepolygons[activepolygonindex]
           let polygonindex = activepolygon.polygonindex
-          if (polygonindexeswithcorner[polygonindex]) {
+         // if (polygonindexeswithcorner[polygonindex]) {
+          if (polygonindexeswithcorner.has(polygonindex)) {
+            
                       // this active polygon has a corner at this y coordinate:
             let vertices2d = polygonvertices2d[polygonindex]
             let numvertices = vertices2d.length
