@@ -9415,7 +9415,7 @@ const localCache = {}
   
       // returns an array with a Vector3D (center point) and a radius
     boundingSphere: function () {
-      if (!this.cachedBoundingSphere) {
+      if (this.cachedBoundingSphere === undefined) {
         let box = this.boundingBox()
         let middle = box[0].plus(box[1]).times(0.5)
         let radius3 = box[1].minus(middle)
@@ -9427,7 +9427,7 @@ const localCache = {}
   
       // returns an array of two Vector3Ds (minimum coordinates and maximum coordinates)
     boundingBox: function () {
-      if (!this.cachedBoundingBox) {
+      if (this.cachedBoundingBox === undefined) {
         let minpoint, maxpoint
         let vertices = this.vertices
         let numvertices = vertices.length
@@ -9437,12 +9437,31 @@ const localCache = {}
           minpoint = vertices[0].pos
         }
         maxpoint = minpoint
+
+        let minpointX = minpoint._x, 
+            minpointY = minpoint._y, 
+            minpointZ = minpoint._z, 
+            maxpointX = maxpoint._x, 
+            maxpointY = maxpoint._y, 
+            maxpointZ = maxpoint._z
+
         for (let i = 1; i < numvertices; i++) {
-          let point = vertices[i].pos
-          minpoint = minpoint.min(point)
-          maxpoint = maxpoint.max(point)
+          const p = vertices[i].pos
+          minpointX = Math.min(minpointX, p._x)
+          minpointY = Math.min(minpointY, p._y)
+          minpointZ = Math.min(minpointZ, p._z)
+
+          maxpointX = Math.max(maxpointX, p._x)
+          maxpointY = Math.max(maxpointY, p._y)
+          maxpointZ = Math.max(maxpointZ, p._z)
+
+         // minpoint = minpoint.min(p) // < PERF this reallocates a vector on every vertex
+         // maxpoint = maxpoint.max(p)
+          
         }
-        this.cachedBoundingBox = [minpoint, maxpoint]
+       
+        this.cachedBoundingBox = [Vector3D.Create(minpointX, minpointY, minpointZ), Vector3D.Create(maxpointX, maxpointY, maxpointZ)]
+         
       }
       return this.cachedBoundingBox
     },
