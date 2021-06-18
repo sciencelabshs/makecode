@@ -10398,8 +10398,8 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
   
   // Retesselation function for a set of coplanar polygons. See the introduction at the top of
   // this file.
-  const reTesselateCoplanarPolygons = function (sourcepolygons, destpolygons) {
-    
+  const reTesselateCoplanarPolygons = function (sourcepolygons) {
+    let destpolygons = []
     let numpolygons = sourcepolygons.length
     if (numpolygons <= 0) {
       return
@@ -10676,7 +10676,7 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
           prevoutpolygonrow = newoutpolygonrow
         }
       } // for yindex
-
+     return destpolygons
   }
   
   module.exports = reTesselateCoplanarPolygons
@@ -12300,7 +12300,7 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
           shared = fuzzyfactory.getPolygonShared(shared)
         }
         let tag = plane.getTag() + '/' + shared.getTag()
-        if (!(tag in polygonsPerPlane)) {
+        if (!(polygonsPerPlane[tag])) {
           polygonsPerPlane[tag] = [polygon]
         } else {
           polygonsPerPlane[tag].push(polygon)
@@ -12311,11 +12311,18 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
       for (let planetag in polygonsPerPlane) {
         let sourcepolygons = polygonsPerPlane[planetag]
         if (sourcepolygons.length < 2) {
-          destpolygons = destpolygons.concat(sourcepolygons)
+          //destpolygons = destpolygons.concat(sourcepolygons)
+          for (let s=0; s< sourcepolygons.length; s++) {
+            destpolygons.push(sourcepolygons[s])
+          }
         } else {
-          let retesselayedpolygons = []
-          reTesselateCoplanarPolygons(sourcepolygons, retesselayedpolygons)
-          destpolygons = destpolygons.concat(retesselayedpolygons)
+          let retesselayedpolygons = reTesselateCoplanarPolygons(sourcepolygons)
+          
+          // destpolygons = destpolygons.concat(retesselayedpolygons)
+          for (let r=0; r< retesselayedpolygons.length; r++) {
+            destpolygons.push(retesselayedpolygons[r])
+          }
+          
         }
       }
       let result = fromPolygons(destpolygons)
