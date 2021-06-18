@@ -48,7 +48,7 @@
 
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 
-  window.DEBUG_PERF = false
+  window.DEBUG_PERF = /localhost/.test(window.location.host)
 
   var _workerShapeCache = {}
   var __sharedShapeCache = {}
@@ -6128,9 +6128,15 @@ const localCache = {}
   
     transform: function (matrix4x4) {
       let ismirror = matrix4x4.isMirroring()
-      let newsides = this.sides.map(function (side) {
+      /*let newsides = this.sides.map(function (side) {
         return side.transform(matrix4x4)
-      })
+      })*/
+
+      let newsides = []
+      for (let i = this.sides.length-1; i >= 0; i--) {
+        newsides.push(this.sides[i].transform(matrix4x4))
+      }
+      
       let result = fromSides(newsides)
       if (ismirror) {
         result = result.flipped()
@@ -6139,10 +6145,17 @@ const localCache = {}
     },
   
     flipped: function () {
+
+      /*
       let newsides = this.sides.map(function (side) {
         return side.flipped()
       })
       newsides.reverse()
+      */
+      let newsides = []
+      for (let i = this.sides.length-1; i >= 0; i--) {
+        newsides.push(this.sides[i].flipped())
+      }
       return fromSides(newsides)
     },
   
@@ -7381,6 +7394,7 @@ const localCache = {}
     this.multiplier = 1.0 / tolerance
     this.lookupTableCacheHits = 0
     this.lookupTableLength = 0
+    this.hash = [] 
   }
   
   // Switch to see how much cache lookup affects the render time
@@ -7397,27 +7411,26 @@ const localCache = {}
     // If not found, calls the supplied callback function which should create a new object with
     // the specified properties. This object is inserted in the lookup database.
 
-
+    
     lookupOrCreate: function (els, defaultObject) {
       
       // Original source code was using all combinations, which can get expensive
       // for large numbers of vertexes.  We're just going to use round and see how we go.
       //  el1/el2/el3, el1+1/el2/el3, el1/el2+1/el3, el1/el2/el3+1  
-      let hash = ''
-      let multiplier = this.multiplier
       
-
+      let hashKey = ""
       for (i = 0; i < els.length; i++) {
-        let valueQuantized = Math.round(els[i] * multiplier)
-        hash = hash.concat(valueQuantized, '/')
+        let valueQuantized = Math.round(els[i] * this.multiplier)
+        hashKey += valueQuantized
+        hashKey += '/'
       }
-    
-      if (this.lookuptable[hash] !== undefined) {
-        return this.lookuptable[hash]
-      } else {
-        this.lookuptable[hash] = defaultObject
+  
+  
+      if (this.lookuptable[hashKey] === undefined) {
+        this.lookuptable[hashKey] = defaultObject
         return defaultObject
-      }
+      } 
+      return this.lookuptable[hashKey]
     },
    
     lookupOrCreateORIG: function (els, defaultObject) {
