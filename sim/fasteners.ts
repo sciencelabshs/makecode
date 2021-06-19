@@ -155,86 +155,96 @@ namespace pxsim.fasteners {
     `
 
     const MAKE_THREADED_HOLE = `
-        function getMaxZBounds(children) {
-            let maxZ = -99999
-            for (let i = 0; i < children.length; i++) {
-                let child = children[i]
-                const childZ = child.getBounds()[1]._z
-                maxZ = Math.max(childZ, maxZ)
-            }
-            return maxZ
+    function getMaxZBounds(children) {
+        let maxZ = -99999
+        for (let i = 0; i < children.length; i++) {
+            let child = children[i]
+            const childZ = child.getBounds()[1]._z
+            maxZ = Math.max(childZ, maxZ)
         }
+        return maxZ
+    }
+     
+      
+      function makeTap(
+           profile,
+          pitch,
+          rRotation,
+          dSupport,
+          height,
+          fn) {
+            
+        const turns = (height / pitch);
+        const shaft = cylinder({
+          h: height, /* RE 10: this shaft will be cut away, make sure it's tall enough*/
+          d: dSupport,
+          fn: fn
          
+        }).translate([0,0,pitch/2])
+       const cutShaft = difference(
+             shaft,
+             makeInternalThread(profile, pitch, rRotation, turns, 1, fn)
+        )
+        return cutShaft.translate([0,0, -(height + pitch/2) /2])
 
-        function getHalfProfileHeight(profile) {
-         
-            let minHeight = 999999999, maxHeight =  -999999999 
-            for (let i = 0; i < profile.length; i++) {
-                const height = profile[i][1]
-                minHeight = Math.min(minHeight, height)
-                maxHeight = Math.max(maxHeight, height)
-            }
-            return  Math.abs(maxHeight - minHeight)
+      }
+      function threadedHole(
+        profile,
+        pitch,
+        rRotation,
+        dSupport,
+        height,
+        fn = 120,
+        children
+      ) {
+    
+        const tap = makeTap( profile,
+          pitch,
+          rRotation,
+          dSupport,
+          height,
+          fn)
+    
+        
+        const childZMax = getMaxZBounds(children);
+        return difference(
+          union(children),
+          translate([0, 0, childZMax - height + height/2], tap)
+        );
+      }
+
+
+    function makeInternalThread(profile, pitch, rRotation, turns, higbee_arc = 20, fn = 120) {
+        const points = getPointsFromProfile(profile)
+        const threadProfilePolygon = CSG.Polygon.createFromPoints(points)
+    
+        
+        const r = rRotation
+        const steps = Math.floor(turns * fn)
+    
+    
+        // radial scaling function for tapered lead-in and lead-out
+        function lilo_taper(x, N, tapered_fraction) {
+            return min(min(1, (1.0 / tapered_fraction) * (x / N)), (1 / tapered_fraction) * (1 - x / N))
         }
-
-        function getInteriorThread(
-            profile,
-            pitch,
-            rRotation,
-            dSupport,
-            height,
-            fn = 120
-          ) {
-            const turns = (height / pitch) +1;
-            const shaft = cylinder({
-              h: height + 10, /* RE 10: this shaft will be cut away, make sure it's tall enough*/
-              d: dSupport,
-              fn: fn
-            });
-          
-            // Minimum pitch requirements
-            let interiorThread;
-            if (height < pitch) {
-              subtractionTool = translate([0, 0, -pitch / 2], shaft);
-              return shaft;
-            } else {
-             
-              interiorThread = union(
-                shaft,
-                makeThread(profile, pitch, rRotation, turns, 1, fn),
-                makeThreadHoleChamfer(profile, rRotation, fn),
-                translate(
-                  [0, 0, height],
-                  makeThreadHoleChamfer(profile, rRotation, fn, true)
-                )
-              );
-          
-              return interiorThread;
+    
+        return threadProfilePolygon.solidFromSlices({
+            numslices: steps,
+            callback: function (t, slice) {
+                return rotate([0, 0, 360 * slice / fn - 90],
+                    translate([0, r, pitch * slice / fn],
+                        rotate([90, 0, 0],
+                            rotate([0, 90, 0],
+                                scale([0.01 + 0.99 *
+                                        lilo_taper(slice / turns, steps / turns, (higbee_arc / 360) / turns), 1, 1
+                                    ],
+                                    this)))))
             }
-          }
-          function threadedHole(
-            profile,
-            pitch,
-            rRotation,
-            dSupport,
-            height,
-            fn = 120,
-            children
-          ) {
-            const interiorThread = getInteriorThread(
-              profile,
-              pitch,
-              rRotation,
-              dSupport,
-              height,
-              fn
-            );
-            const childZMax = getMaxZBounds(children);
-            return difference(
-              union(children),
-              translate([0, 0, childZMax - height], interiorThread)
-            );
-          }
+        });
+    }
+
+
+
     `
 
     // -------------------------------------------- SIZES --------------------------------------------
@@ -381,14 +391,12 @@ namespace pxsim.fasteners {
      */
     export function threadedHoleAsync(thread:string, height:number=20, resolution:number, body: RefAction ): Promise<void>{
         const threadForm = getThreadForm(thread)
-        const { sectionProfile, pitch, rRotation, dSupport } = threadForm["ext"]
+        const { sectionProfile, pitch, rRotation, dSupport } = threadForm["int"]
         const stringifiedProfile = JSON.stringify(sectionProfile)
-        board().requireImport('CENTER_CHILDREN', CENTER_CHILDREN)
         board().requireImport('GET_POINTS_FROM_PROFILE', GET_POINTS_FROM_PROFILE)
-        board().requireImport('MAKE_THREAD', MAKE_THREAD)
         board().requireImport('MAKE_THREADED_HOLE', MAKE_THREADED_HOLE)
-        board().requireImport('MAKE_THREADED_HOLE_CHAMFER', MAKE_THREADED_HOLE_CHAMFER)
         return _makeBlock(`threadedHole(${stringifiedProfile}, ${pitch}, ${rRotation}, ${dSupport}, ${height}, ${resolution || 120},  [<CHILDREN>])`, body)
     }
 
 }
+
