@@ -10344,10 +10344,10 @@ const localCache = {}
       let polygonvertices2d = [] // array of array of Vector2D
       let polygontopvertexindexes = [] // array of indexes of topmost vertex per polygon
       let topy2polygonindexes = {}
-      let ycoordinatetopolygonindexes = {}
-  
-      let xcoordinatebins = {}
-      let ycoordinatebins = {}
+      let ycoordinatetopolygonindexes = new Map()
+
+      let ybins = []
+      let ycoordinatebins = new Map()
   
           // convert all polygon vertices to 2D
           // Make a list of all encountered y coordinates
@@ -10364,18 +10364,23 @@ const localCache = {}
             let pos2d = orthobasis.to2D(poly3d.vertices[i].pos)
                       // perform binning of y coordinates: If we have multiple vertices very
                       // close to each other, give them the same y coordinate:
-            let ycoordinatebin = Math.floor(pos2d.y * ycoordinateBinningFactor)
-            let newy
-            if (ycoordinatebin in ycoordinatebins) {
-              newy = ycoordinatebins[ycoordinatebin]
-            } else if (ycoordinatebin + 1 in ycoordinatebins) {
-              newy = ycoordinatebins[ycoordinatebin + 1]
-            } else if (ycoordinatebin - 1 in ycoordinatebins) {
-              newy = ycoordinatebins[ycoordinatebin - 1]
-            } else {
-              newy = pos2d.y
-              ycoordinatebins[ycoordinatebin] = pos2d.y
+            ybins[0] = Math.floor(pos2d.y * ycoordinateBinningFactor)
+            ybins[1] = ybins[0] +1
+            ybins[2] = ybins[0] -1
+            
+            let newy = undefined
+            for (let i = 0; i < 2; i++) {
+              let yCoordinateBin = ybins[i]
+              if (ycoordinatebins.has(yCoordinateBin)) {
+                newy = ycoordinatebins.get(yCoordinateBin)
+                break
+              }
             }
+            if (!newy) {
+              newy = pos2d.y
+              ycoordinatebins.set(ybins[0], newy)          
+            }
+
             pos2d = Vector2D.Create(pos2d.x, newy)
             vertices2d.push(pos2d)
             let y = pos2d.y
@@ -10387,10 +10392,10 @@ const localCache = {}
               maxy = y
               maxindex = i
             }
-            if (!ycoordinatetopolygonindexes[y]) {
-              ycoordinatetopolygonindexes[y] = {}
+            if (!ycoordinatetopolygonindexes.has(y)) {
+              ycoordinatetopolygonindexes.set(y, new Set())
             }
-            ycoordinatetopolygonindexes[y][polygonindex] = true
+            ycoordinatetopolygonindexes.get(y).add(polygonindex)
           }
           if (miny >= maxy) {
                       // degenerate polygon, all vertices have same y coordinate. Just ignore it from now:
@@ -10411,7 +10416,8 @@ const localCache = {}
         polygontopvertexindexes.push(minindex)
       }
       
-      let ycoordinates = Object.keys(ycoordinatetopolygonindexes)
+
+      let ycoordinates = Array.from(ycoordinatetopolygonindexes.keys())
       
       // sort it.
       ycoordinates.sort(fnNumberSort)
@@ -10439,11 +10445,11 @@ const localCache = {}
               // - update leftvertexindex and rightvertexindex (which point to the current vertex index
               //   at the the left and right side of the polygon
               // Iterate over all polygons that have a corner at this y coordinate:
-        let polygonindexeswithcorner = ycoordinatetopolygonindexes[ycoordinate_as_string]
+        let polygonindexeswithcorner = ycoordinatetopolygonindexes.get(ycoordinate_as_string)
         for (let activepolygonindex = 0; activepolygonindex < activepolygons.length; ++activepolygonindex) {
           let activepolygon = activepolygons[activepolygonindex]
           let polygonindex = activepolygon.polygonindex
-          if (polygonindexeswithcorner[polygonindex]) {
+          if (polygonindexeswithcorner.has(polygonindex)) {
                       // this active polygon has a corner at this y coordinate:
             let vertices2d = polygonvertices2d[polygonindex]
             let numvertices = vertices2d.length
