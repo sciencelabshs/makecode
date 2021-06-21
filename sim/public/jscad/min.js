@@ -10332,19 +10332,22 @@ const localCache = {}
   const Line2D = require('./Line2')
   const Polygon = require('./Polygon3')
   
-
-const getYCoodinatesForPolygons = function({sourcepolygons}) {
-  let numpolygons = sourcepolygons.length
+  // Retesselation function for a set of coplanar polygons. See the introduction at the top of
+  // this file.
+  const reTesselateCoplanarPolygons = function (sourcepolygons) {
+    let destpolygons = []
+    let numpolygons = sourcepolygons.length
     if (numpolygons > 0) {
       let plane = sourcepolygons[0].plane
       let shared = sourcepolygons[0].shared
       let orthobasis = new OrthoNormalBasis(plane)
       let polygonvertices2d = [] // array of array of Vector2D
       let polygontopvertexindexes = [] // array of indexes of topmost vertex per polygon
-      let topy2polygonindexes = new Map()
-      let ycoordinatetopolygonindexes = new Map()
+      let topy2polygonindexes = {}
+      let ycoordinatetopolygonindexes = {}
   
-      let ycoordinatebins = new Set()
+      let xcoordinatebins = {}
+      let ycoordinatebins = {}
   
           // convert all polygon vertices to 2D
           // Make a list of all encountered y coordinates
@@ -10363,15 +10366,15 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
                       // close to each other, give them the same y coordinate:
             let ycoordinatebin = Math.floor(pos2d.y * ycoordinateBinningFactor)
             let newy
-            if (ycoordinatebins.has(ycoordinatebin)) {
-              newy = ycoordinatebin
-            } else if (ycoordinatebins.has(ycoordinatebin + 1)) {
-              newy = ycoordinatebin + 1
-            } else if (ycoordinatebins.has(ycoordinatebin - 1 )) {
-              newy = ycoordinatebin - 1
+            if (ycoordinatebin in ycoordinatebins) {
+              newy = ycoordinatebins[ycoordinatebin]
+            } else if (ycoordinatebin + 1 in ycoordinatebins) {
+              newy = ycoordinatebins[ycoordinatebin + 1]
+            } else if (ycoordinatebin - 1 in ycoordinatebins) {
+              newy = ycoordinatebins[ycoordinatebin - 1]
             } else {
               newy = pos2d.y
-              ycoordinatebins.add(newy)
+              ycoordinatebins[ycoordinatebin] = pos2d.y
             }
             pos2d = Vector2D.Create(pos2d.x, newy)
             vertices2d.push(pos2d)
@@ -10384,15 +10387,10 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
               maxy = y
               maxindex = i
             }
-            //if (!ycoordinatetopolygonindexes[y]) {
-            if (!ycoordinatetopolygonindexes.has(y)) {
-                ycoordinatetopolygonindexes.set(y, new Set())
-              //ycoordinatetopolygonindexes[y] = {}
+            if (!ycoordinatetopolygonindexes[y]) {
+              ycoordinatetopolygonindexes[y] = {}
             }
-            
-            ycoordinatetopolygonindexes.get(y).add(polygonindex)
-           // ycoordinatetopolygonindexes[y].add(polygonindex)
-            //ycoordinatetopolygonindexes[y][polygonindex] = true
+            ycoordinatetopolygonindexes[y][polygonindex] = true
           }
           if (miny >= maxy) {
                       // degenerate polygon, all vertices have same y coordinate. Just ignore it from now:
@@ -10400,10 +10398,10 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
             numvertices = 0
             minindex = -1
           } else {
-            if (!topy2polygonindexes.has(miny)) {
-              topy2polygonindexes.set(miny, [])
+            if (!topy2polygonindexes[miny]) {
+              topy2polygonindexes[miny] = []
             }
-            topy2polygonindexes.get(miny).push(polygonindex)
+            topy2polygonindexes[miny].push(polygonindex)
           }
         } // if(numvertices > 0)
               // reverse the vertex order:
@@ -10412,42 +10410,8 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
         polygonvertices2d.push(vertices2d)
         polygontopvertexindexes.push(minindex)
       }
-      return {
-        plane,
-        shared,
-        orthobasis,
-        polygonvertices2d,
-        polygontopvertexindexes,
-        topy2polygonindexes,
-        ycoordinatetopolygonindexes
-      }
       
-    }
-  }
-
-   
-
-  
-  // Retesselation function for a set of coplanar polygons. See the introduction at the top of
-  // this file.
-  const reTesselateCoplanarPolygons = function (sourcepolygons) {
-    let destpolygons = []
-    let numpolygons = sourcepolygons.length
-    if (numpolygons <= 0) {
-      return
-    }
-      let {
-        plane,
-        shared,
-        orthobasis,
-        polygonvertices2d,
-        polygontopvertexindexes,
-        topy2polygonindexes,
-        ycoordinatetopolygonindexes
-      } = getYCoodinatesForPolygons({sourcepolygons})
-
-      //let ycoordinates = Object.keys(ycoordinatetopolygonindexes)
-      let ycoordinates = Array.from(ycoordinatetopolygonindexes.keys())
+      let ycoordinates = Object.keys(ycoordinatetopolygonindexes)
       
       // sort it.
       ycoordinates.sort(fnNumberSort)
@@ -10475,15 +10439,11 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
               // - update leftvertexindex and rightvertexindex (which point to the current vertex index
               //   at the the left and right side of the polygon
               // Iterate over all polygons that have a corner at this y coordinate:
-        //let polygonindexeswithcorner = ycoordinatetopolygonindexes[ycoordinate_as_string]
-        let polygonindexeswithcorner = ycoordinatetopolygonindexes.get(ycoordinate_as_string)
-
+        let polygonindexeswithcorner = ycoordinatetopolygonindexes[ycoordinate_as_string]
         for (let activepolygonindex = 0; activepolygonindex < activepolygons.length; ++activepolygonindex) {
           let activepolygon = activepolygons[activepolygonindex]
           let polygonindex = activepolygon.polygonindex
-         // if (polygonindexeswithcorner[polygonindex]) {
-          if (polygonindexeswithcorner.has(polygonindex)) {
-            
+          if (polygonindexeswithcorner[polygonindex]) {
                       // this active polygon has a corner at this y coordinate:
             let vertices2d = polygonvertices2d[polygonindex]
             let numvertices = vertices2d.length
@@ -10530,7 +10490,7 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
           nextycoordinate = Number(ycoordinates[yindex + 1])
           let middleycoordinate = 0.5 * (ycoordinate + nextycoordinate)
                   // update activepolygons by adding any polygons that start here:
-          let startingpolygonindexes = topy2polygonindexes.get(ycoordinate_as_string)
+          let startingpolygonindexes = topy2polygonindexes[ycoordinate_as_string]
           for (let polygonindex_key in startingpolygonindexes) {
             let polygonindex = startingpolygonindexes[polygonindex_key]
             let vertices2d = polygonvertices2d[polygonindex]
@@ -10708,9 +10668,10 @@ const getYCoodinatesForPolygons = function({sourcepolygons}) {
           prevoutpolygonrow = newoutpolygonrow
         }
       } // for yindex
-     return destpolygons
+    } // if(numpolygons > 0)
+    return destpolygons
   }
-  
+
   module.exports = reTesselateCoplanarPolygons
   
   },{"../constants":50,"../utils":68,"./Line2":51,"./OrthoNormalBasis":54,"./Polygon3":58,"./Vector2":60,"./Vertex3":63}],66:[function(require,module,exports){
