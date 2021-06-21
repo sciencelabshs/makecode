@@ -10343,7 +10343,7 @@ const localCache = {}
       let orthobasis = new OrthoNormalBasis(plane)
       let polygonvertices2d = [] // array of array of Vector2D
       let polygontopvertexindexes = [] // array of indexes of topmost vertex per polygon
-      let topy2polygonindexes = {}
+      let topy2polygonindexes = new Map()
       let ycoordinatetopolygonindexes = new Map()
 
       let ybins = []
@@ -10403,10 +10403,10 @@ const localCache = {}
             numvertices = 0
             minindex = -1
           } else {
-            if (!topy2polygonindexes[miny]) {
-              topy2polygonindexes[miny] = []
+            if (!topy2polygonindexes.has(miny)) {
+              topy2polygonindexes.set(miny, [])
             }
-            topy2polygonindexes[miny].push(polygonindex)
+            topy2polygonindexes.get(miny).push(polygonindex)
           }
         } // if(numvertices > 0)
               // reverse the vertex order:
@@ -10417,10 +10417,10 @@ const localCache = {}
       }
       
 
-      let ycoordinates = Array.from(ycoordinatetopolygonindexes.keys())
-      
+      let yCoordinates = Array.from(ycoordinatetopolygonindexes.keys())
       // sort it.
-      ycoordinates.sort(fnNumberSort)
+      yCoordinates.sort(fnNumberSort)
+      const countYCoordinates = yCoordinates.length; // calculating length showing up in profiler
   
           // Now we will iterate over all y coordinates, from lowest to highest y coordinate
           // activepolygons: source polygons that are 'active', i.e. intersect with our y coordinate
@@ -10435,9 +10435,9 @@ const localCache = {}
           //        topright, bottomright: coordinates of the right hand side of the polygon crossing the current y coordinate
       let activepolygons = []
       let prevoutpolygonrow = []
-      for (let yindex = 0; yindex < ycoordinates.length; yindex++) {
+      for (let yindex = 0; yindex < countYCoordinates; yindex++) {
         let newoutpolygonrow = []
-        let ycoordinate_as_string = ycoordinates[yindex]
+        let ycoordinate_as_string = yCoordinates[yindex]
         let ycoordinate = Number(ycoordinate_as_string)
   
               // update activepolygons for this y coordinate:
@@ -10487,16 +10487,16 @@ const localCache = {}
           } // if polygon has corner here
         } // for activepolygonindex
         let nextycoordinate
-        if (yindex >= ycoordinates.length - 1) {
+        if (yindex >= yCoordinates.length - 1) {
                   // last row, all polygons must be finished here:
           activepolygons = []
           nextycoordinate = null
-        } else // yindex < ycoordinates.length-1
+        } else // yindex < yCoordinates.length-1
               {
-          nextycoordinate = Number(ycoordinates[yindex + 1])
+          nextycoordinate = Number(yCoordinates[yindex + 1])
           let middleycoordinate = 0.5 * (ycoordinate + nextycoordinate)
                   // update activepolygons by adding any polygons that start here:
-          let startingpolygonindexes = topy2polygonindexes[ycoordinate_as_string]
+          let startingpolygonindexes = topy2polygonindexes.get(ycoordinate_as_string)
           for (let polygonindex_key in startingpolygonindexes) {
             let polygonindex = startingpolygonindexes[polygonindex_key]
             let vertices2d = polygonvertices2d[polygonindex]
@@ -10543,8 +10543,8 @@ const localCache = {}
               return 0
             })
           } // for(let polygonindex in startingpolygonindexes)
-        } //  yindex < ycoordinates.length-1
-              // if( (yindex === ycoordinates.length-1) || (nextycoordinate - ycoordinate > EPS) )
+        } //  yindex < yCoordinates.length-1
+              // if( (yindex === yCoordinates.length-1) || (nextycoordinate - ycoordinate > EPS) )
         if (true) {
           // Now activepolygons is up to date
           // Build the output polygons for the next row in newoutpolygonrow:
