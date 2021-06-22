@@ -9425,12 +9425,54 @@ const localCache = {}
     translate: function (offset) {
       return this.transform(Matrix4x4.translation(offset))
     },
+    
+      
+    addVectorTo: function (a, b) {
+       a._x += b._x
+       a._y += b._y
+       a._z += b._z
+       return a
+    },
+    timesScalar: function (a, b) {
+      a._x *= b
+      a._y *= b
+      a._z *= b
+      return a
+      
+    },
+    minusVec: function (a,b) {
+
+       a._x -= b._x
+       a._y -= b._y
+       a._z -= b._z
+       return a
+      return Vector3D.Create(this._x - a._x, this._y - a._y, this._z - a._z)
+    },
+  
+     
   
       // returns an array with a Vector3D (center point) and a radius
-    boundingSphere: function () {
+  /* boundingSphere: function () {
       if (this.cachedBoundingSphere === undefined) {
         let box = this.boundingBox()
         let middle = box[0].plus(box[1]).times(0.5)
+        let radius3 = box[1].minus(middle)
+        let radius = radius3.length()
+        this.cachedBoundingSphere = [middle, radius]
+      }
+      return this.cachedBoundingSphere
+    },*/
+     boundingSphere: function () {
+      if (this.cachedBoundingSphere === undefined) {
+        let box = this.boundingBox()
+
+
+       // let middle = box[0].plus(box[1]).times(0.5)
+        let middle = Vector3D.Create( // save 2 allocations
+            (box[0]._x+box[1]._x)*.5,
+            (box[0]._y+box[1]._y)*.5,
+            (box[0]._z+box[1]._z)*.5,
+        )
         let radius3 = box[1].minus(middle)
         let radius = radius3.length()
         this.cachedBoundingSphere = [middle, radius]
@@ -11009,7 +11051,9 @@ const localCache = {}
     _splitByPlane: function (plane, coplanarfrontnodes, coplanarbacknodes, frontnodes, backnodes) {
       let polygon = this.polygon
       if (polygon) {
+        
         let bound = polygon.boundingSphere()
+        
         let sphereradius = bound[1] + EPS // FIXME Why add imprecision?
         let planenormal = plane.normal
         let spherecenter = bound[0]
@@ -11206,7 +11250,8 @@ const localCache = {}
           }
         }
         args = stack.pop()
-      } while (typeof (args) !== 'undefined')
+      } while (args) 
+      //while (typeof (args) !== 'undefined')
     },
   
       // Remove all polygons in this BSP tree that are inside the other BSP tree
@@ -11221,7 +11266,7 @@ const localCache = {}
         if (node.front) stack.push(node.front)
         if (node.back) stack.push(node.back)
         node = stack.pop()
-      } while (typeof (node) !== 'undefined')
+      } while (node)
     },
   
     addPolygonTreeNodes: function (polygontreenodes) {
@@ -11259,7 +11304,7 @@ const localCache = {}
         }
   
         args = stack.pop()
-      } while (typeof (args) !== 'undefined')
+      } while (args)
     },
   
     getParentPlaneNormals: function (normals, maxdepth) {

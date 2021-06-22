@@ -13675,7 +13675,7 @@ const unifiedFineLookup = [
     "UNF #12",
 ]
 
-const unifiedExtraFineLookup = [
+const unifiedExtraFineLookup = [    
     "UNEF 1/4",
     "UNEF 5/16",
     "UNEF 3/8",

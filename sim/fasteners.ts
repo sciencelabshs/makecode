@@ -102,57 +102,34 @@ namespace pxsim.fasteners {
     `
 
    
-
-    const MAKE_THREADED_HOLE_CHAMFER = `
-    
-        function makeThreadHoleChamfer(profile, rRotation, fn = 120, top = false) {
-            const points = getPointsFromProfile(profile)
-          
-            const threadProfilePolygon = CSG.Polygon.createFromPoints(points);
-            const r = rRotation;
-            const steps = Math.floor(fn) + 20;/*20 is a fudge factor that makes it big enough not to leave artefacts*/
-          
-            return threadProfilePolygon.solidFromSlices({
-              numslices: steps,
-              callback: function(t, slice) {
-                return rotate(
-                  [0, 0, (360 * slice) / fn - 90 + 3], // The +3 just makes it so that vertexes dont line up with the threads
-                  translate([0, r, 0], rotate([90, 0, 0], rotate([0, 90, 0], this)))
-                );
-              }
-            });
-          }
-          
-    `
-
     const MAKE_THREADED_SHAFT = `
-        function threadedShaft(profile, pitch, rRotation, dSupport, height, higbee_arc = 20, fn = 120) {
-            const turns = height / pitch - 1;
+    function threadedShaft(profile, pitch, rRotation, dSupport, height, higbee_arc = 20, fn = 120) {
+        const turns = height / pitch - 1;
 
-            // Minimum pitch requirements
-            if (height < pitch){
-                return translate([0, 0, -pitch / 2],
-                    cylinder({
-                        h: height,
-                        d: dSupport,
-                        fn: fn
-                    })); 
-            }
-            else {
-                const thread = makeThread(profile, pitch, rRotation, turns, higbee_arc, fn);
-                const shaft = translate([0, 0, -pitch / 2],
-                    cylinder({
-                        h: height,
-                        d: dSupport,
-                        fn: fn
-                    }));
-                return union(
-                    thread,
-                    shaft
-                )
-            }
+        // Minimum pitch requirements
+        if (height < pitch){
+            return translate([0, 0, -pitch / 2],
+                cylinder({
+                    h: height,
+                    d: dSupport,
+                    fn: fn
+                })); 
         }
-    `
+        else {
+            const thread = makeThread(profile, pitch, rRotation, turns, higbee_arc, fn);
+            const shaft = translate([0, 0, -pitch / 2],
+                cylinder({
+                    h: height,
+                    d: dSupport,
+                    fn: fn
+                }));
+            return union(
+                thread,
+                shaft
+            )
+        }
+    }
+`
 
     const MAKE_THREADED_HOLE = `
     function getMaxZBounds(children) {
@@ -167,13 +144,11 @@ namespace pxsim.fasteners {
      
       
       function makeTap(
-           profile,
-          pitch,
-          rRotation,
-          dSupport,
+          threadProfile,
           height,
           fn) {
-            
+        const { sectionProfile, pitch, rRotation, dSupport }  = threadProfile
+   
         const turns = (height / pitch);
         const shaft = cylinder({
           h: height, /* RE 10: this shaft will be cut away, make sure it's tall enough*/
@@ -183,25 +158,20 @@ namespace pxsim.fasteners {
         }).translate([0,0,pitch/2])
        const cutShaft = difference(
              shaft,
-             makeInternalThread(profile, pitch, rRotation, turns, 1, fn)
+             makeInternalThread(sectionProfile, pitch, rRotation, turns, 1, fn)
         )
         return cutShaft.translate([0,0, -(height + pitch/2) /2])
 
       }
       function threadedHole(
-        profile,
-        pitch,
-        rRotation,
-        dSupport,
+        threadProfile,
         height,
         fn = 120,
         children
       ) {
-    
-        const tap = makeTap( profile,
-          pitch,
-          rRotation,
-          dSupport,
+        const { sectionProfile, pitch, rRotation, dSupport }  = threadProfile
+
+        const tap = makeTap( threadProfile,
           height,
           fn)
     
@@ -214,8 +184,8 @@ namespace pxsim.fasteners {
       }
 
 
-    function makeInternalThread(profile, pitch, rRotation, turns, higbee_arc = 20, fn = 120) {
-        const points = getPointsFromProfile(profile)
+    function makeInternalThread(sectionProfile, pitch, rRotation, turns, higbee_arc = 20, fn = 120) {
+        const points = getPointsFromProfile(sectionProfile)
         const threadProfilePolygon = CSG.Polygon.createFromPoints(points)
     
         
@@ -247,113 +217,324 @@ namespace pxsim.fasteners {
 
     `
 
-    // -------------------------------------------- SIZES --------------------------------------------
 
-    //% blockId=bottleSize block="Soda Bottle size" 
-    //% group="Sizes"
-    /**
-     * Specify a size for a thread
-     */
-    export function bottleSize(){
-        return `bottle`
-    }
-    
-    //% blockId=metricCoarseSizes block="Metric coarse | $size" 
-    //% shim=TD_ID
-    //% size.defl="M6x0.7"
-    //% group="Sizes"
-    /**
-     * Specify a size for a thread
-     * @param size the direction to stack
-     */
-    export function metricCoarseSizePicker(size: MetricCoarseSizes):string{
-        const sizeStr = metricCoarseLookup[size]
-        return `metric.coarse.${sizeStr}`
-    }
-
-    //% blockId=metricFineSizes block="Metric fine | $size" 
-    //% shim=TD_ID
-    //% size.defl="M6x0.8"
-    //% group="Sizes"
-    /**
-     * Specify a size for a thread
-     * @param size the direction to stack
-     */
-    export function metricFineSizePicker(size: MetricFineSizes){
-        return `metric.fine.${size}`
-    }
-
-    //% blockId=unifiedCoarseSizes block="Unified coarse | $size" 
-    //% shim=TD_ID
-    //% size.defl="UNC 1/2"
-    //% group="Sizes"
-    /**
-     * Specify a size for a thread
-     * @param size the direction to stack
-     */
-    export function unifiedCoarseSizePicker(size: UnifiedCoarseSizes){
-        return `unified.coarse.${size}`
-    }
-
-    //% blockId=unifiedFineSizes block="Unified fine | $size" 
-    //% shim=TD_ID
-    //% size.defl="UNF 1/2"
-    //% group="Sizes"
-    /**
-     * Specify a size for a thread
-     * @param size the direction to stack
-     */
-    export function unifiedFineSizePicker(size: UnifiedFineSizes){
-        return `unified.fine.${size}`
-    }
-
-    //% blockId=unifiedExtraFineSizes block="Unified extra fine | $size" 
-    //% shim=TD_ID
-    //% size.defl="UNEF 1/2"
-    //% group="Sizes"
-    /**
-     * Specify a size for a thread
-     * @param size the direction to stack
-     */
-    export function unifiedExtraFineSizePicker(size: UnifiedExtraFineSizes){
-        return `unified.extra fine.${size}`
-    }
-
-    //% blockId=unifiedNumberedSizes block="Unified numbered | $size" 
-    //% shim=TD_ID
-    //% size.defl="32 UN"
-    //% group="Sizes"
-    /**
-     * Specify a size for a thread
-     * @param size the direction to stack
-     */
-    export function unifiedNumberedSizePicker(size: UnifiedNumberedSizes){
-        return `unified.numbered.${size}`
-    }
-
-    //% blockId=britishSizes block="British standard | $size" 
-    //% shim=TD_ID
-    //% size.defl="G1"
-    //% group="Sizes"
-    /**
-     * Specify a size for a thread
-     * @param size the direction to stack
-     */
-    export function britishSizePicker(size: BritishSizes){
-        return `british.${size}`
-    }
-
-    // -------------------------------------------- THREADS --------------------------------------------
-
-    //% blockId=threadedShaft block="threaded shaft - $thread|height $height||lead $lead||resolution $resolution" 
+    //% blockId=softDrinkBottle block="soft drink bottle - $threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
-    //% help=fasteners/threadedShaft
+    //% help=fasteners/softDrinkBottleThread
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% group="Threads"
+    //% weight=80
+    //% expandableArgumentMode="enabled"
+    /**
+     * Make a thread compatible with a PET soda bottle.  To cut threads into a shape, subtract the "thread cutting tap" from another shape.
+     * @param threadType choose between the screw thread or the lid interior thread
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    export function softDrinkBottleThread(threadType: ThreadShapeType, height:number=20, lead?:number, resolution?:number ){
+        const sizeName = 'bottle'
+        
+        if (threadType === ThreadShapeType.Thread) {
+            return thread(sizeName, height, lead, resolution);
+        }
+        if (threadType === ThreadShapeType.ThreadCuttingTap) {
+            return threadCuttingTap(sizeName, height, lead, resolution);
+        }
+
+    }
+
+    
+    //% blockId=britishStandardThread block="british standard - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/britishStandardThread
+    //% thread.defl=BritishSizes.thread_G1on16
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% weight=20
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * British Standard Pipe (BSP) is a set of technical standards for screw threads that has been adopted internationally for interconnecting and sealing pipes and fittings by mating an external (male) thread with an internal (female) thread. It has been adopted as standard in plumbing and pipe fitting, except in North America, where NPT and related threads are used. 
+     * Source: Wikipedia
+     * To cut threads into a shape, subtract the "thread cutting tap" from another shape.
+     * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    export function britishStandardThread(threadType: ThreadShapeType, size: BritishSizes, height:number=20, lead?:number, resolution?:number ){
+        const sizeName = britishLookup[size]
+        
+        if (threadType === ThreadShapeType.Thread) {
+            return thread(`british.${sizeName}`, height, lead, resolution);
+        }
+        if (threadType === ThreadShapeType.ThreadCuttingTap) {
+            return threadCuttingTap(`british.${sizeName}`, height, lead, resolution);
+        }
+
+    }
+
+
+        
+    //% blockId=metricCoarseThread block="metric coarse - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/bolt
+    //% thread.defl=MetricCoarseSizes.thread_M0p3x0p09
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% weight=40
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Metric screws (ISO metric screw thread) the most commonly used type of general-purpose screw threads.
+     * The "M" stnads for the outer diameter of the screw thread, in mm. 
+     * 
+     * Coarse threads have a larger pitch (distance between the thread ridges), and are preferred for most applications.
+     * Use fine threads when you need to add strength or need to prevent loosening.
+     * 
+     * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    export function metricCoarseThread(threadType: ThreadShapeType, size: MetricCoarseSizes, height:number=20, lead?:number, resolution?:number ){
+        const sizeName = metricCoarseLookup[size]
+        
+        if (threadType === ThreadShapeType.Thread) {
+            return thread(`metric.coarse.${sizeName}`, height, lead, resolution);
+        }
+        if (threadType === ThreadShapeType.ThreadCuttingTap) {
+            return threadCuttingTap(`metric.coarse.${sizeName}`, height, lead, resolution);
+        }
+
+    }
+
+    //% blockId=metricFineThread block="metric fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/metricFineThread
+    //% thread.defl=MetricFineSizes.thread_M0p3x0p08
+    //% height.defl=10
+    //% lead.defl=20
+    //% weight=42
+    //% resolution.defl=120
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Metric screws (ISO metric screw thread) the most commonly used type of general-purpose screw threads.
+     * The "M" stnads for the outer diameter of the screw thread, in mm. 
+     * 
+     * Coarse threads have a larger pitch (distance between the thread ridges), and are preferred for most applications.
+     * Use fine threads when you need to add strength or need to prevent loosening.
+     * 
+     * @param thread the type of thread you want
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    export function metricFineThread(threadType: ThreadShapeType, size: MetricFineSizes, height:number=20, lead?:number, resolution?:number ){
+        const sizeName = metricFineLookup[size]
+        
+        if (threadType === ThreadShapeType.Thread) {
+            return thread(`metric.fine.${sizeName}`, height, lead, resolution);
+        }
+        if (threadType === ThreadShapeType.ThreadCuttingTap) {
+            return threadCuttingTap(`metric.fine.${sizeName}`, height, lead, resolution);
+        }
+
+    }
+
+    //% blockId=unifiedCoarseThread block="unified coarse - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/bolt
+    //% thread.defl=UnifiedCoarseSizes.thread_UNC_1on2
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% weight=40
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * The Unified Thread Standard (UTS) defines a standard thread form and series—along with allowances, 
+     * tolerances, and designations—for screw threads commonly used in the United States and Canada. 
+     * It is the main standard for bolts, nuts, and a wide variety of other threaded fasteners used in these countries. It has the same 60° profile as the ISO metric screw thread, but the characteristic dimensions of each UTS thread (outer diameter and pitch) were chosen as an inch fraction rather than a millimeter value. 
+     * The UTS is currently controlled by ASME/ANSI in the United States.
+     * Source: Wikipedia
+     * 
+     * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    export function unifiedCoarseThread(threadType: ThreadShapeType, size: UnifiedCoarseSizes, height:number=20, lead?:number, resolution?:number ){
+        const sizeName = unifiedCoarseLookup[size]
+        
+        if (threadType === ThreadShapeType.Thread) {
+            return thread(`unified.fine.${sizeName}`, height, lead, resolution);
+        }
+        if (threadType === ThreadShapeType.ThreadCuttingTap) {
+            return threadCuttingTap(`unified.fine.${sizeName}`, height, lead, resolution);
+        }
+
+    }
+
+    //% blockId=unifiedFineThread block="unified fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/bolt
+    //% thread.defl=UnifiedFineSizes.thread_UNF_no0
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% weight=40
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * The Unified Thread Standard (UTS) defines a standard thread form and series—along with allowances, 
+     * tolerances, and designations—for screw threads commonly used in the United States and Canada. 
+     * It is the main standard for bolts, nuts, and a wide variety of other threaded fasteners used in these countries. It has the same 60° profile as the ISO metric screw thread, but the characteristic dimensions of each UTS thread (outer diameter and pitch) were chosen as an inch fraction rather than a millimeter value. 
+     * The UTS is currently controlled by ASME/ANSI in the United States.
+     * Source: Wikipedia
+     * 
+     * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    export function unifiedFineThread(threadType: ThreadShapeType, size: UnifiedFineSizes, height:number=20, lead?:number, resolution?:number ){
+        const sizeName = unifiedFineLookup[size]
+        
+        if (threadType === ThreadShapeType.Thread) {
+            return thread(`unified.fine.${sizeName}`, height, lead, resolution);
+        }
+        if (threadType === ThreadShapeType.ThreadCuttingTap) {
+            return threadCuttingTap(`unified.fine.${sizeName}`, height, lead, resolution);
+        }
+
+    }
+
+    //% blockId=unifiedExtraFineThread block="unified extra fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/bolt
+    //% thread.defl=UnifiedExtraFineSizes.thread_UNEF_1on4
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% weight=40
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * The Unified Thread Standard (UTS) defines a standard thread form and series—along with allowances, 
+     * tolerances, and designations—for screw threads commonly used in the United States and Canada. 
+     * It is the main standard for bolts, nuts, and a wide variety of other threaded fasteners used in these countries. It has the same 60° profile as the ISO metric screw thread, but the characteristic dimensions of each UTS thread (outer diameter and pitch) were chosen as an inch fraction rather than a millimeter value. 
+     * The UTS is currently controlled by ASME/ANSI in the United States.
+     * Source: Wikipedia
+     * 
+     * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    export function unifiedExtraFineThread(threadType: ThreadShapeType, size: UnifiedExtraFineSizes, height:number=20, lead?:number, resolution?:number ){
+        const sizeName = unifiedExtraFineLookup[size]
+        
+        if (threadType === ThreadShapeType.Thread) {
+            return thread(`unified.extra fine.${sizeName}`, height, lead, resolution);
+        }
+        if (threadType === ThreadShapeType.ThreadCuttingTap) {
+            return threadCuttingTap(`unified.extra fine.${sizeName}`, height, lead, resolution);
+        }
+
+    }
+
+
+        
+    //% blockId=unifiedNumberedThread block="unified numbered - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/bolt
+    //% thread.defl=UnifiednumberedSizes.thread_32_UN
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% weight=40
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * The Unified Thread Standard (UTS) defines a standard thread form and series—along with allowances, 
+     * tolerances, and designations—for screw threads commonly used in the United States and Canada. 
+     * It is the main standard for bolts, nuts, and a wide variety of other threaded fasteners used in these countries. It has the same 60° profile as the ISO metric screw thread, but the characteristic dimensions of each UTS thread (outer diameter and pitch) were chosen as an inch fraction rather than a millimeter value. 
+     * The UTS is currently controlled by ASME/ANSI in the United States.
+     * Source: Wikipedia
+     * 
+     * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    export function unifiedNumberedThread(threadType: ThreadShapeType, size: UnifiedNumberedSizes, height:number=20, lead?:number, resolution?:number ){
+        const sizeName = unifiedNumberedLookup[size]
+        
+        if (threadType === ThreadShapeType.Thread) {
+            return thread(`unified.numbered.${sizeName}`, height, lead, resolution);
+        }
+        if (threadType === ThreadShapeType.ThreadCuttingTap) {
+            return threadCuttingTap(`unified.numbered.${sizeName}`, height, lead, resolution);
+        }
+
+    }
+
+
+
+
+
+
+    //% blockId=threadProfile block="thread profile | pitch $pitch | rRotation $rRotation | dSupport $dSupport | profile $sectionProfile" 
+    //% shim=TD_ID
+    //% group="Sizes"
+    //% pitch.defl=2.7
+    //% rRotation.defl=11.52381
+    //% dSupport.defl=24.2
+    //% sectionProfile.defl="[[0, -0.987894698],[0, 0.987894698],[2.17619, 0.604173686],[2.17619, -0.195826314]]"
+    //% weight=10
+    /**
+     * Specify a size for a thread
+     * @param size the direction to stack
+     */
+    export function threadProfile(pitch: number, rRotation: number, dSupport: number, sectionProfile: string){
+        const sectionProfileArr =  JSON.parse(sectionProfile);
+
+        return JSON.stringify({
+            pitch,
+            rRotation,
+            dSupport,
+            sectionProfile: sectionProfileArr,
+            isCustomProfile: true
+        })
+       
+    }
+
+
+
+    //% blockId=thread block="thread - $thread|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/thread
     //% thread.defl="bottle"
     //% height.defl=20
     //% lead.defl=20
     //% resolution.defl=120
     //% group="Threads"
     //% expandableArgumentMode="enabled"
+    //% weight=11
     /**
      * Make a cylinder with an external thread
      * @param thread the type of thread you want
@@ -361,8 +542,18 @@ namespace pxsim.fasteners {
      * @param lead the number of segments the thread should lead in for
      * @param resolution the number of radial segments in the thread model
      */
-    export function threadedShaft(thread:string, height:number=20, lead?:number, resolution?:number ){
-        const threadForm = getThreadForm(thread)
+    export function thread(thread:string, height:number=20, lead?:number, resolution?:number ){
+        
+        
+        let threadForm
+        if (/isCustomProfile/.test(thread)) {
+            // allow custom profiles to be passed in 
+            threadForm = JSON.parse(thread)
+        }
+        else {
+            threadForm = getThreadForm(thread)
+        }
+        
         const { sectionProfile, pitch, rRotation, dSupport } = threadForm["ext"]
         const stringifiedProfile = JSON.stringify(sectionProfile)
         board().requireImport('CENTER_CHILDREN', CENTER_CHILDREN)
@@ -372,14 +563,19 @@ namespace pxsim.fasteners {
         board().addStatement(`centerChildren(threadedShaft(${stringifiedProfile}, ${pitch}, ${rRotation}, ${dSupport}, ${height}, ${lead || 20}, ${resolution || 120}))`)
     }
 
-    //% blockId=threadedHole block="threaded hole - $thread|height $height|resolution $resolution" 
-    //% topblock=false
-    //% handlerStatement=true
-    //% help=fasteners/threadedHole
+
+
+
+
+    //% blockId=threadCuttingTap block="thread cutting tap - $thread|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/threadCuttingTap
     //% thread.defl="bottle"
     //% height.defl=20
+    //% lead.defl=20
     //% resolution.defl=120
     //% group="Threads"
+    //% weight=12
     //% expandableArgumentMode="enabled"
     /**
      * Make a cylinder with an external thread
@@ -387,16 +583,25 @@ namespace pxsim.fasteners {
      * @param height the height of the cylinder
      * @param lead the number of segments the thread should lead in for
      * @param resolution the number of radial segments in the thread model
-     * @param body the shapes to put a hole in
      */
-    export function threadedHoleAsync(thread:string, height:number=20, resolution:number, body: RefAction ): Promise<void>{
-        const threadForm = getThreadForm(thread)
-        const { sectionProfile, pitch, rRotation, dSupport } = threadForm["int"]
-        const stringifiedProfile = JSON.stringify(sectionProfile)
+    export function threadCuttingTap(thread:string, height:number=20, lead?:number, resolution?:number ){
+        
+        let threadForm
+        if (/isCustomProfile/.test(thread)) {
+            // allow custom profiles to be passed in 
+            threadForm = JSON.parse(thread)
+        }
+        else {
+            threadForm = getThreadForm(thread)
+        }
+        
+        const threadProfile = JSON.stringify(threadForm["int"])
         board().requireImport('GET_POINTS_FROM_PROFILE', GET_POINTS_FROM_PROFILE)
         board().requireImport('MAKE_THREADED_HOLE', MAKE_THREADED_HOLE)
-        return _makeBlock(`threadedHole(${stringifiedProfile}, ${pitch}, ${rRotation}, ${dSupport}, ${height}, ${resolution || 120},  [<CHILDREN>])`, body)
+        board().addStatement(`makeTap(${threadProfile}, ${height}, ${resolution || 120})`)
     }
 
+
+  
 }
 

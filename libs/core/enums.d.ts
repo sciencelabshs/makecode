@@ -1260,3 +1260,9 @@ declare const enum BritishSizes {
     thread_G6 = 23,
 }
 
+declare const enum ThreadShapeType {
+    //% block="thread"
+    Thread,
+    //% block="thread cutting tap"
+    ThreadCuttingTap
+}
