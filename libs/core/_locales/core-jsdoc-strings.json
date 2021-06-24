@@ -246,7 +246,6 @@
   "fasteners.threadCuttingTap|param|lead": "the number of segments the thread should lead in for",
   "fasteners.threadCuttingTap|param|resolution": "the number of radial segments in the thread model",
   "fasteners.threadCuttingTap|param|thread": "the type of thread you want",
-  "fasteners.threadProfile": "Specify a size for a thread",
   "fasteners.thread|param|height": "the height of the cylinder",
   "fasteners.thread|param|lead": "the number of segments the thread should lead in for",
   "fasteners.thread|param|resolution": "the number of radial segments in the thread model",

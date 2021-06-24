@@ -1141,11 +1141,11 @@ declare namespace fasteners {
     //% blockId=britishStandardThread block="british standard - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/britishStandardThread
-    //% thread.defl=BritishSizes.thread_G1on16
+    //% thread.defl=BritishSizes.G_OneSixteenthInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
-    //% weight=20
+    //% weight=70
     //% group="Threads"
     //% expandableArgumentMode="enabled"
     /**
@@ -1164,11 +1164,11 @@ declare namespace fasteners {
     //% blockId=metricCoarseThread block="metric coarse - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=MetricCoarseSizes.thread_M0p3x0p09
+    //% thread.defl=MetricCoarseSizes.M8x1
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
-    //% weight=40
+    //% weight=60
     //% group="Threads"
     //% expandableArgumentMode="enabled"
     /**
@@ -1190,10 +1190,10 @@ declare namespace fasteners {
     //% blockId=metricFineThread block="metric fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/metricFineThread
-    //% thread.defl=MetricFineSizes.thread_M0p3x0p08
+    //% thread.defl=MetricFineSizes.M10x1
     //% height.defl=10
     //% lead.defl=20
-    //% weight=42
+    //% weight=50
     //% resolution.defl=120
     //% group="Threads"
     //% expandableArgumentMode="enabled"
@@ -1216,7 +1216,7 @@ declare namespace fasteners {
     //% blockId=unifiedCoarseThread block="unified coarse - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=UnifiedCoarseSizes.thread_UNC_1on2
+    //% thread.defl=UnifiedCoarseSizes.UNC_HalfInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
@@ -1242,11 +1242,11 @@ declare namespace fasteners {
     //% blockId=unifiedFineThread block="unified fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=UnifiedFineSizes.thread_UNF_no0
+    //% thread.defl=UnifiedFineSizes.UNF_HalfInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
-    //% weight=40
+    //% weight=30
     //% group="Threads"
     //% expandableArgumentMode="enabled"
     /**
@@ -1268,11 +1268,11 @@ declare namespace fasteners {
     //% blockId=unifiedExtraFineThread block="unified extra fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=UnifiedExtraFineSizes.thread_UNEF_1on4
+    //% thread.defl=UnifiedExtraFineSizes.UNEF_OneQuarterInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
-    //% weight=40
+    //% weight=20
     //% group="Threads"
     //% expandableArgumentMode="enabled"
     /**
@@ -1294,11 +1294,11 @@ declare namespace fasteners {
     //% blockId=unifiedNumberedThread block="unified numbered - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=UnifiednumberedSizes.thread_32_UN
+    //% thread.defl=UnifiedNumberedSizes.UN_32
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
-    //% weight=40
+    //% weight=10
     //% group="Threads"
     //% expandableArgumentMode="enabled"
     /**
@@ -1317,6 +1317,7 @@ declare namespace fasteners {
     //% shim=fasteners::unifiedNumberedThread
     function unifiedNumberedThread(threadType: ThreadShapeType, size: UnifiedNumberedSizes, height: number, lead?: number, resolution?: number): void;
 
+    /*
     //% blockId=threadProfile block="thread profile | pitch $pitch | rRotation $rRotation | dSupport $dSupport | profile $sectionProfile" 
     //% shim=TD_ID
     //% group="Sizes"
@@ -1325,13 +1326,17 @@ declare namespace fasteners {
     //% dSupport.defl=24.2
     //% sectionProfile.defl="[[0, -0.987894698],[0, 0.987894698],[2.17619, 0.604173686],[2.17619, -0.195826314]]"
     //% weight=10
-    /**
-     * Specify a size for a thread
-     * @param size the direction to stack
+    export function threadProfile(pitch: number, rRotation: number, dSupport: number, sectionProfile: string){
+    const sectionProfileArr =  JSON.parse(sectionProfile);
+    return JSON.stringify({
+    pitch,
+    rRotation,
+    dSupport,
+    sectionProfile: sectionProfileArr,
+    isCustomProfile: true
+    })
+    }
      */
-    //% shim=fasteners::threadProfile
-    function threadProfile(pitch: number, rRotation: number, dSupport: number, sectionProfile: string): string;
-
     //% blockId=thread block="thread - $thread|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/thread
@@ -1341,7 +1346,7 @@ declare namespace fasteners {
     //% resolution.defl=120
     //% group="Threads"
     //% expandableArgumentMode="enabled"
-    //% weight=11
+    //% weight=9
     /**
      * Make a cylinder with an external thread
      * @param thread the type of thread you want
@@ -1360,7 +1365,7 @@ declare namespace fasteners {
     //% lead.defl=20
     //% resolution.defl=120
     //% group="Threads"
-    //% weight=12
+    //% weight=8
     //% expandableArgumentMode="enabled"
     /**
      * Make a cylinder with an external thread

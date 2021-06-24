@@ -9,30 +9,44 @@
 namespace pxsim.fasteners {
 
     // -------------------------------------------- UTIL FUNCTIONS --------------------------------------------
-    function getThreadForm(thread:string){
+    function getThreadForm(fullyQualifiedThreadName:string){
 
         let threadForm: any = THREAD_TABLE
-        let depth = 0
         let key = ""
-        let rest = thread
-        while (true){
-            if (depth > 3) throw Error("Thread parse recursion depth exceeded")
-            depth ++
-
-            // Some thread names have decimal points. Check to see if we hit them
-            if (threadForm[rest]){
-                threadForm = threadForm[rest]
-            }else {
-                key = rest.split(".")[0]
-                rest = rest.split(".").slice(1).join(".")
-                threadForm = threadForm[key]
+    
+        if (!/\./.test(fullyQualifiedThreadName)) {
+            const result = threadForm[fullyQualifiedThreadName]
+            if (result) {
+                return result
             }
-
-            if (threadForm.sortSize) return threadForm
+            throw new Error("Ooops! Could not find " + fullyQualifiedThreadName)
         }
+        
+        // pick through the "unified.fine.UNF 10x1"
+        let categories = fullyQualifiedThreadName.split(/\./)
+        const threadName = categories.pop()
+
+        // walk through the nested JSON
+        let nestedCategory = threadForm
+        categories.forEach(cat => {
+            nestedCategory= nestedCategory[cat]
+            if (!nestedCategory) {
+                throw new Error("Ooops! Could not find " +  nestedCategory + " while looking for " + fullyQualifiedThreadName)
+            }
+        });
+
+        // should now have the thread profile
+        const result =  nestedCategory[threadName]
+        if (!result) {
+            throw new Error("Ooops could not find " +  fullyQualifiedThreadName)
+        }
+        return result
+
     }
 
 
+
+     
     function _makeBlock(JSCadBlockStr: string, body: RefAction) {
         return new Promise<void>((resolve, reject) => {
             // push a new statement as the parent
@@ -250,11 +264,11 @@ namespace pxsim.fasteners {
     //% blockId=britishStandardThread block="british standard - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/britishStandardThread
-    //% thread.defl=BritishSizes.thread_G1on16
+    //% thread.defl=BritishSizes.G_OneSixteenthInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
-    //% weight=20
+    //% weight=70
     //% group="Threads"
     //% expandableArgumentMode="enabled"
     /**
@@ -284,11 +298,11 @@ namespace pxsim.fasteners {
     //% blockId=metricCoarseThread block="metric coarse - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=MetricCoarseSizes.thread_M0p3x0p09
+    //% thread.defl=MetricCoarseSizes.M8x1
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
-    //% weight=40
+    //% weight=60
     //% group="Threads"
     //% expandableArgumentMode="enabled"
     /**
@@ -305,7 +319,7 @@ namespace pxsim.fasteners {
      * @param resolution the number of radial segments in the thread model
      */
     export function metricCoarseThread(threadType: ThreadShapeType, size: MetricCoarseSizes, height:number=20, lead?:number, resolution?:number ){
-        const sizeName = metricCoarseLookup[size]
+        const sizeName = metricCoarseLookup[size].replace("M ", "M")
         
         if (threadType === ThreadShapeType.Thread) {
             return thread(`metric.coarse.${sizeName}`, height, lead, resolution);
@@ -319,10 +333,10 @@ namespace pxsim.fasteners {
     //% blockId=metricFineThread block="metric fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/metricFineThread
-    //% thread.defl=MetricFineSizes.thread_M0p3x0p08
+    //% thread.defl=MetricFineSizes.M10x1
     //% height.defl=10
     //% lead.defl=20
-    //% weight=42
+    //% weight=50
     //% resolution.defl=120
     //% group="Threads"
     //% expandableArgumentMode="enabled"
@@ -354,7 +368,7 @@ namespace pxsim.fasteners {
     //% blockId=unifiedCoarseThread block="unified coarse - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=UnifiedCoarseSizes.thread_UNC_1on2
+    //% thread.defl=UnifiedCoarseSizes.UNC_HalfInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
@@ -378,10 +392,10 @@ namespace pxsim.fasteners {
         const sizeName = unifiedCoarseLookup[size]
         
         if (threadType === ThreadShapeType.Thread) {
-            return thread(`unified.fine.${sizeName}`, height, lead, resolution);
+            return thread(`unified.coarse.${sizeName}`, height, lead, resolution);
         }
         if (threadType === ThreadShapeType.ThreadCuttingTap) {
-            return threadCuttingTap(`unified.fine.${sizeName}`, height, lead, resolution);
+            return threadCuttingTap(`unified.coarse.${sizeName}`, height, lead, resolution);
         }
 
     }
@@ -389,11 +403,11 @@ namespace pxsim.fasteners {
     //% blockId=unifiedFineThread block="unified fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=UnifiedFineSizes.thread_UNF_no0
+    //% thread.defl=UnifiedFineSizes.UNF_HalfInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
-    //% weight=40
+    //% weight=30
     //% group="Threads"
     //% expandableArgumentMode="enabled"
     /**
@@ -424,11 +438,11 @@ namespace pxsim.fasteners {
     //% blockId=unifiedExtraFineThread block="unified extra fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=UnifiedExtraFineSizes.thread_UNEF_1on4
+    //% thread.defl=UnifiedExtraFineSizes.UNEF_OneQuarterInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
-    //% weight=40
+    //% weight=20
     //% group="Threads"
     //% expandableArgumentMode="enabled"
     /**
@@ -446,7 +460,8 @@ namespace pxsim.fasteners {
      */
     export function unifiedExtraFineThread(threadType: ThreadShapeType, size: UnifiedExtraFineSizes, height:number=20, lead?:number, resolution?:number ){
         const sizeName = unifiedExtraFineLookup[size]
-        
+       
+
         if (threadType === ThreadShapeType.Thread) {
             return thread(`unified.extra fine.${sizeName}`, height, lead, resolution);
         }
@@ -461,11 +476,11 @@ namespace pxsim.fasteners {
     //% blockId=unifiedNumberedThread block="unified numbered - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=UnifiednumberedSizes.thread_32_UN
+    //% thread.defl=UnifiedNumberedSizes.UN_32
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
-    //% weight=40
+    //% weight=10
     //% group="Threads"
     //% expandableArgumentMode="enabled"
     /**
@@ -496,7 +511,7 @@ namespace pxsim.fasteners {
 
 
 
-
+/*
 
     //% blockId=threadProfile block="thread profile | pitch $pitch | rRotation $rRotation | dSupport $dSupport | profile $sectionProfile" 
     //% shim=TD_ID
@@ -506,10 +521,7 @@ namespace pxsim.fasteners {
     //% dSupport.defl=24.2
     //% sectionProfile.defl="[[0, -0.987894698],[0, 0.987894698],[2.17619, 0.604173686],[2.17619, -0.195826314]]"
     //% weight=10
-    /**
-     * Specify a size for a thread
-     * @param size the direction to stack
-     */
+   
     export function threadProfile(pitch: number, rRotation: number, dSupport: number, sectionProfile: string){
         const sectionProfileArr =  JSON.parse(sectionProfile);
 
@@ -522,7 +534,7 @@ namespace pxsim.fasteners {
         })
        
     }
-
+*/
 
 
     //% blockId=thread block="thread - $thread|height $height||lead $lead||resolution $resolution" 
@@ -534,7 +546,7 @@ namespace pxsim.fasteners {
     //% resolution.defl=120
     //% group="Threads"
     //% expandableArgumentMode="enabled"
-    //% weight=11
+    //% weight=9
     /**
      * Make a cylinder with an external thread
      * @param thread the type of thread you want
@@ -575,7 +587,7 @@ namespace pxsim.fasteners {
     //% lead.defl=20
     //% resolution.defl=120
     //% group="Threads"
-    //% weight=12
+    //% weight=8
     //% expandableArgumentMode="enabled"
     /**
      * Make a cylinder with an external thread
