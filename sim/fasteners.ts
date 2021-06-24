@@ -319,7 +319,7 @@ namespace pxsim.fasteners {
      * @param resolution the number of radial segments in the thread model
      */
     export function metricCoarseThread(threadType: ThreadShapeType, size: MetricCoarseSizes, height:number=20, lead?:number, resolution?:number ){
-        const sizeName = metricCoarseLookup[size].replace("M ", "M")
+        const sizeName = metricCoarseLookup[size]
         
         if (threadType === ThreadShapeType.Thread) {
             return thread(`metric.coarse.${sizeName}`, height, lead, resolution);
