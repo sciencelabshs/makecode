@@ -10,7 +10,7 @@ declare namespace extraMath {
      * Convert any number to text
      */
     //% shim=extraMath::convert
-    function convert(number: number): any;
+    function convert(number: number): string;
 
     //% block="convert $angle to radians"
     //% inlineInputMode=inline
@@ -49,7 +49,7 @@ declare namespace extraMath {
      * @param theta The angle in degrees
      */
     //% shim=extraMath::sin
-    function sin(theta: number): any;
+    function sin(theta: number): number;
 
     //% block="cos $theta°"
     //% inlineInputMode=inline
@@ -62,7 +62,7 @@ declare namespace extraMath {
      * @param theta The angle in degrees
      */
     //% shim=extraMath::cos
-    function cos(theta: number): any;
+    function cos(theta: number): number;
 
     //% block="tan $theta°"
     //% inlineInputMode=inline
@@ -75,7 +75,7 @@ declare namespace extraMath {
      * @param theta The angle in degrees
      */
     //% shim=extraMath::tan
-    function tan(theta: number): any;
+    function tan(theta: number): number;
 
     //% block="arcsin $x"
     //% inlineInputMode=inline
@@ -141,7 +141,7 @@ declare namespace extraMath {
      * @param x The operand for the natural log
      */
     //% shim=extraMath::ln
-    function ln(x: number): any;
+    function ln(x: number): number;
 
     //% block="log $x base $base"
     //% inlineInputMode=inline
@@ -167,7 +167,7 @@ declare namespace extraMath {
      * The mathematical constant Pi, the circle constant.
      */
     //% shim=extraMath::Pi
-    function Pi(): any;
+    function Pi(): number;
 
     //% block="e"
     //% inlineInputMode=inline
@@ -178,7 +178,7 @@ declare namespace extraMath {
      * The mathematical constant e, the exponential constant.
      */
     //% shim=extraMath::e
-    function e(): any;
+    function e(): number;
 
     //% block="ϕ"
     //% inlineInputMode=inline
@@ -200,7 +200,7 @@ declare namespace extraMath {
      * The mathematical constant the square root of 2.
      */
     //% shim=extraMath::Sqrt2
-    function Sqrt2(): any;
+    function Sqrt2(): number;
 
 }
 declare namespace shapes {
@@ -215,6 +215,13 @@ declare namespace shapes {
     //% input.fieldEditor="imagedropdown" input.fieldOptions.columns=3
     //% shim=shapes::_rotateAxisPicker
     function _rotateAxisPicker(axis: RotateAxis): number;
+
+    //% blockId=main_jsCadEditor block="$jscadScript"
+    //% blockHidden=true
+    //% shim=TD_ID
+    //% jscadScript.fieldEditor="stlEditor" jscadScript.fieldOptions.decompileLiterals=true
+    //% shim=shapes::fromJSCAD
+    function fromJSCAD(jscadScript?: string): string;
 
     //% blockId="main_edgeStylePicker" block="%input" shim=TD_ID
     //% blockHidden=true
@@ -467,8 +474,18 @@ declare namespace shapes {
     //% shim=shapes::polygon3D
     function polygon3D(sides: number, radius: number, height: number, color?: number): void;
 
+    //% blockId=load_stl 
+    //% block="load 3D file $jscadScript" 
+    //% topblock=false
+    //% jscadScript.shadow=main_jsCadEditor
+    //% handlerStatement=true
+    //% weight=80
+    //% help=shapes/file3D
+    //% group="Files"
+    //% shim=shapes::load3DFile
+    function load3DFile(jscadScript?: string): void;
+
     /*
-    enum Animal {
     'Penguin', 
     'Giraffe'
     }
@@ -917,7 +934,7 @@ declare namespace parameters {
      * @param characterLimit The character limit to apply to the text input. (0 means no limit)
      */
     //% shim=parameters::textParameter
-    function textParameter(parameterName: string, defaultText?: string, characterLimit?: number): any;
+    function textParameter(parameterName: string, defaultText?: string, characterLimit?: number): string;
 
     //% block="number - label: $parameterName || default: $defaultValue"
     //% inlineInputMode=inline
@@ -931,7 +948,7 @@ declare namespace parameters {
      * @param defaultValue The default value for the number input field
      */
     //% shim=parameters::numberParameter
-    function numberParameter(parameterName: string, defaultValue?: number): any;
+    function numberParameter(parameterName: string, defaultValue?: number): number;
 
     //% block="range - label: $parameterName || default: $defaultValue | min: $minValue | max: $maxValue | step: $stepValue"
     //% inlineInputMode=inline
@@ -951,7 +968,7 @@ declare namespace parameters {
      * @param stepValue The default value of the slider
      */
     //% shim=parameters::numberRangeParameter
-    function numberRangeParameter(parameterName: string, defaultValue?: number, minValue?: number, maxValue?: number, stepValue?: number): any;
+    function numberRangeParameter(parameterName: string, defaultValue?: number, minValue?: number, maxValue?: number, stepValue?: number): number;
 
 }
 declare namespace colors {
@@ -1099,6 +1116,266 @@ declare namespace colors {
      */
     //% shim=colors::choose
     function choose(value: number): number;
+
+}
+declare namespace fasteners {
+    //% blockId=softDrinkBottle block="soft drink bottle - $threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/softDrinkBottleThread
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% group="Threads"
+    //% weight=80
+    //% expandableArgumentMode="enabled"
+    /**
+     * Make a thread compatible with a PET soda bottle.  To cut threads into a shape, subtract the "thread cutting tap" from another shape.
+     * @param threadType choose between the screw thread or the lid interior thread
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    //% shim=fasteners::softDrinkBottleThread
+    function softDrinkBottleThread(threadType: ThreadShapeType, height: number, lead?: number, resolution?: number): void;
+
+    //% blockId=britishStandardThread block="british standard - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/britishStandardThread
+    //% thread.defl=BritishSizes.G_OneSixteenthInch
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% weight=70
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * British Standard Pipe (BSP) is a set of technical standards for screw threads that has been adopted internationally for interconnecting and sealing pipes and fittings by mating an external (male) thread with an internal (female) thread. It has been adopted as standard in plumbing and pipe fitting, except in North America, where NPT and related threads are used. 
+     * Source: Wikipedia
+     * To cut threads into a shape, subtract the "thread cutting tap" from another shape.
+     * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    //% shim=fasteners::britishStandardThread
+    function britishStandardThread(threadType: ThreadShapeType, size: BritishSizes, height: number, lead?: number, resolution?: number): void;
+
+    //% blockId=metricCoarseThread block="metric coarse - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/bolt
+    //% thread.defl=MetricCoarseSizes.M8x1
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% weight=60
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Metric screws (ISO metric screw thread) the most commonly used type of general-purpose screw threads.
+     * The "M" stnads for the outer diameter of the screw thread, in mm. 
+     * 
+     * Coarse threads have a larger pitch (distance between the thread ridges), and are preferred for most applications.
+     * Use fine threads when you need to add strength or need to prevent loosening.
+     * 
+     * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    //% shim=fasteners::metricCoarseThread
+    function metricCoarseThread(threadType: ThreadShapeType, size: MetricCoarseSizes, height: number, lead?: number, resolution?: number): void;
+
+    //% blockId=metricFineThread block="metric fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/metricFineThread
+    //% thread.defl=MetricFineSizes.M10x1
+    //% height.defl=10
+    //% lead.defl=20
+    //% weight=50
+    //% resolution.defl=120
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * Metric screws (ISO metric screw thread) the most commonly used type of general-purpose screw threads.
+     * The "M" stnads for the outer diameter of the screw thread, in mm. 
+     * 
+     * Coarse threads have a larger pitch (distance between the thread ridges), and are preferred for most applications.
+     * Use fine threads when you need to add strength or need to prevent loosening.
+     * 
+     * @param thread the type of thread you want
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    //% shim=fasteners::metricFineThread
+    function metricFineThread(threadType: ThreadShapeType, size: MetricFineSizes, height: number, lead?: number, resolution?: number): void;
+
+    //% blockId=unifiedCoarseThread block="unified coarse - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/bolt
+    //% thread.defl=UnifiedCoarseSizes.UNC_HalfInch
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% weight=40
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * The Unified Thread Standard (UTS) defines a standard thread form and series—along with allowances, 
+     * tolerances, and designations—for screw threads commonly used in the United States and Canada. 
+     * It is the main standard for bolts, nuts, and a wide variety of other threaded fasteners used in these countries. It has the same 60° profile as the ISO metric screw thread, but the characteristic dimensions of each UTS thread (outer diameter and pitch) were chosen as an inch fraction rather than a millimeter value. 
+     * The UTS is currently controlled by ASME/ANSI in the United States.
+     * Source: Wikipedia
+     * 
+     * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    //% shim=fasteners::unifiedCoarseThread
+    function unifiedCoarseThread(threadType: ThreadShapeType, size: UnifiedCoarseSizes, height: number, lead?: number, resolution?: number): void;
+
+    //% blockId=unifiedFineThread block="unified fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/bolt
+    //% thread.defl=UnifiedFineSizes.UNF_HalfInch
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% weight=30
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * The Unified Thread Standard (UTS) defines a standard thread form and series—along with allowances, 
+     * tolerances, and designations—for screw threads commonly used in the United States and Canada. 
+     * It is the main standard for bolts, nuts, and a wide variety of other threaded fasteners used in these countries. It has the same 60° profile as the ISO metric screw thread, but the characteristic dimensions of each UTS thread (outer diameter and pitch) were chosen as an inch fraction rather than a millimeter value. 
+     * The UTS is currently controlled by ASME/ANSI in the United States.
+     * Source: Wikipedia
+     * 
+     * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    //% shim=fasteners::unifiedFineThread
+    function unifiedFineThread(threadType: ThreadShapeType, size: UnifiedFineSizes, height: number, lead?: number, resolution?: number): void;
+
+    //% blockId=unifiedExtraFineThread block="unified extra fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/bolt
+    //% thread.defl=UnifiedExtraFineSizes.UNEF_OneQuarterInch
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% weight=20
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * The Unified Thread Standard (UTS) defines a standard thread form and series—along with allowances, 
+     * tolerances, and designations—for screw threads commonly used in the United States and Canada. 
+     * It is the main standard for bolts, nuts, and a wide variety of other threaded fasteners used in these countries. It has the same 60° profile as the ISO metric screw thread, but the characteristic dimensions of each UTS thread (outer diameter and pitch) were chosen as an inch fraction rather than a millimeter value. 
+     * The UTS is currently controlled by ASME/ANSI in the United States.
+     * Source: Wikipedia
+     * 
+     * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    //% shim=fasteners::unifiedExtraFineThread
+    function unifiedExtraFineThread(threadType: ThreadShapeType, size: UnifiedExtraFineSizes, height: number, lead?: number, resolution?: number): void;
+
+    //% blockId=unifiedNumberedThread block="unified numbered - $size|$threadType|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/bolt
+    //% thread.defl=UnifiedNumberedSizes.UN_32
+    //% height.defl=10
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% weight=10
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    /**
+     * The Unified Thread Standard (UTS) defines a standard thread form and series—along with allowances, 
+     * tolerances, and designations—for screw threads commonly used in the United States and Canada. 
+     * It is the main standard for bolts, nuts, and a wide variety of other threaded fasteners used in these countries. It has the same 60° profile as the ISO metric screw thread, but the characteristic dimensions of each UTS thread (outer diameter and pitch) were chosen as an inch fraction rather than a millimeter value. 
+     * The UTS is currently controlled by ASME/ANSI in the United States.
+     * Source: Wikipedia
+     * 
+     * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
+     * @param size the standard size from British Standard 
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    //% shim=fasteners::unifiedNumberedThread
+    function unifiedNumberedThread(threadType: ThreadShapeType, size: UnifiedNumberedSizes, height: number, lead?: number, resolution?: number): void;
+
+    /*
+    //% blockId=threadProfile block="thread profile | pitch $pitch | rRotation $rRotation | dSupport $dSupport | profile $sectionProfile" 
+    //% shim=TD_ID
+    //% group="Sizes"
+    //% pitch.defl=2.7
+    //% rRotation.defl=11.52381
+    //% dSupport.defl=24.2
+    //% sectionProfile.defl="[[0, -0.987894698],[0, 0.987894698],[2.17619, 0.604173686],[2.17619, -0.195826314]]"
+    //% weight=10
+    export function threadProfile(pitch: number, rRotation: number, dSupport: number, sectionProfile: string){
+    const sectionProfileArr =  JSON.parse(sectionProfile);
+    return JSON.stringify({
+    pitch,
+    rRotation,
+    dSupport,
+    sectionProfile: sectionProfileArr,
+    isCustomProfile: true
+    })
+    }
+     */
+    //% blockId=thread block="thread - $thread|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/thread
+    //% thread.defl="bottle"
+    //% height.defl=20
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% group="Threads"
+    //% expandableArgumentMode="enabled"
+    //% weight=9
+    /**
+     * Make a cylinder with an external thread
+     * @param thread the type of thread you want
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    //% shim=fasteners::thread
+    function thread(thread: string, height: number, lead?: number, resolution?: number): void;
+
+    //% blockId=threadCuttingTap block="thread cutting tap - $thread|height $height||lead $lead||resolution $resolution" 
+    //% inlineInputMode=inline
+    //% help=fasteners/threadCuttingTap
+    //% thread.defl="bottle"
+    //% height.defl=20
+    //% lead.defl=20
+    //% resolution.defl=120
+    //% group="Threads"
+    //% weight=8
+    //% expandableArgumentMode="enabled"
+    /**
+     * Make a cylinder with an external thread
+     * @param thread the type of thread you want
+     * @param height the height of the cylinder
+     * @param lead the number of segments the thread should lead in for
+     * @param resolution the number of radial segments in the thread model
+     */
+    //% shim=fasteners::threadCuttingTap
+    function threadCuttingTap(thread: string, height: number, lead?: number, resolution?: number): void;
 
 }
 

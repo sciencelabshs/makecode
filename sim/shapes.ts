@@ -26,6 +26,15 @@ namespace pxsim.shapes {
     }
 
 
+    //% blockId=main_jsCadEditor block="$jscadScript"
+    //% blockHidden=true
+    //% shim=TD_ID
+    //% jscadScript.fieldEditor="stlEditor" jscadScript.fieldOptions.decompileLiterals=true
+    export function fromJSCAD(jscadScript?: string): string {
+        return jscadScript
+    }
+
+
 
     //% blockId="main_edgeStylePicker" block="%input" shim=TD_ID
     //% blockHidden=true
@@ -484,8 +493,22 @@ namespace pxsim.shapes {
         cylinder(radius, height, color, sides, radius);
     }
 
+
+
+
+    //% blockId=load_stl 
+    //% block="load 3D file $jscadScript" 
+    //% topblock=false
+    //% jscadScript.shadow=main_jsCadEditor
+    //% handlerStatement=true
+    //% weight=80
+    //% help=shapes/file3D
+    //% group="Files"
+    export function load3DFile(jscadScript?: string)  {
+        board().addExternalJSCadScript(jscadScript)
+    } 
+
     /*
-    enum Animal {
         'Penguin', 
         'Giraffe'
     }
@@ -544,7 +567,6 @@ namespace pxsim.shapes {
             board().addStatement(`rectangular_extrude([${pointsArrayStr}], {w: ${width}, h: ${height}, closed: ${closed}})`);
        
          }*/
-
 
 
 
