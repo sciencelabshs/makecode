@@ -100,7 +100,17 @@ export class FieldStlEditor extends Blockly.Field
         async () => {
           if (inputElement.files && inputElement.files.length > 0) {
             const file = inputElement.files[0] as File;
+
+            // Temporary 3MB restriction.  JSCad is a bit of a binfire in 
+            // file loading, need to take the time to pull it out and 
+            // performance optimize it.  There is much low hanging fruit.
+            const fileSize = file.size/1024/1024
+            if (fileSize > 3.2) {
+              this.setButtonError("File too large: " + fileSize.toFixed(1) + "MB");
+              return;
+            }
             this.updateButtonText("Loading...", 10);
+            
             if (!(await this.readFileAsText(file))) {
               await this.readFileAsBinary(file);
             }
@@ -181,6 +191,12 @@ export class FieldStlEditor extends Blockly.Field
         }
       }
     );
+
+    // UNDONE - this should be a key in the project rather 
+    // than the data itself - if the file gets too big it starts to affect
+    // dragging blocks.
+
+
     // console.log(textResult)
     this.updateValue(`"data:application/jscad;${window.btoa(textResult)}"`);
   }
@@ -266,8 +282,14 @@ export class FieldStlEditor extends Blockly.Field
       return "(3D Object File)";
     }
     return "Select file...";
+  
+  }
+  setButtonError(error: string) {
+      this.buttonElement.innerHTML = error
+   
   }
   updateButtonText(script: string, progress: number) {
+   
     if (progress > 0 && progress < 100) {
       this.buttonElement.innerHTML = `Loading... ${progress}%`;
     } else {
