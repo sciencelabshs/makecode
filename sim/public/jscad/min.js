@@ -1,3 +1,4 @@
+
 // BUGS
 // Leaking worker threads
 // 
@@ -6,6 +7,7 @@
  * Fixes
  *  - add camera controls for left/right/top/bottom
  *  - enable mouseout/mousedown to stop panning
+ *  - PERF: lookupOrCreate - use round instead of 16x allocation
  *  - PERF: fixes FuzzyFactory.lookupOrCreate being slow
  *  - PERF: fixes Vector.toArray allocating two arrays on every call
  *  - PERF: CSG.Sphere - address unnecessary array allocations 
@@ -45,6 +47,8 @@
 
 
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+
+  window.DEBUG_PERF = false // /localhost/.test(window.location.host)
 
   var _workerShapeCache = {}
   var __sharedShapeCache = {}
@@ -161,7 +165,7 @@
   
             // make sure we clean up the web worker
             if (worker) {
-              worker.terminate()
+              if (!window.DEBUG_PERF) worker.terminate()
               worker =null;
             }
           }
@@ -225,7 +229,7 @@
         window.postMessage({message: "JSCAD-progress-endSimulatorRender"})
   
         if (worker) {
-          worker.terminate()
+          if (!window.DEBUG_PERF) worker.terminate()
           worker = null;
         }
       }
@@ -4652,7 +4656,9 @@ const DEBUG_PERF = false
 const localCache = {}
 
   const shapeCache = function(shapeType, params, createFunction) {
-    const shapeKey = shapeType + JSON.stringify(params);
+    
+    const shapeKey = shapeType + (params.shapeId || JSON.stringify(params));
+    
     //console.log("key -- " + shapeKey)
     if (_workerShapeCache[shapeKey]) {
        //console.log("using cache")
@@ -4987,7 +4993,16 @@ const localCache = {}
    *   points: [...]
    * })
    */
-  function polyhedron (params) {
+  function polyhedron (options) {
+
+      options = options || {}
+  
+      return shapeCache("polyhedron", options, function() {
+        const cube =  createPolyhedron(options)
+        return cube
+      })
+   }
+   function createPolyhedron(params) {
     let pgs = []
     let ref = params.triangles || params.polygons
     let colors = params.colors || null
@@ -6113,9 +6128,15 @@ const localCache = {}
   
     transform: function (matrix4x4) {
       let ismirror = matrix4x4.isMirroring()
-      let newsides = this.sides.map(function (side) {
+      /*let newsides = this.sides.map(function (side) {
         return side.transform(matrix4x4)
-      })
+      })*/
+
+      let newsides = []
+      for (let i = this.sides.length-1; i >= 0; i--) {
+        newsides.push(this.sides[i].transform(matrix4x4))
+      }
+      
       let result = fromSides(newsides)
       if (ismirror) {
         result = result.flipped()
@@ -6124,10 +6145,17 @@ const localCache = {}
     },
   
     flipped: function () {
+
+      /*
       let newsides = this.sides.map(function (side) {
         return side.flipped()
       })
       newsides.reverse()
+      */
+      let newsides = []
+      for (let i = this.sides.length-1; i >= 0; i--) {
+        newsides.push(this.sides[i].flipped())
+      }
       return fromSides(newsides)
     },
   
@@ -7366,6 +7394,7 @@ const localCache = {}
     this.multiplier = 1.0 / tolerance
     this.lookupTableCacheHits = 0
     this.lookupTableLength = 0
+    this.hash = [] 
   }
   
   // Switch to see how much cache lookup affects the render time
@@ -7382,8 +7411,31 @@ const localCache = {}
     // If not found, calls the supplied callback function which should create a new object with
     // the specified properties. This object is inserted in the lookup database.
 
-   
+    
     lookupOrCreate: function (els, defaultObject) {
+      
+      // Original source code was using all combinations, which can get expensive
+      // for large numbers of vertexes.  We're just going to use round and see how we go.
+      //  el1/el2/el3, el1+1/el2/el3, el1/el2+1/el3, el1/el2/el3+1  
+      
+      let hashKey = ""
+      for (i = 0; i < els.length; i++) {
+        let valueQuantized = Math.round(els[i] * this.multiplier)
+        hashKey += valueQuantized
+        hashKey += '/'
+      }
+  
+  
+      if (this.lookuptable[hashKey] === undefined) {
+        this.lookuptable[hashKey] = defaultObject
+        return defaultObject
+      } 
+      return this.lookuptable[hashKey]
+    },
+   
+    lookupOrCreateORIG: function (els, defaultObject) {
+        // this is the original version. 
+        
         let hash = ''
         let multiplier = this.multiplier
         for (i = 0; i < els.length; i++) {
@@ -7394,7 +7446,7 @@ const localCache = {}
           return this.lookuptable[hash]
         } else {
           let object = defaultObject
-          let hashparts = []
+          hashparts = []
           for (let i =0; i < els.length; i++) {
             let el = els[i]
             let q0 = Math.floor(el * multiplier)
@@ -7402,7 +7454,10 @@ const localCache = {}
             hashparts.push( ['' + q0 + '/', '' + q1 + '/'])
           }
            
-       
+          // this appears to dump in a whole bunch of duplicates into the table
+          //  el1/el2/el3, el1+1/el2/el3, el1/el2+1/el3, el1/el2/el3+1  
+          //  up to 16 combinations for a plane, which is expensive memory wise...
+          
           let numelements = els.length
           let numhashes = 1 << numelements
           for (let hashmask = 0; hashmask < numhashes; ++hashmask) {
@@ -7416,6 +7471,7 @@ const localCache = {}
            
             this.lookuptable[hash] = object
           }
+          
           return object
         }
       }
@@ -9369,12 +9425,54 @@ const localCache = {}
     translate: function (offset) {
       return this.transform(Matrix4x4.translation(offset))
     },
+    
+      
+    addVectorTo: function (a, b) {
+       a._x += b._x
+       a._y += b._y
+       a._z += b._z
+       return a
+    },
+    timesScalar: function (a, b) {
+      a._x *= b
+      a._y *= b
+      a._z *= b
+      return a
+      
+    },
+    minusVec: function (a,b) {
+
+       a._x -= b._x
+       a._y -= b._y
+       a._z -= b._z
+       return a
+      return Vector3D.Create(this._x - a._x, this._y - a._y, this._z - a._z)
+    },
+  
+     
   
       // returns an array with a Vector3D (center point) and a radius
-    boundingSphere: function () {
-      if (!this.cachedBoundingSphere) {
+  /* boundingSphere: function () {
+      if (this.cachedBoundingSphere === undefined) {
         let box = this.boundingBox()
         let middle = box[0].plus(box[1]).times(0.5)
+        let radius3 = box[1].minus(middle)
+        let radius = radius3.length()
+        this.cachedBoundingSphere = [middle, radius]
+      }
+      return this.cachedBoundingSphere
+    },*/
+     boundingSphere: function () {
+      if (this.cachedBoundingSphere === undefined) {
+        let box = this.boundingBox()
+
+
+       // let middle = box[0].plus(box[1]).times(0.5)
+        let middle = Vector3D.Create( // save 2 allocations
+            (box[0]._x+box[1]._x)*.5,
+            (box[0]._y+box[1]._y)*.5,
+            (box[0]._z+box[1]._z)*.5,
+        )
         let radius3 = box[1].minus(middle)
         let radius = radius3.length()
         this.cachedBoundingSphere = [middle, radius]
@@ -9384,7 +9482,7 @@ const localCache = {}
   
       // returns an array of two Vector3Ds (minimum coordinates and maximum coordinates)
     boundingBox: function () {
-      if (!this.cachedBoundingBox) {
+      if (this.cachedBoundingBox === undefined) {
         let minpoint, maxpoint
         let vertices = this.vertices
         let numvertices = vertices.length
@@ -9394,12 +9492,31 @@ const localCache = {}
           minpoint = vertices[0].pos
         }
         maxpoint = minpoint
+
+        let minpointX = minpoint._x, 
+            minpointY = minpoint._y, 
+            minpointZ = minpoint._z, 
+            maxpointX = maxpoint._x, 
+            maxpointY = maxpoint._y, 
+            maxpointZ = maxpoint._z
+
         for (let i = 1; i < numvertices; i++) {
-          let point = vertices[i].pos
-          minpoint = minpoint.min(point)
-          maxpoint = maxpoint.max(point)
+          const p = vertices[i].pos
+          minpointX = Math.min(minpointX, p._x)
+          minpointY = Math.min(minpointY, p._y)
+          minpointZ = Math.min(minpointZ, p._z)
+
+          maxpointX = Math.max(maxpointX, p._x)
+          maxpointY = Math.max(maxpointY, p._y)
+          maxpointZ = Math.max(maxpointZ, p._z)
+
+         // minpoint = minpoint.min(p) // < PERF this reallocates a vector on every vertex
+         // maxpoint = maxpoint.max(p)
+          
         }
-        this.cachedBoundingBox = [minpoint, maxpoint]
+       
+        this.cachedBoundingBox = [Vector3D.Create(minpointX, minpointY, minpointZ), Vector3D.Create(maxpointX, maxpointY, maxpointZ)]
+         
       }
       return this.cachedBoundingBox
     },
@@ -10259,7 +10376,8 @@ const localCache = {}
   
   // Retesselation function for a set of coplanar polygons. See the introduction at the top of
   // this file.
-  const reTesselateCoplanarPolygons = function (sourcepolygons, destpolygons) {
+  const reTesselateCoplanarPolygons = function (sourcepolygons) {
+    let destpolygons = []
     let numpolygons = sourcepolygons.length
     if (numpolygons > 0) {
       let plane = sourcepolygons[0].plane
@@ -10267,11 +10385,11 @@ const localCache = {}
       let orthobasis = new OrthoNormalBasis(plane)
       let polygonvertices2d = [] // array of array of Vector2D
       let polygontopvertexindexes = [] // array of indexes of topmost vertex per polygon
-      let topy2polygonindexes = {}
-      let ycoordinatetopolygonindexes = {}
-  
-      let xcoordinatebins = {}
-      let ycoordinatebins = {}
+      let topy2polygonindexes = new Map()
+      let ycoordinatetopolygonindexes = new Map()
+
+      let ybins = []
+      let ycoordinatebins = new Map()
   
           // convert all polygon vertices to 2D
           // Make a list of all encountered y coordinates
@@ -10288,18 +10406,23 @@ const localCache = {}
             let pos2d = orthobasis.to2D(poly3d.vertices[i].pos)
                       // perform binning of y coordinates: If we have multiple vertices very
                       // close to each other, give them the same y coordinate:
-            let ycoordinatebin = Math.floor(pos2d.y * ycoordinateBinningFactor)
-            let newy
-            if (ycoordinatebin in ycoordinatebins) {
-              newy = ycoordinatebins[ycoordinatebin]
-            } else if (ycoordinatebin + 1 in ycoordinatebins) {
-              newy = ycoordinatebins[ycoordinatebin + 1]
-            } else if (ycoordinatebin - 1 in ycoordinatebins) {
-              newy = ycoordinatebins[ycoordinatebin - 1]
-            } else {
-              newy = pos2d.y
-              ycoordinatebins[ycoordinatebin] = pos2d.y
+            ybins[0] = Math.floor(pos2d.y * ycoordinateBinningFactor)
+            ybins[1] = ybins[0] +1
+            ybins[2] = ybins[0] -1
+            
+            let newy = undefined
+            for (let i = 0; i < 2; i++) {
+              let yCoordinateBin = ybins[i]
+              if (ycoordinatebins.has(yCoordinateBin)) {
+                newy = ycoordinatebins.get(yCoordinateBin)
+                break
+              }
             }
+            if (!newy) {
+              newy = pos2d.y
+              ycoordinatebins.set(ybins[0], newy)          
+            }
+
             pos2d = Vector2D.Create(pos2d.x, newy)
             vertices2d.push(pos2d)
             let y = pos2d.y
@@ -10311,10 +10434,10 @@ const localCache = {}
               maxy = y
               maxindex = i
             }
-            if (!ycoordinatetopolygonindexes[y]) {
-              ycoordinatetopolygonindexes[y] = {}
+            if (!ycoordinatetopolygonindexes.has(y)) {
+              ycoordinatetopolygonindexes.set(y, new Set())
             }
-            ycoordinatetopolygonindexes[y][polygonindex] = true
+            ycoordinatetopolygonindexes.get(y).add(polygonindex)
           }
           if (miny >= maxy) {
                       // degenerate polygon, all vertices have same y coordinate. Just ignore it from now:
@@ -10322,10 +10445,10 @@ const localCache = {}
             numvertices = 0
             minindex = -1
           } else {
-            if (!topy2polygonindexes[miny]) {
-              topy2polygonindexes[miny] = []
+            if (!topy2polygonindexes.has(miny)) {
+              topy2polygonindexes.set(miny, [])
             }
-            topy2polygonindexes[miny].push(polygonindex)
+            topy2polygonindexes.get(miny).push(polygonindex)
           }
         } // if(numvertices > 0)
               // reverse the vertex order:
@@ -10335,10 +10458,11 @@ const localCache = {}
         polygontopvertexindexes.push(minindex)
       }
       
-      let ycoordinates = Object.keys(ycoordinatetopolygonindexes)
-      
+
+      let yCoordinates = Array.from(ycoordinatetopolygonindexes.keys())
       // sort it.
-      ycoordinates.sort(fnNumberSort)
+      yCoordinates.sort(fnNumberSort)
+      const countYCoordinates = yCoordinates.length; // calculating length showing up in profiler
   
           // Now we will iterate over all y coordinates, from lowest to highest y coordinate
           // activepolygons: source polygons that are 'active', i.e. intersect with our y coordinate
@@ -10353,9 +10477,9 @@ const localCache = {}
           //        topright, bottomright: coordinates of the right hand side of the polygon crossing the current y coordinate
       let activepolygons = []
       let prevoutpolygonrow = []
-      for (let yindex = 0; yindex < ycoordinates.length; yindex++) {
+      for (let yindex = 0; yindex < countYCoordinates; yindex++) {
         let newoutpolygonrow = []
-        let ycoordinate_as_string = ycoordinates[yindex]
+        let ycoordinate_as_string = yCoordinates[yindex]
         let ycoordinate = Number(ycoordinate_as_string)
   
               // update activepolygons for this y coordinate:
@@ -10363,11 +10487,11 @@ const localCache = {}
               // - update leftvertexindex and rightvertexindex (which point to the current vertex index
               //   at the the left and right side of the polygon
               // Iterate over all polygons that have a corner at this y coordinate:
-        let polygonindexeswithcorner = ycoordinatetopolygonindexes[ycoordinate_as_string]
+        let polygonindexeswithcorner = ycoordinatetopolygonindexes.get(ycoordinate_as_string)
         for (let activepolygonindex = 0; activepolygonindex < activepolygons.length; ++activepolygonindex) {
           let activepolygon = activepolygons[activepolygonindex]
           let polygonindex = activepolygon.polygonindex
-          if (polygonindexeswithcorner[polygonindex]) {
+          if (polygonindexeswithcorner.has(polygonindex)) {
                       // this active polygon has a corner at this y coordinate:
             let vertices2d = polygonvertices2d[polygonindex]
             let numvertices = vertices2d.length
@@ -10405,16 +10529,16 @@ const localCache = {}
           } // if polygon has corner here
         } // for activepolygonindex
         let nextycoordinate
-        if (yindex >= ycoordinates.length - 1) {
+        if (yindex >= yCoordinates.length - 1) {
                   // last row, all polygons must be finished here:
           activepolygons = []
           nextycoordinate = null
-        } else // yindex < ycoordinates.length-1
+        } else // yindex < yCoordinates.length-1
               {
-          nextycoordinate = Number(ycoordinates[yindex + 1])
+          nextycoordinate = Number(yCoordinates[yindex + 1])
           let middleycoordinate = 0.5 * (ycoordinate + nextycoordinate)
                   // update activepolygons by adding any polygons that start here:
-          let startingpolygonindexes = topy2polygonindexes[ycoordinate_as_string]
+          let startingpolygonindexes = topy2polygonindexes.get(ycoordinate_as_string)
           for (let polygonindex_key in startingpolygonindexes) {
             let polygonindex = startingpolygonindexes[polygonindex_key]
             let vertices2d = polygonvertices2d[polygonindex]
@@ -10461,8 +10585,8 @@ const localCache = {}
               return 0
             })
           } // for(let polygonindex in startingpolygonindexes)
-        } //  yindex < ycoordinates.length-1
-              // if( (yindex === ycoordinates.length-1) || (nextycoordinate - ycoordinate > EPS) )
+        } //  yindex < yCoordinates.length-1
+              // if( (yindex === yCoordinates.length-1) || (nextycoordinate - ycoordinate > EPS) )
         if (true) {
           // Now activepolygons is up to date
           // Build the output polygons for the next row in newoutpolygonrow:
@@ -10593,8 +10717,9 @@ const localCache = {}
         }
       } // for yindex
     } // if(numpolygons > 0)
+    return destpolygons
   }
-  
+
   module.exports = reTesselateCoplanarPolygons
   
   },{"../constants":50,"../utils":68,"./Line2":51,"./OrthoNormalBasis":54,"./Polygon3":58,"./Vector2":60,"./Vertex3":63}],66:[function(require,module,exports){
@@ -10926,7 +11051,9 @@ const localCache = {}
     _splitByPlane: function (plane, coplanarfrontnodes, coplanarbacknodes, frontnodes, backnodes) {
       let polygon = this.polygon
       if (polygon) {
+        
         let bound = polygon.boundingSphere()
+        
         let sphereradius = bound[1] + EPS // FIXME Why add imprecision?
         let planenormal = plane.normal
         let spherecenter = bound[0]
@@ -11123,7 +11250,8 @@ const localCache = {}
           }
         }
         args = stack.pop()
-      } while (typeof (args) !== 'undefined')
+      } while (args) 
+      //while (typeof (args) !== 'undefined')
     },
   
       // Remove all polygons in this BSP tree that are inside the other BSP tree
@@ -11138,7 +11266,7 @@ const localCache = {}
         if (node.front) stack.push(node.front)
         if (node.back) stack.push(node.back)
         node = stack.pop()
-      } while (typeof (node) !== 'undefined')
+      } while (node)
     },
   
     addPolygonTreeNodes: function (polygontreenodes) {
@@ -11176,7 +11304,7 @@ const localCache = {}
         }
   
         args = stack.pop()
-      } while (typeof (args) !== 'undefined')
+      } while (args)
     },
   
     getParentPlaneNormals: function (normals, maxdepth) {
@@ -11256,14 +11384,16 @@ const localCache = {}
   }
   
   function isCAG (object) {
+    if (!object) return false
+
     // objects[i] instanceof CAG => NOT RELIABLE
     // 'instanceof' causes huge issues when using objects from
     // two different versions of CSG.js as they are not reckonized as one and the same
     // so DO NOT use instanceof to detect matching types for CSG/CAG
-    if (!('sides' in object)) {
+    if (object.sides === undefined) {
       return false
     }
-    if (!('length' in object.sides)) {
+    if (object.sides.length === undefined) {
       return false
     }
   
@@ -11271,14 +11401,16 @@ const localCache = {}
   }
   
   function isCSG (object) {
+    if (!object) return false
+
     // objects[i] instanceof CSG => NOT RELIABLE
     // 'instanceof' causes huge issues when using objects from
     // two different versions of CSG.js as they are not reckonized as one and the same
     // so DO NOT use instanceof to detect matching types for CSG/CAG
-    if (!('polygons' in object)) {
+    if (object.polygons === undefined) {
       return false
     }
-    if (!('length' in object.polygons)) {
+    if (object.polygons.length === undefined) {
       return false
     }
     return true
@@ -12212,7 +12344,7 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
           shared = fuzzyfactory.getPolygonShared(shared)
         }
         let tag = plane.getTag() + '/' + shared.getTag()
-        if (!(tag in polygonsPerPlane)) {
+        if (!(polygonsPerPlane[tag])) {
           polygonsPerPlane[tag] = [polygon]
         } else {
           polygonsPerPlane[tag].push(polygon)
@@ -12223,11 +12355,18 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
       for (let planetag in polygonsPerPlane) {
         let sourcepolygons = polygonsPerPlane[planetag]
         if (sourcepolygons.length < 2) {
-          destpolygons = destpolygons.concat(sourcepolygons)
+          //destpolygons = destpolygons.concat(sourcepolygons)
+          for (let s=0; s< sourcepolygons.length; s++) {
+            destpolygons.push(sourcepolygons[s])
+          }
         } else {
-          let retesselayedpolygons = []
-          reTesselateCoplanarPolygons(sourcepolygons, retesselayedpolygons)
-          destpolygons = destpolygons.concat(retesselayedpolygons)
+          let retesselayedpolygons = reTesselateCoplanarPolygons(sourcepolygons)
+          
+          // destpolygons = destpolygons.concat(retesselayedpolygons)
+          for (let r=0; r< retesselayedpolygons.length; r++) {
+            destpolygons.push(retesselayedpolygons[r])
+          }
+          
         }
       }
       let result = fromPolygons(destpolygons)
@@ -20406,6 +20545,7 @@ const fixTJunctions = function (csgFromPolygons, csgObject, csgAPI) {
     options && options.statusCallback && options.statusCallback({progress: 100})
     return result
   }
+  
   
   /**
    * Parse the given SVG source and return a JSCAD script

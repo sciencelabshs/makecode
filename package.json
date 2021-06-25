@@ -1,6 +1,6 @@
 {
   "name": "pxt-buildbee",
-  "version": "2.0.47",
+  "version": "2.0.48",
   "description": "Create 3D printing projects using MakeCode",
   "keywords": [
     "JavaScript",
@@ -29,7 +29,7 @@
   ],
   "scripts": {
     "patchBuild": "node pxt-patches/applyPatches.js",
-    "start": "pxt clean && yarn patchBuild && pxt staticpkg && pxt serve -pkg",
+    "start": "pxt clean && yarn patchBuild && pxt staticpkg && yarn build:after-build && pxt serve -pkg",
     "checkdocs": "pxt checkdocs",
     "build:static": "yarn patchBuild && pxt staticpkg --bump && yarn build:after-build",
     "build:static-dev": "yarn patchBuild && pxt staticpkg && yarn build:after-build",
@@ -46,7 +46,8 @@
     "typescript": "3.7.5"
   },
   "dependencies": {
-    "pxt-core": "6.0.1",
+    "@jscad/io": "^0.5.0",
+    "pxt-core": "6.12.4",
     "replace-in-file": "^6.1.0"
   }
 }

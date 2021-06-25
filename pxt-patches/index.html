@@ -16,6 +16,7 @@
             if (text)
                 text = text.replace(/^\{(id|loc):[^\}]+\}/g, '');
             return text;
+
         }]);
         // inject crowdin
         (function _() {
@@ -33,6 +34,41 @@
 </head>
 
 <body class="main">
+        <div id="BBCookieBar" style="background-color: #3f4965;display: block;padding-left: 12px;padding-right: 12px;">
+                <div style="
+        display: flex;
+        align-items: center;
+    ">
+            <div style="
+        color: #ecf0f1;
+        /* min-width: calc(100vw - 240px); */
+        padding-right: 4em;
+    ">BuildBee uses cookies to make the site simpler.</div>
+            <div>
+            <button class="cookieSettingsChange" onclick="CookieBar.showPrivacySettings()" style="
+                color: #ecf0f1;
+                background: transparent;
+                border: 2px solid #ecf0f1;
+                border-radius: 20px;
+                padding: 6px;
+                min-width: 120px;
+                min-height: 40px;
+                margin: 6px;
+                ">
+            Cookie settings</button>
+            
+            <button class="cookieSettingsAccept" onclick="CookieBar.acceptPrivacySettings()" style="
+                color: white;
+                background: transparent;
+                border: 2px solid #ecf0f1;
+                border-radius: 20px;
+                padding: 6px;
+                min-width: 80px;
+                height: 40px;
+                margin: 6px;
+            ">Got it</button></div>
+            </div>
+            </div>
     <div id='loading' class="ui active dimmer">
         <div class="ui large main loader"></div>
     </div>
@@ -107,7 +143,7 @@
         }
     </script>
    <!-- buildbee file handling overrides-->
-    <script src="/sim/buildbee/main-index.js?BBVER=20201025"></script>
+    <script src="/buildbee/buildbee-services.js?BBVER=20210625"></script>
     <script src="/sim/buildbee/filesaver.min.js"></script>
  
 </body>

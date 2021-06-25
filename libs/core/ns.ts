@@ -3,6 +3,7 @@
  * How to set fields and colours
  * @external https://makecode.com/playground#basic-default-values
  * @external https://makecode.com/extensions/getting-started/simple-extension
+ * @external https://makecode.com/defining-blocks
  * use the playground to configure the pickers
  */
 
@@ -29,7 +30,7 @@ namespace colors {
 /**
  * Move and rotate shapes
  */
-//% groups=["Position", "Rotation", "Layout", "Operations"]
+//% groups='["Position", "Rotation", "Layout", "Operations"]'
 //% color=#42AA0E weight=10 icon="\uf0b2" weight=80
 namespace operators {
 
@@ -41,7 +42,7 @@ namespace operators {
 /**
  * Some extra helpful maths stuff
  */
-//% groups=["Conversion", "Trigonometry in Degrees", "Logarithms", "Constants"]
+//% groups='["Conversion", "Trigonometry in Degrees", "Logarithms", "Constants"]'
 //% color=#42AA0E weight=10 icon="\u2140" weight=0
 namespace extraMath {
 
@@ -53,8 +54,18 @@ namespace extraMath {
 /**
  * Parameters for making customizable objects
  */
-//% groups=["Numbers", "Text"]
+//% groups='["Numbers", "Text"]'
 //% color=#d74ebe weight=80 icon="\uf1de" weight=10
 namespace parameters {
 
 }
+
+/**
+ * Blocks for making fasteners
+ */
+//% groups='["Threads", "Sizes"]'
+//% color=#5f69a0 weight=90 icon="\uf0c1" weight=10
+namespace fasteners {
+
+}
+

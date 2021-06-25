@@ -27,6 +27,7 @@
       "functionBlocks": true,
       "listsBlocks": true ,
       "onStartUnDeletable": false
+      
     },
     "blockColors": {
         "loops": "#20BF6B",
@@ -45,6 +46,7 @@
     "appTheme": {
         "name": "BuildBee MakeCode",
         "extendFieldEditors": true,
+        "extendEditor": true,
         "blocksCollapsing": true,
         "accentColor": "#4ebed7",
         "logoUrl": "https://buildbee.com",
@@ -115,7 +117,7 @@
         "simScreenshotMaxUriLength": 300000,
         "simGif": false,
         "simGifKey": "R",
-        "python": false,
+        "python": true,
         "scriptManager": true,
         "debugger": true,
         "print": true,
