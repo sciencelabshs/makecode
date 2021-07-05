@@ -1141,7 +1141,7 @@ declare namespace fasteners {
     //% blockId=britishStandardThread block="british standard - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/britishStandardThread
-    //% threadType.defl=BritishSizes.G_OneSixteenthInch
+    //% size.defl=BritishSizes.G_OneSixteenthInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
@@ -1164,7 +1164,7 @@ declare namespace fasteners {
     //% blockId=metricCoarseThread block="metric coarse - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% threadType.defl=MetricCoarseSizes.M8x1
+    //% size.defl=MetricCoarseSizes.M8x1
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
@@ -1193,7 +1193,7 @@ declare namespace fasteners {
     //% blockId=metricFineThread block="metric fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/metricFineThread
-    //% threadType.defl=MetricFineSizes.M10x1
+    //% size.defl=MetricFineSizes.M10x1
     //% height.defl=10
     //% lead.defl=20
     //% weight=50
@@ -1222,7 +1222,7 @@ declare namespace fasteners {
     //% blockId=unifiedCoarseThread block="unified coarse - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% threadType.defl=UnifiedCoarseSizes.UNC_HalfInch
+    //% size.defl=UnifiedCoarseSizes.UNC_HalfInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
@@ -1248,7 +1248,7 @@ declare namespace fasteners {
     //% blockId=unifiedFineThread block="unified fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% threadType.defl=UnifiedFineSizes.UNF_HalfInch
+    //% size.defl=UnifiedFineSizes.UNF_HalfInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
@@ -1274,7 +1274,7 @@ declare namespace fasteners {
     //% blockId=unifiedExtraFineThread block="unified extra fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% threadType.defl=UnifiedExtraFineSizes.UNEF_OneQuarterInch
+    //% size.defl=UnifiedExtraFineSizes.UNEF_OneQuarterInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
@@ -1300,7 +1300,7 @@ declare namespace fasteners {
     //% blockId=unifiedNumberedThread block="unified numbered - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% threadType.defl=UnifiedNumberedSizes.UN_32
+    //% size.defl=UnifiedNumberedSizes.UN_32
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
