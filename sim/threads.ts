@@ -1,7 +1,7 @@
 const THREAD_TABLE = {
     'metric': {
         'coarse': {
-            'M 0.3x0.09': {
+            'M0p3x0p09': {
                 'ext': {
                     'pitch': 0.09,
                     'rRotation': 0.085,
@@ -26,7 +26,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 1.1x0.25': {
+            'M1p1x0p25': {
                 'ext': {
                     'pitch': 0.25,
                     'rRotation': 0.3565,
@@ -51,7 +51,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 1.6x0.3': {
+            'M1p6x0p3': {
                 'ext': {
                     'pitch': 0.3,
                     'rRotation': 0.5785,
@@ -76,7 +76,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 2.3x0.45': {
+            'M2p3x0p45': {
                 'ext': {
                     'pitch': 0.45,
                     'rRotation': 0.82,
@@ -101,7 +101,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 4.5x0.75': {
+            'M4p5x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 1.7195,
@@ -126,7 +126,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 6x0.8': {
+            'M6x0p8': {
                 'ext': {
                     'pitch': 0.8,
                     'rRotation': 2.442,
@@ -151,7 +151,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 7x0.75': {
+            'M7x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 2.9645,
@@ -176,7 +176,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 8x1': {
+            'M8x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 3.298,
@@ -201,7 +201,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 9x1.25': {
+            'M9x1p25': {
                 'ext': {
                     'pitch': 1.25,
                     'rRotation': 3.636,
@@ -226,7 +226,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 10x1.25': {
+            'M10x1p25': {
                 'ext': {
                     'pitch': 1.25,
                     'rRotation': 4.136,
@@ -251,7 +251,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 11x1.5': {
+            'M11x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 4.469,
@@ -276,7 +276,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 12x1.5': {
+            'M12x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 4.965,
@@ -301,7 +301,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 14x1.5': {
+            'M14x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 5.965,
@@ -326,7 +326,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 15x1.5': {
+            'M15x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 6.465,
@@ -351,7 +351,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 16x1.6': {
+            'M16x1p6': {
                 'ext': {
                     'pitch': 1.6,
                     'rRotation': 6.919,
@@ -376,7 +376,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 17x1.5': {
+            'M17x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 7.465,
@@ -401,7 +401,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 18x2': {
+            'M18x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 7.6355,
@@ -426,7 +426,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 20x2': {
+            'M20x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 8.6355,
@@ -451,7 +451,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 22x3': {
+            'M22x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 8.985,
@@ -476,7 +476,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 24x2.5': {
+            'M24x2p5': {
                 'ext': {
                     'pitch': 2.5,
                     'rRotation': 10.302,
@@ -501,7 +501,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 25x2': {
+            'M25x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 11.1305,
@@ -526,7 +526,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 27x2': {
+            'M27x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 12.1305,
@@ -551,7 +551,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 28x2': {
+            'M28x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 12.6305,
@@ -576,7 +576,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 30x3': {
+            'M30x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 12.9775,
@@ -601,7 +601,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 32x2': {
+            'M32x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 14.6305,
@@ -626,7 +626,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 33x3': {
+            'M33x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 14.4775,
@@ -651,7 +651,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 36x3': {
+            'M36x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 15.9775,
@@ -676,7 +676,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 39x3': {
+            'M39x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 17.4775,
@@ -701,7 +701,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 40x3': {
+            'M40x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 17.9775,
@@ -726,7 +726,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 42x4': {
+            'M42x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 18.327,
@@ -751,7 +751,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 45x4': {
+            'M45x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 19.827,
@@ -776,7 +776,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 48x4': {
+            'M48x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 21.321,
@@ -801,7 +801,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 50x4': {
+            'M50x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 22.321,
@@ -826,7 +826,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 52x4': {
+            'M52x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 23.321,
@@ -851,7 +851,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 55x4': {
+            'M55x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 24.821,
@@ -876,7 +876,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 56x4': {
+            'M56x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 25.321,
@@ -901,7 +901,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 58x4': {
+            'M58x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 26.321,
@@ -926,7 +926,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 60x4': {
+            'M60x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 27.321,
@@ -951,7 +951,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 62x4': {
+            'M62x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 28.321,
@@ -976,7 +976,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 64x5.5': {
+            'M64x5.5': {
                 'ext': {
                     'pitch': 5.5,
                     'rRotation': 28.35,
@@ -1001,7 +1001,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 65x4': {
+            'M65x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 29.821,
@@ -1026,7 +1026,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 68x6': {
+            'M68x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 30.0235,
@@ -1051,7 +1051,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 70x6': {
+            'M70x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 31.0235,
@@ -1076,7 +1076,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 72x6': {
+            'M72x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 32.0235,
@@ -1101,7 +1101,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 75x6': {
+            'M75x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 33.5235,
@@ -1126,7 +1126,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 76x6': {
+            'M76x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 34.0235,
@@ -1151,7 +1151,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 80x6': {
+            'M80x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 36.0235,
@@ -1176,7 +1176,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 85x6': {
+            'M85x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 38.5235,
@@ -1201,7 +1201,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 90x6': {
+            'M90x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 41.0235,
@@ -1226,7 +1226,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 95x6': {
+            'M95x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 43.5135,
@@ -1251,7 +1251,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 100x6': {
+            'M100x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 46.0135,
@@ -1276,7 +1276,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 105x6': {
+            'M105x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 48.5135,
@@ -1301,7 +1301,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 110x6': {
+            'M110x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 51.015,
@@ -1326,7 +1326,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 115x6': {
+            'M115x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 53.515,
@@ -1351,7 +1351,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 120x6': {
+            'M120x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 56.015,
@@ -1376,7 +1376,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 125x8': {
+            'M125x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 57.22,
@@ -1401,7 +1401,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 130x8': {
+            'M130x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 59.72,
@@ -1426,7 +1426,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 135x6': {
+            'M135x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 63.515,
@@ -1451,7 +1451,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 140x8': {
+            'M140x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 64.72,
@@ -1476,7 +1476,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 145x6': {
+            'M145x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 68.515,
@@ -1501,7 +1501,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 150x8': {
+            'M150x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 69.72,
@@ -1526,7 +1526,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 155x6': {
+            'M155x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 73.515,
@@ -1551,7 +1551,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 160x8': {
+            'M160x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 74.72,
@@ -1576,7 +1576,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 165x6': {
+            'M165x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 78.515,
@@ -1601,7 +1601,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 170x8': {
+            'M170x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 79.72,
@@ -1626,7 +1626,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 175x6': {
+            'M175x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 83.515,
@@ -1651,7 +1651,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 180x8': {
+            'M180x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 84.72,
@@ -1676,7 +1676,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 185x6': {
+            'M185x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 88.505,
@@ -1701,7 +1701,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 190x8': {
+            'M190x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 89.71,
@@ -1726,7 +1726,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 195x6': {
+            'M195x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 93.505,
@@ -1751,7 +1751,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 200x8': {
+            'M200x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 94.71,
@@ -1776,7 +1776,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 205x6': {
+            'M205x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 98.505,
@@ -1801,7 +1801,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 210x8': {
+            'M210x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 99.71,
@@ -1826,7 +1826,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 215x6': {
+            'M215x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 103.505,
@@ -1851,7 +1851,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 220x8': {
+            'M220x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 104.71,
@@ -1876,7 +1876,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 225x6': {
+            'M225x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 108.505,
@@ -1901,7 +1901,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 230x6': {
+            'M230x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 111.005,
@@ -1926,7 +1926,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 235x6': {
+            'M235x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 113.485,
@@ -1951,7 +1951,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 240x8': {
+            'M240x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 114.71,
@@ -1976,7 +1976,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 245x6': {
+            'M245x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 118.505,
@@ -2001,7 +2001,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 250x8': {
+            'M250x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 119.71,
@@ -2026,7 +2026,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 255x6': {
+            'M255x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 123.485,
@@ -2051,7 +2051,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 260x8': {
+            'M260x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 124.71,
@@ -2076,7 +2076,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 265x6': {
+            'M265x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 128.505,
@@ -2101,7 +2101,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 270x6': {
+            'M270x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 131.005,
@@ -2126,7 +2126,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 275x6': {
+            'M275x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 133.505,
@@ -2151,7 +2151,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 280x8': {
+            'M280x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 134.71,
@@ -2176,7 +2176,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 285x6': {
+            'M285x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 138.505,
@@ -2201,7 +2201,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 290x6': {
+            'M290x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 141.005,
@@ -2226,7 +2226,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 295x6': {
+            'M295x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 143.505,
@@ -2251,7 +2251,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 300x8': {
+            'M300x8': {
                 'ext': {
                     'pitch': 8,
                     'rRotation': 144.71,
@@ -2276,7 +2276,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 310x6': {
+            'M310x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 151.005,
@@ -2301,7 +2301,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 320x6': {
+            'M320x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 156.005,
@@ -2326,7 +2326,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 330x6': {
+            'M330x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 161.005,
@@ -2351,7 +2351,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 340x6': {
+            'M340x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 166.005,
@@ -2376,7 +2376,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 350x6': {
+            'M350x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 171.005,
@@ -2401,7 +2401,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 360x6': {
+            'M360x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 175.985,
@@ -2426,7 +2426,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 370x6': {
+            'M370x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 180.985,
@@ -2451,7 +2451,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 380x6': {
+            'M380x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 185.985,
@@ -2476,7 +2476,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 390x6': {
+            'M390x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 190.985,
@@ -2501,7 +2501,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 400x6': {
+            'M400x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 195.985,
@@ -2528,7 +2528,7 @@ const THREAD_TABLE = {
             }
         },
         'fine': {
-            'M 0.3x0.08': {
+            'M0p3x0p08': {
                 'ext': {
                     'pitch': 0.08,
                     'rRotation': 0.0915,
@@ -2553,7 +2553,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 1.1x0.2': {
+            'M1p1x0p2': {
                 'ext': {
                     'pitch': 0.2,
                     'rRotation': 0.391,
@@ -2578,7 +2578,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 1.6x0.2': {
+            'M1p6x0p2': {
                 'ext': {
                     'pitch': 0.2,
                     'rRotation': 0.64,
@@ -2603,7 +2603,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 2.3x0.4': {
+            'M2p3x0p4': {
                 'ext': {
                     'pitch': 0.4,
                     'rRotation': 0.854,
@@ -2628,7 +2628,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 4.5x0.5': {
+            'M4p5x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 1.886,
@@ -2653,7 +2653,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 6x0.75': {
+            'M6x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 2.4645,
@@ -2678,7 +2678,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 6x0.7': {
+            'M6x0p7': {
                 'ext': {
                     'pitch': 0.7,
                     'rRotation': 2.4985,
@@ -2703,7 +2703,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 6x0.5': {
+            'M6x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 2.631,
@@ -2728,7 +2728,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 7x0.5': {
+            'M7x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 3.131,
@@ -2753,7 +2753,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 8x0.8': {
+            'M8x0p8': {
                 'ext': {
                     'pitch': 0.8,
                     'rRotation': 3.429,
@@ -2778,7 +2778,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 8x0.75': {
+            'M8x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 3.4645,
@@ -2803,7 +2803,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 8x0.5': {
+            'M8x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 3.631,
@@ -2828,7 +2828,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 9x1': {
+            'M9x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 3.798,
@@ -2853,7 +2853,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 9x0.75': {
+            'M9x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 3.9645,
@@ -2878,7 +2878,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 9x0.5': {
+            'M9x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 4.131,
@@ -2903,7 +2903,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 10x1.12': {
+            'M10x1p12': {
                 'ext': {
                     'pitch': 1.12,
                     'rRotation': 4.219,
@@ -2928,7 +2928,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 10x1': {
+            'M10x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 4.298,
@@ -2953,7 +2953,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 10x0.75': {
+            'M10x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 4.4645,
@@ -2978,7 +2978,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 10x0.5': {
+            'M10x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 4.631,
@@ -3003,7 +3003,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 11x1': {
+            'M11x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 4.798,
@@ -3028,7 +3028,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 11x0.75': {
+            'M11x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 4.9645,
@@ -3053,7 +3053,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 11x0.5': {
+            'M11x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 5.131,
@@ -3078,7 +3078,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 12x1.25': {
+            'M12x1p25': {
                 'ext': {
                     'pitch': 1.25,
                     'rRotation': 5.129,
@@ -3103,7 +3103,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 12x1': {
+            'M12x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 5.295,
@@ -3128,7 +3128,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 12x0.75': {
+            'M12x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 5.4615,
@@ -3153,7 +3153,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 12x0.5': {
+            'M12x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 5.6285,
@@ -3178,7 +3178,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 14x1.25': {
+            'M14x1p25': {
                 'ext': {
                     'pitch': 1.25,
                     'rRotation': 6.129,
@@ -3203,7 +3203,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 14x1': {
+            'M14x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 6.295,
@@ -3228,7 +3228,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 14x0.75': {
+            'M14x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 6.4615,
@@ -3253,7 +3253,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 14x0.5': {
+            'M14x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 6.6285,
@@ -3278,7 +3278,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 15x1': {
+            'M15x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 6.795,
@@ -3303,7 +3303,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 16x1.5': {
+            'M16x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 6.965,
@@ -3328,7 +3328,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 16x1.25': {
+            'M16x1p25': {
                 'ext': {
                     'pitch': 1.25,
                     'rRotation': 7.129,
@@ -3353,7 +3353,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 16x1': {
+            'M16x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 7.295,
@@ -3378,7 +3378,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 16x0.75': {
+            'M16x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 7.4615,
@@ -3403,7 +3403,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 16x0.5': {
+            'M16x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 7.6285,
@@ -3428,7 +3428,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 17x1': {
+            'M17x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 7.795,
@@ -3453,7 +3453,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 18x1.5': {
+            'M18x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 7.965,
@@ -3478,7 +3478,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 18x1.25': {
+            'M18x1p25': {
                 'ext': {
                     'pitch': 1.25,
                     'rRotation': 8.129,
@@ -3503,7 +3503,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 18x1': {
+            'M18x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 8.295,
@@ -3528,7 +3528,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 18x0.75': {
+            'M18x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 8.4615,
@@ -3553,7 +3553,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 18x0.5': {
+            'M18x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 8.6285,
@@ -3578,7 +3578,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 20x1.5': {
+            'M20x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 8.965,
@@ -3603,7 +3603,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 20x1': {
+            'M20x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 9.295,
@@ -3628,7 +3628,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 20x0.75': {
+            'M20x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 9.4615,
@@ -3653,7 +3653,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 20x0.5': {
+            'M20x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 9.6285,
@@ -3678,7 +3678,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 22x2': {
+            'M22x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 9.6355,
@@ -3703,7 +3703,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 22x1.5': {
+            'M22x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 9.965,
@@ -3728,7 +3728,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 22x1': {
+            'M22x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 10.295,
@@ -3753,7 +3753,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 22x0.75': {
+            'M22x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 10.4615,
@@ -3778,7 +3778,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 22x0.5': {
+            'M22x0p5': {
                 'ext': {
                     'pitch': 0.5,
                     'rRotation': 10.6285,
@@ -3803,7 +3803,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 24x2': {
+            'M24x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 10.6305,
@@ -3828,7 +3828,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 24x1.5': {
+            'M24x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 10.96,
@@ -3853,7 +3853,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 24x1': {
+            'M24x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 11.2915,
@@ -3878,7 +3878,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 24x0.75': {
+            'M24x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 11.4585,
@@ -3903,7 +3903,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 25x1.5': {
+            'M25x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 11.46,
@@ -3928,7 +3928,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 25x1': {
+            'M25x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 11.7915,
@@ -3953,7 +3953,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 27x1.5': {
+            'M27x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 12.46,
@@ -3978,7 +3978,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 27x1': {
+            'M27x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 12.7915,
@@ -4003,7 +4003,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 27x0.75': {
+            'M27x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 12.9585,
@@ -4028,7 +4028,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 28x1.5': {
+            'M28x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 12.96,
@@ -4053,7 +4053,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 28x1': {
+            'M28x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 13.2915,
@@ -4078,7 +4078,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 30x2.5': {
+            'M30x2.5': {
                 'ext': {
                     'pitch': 2.5,
                     'rRotation': 13.302,
@@ -4103,7 +4103,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 30x2': {
+            'M30x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 13.6305,
@@ -4128,7 +4128,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 30x1.5': {
+            'M30x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 13.96,
@@ -4153,7 +4153,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 30x1': {
+            'M30x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 14.2915,
@@ -4178,7 +4178,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 30x0.75': {
+            'M30x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 14.4585,
@@ -4203,7 +4203,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 32x1.5': {
+            'M32x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 14.96,
@@ -4228,7 +4228,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 33x2': {
+            'M33x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 15.1305,
@@ -4253,7 +4253,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 33x1.5': {
+            'M33x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 15.46,
@@ -4278,7 +4278,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 33x1': {
+            'M33x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 15.7915,
@@ -4303,7 +4303,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 33x0.75': {
+            'M33x0p75': {
                 'ext': {
                     'pitch': 0.75,
                     'rRotation': 15.9585,
@@ -4328,7 +4328,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 36x2': {
+            'M36x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 16.6305,
@@ -4353,7 +4353,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 36x1.5': {
+            'M36x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 16.96,
@@ -4378,7 +4378,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 36x1': {
+            'M36x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 17.2915,
@@ -4403,7 +4403,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 39x2': {
+            'M39x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 18.1305,
@@ -4428,7 +4428,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 39x1.5': {
+            'M39x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 18.46,
@@ -4453,7 +4453,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 39x1': {
+            'M39x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 18.7915,
@@ -4478,7 +4478,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 40x2.5': {
+            'M40x2.5': {
                 'ext': {
                     'pitch': 2.5,
                     'rRotation': 18.302,
@@ -4503,7 +4503,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 40x2': {
+            'M40x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 18.6305,
@@ -4528,7 +4528,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 40x1.5': {
+            'M40x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 18.96,
@@ -4553,7 +4553,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 42x3': {
+            'M42x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 18.9775,
@@ -4578,7 +4578,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 42x2': {
+            'M42x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 19.6305,
@@ -4603,7 +4603,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 42x1.5': {
+            'M42x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 19.96,
@@ -4628,7 +4628,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 42x1': {
+            'M42x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 20.2915,
@@ -4653,7 +4653,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 45x3': {
+            'M45x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 20.4775,
@@ -4678,7 +4678,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 45x2': {
+            'M45x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 21.1305,
@@ -4703,7 +4703,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 45x1.5': {
+            'M45x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 21.46,
@@ -4728,7 +4728,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 45x1': {
+            'M45x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 21.7915,
@@ -4753,7 +4753,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 48x3': {
+            'M48x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 21.9715,
@@ -4778,7 +4778,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 48x2': {
+            'M48x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 22.6255,
@@ -4803,7 +4803,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 48x1.5': {
+            'M48x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 22.955,
@@ -4828,7 +4828,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 50x3': {
+            'M50x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 22.9715,
@@ -4853,7 +4853,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 50x2': {
+            'M50x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 23.6255,
@@ -4878,7 +4878,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 50x1.5': {
+            'M50x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 23.955,
@@ -4903,7 +4903,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 52x3': {
+            'M52x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 23.9715,
@@ -4928,7 +4928,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 52x2': {
+            'M52x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 24.6255,
@@ -4953,7 +4953,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 52x1.5': {
+            'M52x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 24.955,
@@ -4978,7 +4978,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 55x3': {
+            'M55x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 25.4715,
@@ -5003,7 +5003,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 55x2': {
+            'M55x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 26.1255,
@@ -5028,7 +5028,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 55x1.5': {
+            'M55x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 26.455,
@@ -5053,7 +5053,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 56x3': {
+            'M56x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 25.9715,
@@ -5078,7 +5078,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 56x2': {
+            'M56x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 26.6255,
@@ -5103,7 +5103,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 56x1.5': {
+            'M56x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 26.955,
@@ -5128,7 +5128,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 56x1': {
+            'M56x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 27.284,
@@ -5153,7 +5153,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 58x3': {
+            'M58x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 26.9715,
@@ -5178,7 +5178,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 58x2': {
+            'M58x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 27.6255,
@@ -5203,7 +5203,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 58x1.5': {
+            'M58x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 27.955,
@@ -5228,7 +5228,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 60x3': {
+            'M60x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 27.9715,
@@ -5253,7 +5253,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 60x2': {
+            'M60x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 28.6255,
@@ -5278,7 +5278,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 60x1.5': {
+            'M60x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 28.955,
@@ -5303,7 +5303,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 60x1': {
+            'M60x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 29.284,
@@ -5328,7 +5328,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 62x3': {
+            'M62x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 28.9715,
@@ -5353,7 +5353,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 62x2': {
+            'M62x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 29.6255,
@@ -5378,7 +5378,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 62x1.5': {
+            'M62x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 29.955,
@@ -5403,7 +5403,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 64x4': {
+            'M64x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 29.321,
@@ -5428,7 +5428,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 64x3': {
+            'M64x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 29.9715,
@@ -5453,7 +5453,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 64x2': {
+            'M64x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 30.6255,
@@ -5478,7 +5478,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 64x1.5': {
+            'M64x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 30.955,
@@ -5503,7 +5503,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 64x1': {
+            'M64x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 31.284,
@@ -5528,7 +5528,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 65x3': {
+            'M65x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 30.4715,
@@ -5553,7 +5553,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 65x2': {
+            'M65x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 31.1255,
@@ -5578,7 +5578,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 65x1.5': {
+            'M65x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 31.455,
@@ -5603,7 +5603,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 68x4': {
+            'M68x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 31.321,
@@ -5628,7 +5628,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 68x3': {
+            'M68x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 31.9715,
@@ -5653,7 +5653,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 68x2': {
+            'M68x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 32.6255,
@@ -5678,7 +5678,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 68x1.5': {
+            'M68x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 32.955,
@@ -5703,7 +5703,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 68x1': {
+            'M68x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 33.284,
@@ -5728,7 +5728,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 70x4': {
+            'M70x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 32.321,
@@ -5753,7 +5753,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 70x3': {
+            'M70x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 32.9715,
@@ -5778,7 +5778,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 70x2': {
+            'M70x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 33.6255,
@@ -5803,7 +5803,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 70x1.5': {
+            'M70x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 33.955,
@@ -5828,7 +5828,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 72x4': {
+            'M72x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 33.321,
@@ -5853,7 +5853,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 72x3': {
+            'M72x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 33.9715,
@@ -5878,7 +5878,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 72x2': {
+            'M72x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 34.6255,
@@ -5903,7 +5903,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 72x1.5': {
+            'M72x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 34.955,
@@ -5928,7 +5928,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 72x1': {
+            'M72x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 35.284,
@@ -5953,7 +5953,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 75x4': {
+            'M75x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 34.821,
@@ -5978,7 +5978,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 75x3': {
+            'M75x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 35.4715,
@@ -6003,7 +6003,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 75x2': {
+            'M75x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 36.1255,
@@ -6028,7 +6028,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 75x1.5': {
+            'M75x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 36.455,
@@ -6053,7 +6053,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 76x4': {
+            'M76x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 35.321,
@@ -6078,7 +6078,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 76x3': {
+            'M76x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 35.9715,
@@ -6103,7 +6103,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 76x2': {
+            'M76x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 36.6255,
@@ -6128,7 +6128,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 76x1.5': {
+            'M76x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 36.955,
@@ -6153,7 +6153,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 76x1': {
+            'M76x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 37.284,
@@ -6178,7 +6178,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 80x4': {
+            'M80x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 37.321,
@@ -6203,7 +6203,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 80x3': {
+            'M80x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 37.9715,
@@ -6228,7 +6228,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 80x2': {
+            'M80x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 38.6255,
@@ -6253,7 +6253,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 80x1.5': {
+            'M80x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 38.955,
@@ -6278,7 +6278,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 80x1': {
+            'M80x1': {
                 'ext': {
                     'pitch': 1,
                     'rRotation': 39.284,
@@ -6303,7 +6303,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 85x4': {
+            'M85x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 39.821,
@@ -6328,7 +6328,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 85x3': {
+            'M85x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 40.4715,
@@ -6353,7 +6353,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 85x2': {
+            'M85x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 41.1255,
@@ -6378,7 +6378,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 85x1.5': {
+            'M85x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 41.455,
@@ -6403,7 +6403,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 90x4': {
+            'M90x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 42.321,
@@ -6428,7 +6428,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 90x3': {
+            'M90x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 42.9715,
@@ -6453,7 +6453,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 90x2': {
+            'M90x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 43.6255,
@@ -6478,7 +6478,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 90x1.5': {
+            'M90x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 43.955,
@@ -6503,7 +6503,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 95x4': {
+            'M95x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 44.814,
@@ -6528,7 +6528,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 95x3': {
+            'M95x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 45.4655,
@@ -6553,7 +6553,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 95x2': {
+            'M95x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 46.1205,
@@ -6578,7 +6578,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 95x1.5': {
+            'M95x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 46.445,
@@ -6603,7 +6603,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 100x4': {
+            'M100x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 47.314,
@@ -6628,7 +6628,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 100x3': {
+            'M100x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 47.9655,
@@ -6653,7 +6653,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 100x2': {
+            'M100x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 48.6205,
@@ -6678,7 +6678,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 100x1.5': {
+            'M100x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 48.945,
@@ -6703,7 +6703,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 105x4': {
+            'M105x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 49.814,
@@ -6728,7 +6728,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 105x3': {
+            'M105x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 50.465,
@@ -6753,7 +6753,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 105x2': {
+            'M105x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 51.12,
@@ -6778,7 +6778,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 105x1.5': {
+            'M105x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 51.445,
@@ -6803,7 +6803,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 110x4': {
+            'M110x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 52.315,
@@ -6828,7 +6828,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 110x3': {
+            'M110x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 52.965,
@@ -6853,7 +6853,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 110x2': {
+            'M110x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 53.62,
@@ -6878,7 +6878,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 110x1.5': {
+            'M110x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 53.945,
@@ -6903,7 +6903,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 115x4': {
+            'M115x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 54.815,
@@ -6928,7 +6928,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 115x3': {
+            'M115x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 55.465,
@@ -6953,7 +6953,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 115x2': {
+            'M115x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 56.12,
@@ -6978,7 +6978,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 115x1.5': {
+            'M115x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 56.445,
@@ -7003,7 +7003,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 120x4': {
+            'M120x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 57.315,
@@ -7028,7 +7028,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 120x3': {
+            'M120x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 57.965,
@@ -7053,7 +7053,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 120x2': {
+            'M120x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 58.62,
@@ -7078,7 +7078,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 120x1.5': {
+            'M120x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 58.945,
@@ -7103,7 +7103,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 125x6': {
+            'M125x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 58.515,
@@ -7128,7 +7128,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 125x4': {
+            'M125x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 59.815,
@@ -7153,7 +7153,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 125x3': {
+            'M125x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 60.465,
@@ -7178,7 +7178,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 125x2': {
+            'M125x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 61.12,
@@ -7203,7 +7203,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 125x1.5': {
+            'M125x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 61.445,
@@ -7228,7 +7228,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 130x6': {
+            'M130x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 61.015,
@@ -7253,7 +7253,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 130x4': {
+            'M130x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 62.315,
@@ -7278,7 +7278,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 130x3': {
+            'M130x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 62.965,
@@ -7303,7 +7303,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 130x2': {
+            'M130x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 63.62,
@@ -7328,7 +7328,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 130x1.5': {
+            'M130x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 63.945,
@@ -7353,7 +7353,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 135x4': {
+            'M135x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 64.815,
@@ -7378,7 +7378,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 135x3': {
+            'M135x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 65.465,
@@ -7403,7 +7403,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 135x2': {
+            'M135x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 66.12,
@@ -7428,7 +7428,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 135x1.5': {
+            'M135x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 66.445,
@@ -7453,7 +7453,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 140x6': {
+            'M140x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 66.015,
@@ -7478,7 +7478,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 140x4': {
+            'M140x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 67.315,
@@ -7503,7 +7503,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 140x3': {
+            'M140x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 67.965,
@@ -7528,7 +7528,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 140x2': {
+            'M140x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 68.62,
@@ -7553,7 +7553,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 140x1.5': {
+            'M140x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 68.945,
@@ -7578,7 +7578,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 145x4': {
+            'M145x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 69.815,
@@ -7603,7 +7603,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 145x3': {
+            'M145x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 70.465,
@@ -7628,7 +7628,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 145x2': {
+            'M145x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 71.12,
@@ -7653,7 +7653,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 145x1.5': {
+            'M145x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 71.445,
@@ -7678,7 +7678,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 150x6': {
+            'M150x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 71.015,
@@ -7703,7 +7703,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 150x4': {
+            'M150x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 72.315,
@@ -7728,7 +7728,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 150x3': {
+            'M150x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 72.965,
@@ -7753,7 +7753,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 150x2': {
+            'M150x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 73.62,
@@ -7778,7 +7778,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 150x1.5': {
+            'M150x1p5': {
                 'ext': {
                     'pitch': 1.5,
                     'rRotation': 73.945,
@@ -7803,7 +7803,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 155x4': {
+            'M155x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 74.815,
@@ -7828,7 +7828,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 155x3': {
+            'M155x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 75.465,
@@ -7853,7 +7853,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 155x2': {
+            'M155x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 76.12,
@@ -7878,7 +7878,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 160x6': {
+            'M160x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 76.015,
@@ -7903,7 +7903,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 160x4': {
+            'M160x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 77.315,
@@ -7928,7 +7928,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 160x3': {
+            'M160x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 77.965,
@@ -7953,7 +7953,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 160x2': {
+            'M160x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 78.62,
@@ -7978,7 +7978,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 165x4': {
+            'M165x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 79.815,
@@ -8003,7 +8003,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 165x3': {
+            'M165x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 80.465,
@@ -8028,7 +8028,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 165x2': {
+            'M165x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 81.12,
@@ -8053,7 +8053,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 170x6': {
+            'M170x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 81.015,
@@ -8078,7 +8078,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 170x4': {
+            'M170x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 82.315,
@@ -8103,7 +8103,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 170x3': {
+            'M170x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 82.965,
@@ -8128,7 +8128,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 170x2': {
+            'M170x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 83.62,
@@ -8153,7 +8153,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 175x4': {
+            'M175x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 84.815,
@@ -8178,7 +8178,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 175x3': {
+            'M175x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 85.465,
@@ -8203,7 +8203,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 175x2': {
+            'M175x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 86.12,
@@ -8228,7 +8228,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 180x6': {
+            'M180x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 86.015,
@@ -8253,7 +8253,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 180x4': {
+            'M180x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 87.315,
@@ -8278,7 +8278,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 180x3': {
+            'M180x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 87.965,
@@ -8303,7 +8303,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 180x2': {
+            'M180x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 88.62,
@@ -8328,7 +8328,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 185x4': {
+            'M185x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 89.8,
@@ -8353,7 +8353,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 185x3': {
+            'M185x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 90.455,
@@ -8378,7 +8378,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 185x2': {
+            'M185x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 91.11,
@@ -8403,7 +8403,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 190x6': {
+            'M190x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 91.005,
@@ -8428,7 +8428,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 190x4': {
+            'M190x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 92.3,
@@ -8453,7 +8453,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 190x3': {
+            'M190x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 92.955,
@@ -8478,7 +8478,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 190x2': {
+            'M190x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 93.61,
@@ -8503,7 +8503,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 195x4': {
+            'M195x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 94.8,
@@ -8528,7 +8528,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 195x3': {
+            'M195x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 95.455,
@@ -8553,7 +8553,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 195x2': {
+            'M195x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 96.11,
@@ -8578,7 +8578,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 200x6': {
+            'M200x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 96.005,
@@ -8603,7 +8603,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 200x4': {
+            'M200x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 97.3,
@@ -8628,7 +8628,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 200x3': {
+            'M200x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 97.955,
@@ -8653,7 +8653,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 200x2': {
+            'M200x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 98.61,
@@ -8678,7 +8678,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 205x4': {
+            'M205x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 99.8,
@@ -8703,7 +8703,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 205x3': {
+            'M205x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 100.455,
@@ -8728,7 +8728,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 205x2': {
+            'M205x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 101.11,
@@ -8753,7 +8753,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 210x6': {
+            'M210x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 101.005,
@@ -8778,7 +8778,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 210x4': {
+            'M210x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 102.3,
@@ -8803,7 +8803,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 210x3': {
+            'M210x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 102.955,
@@ -8828,7 +8828,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 210x2': {
+            'M210x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 103.61,
@@ -8853,7 +8853,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 215x4': {
+            'M215x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 104.8,
@@ -8878,7 +8878,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 215x3': {
+            'M215x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 105.455,
@@ -8903,7 +8903,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 220x6': {
+            'M220x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 106.005,
@@ -8928,7 +8928,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 220x4': {
+            'M220x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 107.3,
@@ -8953,7 +8953,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 220x3': {
+            'M220x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 107.955,
@@ -8978,7 +8978,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 220x2': {
+            'M220x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 108.61,
@@ -9003,7 +9003,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 225x4': {
+            'M225x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 109.8,
@@ -9028,7 +9028,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 225x3': {
+            'M225x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 110.455,
@@ -9053,7 +9053,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 225x2': {
+            'M225x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 111.11,
@@ -9078,7 +9078,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 230x4': {
+            'M230x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 112.3,
@@ -9103,7 +9103,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 230x3': {
+            'M230x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 112.955,
@@ -9128,7 +9128,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 230x2': {
+            'M230x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 113.61,
@@ -9153,7 +9153,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 235x4': {
+            'M235x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 114.8,
@@ -9178,7 +9178,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 235x3': {
+            'M235x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 115.455,
@@ -9203,7 +9203,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 240x6': {
+            'M240x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 116.005,
@@ -9228,7 +9228,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 240x4': {
+            'M240x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 117.3,
@@ -9253,7 +9253,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 240x3': {
+            'M240x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 117.955,
@@ -9278,7 +9278,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 240x2': {
+            'M240x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 118.61,
@@ -9303,7 +9303,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 245x4': {
+            'M245x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 119.8,
@@ -9328,7 +9328,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 245x3': {
+            'M245x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 120.455,
@@ -9353,7 +9353,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 245x2': {
+            'M245x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 121.11,
@@ -9378,7 +9378,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 250x6': {
+            'M250x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 121.005,
@@ -9403,7 +9403,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 250x4': {
+            'M250x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 122.3,
@@ -9428,7 +9428,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 250x3': {
+            'M250x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 122.955,
@@ -9453,7 +9453,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 250x2': {
+            'M250x2': {
                 'ext': {
                     'pitch': 2,
                     'rRotation': 123.61,
@@ -9478,7 +9478,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 255x4': {
+            'M255x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 124.8,
@@ -9503,7 +9503,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 255x3': {
+            'M255x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 125.455,
@@ -9528,7 +9528,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 260x6': {
+            'M260x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 126.005,
@@ -9553,7 +9553,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 260x4': {
+            'M260x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 127.3,
@@ -9578,7 +9578,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 260x3': {
+            'M260x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 127.955,
@@ -9603,7 +9603,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 265x4': {
+            'M265x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 129.8,
@@ -9628,7 +9628,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 265x3': {
+            'M265x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 130.455,
@@ -9653,7 +9653,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 270x4': {
+            'M270x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 132.3,
@@ -9678,7 +9678,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 270x3': {
+            'M270x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 132.955,
@@ -9703,7 +9703,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 275x4': {
+            'M275x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 134.8,
@@ -9728,7 +9728,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 275x3': {
+            'M275x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 135.455,
@@ -9753,7 +9753,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 280x6': {
+            'M280x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 136.005,
@@ -9778,7 +9778,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 280x4': {
+            'M280x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 137.3,
@@ -9803,7 +9803,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 280x3': {
+            'M280x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 137.955,
@@ -9828,7 +9828,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 285x4': {
+            'M285x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 139.8,
@@ -9853,7 +9853,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 285x3': {
+            'M285x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 140.455,
@@ -9878,7 +9878,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 290x4': {
+            'M290x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 142.3,
@@ -9903,7 +9903,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 290x3': {
+            'M290x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 142.955,
@@ -9928,7 +9928,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 295x4': {
+            'M295x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 144.8,
@@ -9953,7 +9953,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 295x3': {
+            'M295x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 145.455,
@@ -9978,7 +9978,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 300x6': {
+            'M300x6': {
                 'ext': {
                     'pitch': 6,
                     'rRotation': 146.005,
@@ -10003,7 +10003,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 300x4': {
+            'M300x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 147.3,
@@ -10028,7 +10028,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 300x3': {
+            'M300x3': {
                 'ext': {
                     'pitch': 3,
                     'rRotation': 147.955,
@@ -10053,7 +10053,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 310x4': {
+            'M310x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 152.3,
@@ -10078,7 +10078,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 320x4': {
+            'M320x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 157.3,
@@ -10103,7 +10103,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 330x4': {
+            'M330x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 162.3,
@@ -10128,7 +10128,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 340x4': {
+            'M340x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 167.3,
@@ -10153,7 +10153,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 350x4': {
+            'M350x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 172.3,
@@ -10178,7 +10178,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 360x4': {
+            'M360x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 177.29,
@@ -10203,7 +10203,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 370x4': {
+            'M370x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 182.29,
@@ -10228,7 +10228,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 380x4': {
+            'M380x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 187.29,
@@ -10253,7 +10253,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 390x4': {
+            'M390x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 192.29,
@@ -10278,7 +10278,7 @@ const THREAD_TABLE = {
                     ]
                 }
             },
-            'M 400x4': {
+            'M400x4': {
                 'ext': {
                     'pitch': 4,
                     'rRotation': 197.29,
@@ -13195,421 +13195,421 @@ const THREAD_TABLE = {
 }
 
 const metricCoarseLookup = [
-    "M 0.3x0.09",
-    "M 1.1x0.25",
-    "M 1.6x0.3",
-    "M 2.3x0.45",
-    "M 4.5x0.75",
-    "M 6x0.8",
-    "M 7x0.75",
-    "M 8x1",
-    "M 9x1.25",
-    "M 10x1.25",
-    "M 11x1.5",
-    "M 12x1.5",
-    "M 14x1.5",
-    "M 15x1.5",
-    "M 16x1.6",
-    "M 17x1.5",
-    "M 18x2",
-    "M 20x2",
-    "M 22x3",
-    "M 24x2.5",
-    "M 25x2",
-    "M 27x2",
-    "M 28x2",
-    "M 30x3",
-    "M 32x2",
-    "M 33x3",
-    "M 36x3",
-    "M 39x3",
-    "M 40x3",
-    "M 42x4",
-    "M 45x4",
-    "M 48x4",
-    "M 50x4",
-    "M 52x4",
-    "M 55x4",
-    "M 56x4",
-    "M 58x4",
-    "M 60x4",
-    "M 62x4",
-    "M 64x5.5",
-    "M 65x4",
-    "M 68x6",
-    "M 70x6",
-    "M 72x6",
-    "M 75x6",
-    "M 76x6",
-    "M 80x6",
-    "M 85x6",
-    "M 90x6",
-    "M 95x6",
-    "M 100x6",
-    "M 105x6",
-    "M 110x6",
-    "M 115x6",
-    "M 120x6",
-    "M 125x8",
-    "M 130x8",
-    "M 135x6",
-    "M 140x8",
-    "M 145x6",
-    "M 150x8",
-    "M 155x6",
-    "M 160x8",
-    "M 165x6",
-    "M 170x8",
-    "M 175x6",
-    "M 180x8",
-    "M 185x6",
-    "M 190x8",
-    "M 195x6",
-    "M 200x8",
-    "M 205x6",
-    "M 210x8",
-    "M 215x6",
-    "M 220x8",
-    "M 225x6",
-    "M 230x6",
-    "M 235x6",
-    "M 240x8",
-    "M 245x6",
-    "M 250x8",
-    "M 255x6",
-    "M 260x8",
-    "M 265x6",
-    "M 270x6",
-    "M 275x6",
-    "M 280x8",
-    "M 285x6",
-    "M 290x6",
-    "M 295x6",
-    "M 300x8",
-    "M 310x6",
-    "M 320x6",
-    "M 330x6",
-    "M 340x6",
-    "M 350x6",
-    "M 360x6",
-    "M 370x6",
-    "M 380x6",
-    "M 390x6",
-    "M 400x6",
+    "M0p3x0p09",
+    "M1p1x0p25",
+    "M1p6x0p3",
+    "M2p3x0p45",
+    "M4p5x0p75",
+    "M6x0p8",
+    "M7x0p75",
+    "M8x1",
+    "M9x1p25",
+    "M10x1p25",
+    "M11x1p5",
+    "M12x1p5",
+    "M14x1p5",
+    "M15x1p5",
+    "M16x1p6",
+    "M17x1p5",
+    "M18x2",
+    "M20x2",
+    "M22x3",
+    "M24x2p5",
+    "M25x2",
+    "M27x2",
+    "M28x2",
+    "M30x3",
+    "M32x2",
+    "M33x3",
+    "M36x3",
+    "M39x3",
+    "M40x3",
+    "M42x4",
+    "M45x4",
+    "M48x4",
+    "M50x4",
+    "M52x4",
+    "M55x4",
+    "M56x4",
+    "M58x4",
+    "M60x4",
+    "M62x4",
+    "M64x5p5",
+    "M65x4",
+    "M68x6",
+    "M70x6",
+    "M72x6",
+    "M75x6",
+    "M76x6",
+    "M80x6",
+    "M85x6",
+    "M90x6",
+    "M95x6",
+    "M100x6",
+    "M105x6",
+    "M110x6",
+    "M115x6",
+    "M120x6",
+    "M125x8",
+    "M130x8",
+    "M135x6",
+    "M140x8",
+    "M145x6",
+    "M150x8",
+    "M155x6",
+    "M160x8",
+    "M165x6",
+    "M170x8",
+    "M175x6",
+    "M180x8",
+    "M185x6",
+    "M190x8",
+    "M195x6",
+    "M200x8",
+    "M205x6",
+    "M210x8",
+    "M215x6",
+    "M220x8",
+    "M225x6",
+    "M230x6",
+    "M235x6",
+    "M240x8",
+    "M245x6",
+    "M250x8",
+    "M255x6",
+    "M260x8",
+    "M265x6",
+    "M270x6",
+    "M275x6",
+    "M280x8",
+    "M285x6",
+    "M290x6",
+    "M295x6",
+    "M300x8",
+    "M310x6",
+    "M320x6",
+    "M330x6",
+    "M340x6",
+    "M350x6",
+    "M360x6",
+    "M370x6",
+    "M380x6",
+    "M390x6",
+    "M400x6",
 ]
 
 const metricFineLookup = [
-    "M 0.3x0.08",
-    "M 1.1x0.2",
-    "M 1.6x0.2",
-    "M 2.3x0.4",
-    "M 4.5x0.5",
-    "M 6x0.75",
-    "M 6x0.7",
-    "M 6x0.5",
-    "M 7x0.5",
-    "M 8x0.8",
-    "M 8x0.75",
-    "M 8x0.5",
-    "M 9x1",
-    "M 9x0.75",
-    "M 9x0.5",
-    "M 10x1.12",
-    "M 10x1",
-    "M 10x0.75",
-    "M 10x0.5",
-    "M 11x1",
-    "M 11x0.75",
-    "M 11x0.5",
-    "M 12x1.25",
-    "M 12x1",
-    "M 12x0.75",
-    "M 12x0.5",
-    "M 14x1.25",
-    "M 14x1",
-    "M 14x0.75",
-    "M 14x0.5",
-    "M 15x1",
-    "M 16x1.5",
-    "M 16x1.25",
-    "M 16x1",
-    "M 16x0.75",
-    "M 16x0.5",
-    "M 17x1",
-    "M 18x1.5",
-    "M 18x1.25",
-    "M 18x1",
-    "M 18x0.75",
-    "M 18x0.5",
-    "M 20x1.5",
-    "M 20x1",
-    "M 20x0.75",
-    "M 20x0.5",
-    "M 22x2",
-    "M 22x1.5",
-    "M 22x1",
-    "M 22x0.75",
-    "M 22x0.5",
-    "M 24x2",
-    "M 24x1.5",
-    "M 24x1",
-    "M 24x0.75",
-    "M 25x1.5",
-    "M 25x1",
-    "M 27x1.5",
-    "M 27x1",
-    "M 27x0.75",
-    "M 28x1.5",
-    "M 28x1",
-    "M 30x2.5",
-    "M 30x2",
-    "M 30x1.5",
-    "M 30x1",
-    "M 30x0.75",
-    "M 32x1.5",
-    "M 33x2",
-    "M 33x1.5",
-    "M 33x1",
-    "M 33x0.75",
-    "M 36x2",
-    "M 36x1.5",
-    "M 36x1",
-    "M 39x2",
-    "M 39x1.5",
-    "M 39x1",
-    "M 40x2.5",
-    "M 40x2",
-    "M 40x1.5",
-    "M 42x3",
-    "M 42x2",
-    "M 42x1.5",
-    "M 42x1",
-    "M 45x3",
-    "M 45x2",
-    "M 45x1.5",
-    "M 45x1",
-    "M 48x3",
-    "M 48x2",
-    "M 48x1.5",
-    "M 50x3",
-    "M 50x2",
-    "M 50x1.5",
-    "M 52x3",
-    "M 52x2",
-    "M 52x1.5",
-    "M 55x3",
-    "M 55x2",
-    "M 55x1.5",
-    "M 56x3",
-    "M 56x2",
-    "M 56x1.5",
-    "M 56x1",
-    "M 58x3",
-    "M 58x2",
-    "M 58x1.5",
-    "M 60x3",
-    "M 60x2",
-    "M 60x1.5",
-    "M 60x1",
-    "M 62x3",
-    "M 62x2",
-    "M 62x1.5",
-    "M 64x4",
-    "M 64x3",
-    "M 64x2",
-    "M 64x1.5",
-    "M 64x1",
-    "M 65x3",
-    "M 65x2",
-    "M 65x1.5",
-    "M 68x4",
-    "M 68x3",
-    "M 68x2",
-    "M 68x1.5",
-    "M 68x1",
-    "M 70x4",
-    "M 70x3",
-    "M 70x2",
-    "M 70x1.5",
-    "M 72x4",
-    "M 72x3",
-    "M 72x2",
-    "M 72x1.5",
-    "M 72x1",
-    "M 75x4",
-    "M 75x3",
-    "M 75x2",
-    "M 75x1.5",
-    "M 76x4",
-    "M 76x3",
-    "M 76x2",
-    "M 76x1.5",
-    "M 76x1",
-    "M 80x4",
-    "M 80x3",
-    "M 80x2",
-    "M 80x1.5",
-    "M 80x1",
-    "M 85x4",
-    "M 85x3",
-    "M 85x2",
-    "M 85x1.5",
-    "M 90x4",
-    "M 90x3",
-    "M 90x2",
-    "M 90x1.5",
-    "M 95x4",
-    "M 95x3",
-    "M 95x2",
-    "M 95x1.5",
-    "M 100x4",
-    "M 100x3",
-    "M 100x2",
-    "M 100x1.5",
-    "M 105x4",
-    "M 105x3",
-    "M 105x2",
-    "M 105x1.5",
-    "M 110x4",
-    "M 110x3",
-    "M 110x2",
-    "M 110x1.5",
-    "M 115x4",
-    "M 115x3",
-    "M 115x2",
-    "M 115x1.5",
-    "M 120x4",
-    "M 120x3",
-    "M 120x2",
-    "M 120x1.5",
-    "M 125x6",
-    "M 125x4",
-    "M 125x3",
-    "M 125x2",
-    "M 125x1.5",
-    "M 130x6",
-    "M 130x4",
-    "M 130x3",
-    "M 130x2",
-    "M 130x1.5",
-    "M 135x4",
-    "M 135x3",
-    "M 135x2",
-    "M 135x1.5",
-    "M 140x6",
-    "M 140x4",
-    "M 140x3",
-    "M 140x2",
-    "M 140x1.5",
-    "M 145x4",
-    "M 145x3",
-    "M 145x2",
-    "M 145x1.5",
-    "M 150x6",
-    "M 150x4",
-    "M 150x3",
-    "M 150x2",
-    "M 150x1.5",
-    "M 155x4",
-    "M 155x3",
-    "M 155x2",
-    "M 160x6",
-    "M 160x4",
-    "M 160x3",
-    "M 160x2",
-    "M 165x4",
-    "M 165x3",
-    "M 165x2",
-    "M 170x6",
-    "M 170x4",
-    "M 170x3",
-    "M 170x2",
-    "M 175x4",
-    "M 175x3",
-    "M 175x2",
-    "M 180x6",
-    "M 180x4",
-    "M 180x3",
-    "M 180x2",
-    "M 185x4",
-    "M 185x3",
-    "M 185x2",
-    "M 190x6",
-    "M 190x4",
-    "M 190x3",
-    "M 190x2",
-    "M 195x4",
-    "M 195x3",
-    "M 195x2",
-    "M 200x6",
-    "M 200x4",
-    "M 200x3",
-    "M 200x2",
-    "M 205x4",
-    "M 205x3",
-    "M 205x2",
-    "M 210x6",
-    "M 210x4",
-    "M 210x3",
-    "M 210x2",
-    "M 215x4",
-    "M 215x3",
-    "M 220x6",
-    "M 220x4",
-    "M 220x3",
-    "M 220x2",
-    "M 225x4",
-    "M 225x3",
-    "M 225x2",
-    "M 230x4",
-    "M 230x3",
-    "M 230x2",
-    "M 235x4",
-    "M 235x3",
-    "M 240x6",
-    "M 240x4",
-    "M 240x3",
-    "M 240x2",
-    "M 245x4",
-    "M 245x3",
-    "M 245x2",
-    "M 250x6",
-    "M 250x4",
-    "M 250x3",
-    "M 250x2",
-    "M 255x4",
-    "M 255x3",
-    "M 260x6",
-    "M 260x4",
-    "M 260x3",
-    "M 265x4",
-    "M 265x3",
-    "M 270x4",
-    "M 270x3",
-    "M 275x4",
-    "M 275x3",
-    "M 280x6",
-    "M 280x4",
-    "M 280x3",
-    "M 285x4",
-    "M 285x3",
-    "M 290x4",
-    "M 290x3",
-    "M 295x4",
-    "M 295x3",
-    "M 300x6",
-    "M 300x4",
-    "M 300x3",
-    "M 310x4",
-    "M 320x4",
-    "M 330x4",
-    "M 340x4",
-    "M 350x4",
-    "M 360x4",
-    "M 370x4",
-    "M 380x4",
-    "M 390x4",
-    "M 400x4",
+    "M0p3x0p08",
+    "M1p1x0p2",
+    "M1p6x0p2",
+    "M2p3x0p4",
+    "M4p5x0p5",
+    "M6x0p75",
+    "M6x0p7",
+    "M6x0p5",
+    "M7x0p5",
+    "M8x0p8",
+    "M8x0p75",
+    "M8x0p5",
+    "M9x1",
+    "M9x0p75",
+    "M9x0p5",
+    "M10x1p12",
+    "M10x1",
+    "M10x0p75",
+    "M10x0p5",
+    "M11x1",
+    "M11x0p75",
+    "M11x0p5",
+    "M12x1p25",
+    "M12x1",
+    "M12x0p75",
+    "M12x0p5",
+    "M14x1p25",
+    "M14x1",
+    "M14x0p75",
+    "M14x0p5",
+    "M15x1",
+    "M16x1p5",
+    "M16x1p25",
+    "M16x1",
+    "M16x0p75",
+    "M16x0p5",
+    "M17x1",
+    "M18x1p5",
+    "M18x1p25",
+    "M18x1",
+    "M18x0p75",
+    "M18x0p5",
+    "M20x1p5",
+    "M20x1",
+    "M20x0p75",
+    "M20x0p5",
+    "M22x2",
+    "M22x1p5",
+    "M22x1",
+    "M22x0p75",
+    "M22x0p5",
+    "M24x2",
+    "M24x1p5",
+    "M24x1",
+    "M24x0p75",
+    "M25x1p5",
+    "M25x1",
+    "M27x1p5",
+    "M27x1",
+    "M27x0p75",
+    "M28x1p5",
+    "M28x1",
+    "M30x2p5",
+    "M30x2",
+    "M30x1p5",
+    "M30x1",
+    "M30x0p75",
+    "M32x1p5",
+    "M33x2",
+    "M33x1p5",
+    "M33x1",
+    "M33x0p75",
+    "M36x2",
+    "M36x1p5",
+    "M36x1",
+    "M39x2",
+    "M39x1p5",
+    "M39x1",
+    "M40x2p5",
+    "M40x2",
+    "M40x1p5",
+    "M42x3",
+    "M42x2",
+    "M42x1p5",
+    "M42x1",
+    "M45x3",
+    "M45x2",
+    "M45x1p5",
+    "M45x1",
+    "M48x3",
+    "M48x2",
+    "M48x1p5",
+    "M50x3",
+    "M50x2",
+    "M50x1p5",
+    "M52x3",
+    "M52x2",
+    "M52x1p5",
+    "M55x3",
+    "M55x2",
+    "M55x1p5",
+    "M56x3",
+    "M56x2",
+    "M56x1p5",
+    "M56x1",
+    "M58x3",
+    "M58x2",
+    "M58x1p5",
+    "M60x3",
+    "M60x2",
+    "M60x1p5",
+    "M60x1",
+    "M62x3",
+    "M62x2",
+    "M62x1p5",
+    "M64x4",
+    "M64x3",
+    "M64x2",
+    "M64x1p5",
+    "M64x1",
+    "M65x3",
+    "M65x2",
+    "M65x1p5",
+    "M68x4",
+    "M68x3",
+    "M68x2",
+    "M68x1p5",
+    "M68x1",
+    "M70x4",
+    "M70x3",
+    "M70x2",
+    "M70x1p5",
+    "M72x4",
+    "M72x3",
+    "M72x2",
+    "M72x1p5",
+    "M72x1",
+    "M75x4",
+    "M75x3",
+    "M75x2",
+    "M75x1p5",
+    "M76x4",
+    "M76x3",
+    "M76x2",
+    "M76x1p5",
+    "M76x1",
+    "M80x4",
+    "M80x3",
+    "M80x2",
+    "M80x1p5",
+    "M80x1",
+    "M85x4",
+    "M85x3",
+    "M85x2",
+    "M85x1p5",
+    "M90x4",
+    "M90x3",
+    "M90x2",
+    "M90x1p5",
+    "M95x4",
+    "M95x3",
+    "M95x2",
+    "M95x1p5",
+    "M100x4",
+    "M100x3",
+    "M100x2",
+    "M100x1p5",
+    "M105x4",
+    "M105x3",
+    "M105x2",
+    "M105x1p5",
+    "M110x4",
+    "M110x3",
+    "M110x2",
+    "M110x1p5",
+    "M115x4",
+    "M115x3",
+    "M115x2",
+    "M115x1p5",
+    "M120x4",
+    "M120x3",
+    "M120x2",
+    "M120x1p5",
+    "M125x6",
+    "M125x4",
+    "M125x3",
+    "M125x2",
+    "M125x1p5",
+    "M130x6",
+    "M130x4",
+    "M130x3",
+    "M130x2",
+    "M130x1p5",
+    "M135x4",
+    "M135x3",
+    "M135x2",
+    "M135x1p5",
+    "M140x6",
+    "M140x4",
+    "M140x3",
+    "M140x2",
+    "M140x1p5",
+    "M145x4",
+    "M145x3",
+    "M145x2",
+    "M145x1p5",
+    "M150x6",
+    "M150x4",
+    "M150x3",
+    "M150x2",
+    "M150x1p5",
+    "M155x4",
+    "M155x3",
+    "M155x2",
+    "M160x6",
+    "M160x4",
+    "M160x3",
+    "M160x2",
+    "M165x4",
+    "M165x3",
+    "M165x2",
+    "M170x6",
+    "M170x4",
+    "M170x3",
+    "M170x2",
+    "M175x4",
+    "M175x3",
+    "M175x2",
+    "M180x6",
+    "M180x4",
+    "M180x3",
+    "M180x2",
+    "M185x4",
+    "M185x3",
+    "M185x2",
+    "M190x6",
+    "M190x4",
+    "M190x3",
+    "M190x2",
+    "M195x4",
+    "M195x3",
+    "M195x2",
+    "M200x6",
+    "M200x4",
+    "M200x3",
+    "M200x2",
+    "M205x4",
+    "M205x3",
+    "M205x2",
+    "M210x6",
+    "M210x4",
+    "M210x3",
+    "M210x2",
+    "M215x4",
+    "M215x3",
+    "M220x6",
+    "M220x4",
+    "M220x3",
+    "M220x2",
+    "M225x4",
+    "M225x3",
+    "M225x2",
+    "M230x4",
+    "M230x3",
+    "M230x2",
+    "M235x4",
+    "M235x3",
+    "M240x6",
+    "M240x4",
+    "M240x3",
+    "M240x2",
+    "M245x4",
+    "M245x3",
+    "M245x2",
+    "M250x6",
+    "M250x4",
+    "M250x3",
+    "M250x2",
+    "M255x4",
+    "M255x3",
+    "M260x6",
+    "M260x4",
+    "M260x3",
+    "M265x4",
+    "M265x3",
+    "M270x4",
+    "M270x3",
+    "M275x4",
+    "M275x3",
+    "M280x6",
+    "M280x4",
+    "M280x3",
+    "M285x4",
+    "M285x3",
+    "M290x4",
+    "M290x3",
+    "M295x4",
+    "M295x3",
+    "M300x6",
+    "M300x4",
+    "M300x3",
+    "M310x4",
+    "M320x4",
+    "M330x4",
+    "M340x4",
+    "M350x4",
+    "M360x4",
+    "M370x4",
+    "M380x4",
+    "M390x4",
+    "M400x4",
 ]
 
 const unifiedCoarseLookup = [

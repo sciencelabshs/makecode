@@ -264,7 +264,7 @@ namespace pxsim.fasteners {
     //% blockId=britishStandardThread block="british standard - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/britishStandardThread
-    //% thread.defl=BritishSizes.G_OneSixteenthInch
+    //% threadType.defl=BritishSizes.G_OneSixteenthInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
@@ -298,7 +298,7 @@ namespace pxsim.fasteners {
     //% blockId=metricCoarseThread block="metric coarse - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=MetricCoarseSizes.M8x1
+    //% threadType.defl=MetricCoarseSizes.M8x1
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
@@ -307,11 +307,14 @@ namespace pxsim.fasteners {
     //% expandableArgumentMode="enabled"
     /**
      * Metric screws (ISO metric screw thread) the most commonly used type of general-purpose screw threads.
-     * The "M" stnads for the outer diameter of the screw thread, in mm. 
+     * The "M" stands for the outer diameter of the screw thread, in mm. 
      * 
      * Coarse threads have a larger pitch (distance between the thread ridges), and are preferred for most applications.
      * Use fine threads when you need to add strength or need to prevent loosening.
-     * 
+     *
+     * To cut into a tube, divide the M number by 2.  This gives you the outer radius of the thread. 
+     * Your tube will need to be larger than that.  For starters, try a tube of size M/2 + 1, then adjust as necessary.
+     *
      * @param threadType  choose between the screw thread or the interior thread, which can be cut out of another shape
      * @param size the standard size from British Standard 
      * @param height the height of the cylinder
@@ -333,7 +336,7 @@ namespace pxsim.fasteners {
     //% blockId=metricFineThread block="metric fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/metricFineThread
-    //% thread.defl=MetricFineSizes.M10x1
+    //% threadType.defl=MetricFineSizes.M10x1
     //% height.defl=10
     //% lead.defl=20
     //% weight=50
@@ -342,10 +345,13 @@ namespace pxsim.fasteners {
     //% expandableArgumentMode="enabled"
     /**
      * Metric screws (ISO metric screw thread) the most commonly used type of general-purpose screw threads.
-     * The "M" stnads for the outer diameter of the screw thread, in mm. 
+     * The "M" stands for the outer diameter of the screw thread, in mm. 
      * 
      * Coarse threads have a larger pitch (distance between the thread ridges), and are preferred for most applications.
      * Use fine threads when you need to add strength or need to prevent loosening.
+     * 
+     * To cut into a tube, divide the M number by 2.  This gives you the outer radius of the thread. 
+     * Your tube will need to be larger than that.  For starters, try a tube of size M/2 + 1, then adjust as necessary.
      * 
      * @param thread the type of thread you want
      * @param size the standard size from British Standard 
@@ -368,7 +374,7 @@ namespace pxsim.fasteners {
     //% blockId=unifiedCoarseThread block="unified coarse - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=UnifiedCoarseSizes.UNC_HalfInch
+    //% threadType.defl=UnifiedCoarseSizes.UNC_HalfInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
@@ -403,7 +409,7 @@ namespace pxsim.fasteners {
     //% blockId=unifiedFineThread block="unified fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=UnifiedFineSizes.UNF_HalfInch
+    //% threadType.defl=UnifiedFineSizes.UNF_HalfInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
@@ -438,7 +444,7 @@ namespace pxsim.fasteners {
     //% blockId=unifiedExtraFineThread block="unified extra fine - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=UnifiedExtraFineSizes.UNEF_OneQuarterInch
+    //% threadType.defl=UnifiedExtraFineSizes.UNEF_OneQuarterInch
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
@@ -476,7 +482,7 @@ namespace pxsim.fasteners {
     //% blockId=unifiedNumberedThread block="unified numbered - $size|$threadType|height $height||lead $lead||resolution $resolution" 
     //% inlineInputMode=inline
     //% help=fasteners/bolt
-    //% thread.defl=UnifiedNumberedSizes.UN_32
+    //% threadType.defl=UnifiedNumberedSizes.UN_32
     //% height.defl=10
     //% lead.defl=20
     //% resolution.defl=120
