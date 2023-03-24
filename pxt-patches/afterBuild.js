@@ -33,7 +33,7 @@ console.log("===============");
 fs.copyFileSync(
   path.resolve(
     __dirname,
-    "../../../../cloud-buildbee/cli/makecode-scripts/cloud-buildbee-scripts/buildbee-services.js"
+    "./buildbee-services.js"
   ),
   path.resolve(__dirname, "../built/packaged/buildbee/buildbee-services.js")
 );
